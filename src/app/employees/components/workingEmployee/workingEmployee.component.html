@@ -1,0 +1,197 @@
+<div class="grid">
+    <div class="col-4 text-center text-500">
+        <div class= "row">
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            Información Laboral
+        </div>
+    </div>
+    <div class="col-8">
+    <p-panel header="Información Laboral" class="text-600">
+        <ng-template pTemplate="icons">
+            <button pButton pRipple type="button"  icon="pi pi-pencil" class="p-button-rounded p-button-primary p-button-text text-left" (click)="editWorkingEmployee(employeeWorking)" style="position: inherit;">     
+            </button> 
+    </ng-template> 
+    <form>
+
+
+        <div class="grid">
+            <div class="col-4"> 
+            <div class="flex align-items-start justify-content-start">
+                <span class="text-500 font-medium">Tipo de Empleado:</span></div>
+            </div>
+            <div class="col-8">
+                <span class="text-400 align-items-start justify-content-start">{{employeeType.description}}</span>
+            </div>
+            
+        </div>
+
+        <div class="grid">
+            <div class="col-4"> 
+            <div class="flex align-items-start justify-content-start">
+                <span class="text-500 font-medium">Regimen Laboral:</span></div>
+            </div>
+            <div class="col-8">
+                <span class="text-400 align-items-start justify-content-start">{{contractRegime.description}}</span>
+            </div>
+            
+        </div>
+
+        <div class="grid">
+            <div class="col-4"> 
+            <div class="flex align-items-start justify-content-start">
+                <span class="text-500 font-medium">Jornada Laboral:</span></div>
+            </div>
+            <div class="col-8">
+                <span class="text-400 align-items-start justify-content-start">{{workingHour.description}}</span>
+            </div>
+            
+        </div>
+
+        <div class="grid">
+            <div class="col-4"> 
+            <div class="flex align-items-start justify-content-start">
+                <span class="text-500 font-medium">Centro de Trabajo:</span></div>
+            </div>
+            <div class="col-8">
+                <span class="text-400 align-items-start justify-content-start">{{workPlaceRisk.percentage}} - {{workPlaceRisk.description}}</span>
+            </div>
+            
+        </div>
+
+        <div class="grid">
+            <div class="col-4"> 
+            <div class="flex align-items-start justify-content-start">
+                <span class="text-500 font-medium">Auxilio de transporte?:</span></div>
+            </div>
+            <div class="col-8">
+                <span class="text-400 align-items-start justify-content-start">{{employeeWorking.transportAssistance ? 'Si' : 'No'}}</span>
+            </div>
+            
+        </div>
+
+        <div class="grid">
+            <div class="col-4"> 
+            <div class="flex align-items-start justify-content-start">
+                <span class="text-500 font-medium">Sueldo Variable?:</span></div>
+            </div>
+            <div class="col-8">
+                <span class="text-400 align-items-start justify-content-start">{{employeeWorking.variableSalary ? 'Si' : 'No'}}</span>
+            </div>
+            
+        </div>
+
+
+    </form>
+
+
+     <p-dialog [(visible)]="workingEmployeeDialog" [style]="{width: '500px'}" header="Información Laboral" [modal]="true" styleClass="p-fluid">
+        <ng-template pTemplate="content">
+            <form autocomplete="off" [formGroup]="forma" (ngSubmit)="guardar(employeeWorking)" id="workingEmployeeform" action="index.html">
+           
+           
+
+           <!--  <div class="field">
+                <label for="employeeType">Tipo de Empleado</label>
+                <select [(ngModel)]="employeeW.employeeType_id" class="form-control form-control-xl" formControlName="employeeType" [class.is-invalid]="employeeTypeNoValido" 
+                    name="employeeType" 
+                    id="employeeType" 
+                    style="border-radius: 0.2rem; width: 28rem; height:2.5rem ; border-width: 1px; border-color:deepskyblue ;  font-family: Arial, Helvetica, sans-serif; font-size: 1rem;"
+                >      
+                <option *ngFor="let employeeT of employeeTypes" [value]="employeeT.id">
+                  <small>{{employeeT.description}}</small> 
+               </option>
+            </select>
+            </div> -->
+            <div class="p-fluid">
+
+            <div class="formgrid grid">
+                <div class="field col-12 md:col-12">
+                    <label for="employeeType">Tipo de Empleado</label>
+                    <p-dropdown inputId="employeeType" class="p-inputtext-sm" [(ngModel)]="employeeW.employeeType"
+                    [options]="employeeTypes" optionLabel="description" optionValue="id"></p-dropdown>
+                </div>
+        
+            </div>
+        </div>
+
+            <div class="field">
+                <label for="contractRegime">Regimen Laboral</label>
+                <select [(ngModel)]="employeeW.contractRegime_id" class="form-control form-control-xl" formControlName="contractRegime" [class.is-invalid]="contractRegimeNoValido" 
+                    name="contractRegime" 
+                    id="contractRegime" 
+                    style="border-radius: 0.2rem; width: 28rem; height:2.5rem ; border-width: 1px; border-color:deepskyblue ;  font-family: Arial, Helvetica, sans-serif; font-size: 1rem;"
+                >      
+                <option *ngFor="let contractR of contractRegimes" [value]="contractR.id">
+                  <small>{{contractR.description}}</small> 
+               </option>
+            </select>
+            </div>
+
+            <div class="field">
+                <label for="workingHour">Jornada Laboral</label>
+                <select [(ngModel)]="employeeW.workingHour_id" class="form-control form-control-xl" formControlName="workingHour" [class.is-invalid]="workingHourNoValido" 
+                    name="workingHour" 
+                    id="workingHour" 
+                    style="border-radius: 0.2rem; width: 28rem; height:2.5rem ; border-width: 1px; border-color:deepskyblue ;  font-family: Arial, Helvetica, sans-serif; font-size: 1rem;"
+                >      
+                <option *ngFor="let workingH of workingHours" [value]="workingH.id">
+                  <small>{{workingH.description}}</small> 
+               </option>
+            </select>
+            </div>
+
+
+            <div class="field">
+                <label for="workPlaceRisks">Centro de Trabajo</label>
+                <select [(ngModel)]="employeeW.workPlaceRisks_id" class="form-control form-control-xl" formControlName="workPlaceRisks" [class.is-invalid]="workPlaceRisksNoValido" 
+                    name="workPlaceRisks" 
+                    id="workPlaceRisks" 
+                    style="border-radius: 0.2rem; width: 28rem; height:2.5rem ; border-width: 1px; border-color:deepskyblue ;  font-family: Arial, Helvetica, sans-serif; font-size: 1rem;"
+                >      
+                <option *ngFor="let workP of workPlaceRisks" [value]="workP.id">
+                  <small>{{workP.description}}</small> 
+               </option>
+            </select>
+            </div>
+
+
+            <div class="field-checkbox">
+                
+                <p-checkbox [(ngModel)]="employeeWorking.transportAssistance" class="form-control form-control-xl" formControlName="transportAssistance" [class.is-invalid]="transportAssistanceNoValido" [binary]="true" name="transportAssistance" inputId="binary"></p-checkbox>
+                <label for="transportAssistance">Paga Auxilio de Transporte?</label>
+                <!-- <label for="binary">{{companyPayroll.payday31vacation ? 'Si' : 'No'}}</label> -->
+            </div>
+
+            <div class="field-checkbox">
+                
+                <p-checkbox [(ngModel)]="employeeWorking.variableSalary" class="form-control form-control-xl" formControlName="variableSalary" [class.is-invalid]="variableSalaryNoValido" [binary]="true" name="variableSalary" inputId="binary"></p-checkbox>
+                <label for="variableSalary">Sueldo Variable?</label>
+                <!-- <label for="binary">{{companyPayroll.payday31vacation ? 'Si' : 'No'}}</label> -->
+            </div>
+
+            
+    </form>
+           
+        </ng-template>
+    
+        <ng-template pTemplate="footer">
+            <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+            <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"  (click)="guardar(employeeWorking)"></button>
+        </ng-template>
+    </p-dialog>
+
+
+     <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+ 
+
+
+    </p-panel>
+</div>
+
+</div>

@@ -1,0 +1,48 @@
+<p-card class="m-1">
+  <!--   <ng-template pTemplate="title">
+        Información del Contrato
+    </ng-template> -->
+   
+    <ng-template pTemplate="content">
+  
+ <div class="p-fluid">
+
+    <div class="formgrid grid">
+        <div class="field col-12 md:col-12">
+            <label for="contractType">Tipo de Contrato</label>
+            <p-dropdown inputId="contractType" class="p-inputtext-sm" [(ngModel)]="contractInformation.contractType"
+            placeholder="Seleccione el Tipo de Contracto" 
+            (onChange)="onSelect()"
+            [options]="contractTypes" optionLabel="description" optionValue="id"></p-dropdown>
+        </div>
+
+    </div>
+
+    <div class="formgrid grid">
+       
+        <div class="field col-12 md:col-6">
+            <label for="initialContractDate">Fecha de Inicio</label>
+            <p-calendar [(ngModel)]="contractInformation.initialContractDate" [locale]="es" 
+            dateFormat="dd-mm-yy" inputId="initialContractDate" [showIcon]="true" [styleClass]="'custom-height'"></p-calendar>
+            
+        </div>
+
+        <div class="field col-12 md:col-6">
+            <label for="endContractDate">Fecha de Terminacion</label>
+            <p-calendar id="endContractDate"  [(ngModel)]="contractInformation.endContractDate" 
+            [locale]="es" 
+            dateFormat="dd-mm-yy" inputId="endContractDate" [showIcon]="true" [styleClass]="'custom-height'"></p-calendar>
+            
+        </div>
+
+    </div>
+</div>
+
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <div class="grid grid-nogutter justify-content-between">
+            <p-button label="Anterior" (onClick)="prevPage()" icon="pi pi-angle-left" iconPos="left"></p-button>
+            <p-button label="Siguiente" (onClick)="nextPage()" icon="pi pi-angle-right" iconPos="right"></p-button> 
+        </div>
+    </ng-template>
+</p-card>

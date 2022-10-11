@@ -1,0 +1,129 @@
+<div class="grid">
+           
+    <div class="col-4 text-center text-500">
+        <div class= "row">
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            Centros de Costos
+        </div>
+    </div>
+    <div class="col-8" >
+
+    <p-panel header="Centros de Costos" >
+     
+        <p-toast></p-toast>
+        
+    <ng-template pTemplate="icons">
+            
+            <button pButton pRipple type="button"  icon="pi pi-plus" class="p-button-rounded p-button-primary p-button-text text-left" (click)="openNewCostCenter()"> </button> 
+      
+         </ng-template>
+
+         <div>
+             <!-- <p-table #dt  [value]="costCenter" [rows]="4" [paginator]="true"  [scrollable]="true"> -->
+                <p-table #dt [value]="costCenter" [scrollable]="true" scrollHeight="200px"
+                [(selection)]="selectedCostCenter" [rowHover]="true" dataKey="id"
+                 >
+            <!-- <ng-template pTemplate="caption">
+                    <div class="flex align-items-center justify-content-between">
+                       
+                        <span class="p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                             <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Search..." />
+                        </span>
+                    </div>
+                </ng-template> -->
+               
+               <ng-template pTemplate="header">
+             
+                    <tr>
+                        
+                        <th pSortableColumn="code">Código <p-sortIcon field="code"></p-sortIcon></th>
+                        <th pSortableColumn="description">Descripción <p-sortIcon field="description"></p-sortIcon></th>
+                        <th pSortableColumn="spendingAccount_id">CuentaGasto <p-sortIcon field="spendingAccount_id"></p-sortIcon></th>
+                        <th pSortableColumn="isActive">Estado <p-sortIcon field="isActive"></p-sortIcon></th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-costCent>
+                    <tr>
+                        
+                        <td>{{costCent.code}}</td>
+                        <td>{{costCent.description}}</td>
+                        <td>
+                            <select [(ngModel)]="costCent.spendingAccount_id" class="form-control form-control-sm" disabled = "false" name="cuentagasto" style="width: 8rem; border-width: 0px;">
+
+                              
+                                <option *ngFor="let cuentaG of cuentagasto" [value]="cuentaG.id">
+                                  <small>{{cuentaG.code}} -  {{cuentaG.description}}</small> 
+                               </option>
+                            </select>
+                        </td>
+                        <td>{{costCent.isActive ? 'Activo' : 'Inactivo'}}</td>
+                        <td>
+                            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editCostCenter(costCent)"></button>
+                            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteCostCenter(costCent)"></button>
+                        </td>
+                    </tr>
+                 </ng-template>
+                
+            </p-table> 
+
+        
+      
+        </div>
+     
+        <p-dialog [(visible)]="costCenterDialog" [style]="{width: '500px'}" header="Centro de Costo" [modal]="true" styleClass="p-fluid">
+            <ng-template pTemplate="content">
+                <form autocomplete="off" [formGroup]="forma" (ngSubmit)="guardar()" id="centroCostoform" action="index.html">
+                <div class="field">
+                    <label for="name">Código</label>
+                    <input type="text" pInputText id="code" name="codigo" class="form-control form-control-sm" formControlName="codigo" [class.is-invalid]="codigoNoValido" [(ngModel)]="costCent.code" required autofocus />
+                    <small class="p-error" *ngIf="submitted && !costCent.code">Código es requerido.</small>
+                </div>
+                <div class="field">
+                    <label for="description">Descripción</label>
+                    <input type="text" pInputText id="description" name="descripcion" class="form-control form-control-sm" formControlName="descripcion" [class.is-invalid]="descripcionNoValido" [(ngModel)]="costCent.description" required >
+                    <small class="p-error" *ngIf="submitted && !costCent.description">Descripcion es requerida.</small>
+                    
+    
+                </div>
+               
+                <div class="field">
+                    <select [(ngModel)]="costCent.spendingAccount_id" class="form-control form-control-xl" formControlName="cuentagasto" [class.is-invalid]="cuentagastoNoValido" 
+                        name="cuentagasto" 
+                        id="cuentaGasto" 
+                        style="border-radius: 0.2rem; width: 28rem; height:2rem ; border-width: 1px; border-color:lightblue;  font-family: Arial, Helvetica, sans-serif; font-size: 1rem;">         
+                    <option *ngFor="let cuenta of cuentagasto" [value]="cuenta.id">
+                      <small>{{cuenta.code}}-{{cuenta.description}}</small> 
+                   </option>
+                </select>
+                </div>
+        
+                
+
+                <div class="field-checkbox">
+                    <p-checkbox [(ngModel)]="costCent.isActive" class="form-control form-control-xl" formControlName="estado" [class.is-invalid]="estadoNoValido" [binary]="true" name="estado" inputId="binary"></p-checkbox>
+                    <label for="binary">{{costCent.isActive ? 'Activo' : 'Inactivo'}}</label>
+                </div>
+        </form>
+               
+            </ng-template>
+        
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+                <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"  (click)="guardar()"></button>
+            </ng-template>
+        </p-dialog>
+  
+
+         <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+
+</p-panel>
+</div>
+</div>

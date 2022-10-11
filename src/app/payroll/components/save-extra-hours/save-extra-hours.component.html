@@ -1,0 +1,171 @@
+
+<p-sidebar [(visible)]="visibleSidebarE" position="right">
+    <div class="p-col-12 p-md-4">
+        <p-scrollPanel [style]="{width: '300%', height: '400px'}" styleClass="custombar2">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                Vitae et leo duis ut diam.
+                Ultricies mi quis hendrerit dolor magna eget est lorem. Amet consectetur adipiscing elit ut.
+                Nam libero justo laoreet sit amet. Pharetra massa massa ultricies mi quis hendrerit dolor magna.
+                Est ultricies integer quis auctor elit sed vulputate. Consequat ac felis donec et. Tellus orci ac auctor augue mauris.
+                Semper feugiat nibh sed pulvinar proin gravida hendrerit lectus a. Tincidunt arcu non sodales neque sodales.
+                Metus aliquam eleifend mi in nulla posuere sollicitudin aliquam ultrices. Sodales ut etiam sit amet nisl purus.
+                Cursus sit amet dictum sit amet. Tristique senectus et netus et malesuada fames ac turpis egestas.
+                Et tortor consequat id porta nibh venenatis cras sed. Diam maecenas ultricies mi eget mauris.
+                Eget egestas purus viverra accumsan in nisl nisi. Suscipit adipiscing bibendum est ultricies integer.
+                Mattis aliquam faucibus purus in massa tempor nec.
+            </p>
+        </p-scrollPanel>
+    </div>
+</p-sidebar>
+<p-button type="button" class="p-mr-2 absolute bottom-50 right-0 align-items-center justify-content-center p-button-success"
+(click)="visibleSidebarE = true" icon="pi pi-cog"></p-button>
+
+<form autocomplete="off" [formGroup]="formaOverTime" (ngSubmit)="saveOverTime()" id="overTimeform">
+    
+    <div class="field grid mb-3 ml-6">
+        
+            <label for="hedo" class="col-fixed" style="width:350px">Horas Extras Diurnas: </label>
+            <div  class="col">
+            <input                     
+                    formControlName="hedo" 
+                     [(ngModel)]= "hedo"
+                    name= "hedo" id="hedo" style="width:100px" type="number" pInputText class="inputfield"/>
+                   
+                    <small id="hedo" 
+                    class="p-error"
+                    *ngIf="campoEsValido('hedo')">Campo Obligatorio.</small>
+                    <label for="recd" class="col-fixed" style="width:50px"><small class="text-500">horas.</small></label>
+                </div>
+    </div>
+
+    <div class="field grid mb-3 ml-6">
+        
+        <label for="heno" class="col-fixed" style="width:350px">Horas Extras Nocturnas: </label>
+        <div class="col">
+        <input 
+                
+                formControlName="heno" 
+                [(ngModel)]= "heno"
+                name= "heno" id="heno" style="width:100px" type="number" pInputText class="inputfield"/>
+                <small id="heno" 
+                class="p-error"
+                *ngIf="campoEsValido('heno')">Campo Obligatorio.</small>
+                <label for="recd" class="col-fixed" style="width:50px"><small class="text-500">horas.</small></label>
+            </div>
+</div>
+
+<div class="field grid mb-3 ml-6">
+        
+    <label for="reco" class="col-fixed" style="width:350px">Recargo Noctrno: </label>
+    <div class="col">
+    <input 
+            
+            formControlName="reco" 
+            [(ngModel)]= "reco"
+            name= "reco" id="reco" style="width:100px" type="number" pInputText class="inputfield"/>
+            <small id="reco" 
+            class="p-error"
+            *ngIf="campoEsValido('reco')">Campo Obligatorio.</small>
+            <label for="recd" class="col-fixed" style="width:50px"><small class="text-500">horas.</small></label>
+        </div>
+</div>
+
+<div class="field grid mb-3 ml-6">
+        
+    <label for="hedd" class="col-fixed" style="width:350px">Horas Extras Diurnas Dominical/Festivo: </label>
+    <div class="col">
+    <input 
+            
+            formControlName="hedd" 
+            [(ngModel)]= "hedd"
+            name= "hedd" id="hedd" style="width:100px" type="number" pInputText class="inputfield"/>
+            <small id="hedd" 
+            class="p-error"
+            *ngIf="campoEsValido('hedd')">Campo Obligatorio.</small>
+            <label for="recd" class="col-fixed" style="width:50px"><small class="text-500">horas.</small></label>
+        </div>
+</div>
+
+<div class="field grid mb-3 ml-6">
+        
+    <label for="hend" class="col-fixed" style="width:350px">Horas Extras Nocturnas Dominical/Festivo: </label>
+    <div class="col">
+    <input 
+            
+            formControlName="hend" 
+            [(ngModel)]= "hend"
+            name= "hend" id="hend" style="width:100px" type="number" pInputText class="inputfield"/>
+            <small id="hend" 
+            class="p-error"
+            *ngIf="campoEsValido('hend')">Campo Obligatorio.</small>
+            <label for="recd" class="col-fixed" style="width:50px"><small class="text-500">horas.</small></label>
+        </div>
+</div>
+
+<div class="field grid mb-3 ml-6">
+        
+    <label for="hond" class="col-fixed" style="width:350px">Horas Nocturnas Dominical/Festivo: </label>
+    <div class="col">
+    <input 
+            
+            formControlName="hond" 
+            [(ngModel)]= "hond"
+            name= "hond" id="hend" style="width:100px" type="number" pInputText class="inputfield"/>
+            <small id="hond" 
+            class="p-error"
+            *ngIf="campoEsValido('hond')">Campo Obligatorio.</small>
+            <label for="recd" class="col-fixed" style="width:50px"><small class="text-500">horas.</small></label>
+        </div>
+</div>
+
+
+<div class="field grid mb-3 ml-6">
+        
+    <label for="recd" class="col-fixed" style="width:350px">Recargo Dominical/Festivo: </label>
+    <div class="col">
+    <input 
+            
+            formControlName="recd" 
+            [(ngModel)]= "recd"
+            name= "recd" id="recd" style="width:100px" type="number" pInputText class="inputfield"/> 
+            <small id="recd" 
+            class="p-error"
+            *ngIf="campoEsValido('recd')">Campo Obligatorio.</small>
+            <label for="recd" class="col-fixed" style="width:50px"><small class="text-500">horas.</small></label>
+        </div>
+</div>
+
+
+
+    <div class="p-grid flex justify-content-end mt-4">
+
+
+      
+
+        <div class="p-col-xs-12 mr-2" primary-box>
+
+
+                    <button pRipple pButton type="submit"
+                            label="Guardar" 
+                            icon="pi pi-save">
+                        </button>
+        </div>
+
+        <div class="p-col-xs-12" primary-box>
+    
+    
+                    <button pRipple pButton
+                            label="Cancelar" 
+                            (click)="cancelar()"
+                            class="p-button-danger"
+                            icon="pi pi-times-circle" 
+                            [disabled]="formaOverTime.invalid"></button>
+        </div>
+
+    </div>
+
+    
+    
+</form>
+

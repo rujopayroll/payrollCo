@@ -1,0 +1,117 @@
+
+
+<p-scrollTop></p-scrollTop>
+
+<section class="fijo" >
+<app-header></app-header> 
+ <div class="row bg-blue-500 text-gray-100 p-4 flex justify-content-between lg:justify-content-start align-items-start flex-wrap sidebar">
+    
+    <div class="col-1 profile-header-img mr-4">
+        <!-- <img [src]="company.img | imagen: 'company'" alt="Compañia" width="100"> -->
+        <img class="border-circle w-6rem h-6rem" [src]="company.img" alt="Compañia">
+       <button pButton (click)="actualizarImagen( company )" pRipple type="button" label="Cambiar Logo" class="p-button-warning p-button-text"></button>    
+    
+     
+    
+    
+    </div>
+    <div class="grid">
+        <div class="col">
+        <h2> {{company.companyName}}</h2>
+        <h4>{{company.identification}} - {{company.verificationNumber}}</h4>
+    </div>
+
+    </div>
+
+
+    
+
+</div  >
+
+    <div class="flex justify-content-start flex-wrap card-container blue-container" style="background-color:white;">
+
+        <button [ngClass]="{'active': active === 1}" pageScroll  (click)="onScroll(panel1, 1)" pButton pRipple type="button" label="INFORMACIÓN BÁSICA" class="flex align-items-center justify-content-center p-button-link font-bold"></button>
+        <button [ngClass]="{'active': active === 2}" pageScroll  (click)="onScroll(panel2, 2)" pButton pRipple type="button" label="INFORMACIÓN DE PAGO" class="flex align-items-center justify-content-center p-button-link font-bold"></button>
+        <button [ngClass]="{'active': active === 3}" pageScroll  (click)="onScroll(panel3, 3)" pButton pRipple type="button" label="INFORMACIÓN DE NOMINA" class="flex align-items-center justify-content-center p-button-link font-bold"></button>
+        <button [ngClass]="{'active': active === 4}" pageScroll  (click)="onScroll(panel4, 4)" pButton pRipple type="button" label="CENTRO DE COSTOS" class="flex align-items-center justify-content-center p-button-link font-bold"></button>
+        <button [ngClass]="{'active': active === 5}" pageScroll  (click)="onScroll(panel5, 5)" pButton pRipple type="button" label="ÁREAS" class="flex align-items-center justify-content-center p-button-link font-bold"></button>
+        <button [ngClass]="{'active': active === 6}" pageScroll  (click)="onScroll(panel6, 6)" pButton pRipple type="button" label="SUCURSALES" class="flex align-items-center justify-content-center p-button-link font-bold"></button>
+        <button [ngClass]="{'active': active === 7}" pageScroll  (click)="onScroll(panel7, 7)" pButton pRipple type="button" label="CARGOS" class="flex align-items-center justify-content-center p-button-link font-bold"></button>
+        <button [ngClass]="{'active': active === 8}" pageScroll  (click)="onScroll(panel8, 8)" pButton pRipple type="button" label="CONCEPTOS" class="flex align-items-center justify-content-center p-button-link font-bold"></button>
+        
+    </div>
+
+</section >
+
+
+
+
+<div>
+
+
+
+    <div #panel1 style="margin-top: 320px;">
+      
+            <app-infoCompany></app-infoCompany>
+    
+       <hr>
+    </div>
+    <div #panel2 >
+        
+        <app-paymentCompany></app-paymentCompany>
+        <hr>
+    </div>
+        
+    
+    <div #panel3 >
+      
+       <app-payrollCompany></app-payrollCompany>
+       <hr>
+    </div>
+
+    <div #panel4>
+        <app-costCenter></app-costCenter>
+      <hr>
+    </div>
+
+    <div #panel5 >
+      
+        <app-area></app-area>
+        <hr>
+          
+        
+    </div>
+
+    <div #panel6 >
+      
+        <app-subsidiary></app-subsidiary>
+        <hr>  
+        
+        
+    </div>
+
+    <div #panel7 >
+      
+        <app-position></app-position>
+        <hr> 
+        
+    </div>
+   
+    <div #panel8>
+      <app-concept></app-concept>
+      <hr> 
+    </div>
+          
+</div>
+
+    <p-scrollTop
+    target="parent"
+    styleClass="custom-scrolltop bg-primary"
+    [threshold]="100"
+    icon="pi pi-arrow-up"
+    color="primary"
+    ></p-scrollTop>
+
+
+
+    

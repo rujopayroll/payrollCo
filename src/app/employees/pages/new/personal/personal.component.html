@@ -1,0 +1,150 @@
+
+    <p-card class="m-1">
+       <!-- <ng-template pTemplate="title">
+           Información Personal
+       </ng-template> -->
+      
+       <ng-template pTemplate="content">
+     
+    <div class="p-fluid">
+
+<div class="formgrid grid">
+        <div class="field col-12 md:col-6">
+            <label for="tipodoc">Tipo de Documento</label>
+            <p-dropdown inputId="tipodoc"  class="p-inputtext-sm" [(ngModel)]="personalInformation.tipodoc" 
+            [options]="identificationTypes" optionLabel="description" optionValue="id"></p-dropdown>
+        </div>
+
+        <div class="field col-12 md:col-6">
+            <label for="documento">Documento</label>
+            <input #documento="ngModel"  class="p-inputtext-sm" id="documento" type="number" required pInputText [(ngModel)]="personalInformation.documento" [ngClass]="{'ng-dirty': (documento.invalid && submitted) || (documento.dirty && documento.invalid)}"> 
+            <small class="p-error" *ngIf="(documento.invalid && submitted) || (documento.dirty && documento.invalid)">Campo Requerido.</small>
+        </div>
+</div>
+
+<div class="formgrid grid">
+
+
+        <div class="field col-12 md:col-6">
+         <label for="pnombre">Primer Nombre</label>
+            <input #pnombre="ngModel" class="p-inputtext-sm" id="pnombre" type="text" required pInputText [(ngModel)]="personalInformation.pnombre" [ngClass]="{'ng-dirty': (pnombre.invalid && submitted) || (pnombre.dirty && pnombre.invalid)}"> 
+            <small *ngIf="(pnombre.invalid && submitted) || (pnombre.dirty && pnombre.invalid)" class="p-error">Campo Requerido.</small>
+        </div>
+        <div class="field col-12 md:col-6">
+            <label for="snombre">Segundo Nombre</label>
+            <input #snombre="ngModel" class="p-inputtext-sm" id="snombre" type="text" pInputText [(ngModel)]="personalInformation.snombre" [ngClass]="{'ng-dirty': (snombre.invalid && submitted) || (snombre.dirty && snombre.invalid)}"> 
+            
+        </div>
+</div>
+
+<div class="formgrid grid">
+
+
+    <div class="field col-12 md:col-6">
+     <label for="papellido">Primer Apellido</label>
+        <input #papellido="ngModel" id="papellido" class="p-inputtext-sm" type="text" required pInputText [(ngModel)]="personalInformation.papellido" [ngClass]="{'ng-dirty': (papellido.invalid && submitted) || (papellido.dirty && papellido.invalid)}"> 
+        <small *ngIf="(papellido.invalid && submitted) || (papellido.dirty && pnombre.invalid)" class="p-error">Campo Requerido.</small>
+    </div>
+    <div class="field col-12 md:col-6">
+        <label for="sapellido">Segundo Apellido</label>
+        <input #sapellido="ngModel" id="sapellido" type="text" class="p-inputtext-sm" pInputText [(ngModel)]="personalInformation.sapellido" [ngClass]="{'ng-dirty': (sapellido.invalid && submitted) || (sapellido.dirty && sapellido.invalid)}"> 
+        
+    </div>
+</div>
+
+<div class="formgrid grid">
+
+    <div class="field col-12 md:col-6">
+        <label for="genero">Género</label>
+        <p-dropdown inputId="genero" class="p-inputtext-sm" placeholder="Seleccione un Tipo de genero" [(ngModel)]="personalInformation.genero" [options]="genders" optionLabel="description" optionValue="id"></p-dropdown>
+    </div>
+    
+    <div class="field col-12 md:col-6">
+        <label for="fnacimiento">Fecha de Nacimiento</label>
+        <p-calendar [(ngModel)]="personalInformation.fnacimiento" [locale]="es" 
+        dateFormat="yy-mm-dd" inputId="fnacimiento"   [showIcon]="true" [styleClass]="'custom-height'"></p-calendar>
+        
+    </div>
+  
+</div>
+
+<div class="formgrid grid">
+
+    <div class="field col-12 md:col-4">
+        <label for="paisr">Pais Residencia</label>
+        <p-dropdown inputId="paisr" class="p-inputtext-sm" [(ngModel)]="personalInformation.paisr"  [options]="countries" optionLabel="name" optionValue="id"></p-dropdown>
+    </div>
+    
+   
+    <div class="field col-12 md:col-4">
+        <label for="deptor">Departamento Residencia</label>
+        <p-dropdown inputId="deptor" class="p-inputtext-sm" [(ngModel)]="personalInformation.deptor" [options]="states" 
+        optionLabel="name" optionValue="id"   placeholder="Selecciones un departamento" (onChange)="onSelect($event.value)" ></p-dropdown>
+    </div>
+
+    <div class="field col-12 md:col-4">
+        <label for="ciudadr">Ciudad Residencia</label>
+        <p-dropdown inputId="ciudadr" class="p-inputtext-sm" [(ngModel)]="personalInformation.ciudadr" [options]="municipios" 
+        optionLabel="name"  optionValue="id"  ></p-dropdown>
+    </div>
+
+  
+</div>
+
+<div class="formgrid grid">
+
+
+    <div class="field col-12 md:col-4">
+     <label for="direccion">Dirección</label>
+        <input #direccion="ngModel" id="direccion" class="p-inputtext-sm" type="text" pInputText [(ngModel)]="personalInformation.direccion" [ngClass]="{'ng-dirty': (direccion.invalid && submitted) || (direccion.dirty && direccion.invalid)}"> 
+        
+    </div>
+    <div class="field col-12 md:col-4">
+        <label for="telefono">Telefono Fijo</label>
+        <input #telefono="ngModel" id="telefono" class="p-inputtext-sm" type="text" pInputText [(ngModel)]="personalInformation.telefono" [ngClass]="{'ng-dirty': (telefono.invalid && submitted) || (telefono.dirty && telefono.invalid)}"> 
+        
+    </div>
+
+    <div class="field col-12 md:col-4">
+        <label for="celular">Telefono movil</label>
+        <input #celular="ngModel" id="celular" class="p-inputtext-sm" type="text" pInputText [(ngModel)]="personalInformation.celular" [ngClass]="{'ng-dirty': (celular.invalid && submitted) || (celular.dirty && celular.invalid)}"> 
+        
+    </div>
+
+</div>
+
+    <div class="formgrid grid">
+
+
+        <div class="field col-12 md:col-12">
+         <label for="email">Correo Electonico</label>
+            <input #email="ngModel" id="email" type="email" class="p-inputtext-sm" pInputText
+            [(ngModel)]="personalInformation.email"
+            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$">
+             <!-- [ngClass]="{'ng-dirty': (email.invalid && submitted) || (email.dirty && email.invalid)}" >
+             <small *ngIf="(email.invalid && submitted) || (email.dirty && email.invalid)"  class="p-error">Campo requerido</small> -->
+    
+            
+        </div>
+       
+    </div>
+
+  
+</div>
+
+
+    
+
+        
+           
+
+       </ng-template>
+       <ng-template pTemplate="footer">
+           <div class="grid grid-nogutter justify-content-end">
+               <p-button label="Siguiente" (onClick)="nextPage()" icon="pi pi-angle-right" iconPos="right"></p-button> 
+           </div>
+       </ng-template>
+  </p-card>
+ 
+
+

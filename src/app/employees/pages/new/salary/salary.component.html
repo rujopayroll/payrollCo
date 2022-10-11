@@ -1,0 +1,57 @@
+<p-card class="m-1">
+   <!--  <ng-template pTemplate="title">
+        Información Salarial
+    </ng-template> -->
+   
+    <ng-template pTemplate="content">
+  
+ <div class="p-fluid">
+
+    <div class="formgrid grid">
+        <div class="field col-12 md:col-12">
+            <label for="salaryType">Tipo de Salario</label>
+            <p-dropdown inputId="salaryType" class="p-inputtext-sm" [(ngModel)]="salaryInformation.salaryType"
+            placeholder="Seleccione el Tipo de Salario"
+            (onChange)="onSelect()"
+            [options]="salaryTypes" optionLabel="description" optionValue="id"></p-dropdown>
+        </div>
+
+    </div>
+
+    <div class="formgrid grid">
+        <div class="field col-12 md:col-12">
+            <label for="salary">Salario</label>
+            <input #salary="ngModel" id="salary" mask="999" class="p-inputtext-sm" type="number" pInputText [(ngModel)]="salaryInformation.salary" [ngClass]="{'ng-dirty': (salary.invalid && submitted) || (salary.dirty && salary.invalid)}">
+            <small *ngIf="(salary.invalid && submitted) || (salary.dirty && salary.invalid)" class="p-error">Campo Requerido.</small>
+        </div>        
+
+    </div>
+
+    <div class="formgrid grid">
+       
+        <div class="field col-12 md:col-6">
+            <label for="initialSalaryDate">Fecha Inicial</label>
+            <p-calendar [(ngModel)]="salaryInformation.initialSalaryDate" [locale]="es" 
+            dateFormat="dd-mm-yy" inputId="initialSalaryDate" [showIcon]="true" [styleClass]="'custom-height'"></p-calendar>
+            
+        </div>
+
+        <div class="field col-12 md:col-6">
+            <label for="endSalaryDate">Fecha Final</label>
+            <p-calendar id="endSalaryDate"  [(ngModel)]="salaryInformation.endSalaryDate" 
+            [locale]="es" 
+            dateFormat="dd-mm-yy" inputId="endSalaryDate" [showIcon]="true" [styleClass]="'custom-height'"></p-calendar>
+            
+        </div>
+
+    </div>
+</div>
+
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <div class="grid grid-nogutter justify-content-between">
+            <p-button label="Anterior" (onClick)="prevPage()" icon="pi pi-angle-left" iconPos="left"></p-button>
+            <p-button label="Siguiente" (onClick)="nextPage()" icon="pi pi-angle-right" iconPos="right"></p-button> 
+        </div>
+    </ng-template>
+</p-card>

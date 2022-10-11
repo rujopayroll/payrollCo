@@ -1,0 +1,27 @@
+
+
+<div class="mb-5">
+<div class="text-900 text-center text-3xl font-medium mb-3">Bienvenido!!</div>
+<span class="text-600 text-center font-medium line-height-3">Aun no tienes una cuenta?</span>
+<a routerLink="/auth/register" class="font-medium no-underline ml-2 text-blue-500 cursor-pointer">Creala Gratis!</a>
+</div>
+<form ngNativeValidate #f="ngForm" (ngSubmit)="ingresar( f )">
+    <div>
+        <label for="email" class="block text-900 font-medium mb-2">Email</label>
+        <input [ngModel] name= "email" id="email" type="text" pInputText class="w-full mb-3">
+
+        <label for="password" class="block text-900 font-medium mb-2">Password</label>
+        <input [ngModel] name= "password" id="password" type="password" pInputText class="w-full mb-3">
+
+        <div class="flex align-items-center justify-content-between mb-6">
+             <div class="flex align-items-center">
+                <p-checkbox [(ngModel)]="recuerdame" name="recuerdame" id="rememberme" [binary]="true" styleClass="mr-2"></p-checkbox>
+                <label for="rememberme">Recuerdame</label>
+            </div> 
+            <a class="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer">Recordar password?</a>
+        </div>
+
+        <button pButton type="submit" label="Ingresar" icon="pi pi-user" class="w-full"></button>
+    </div>
+</form>
+

@@ -1,0 +1,57 @@
+<p-card class="m-1">
+    <!-- <ng-template pTemplate="title">
+        Información del Puesto
+    </ng-template> -->
+   
+    <ng-template pTemplate="content">
+  
+ <div class="p-fluid">
+
+    <div class="formgrid grid">
+        <div class="field col-12 md:col-12">
+            <label for="costCenter">Centro de Costo</label>
+            <p-dropdown inputId="costCenter" class="p-inputtext-sm" [(ngModel)]="jobInformation.costCenter"
+            [options]="costCenters" optionLabel="description" optionValue="id"></p-dropdown>
+        </div>
+
+    </div>
+
+    <div class="formgrid grid">
+        <div class="field col-12 md:col-12">
+            <label for="area">Área</label>
+            <p-dropdown inputId="area" class="p-inputtext-sm" [(ngModel)]="jobInformation.area" 
+            [options]="areas" optionLabel="description" optionValue="id"></p-dropdown>
+        </div>
+
+    </div>
+
+    <div class="formgrid grid">
+        <div class="field col-12 md:col-12">
+            <label for="subsidiary">Sucursal</label>
+            <p-dropdown inputId="subsidiary" class="p-inputtext-sm" [(ngModel)]="jobInformation.subsidiary" 
+            [options]="subsidiarys" optionLabel="description" optionValue="id"></p-dropdown>
+        </div>
+
+    </div>
+
+    <div class="formgrid grid">
+        <div class="field col-12 md:col-12">
+            <label for="position">Cargo</label>
+            <p-dropdown inputId="position" class="p-inputtext-sm" [(ngModel)]="jobInformation.position" 
+            [options]="positions" optionLabel= "description" optionValue="id"></p-dropdown>
+        </div>
+
+    </div>
+
+
+
+</div>
+
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <div class="grid grid-nogutter justify-content-between">
+            <p-button label="Anterior" (onClick)="prevPage()" icon="pi pi-angle-left" iconPos="left"></p-button>
+            <p-button label="Siguiente" (onClick)="nextPage()" icon="pi pi-angle-right" iconPos="right"></p-button> 
+        </div>
+    </ng-template>
+</p-card>

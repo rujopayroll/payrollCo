@@ -1,0 +1,507 @@
+<app-header></app-header>
+
+<div class="card1" >
+  
+
+    <p-tabView [(activeIndex)]="indexTab">
+        <p-tabPanel header="Ingreso de Novedades" >
+
+            <p-toolbar>
+                <div class="p-toolbar-group-left">
+                    <span class="p-input-icon-left p-mr-2">
+                        <i class="pi pi-search"></i>
+                    <input  #input (keyup)="buscarEmployees( input.value )" class="form-control" type="search" pInputText placeholder="Buscar Empleado..." style="width: 30rem;"> 
+                </span>
+
+                    <p-button label="Cargar Novedades Masivas" icon="pi pi-upload" class="p-mr-2"></p-button>
+                    <p-button label="Descargar Prenomina" icon="pi pi-download" styleClass="p-button-success"></p-button>
+                   
+
+
+                </div>
+                
+                
+            </p-toolbar>
+             
+            <p-toolbar>
+            <div class="div">
+                <span class="text-500 p-mr-2"><small class="text-center text-xs">Periodo: {{period[0].year}}-{{period[0].number}}</small></span>
+                <span class="text-500 p-mr-2"><small>Del:  {{period[0].initialDate | date: 'dd-MM-YYYY': 'GMT +12'}}</small></span>
+                <span class="text-500"><small >Al :  {{period[0].endDate | date: 'dd-MM-YYYY': 'GMT +1'}}</small></span>
+
+            </div>  
+            </p-toolbar>
+
+
+            
+            <!-- <p-dataView  #dv [value]="employeeMovementsPayroll" [paginator]="true" [rows]="3" [totalRecords]="100" [rowsPerPageOptions]="[3,6,9]" filterBy="name" -->
+           <!--  <p-dataView  #dv [value]="employeeMovementsPayroll" layout="grid">
+                <ng-template  pTemplate="header">
+                     
+                
+                </ng-template> -->
+               
+               <!--  <ng-template  let-employeeMovementPayroll let-i="rowIndex" pTemplate="gridItem">
+                    <div class="p-col-6 p-md-4">
+        
+                        <div class="product-grid-item card1 surface-0 p-mt-4">
+                            <div class="grid mt-2 m-1">
+
+                                    <div class="p-col flex align-items-center justify-content-center">
+                                        <img class="border-circle w-5rem h-5rem" [src]="employeeMovementPayroll.img" alt="empleado">
+                                        <span class="text-500 font-medium text-xs flex justify-content-center mt-3">Salario Base: {{employeeMovementPayroll.salary | currency:'COP':'symbol-narrow':'1.0-4'}}</span>
+                                       
+                                    </div> 
+                                   
+                                    <div class="p-col product-grid-item-content">
+                                    
+                                      
+                                        <div class="product-name text-xl text-500">
+                                            {{employeeMovementPayroll.firstName | titlecase }} {{employeeMovementPayroll.surname | titlecase}}
+                                        
+                                        </div>
+                                        <div class="product-name text-lg text-400">{{employeeMovementPayroll.identification}}</div>
+                                        <div class="product-badge product-name text-base">
+                                        <p-tag styleClass="p-mr-2" severity="success" value=Gerente></p-tag>
+                                        
+                                        </div>
+                                      
+
+                                    </div>
+
+                                     
+                          
+                            </div>
+                            <hr>
+ <div class="flex grid m-2">
+                                    
+ <div>
+
+    <p-table>
+        <ng-template pTemplate="header">
+            <tr>
+                <th><span class="text-right text-500 font-medium text-xs">Dias Laborados:</span></th>
+                <th> <span class="text-right font-bold text-600 font-medium text-sm">{{employeeMovementPayroll.daysWork}}</span></th>
+     
+                <th> <button pButton pRipple type="button" (click)="showAbsentee(employeeMovementPayroll.employee_id)" label="Ausentismos" icon="pi pi-plus" class="p-button-text p-button-danger p-button-sm"></button></th>
+            </tr>
+        </ng-template>
+     </p-table>
+
+ </div>                                                         
+ 
+<div class="flex">
+
+    <p-table>
+        <ng-template pTemplate="header">
+            <tr>
+                <th><span class="text-left text-500 font-medium text-xs">Salarial:  </span></th>
+                <th><span class="text-right font-bold text-600 font-medium text-sm">{{employeeMovementPayroll.salaryValue | currency:'COP':'symbol-narrow':'1.0-4'}}  </span> </th>
+                <th><button pButton pRipple type="button" (click)="show(employeeMovementPayroll.employee_id, 'SALARIAL')" label="Ingresar" icon="pi pi-plus" class="p-button-text p-button-warning p-button-sm"></button> </th>
+                <th><button pButton pRipple type="button" (click)="showOverTime(employeeMovementPayroll.employee_id)" label="Hr.Extras" icon="pi pi-clock" class="p-button-text p-button-sm"></button></th>
+            </tr>
+        </ng-template>
+     </p-table>
+</div>
+ 
+
+ <p-table>
+    <ng-template pTemplate="header">
+        <tr>
+            <th><span class="text-letf text-500 font-medium text-xs">No Salarial: </span></th>
+            <th><span class="text-left font-bold text-600 font-medium text-sm">{{employeeMovementPayroll.noSalaryValue | currency:'COP':'symbol-narrow':'1.0-4'}} </span></th>
+            <th><button pButton pRipple type="button" (click)="show(employeeMovementPayroll.employee_id, 'NOSALARIAL')" label="Ingresar" icon="pi pi-plus" class="p-button-text p-button-warning p-button-sm"></button></th>
+           
+        </tr>
+    </ng-template>
+ </p-table>
+
+ <p-table>
+    <ng-template pTemplate="header">
+        <tr>
+            <th><span class="text-500 font-medium text-xs">Deducciones: </span></th>
+            <th> <span class="text-600 font-bold font-medium text-sm">{{employeeMovementPayroll.deductionValue | currency:'COP':'symbol-narrow':'1.0-4'}} </span></th>
+            <th><button pButton pRipple type="button" (click)="show(employeeMovementPayroll.employee_id, 'DEDUCCION')" label="Ingresar" icon="pi pi-plus" class="p-button-text p-button-warning p-button-sm"></button></th>
+           
+        </tr>
+    </ng-template>
+   </p-table>
+ </div>
+
+ <hr>
+
+ <p-table>
+    <ng-template pTemplate="header">
+        <tr>
+            <th class="text-center">
+                <span class="text-lg font-bold text-600">Neto a Pagar: {{employeeMovementPayroll.salaryValue + employeeMovementPayroll.noSalaryValue - employeeMovementPayroll.deductionValue | currency:'COP':'symbol-narrow':'1.0-4'}} </span>
+            </th>
+        </tr>
+    </ng-template>
+   </p-table>
+                            </div>
+                      
+                        </div>
+                </ng-template> -->
+
+
+               
+                <!-- <ng-template  let-employeeMovementPayroll let-i="rowIndex" pTemplate="gridItem"> -->
+            
+                    <p-carousel [value]="employeeMovementsPayroll" [numVisible]="4" [numScroll]="4" [circular]="false">
+                        
+                        <ng-template let-employeeMovementPayrolls pTemplate="item">
+                            
+                    <div class="grid">
+                        <div>
+                            <div class="p-3 h-full">
+                                <div class="shadow-2 p-4 h-full flex flex-column surface-card" style="border-radius: 6px">
+                                    <div class="grid">
+                                    <div class="p-col flex align-items-center justify-content-center"> 
+                                        <span *ngIf="employeeMovementPayrolls.img"><img class="border-circle w-6rem h-6rem" [src]="employeeMovementPayrolls.img" alt="empleado"></span>
+                                        <span *ngIf="!employeeMovementPayrolls.img"><img src="assets/images/no-image.png" class="border-circle w-6rem h-6rem" alt="empleado"></span>
+                                       </div>
+                                       
+                                       <div class="product-grid-item-content">
+                                    
+                                      
+                                        <div class="product-name text-base text-500">
+                                            {{employeeMovementPayrolls.firstName | titlecase }} {{employeeMovementPayrolls.surname | titlecase}}
+                                           
+                                        </div>
+                                        <div class="product-name text-sm text-400">{{employeeMovementPayrolls.identification |number}}</div>
+                                        <div class="product-badge product-name text-base">
+                                        <p-tag styleClass="p-mr-2" severity="success" value=Gerente></p-tag>
+                                        
+                                        </div>
+                                      
+
+                                    </div>
+
+                                 
+                                    <!-- <button type="button" pButton class="p-button-rounded p-button-text" icon="pi pi-ellipsis-v" (click)="activeItem=employeeMovementPayrolls.employee_id; menu.toggle($event)"></button>
+                                    <p-menu #menu [popup]="true" [model]="items" appendTo="body" class="ui-menuitem-text"></p-menu> -->
+
+                                    <button pButton pRipple type="button" icon="pi pi-ellipsis-v" class="p-button-rounded p-button-text" (click)="aus.toggle($event)" pTooltip="Ingresar Novedades" tooltipPosition="top"></button>
+                                    <p-overlayPanel #aus [showCloseIcon]="false" [style]="{width: '240px'}" appendTo="body">
+                                        <ng-template pTemplate>
+                                            <div class="mb-1">
+                                                
+                                                <span class="text-center flex justify-content-center font-bold text-600 font-medium text-lg" style="text-align: center;">Tipo de Novedad</span>
+                            
+                                            </div>
+                                            <hr class="mb-1 mx-0 border-top-1 border-none surface-border mt-auto" />
+                                            <div class="mb-1 p-fluid">
+                                                
+                                                <button pButton pRipple type="button" (click)="showAbsentee(employeeMovementPayrolls.employee_id)" label="Ausentismos" icon="pi pi-sun" class="p-button-secondary p-button-text" style="text-align: left;"></button>
+                            
+                                            </div>
+                                            <hr class="mb-1 mx-0 border-top-1 border-none surface-border mt-auto" />
+                                            <div class="mb-1 p-fluid">
+                                                
+                                                <button pButton pRipple type="button" (click)="showOverTime(employeeMovementPayrolls.employee_id)" label="Horas Extras" icon="pi pi-clock" class="p-button-secondary p-button-text" style="text-align: left;"></button>
+                            
+                                            </div>
+                                            <hr class="mb-1 mx-0 border-top-1 border-none surface-border mt-auto" />
+                                            <div class="mb-1 p-fluid">
+                                                
+                                                <button pButton pRipple type="button" (click)="show(employeeMovementPayrolls.employee_id, 'SALARIAL')" label="Pagos Salariales" icon="pi pi-plus-circle" class="p-button-secondary p-button-text" style="text-align: left;"></button>
+                            
+                                            </div>
+                                            <hr class="mb-1 mx-0 border-top-1 border-none surface-border mt-auto" />
+                                            <div class="p-fluid mb-1">
+                                                
+                                                <button pButton pRipple type="button" (click)="show(employeeMovementPayrolls.employee_id, 'NOSALARIAL')" label="Pagos No Salariales" icon="pi pi-plus-circle" class="p-button-secondary p-button-text" style="text-align: left;"></button>
+                            
+                                            </div>
+                                            <hr class="mb-1 mx-0 border-top-1 border-none surface-border mt-auto" />
+                                            <div class="p-fluid">
+                                                
+                                                <button pButton pRipple type="button" (click)="show(employeeMovementPayrolls.employee_id, 'DEDUCCION')" label="Deducciones" icon="pi pi-minus-circle" class="p-button-secondary p-button-text" style="text-align: left;"></button>
+                            
+                                            </div>
+                                        </ng-template>
+                                    </p-overlayPanel>
+
+
+
+                                    
+                                    
+
+
+
+
+
+
+                                </div>
+                                        <div class="flex justify-content-start">
+                                            <span class="text-500 font-medium text-xs flex justify-content-start mt-2 mr-auto">Salario Base: {{employeeMovementPayrolls.salary | currency:'COP':'symbol-narrow':'1.0-4'}}</span>
+                                            <button type="button" pButton class="p-button-rounded p-button-text" icon="pi pi-file-pdf" pTooltip="Volante de Pago" tooltipPosition="top"></button>
+                                            <button type="button" pButton class="p-button-rounded p-button-text" icon="pi pi-file-excel" pTooltip="Prenomina" tooltipPosition="top"></button>
+                                            <button pButton pRipple type="button" icon="pi pi-ellipsis-h" class="p-button-rounded p-button-text" (click)="ssModalDialog()" pTooltip="Validar Seguridad Social" tooltipPosition="top"></button>
+                                        </div>
+
+                                        
+                                
+
+                          <!-- <div class="text-900 font-medium text-xl mb-2">Basic</div>
+                                    <div class="text-600">Plan description</div> -->
+                                    <hr class="my-2 mx-0 border-top-1 border-none surface-border mt-auto" />
+                                    <div class="flex align-items-center">
+                                        <span class="font-bold flex justify-content-start text-500 font-medium text-xs mr-auto">Dias Laborados:</span>
+                                        <span class="font-bold text-right flex justify-content-end text-600 font-medium text-sm">{{employeeMovementPayrolls.daysWork}}</span>
+                                    </div>
+
+                                    <hr class="my-2 mx-0 border-top-1 border-none surface-border mt-auto" />
+                                    
+                                    <div class="flex align-items-center mb-2">
+                                        <span class="font-bold flex justify-content-start text-500 font-medium text-xs mr-auto text-left"><p-button styleClass="p-button-link font-bold text-500 font-medium text-left text-xs mr-auto p-button-text" label="Salariales" pTooltip="Pagos Salariales" tooltipPosition="bottom" (click)="op.toggle($event)"></p-button></span>
+                                        <p-overlayPanel #op [showCloseIcon]="false" [style]="{width: '450px'}" class="fijo" appendTo="body" showEvent="mouseover" hideEvent="mousedown">
+                                            <ng-template pTemplate>
+                                                <p-table [value]="employeeMovementsPayroll" selectionMode="single" responsiveLayout="scroll">
+                                                    <ng-template pTemplate="header">
+                                                        <tr>
+                                                            <th pSortableColumn="name">Código<p-sortIcon field="name"></p-sortIcon></th>
+                                                            <th pSortableColumn="price">Concepto<p-sortIcon field="price"></p-sortIcon></th>
+                                                            <th pSortableColumn="price">Valor<p-sortIcon field="price"></p-sortIcon></th>
+                                                        </tr>
+                                                    </ng-template>
+                                                    <ng-template pTemplate="body" let-rowData let-product>
+                                                        <tr [pSelectableRow]="rowData">
+                                                            <td>{{product.name}}</td>
+                                                            <td>{{product.price}}</td>
+                                                            <td>{{product.price}}</td>
+                                                        </tr>
+                                                    </ng-template>
+                                                </p-table>
+                                            </ng-template>
+                                        </p-overlayPanel>
+
+                                       
+                                        <span class="text-right flex justify-content-end ml-8 font-bold text-600 font-medium text-sm">{{employeeMovementPayrolls.salaryValue | currency:'COP':'symbol-narrow':'1.0-4'}}</span>
+                                    </div>
+                                    <hr class="mb-2 mx-0 border-top-1 border-none surface-border mt-auto" />
+
+                                    <div class="flex align-items-center mb-2">
+                                        <span class="font-bold flex justify-content-start text-500 font-medium text-xs mr-auto text-left"><p-button styleClass="p-button-link font-bold text-500 font-medium text-left text-xs mr-auto p-button-text" label="No Salariales"></p-button></span>
+                                        <span class="text-right flex justify-content-end ml-8 font-bold text-600 font-medium text-sm">{{employeeMovementPayrolls.noSalaryValue | currency:'COP':'symbol-narrow':'1.0-4'}}</span>
+                                    </div>
+                                    <hr class="mb-2 mx-0 border-top-1 border-none surface-border mt-auto" />
+
+                                    <div class="flex align-items-center mb-2">
+                                        <span class="font-bold flex justify-content-start text-500 font-medium text-xs mr-auto text-left"><p-button styleClass="p-button-link font-bold text-500 font-medium text-left text-xs mr-auto p-button-text" label="Deducciones"></p-button></span>
+                                        <span class="text-right flex justify-content-end ml-8 font-bold text-600 font-medium text-sm">{{employeeMovementPayrolls.deductionValue | currency:'COP':'symbol-narrow':'1.0-4'}}</span>
+                                    </div>
+                                    <hr class="mb-2 mx-0 border-top-1 border-none surface-border mt-auto" />
+
+                                    <div class="flex align-items-center">
+                                        <span class="font-bold flex justify-content-start mr-auto text-600 font-medium text-xs mr-auto font-bold">Neto a Pagar:</span>
+                                        <p-tag severity="danger" [rounded]="true"> <span class="text-right flex justify-content-end ml-8 font-bold text-0 font-medium text-sm">{{employeeMovementPayrolls.salaryValue + employeeMovementPayrolls.noSalaryValue - employeeMovementPayrolls.deductionValue | currency:'COP':'symbol-narrow':'1.0-4'}}</span></p-tag>
+                                    
+                                    </div>
+
+                                    <!-- <button pButton pRipple label="Buy Now" class="p-3 w-full mt-auto"></button> -->
+                                    <!-- <p-card [style]="{'width': '100%', 'height': '4rem', 'align-items': 'center', 'background-color': 'dodgerblue'}">
+                                        <div class="flex align-items-center">
+                                        <span class="neto flex justify-content-start mr-auto">Neto a Pagar:</span>
+                                        <span class="neto flex justify-content-end ml-4">{{employeeMovementPayroll.salaryValue + employeeMovementPayroll.noSalaryValue - employeeMovementPayroll.deductionValue | currency:'COP':'symbol-narrow':'1.0-4'}}</span>
+                                    </div>
+                                    </p-card> -->
+                                
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </ng-template>
+
+               
+            </p-carousel>
+
+
+            
+
+         <!--    </p-dataView> -->
+        </p-tabPanel>
+        
+        <p-tabPanel header="Nomina Definiva" id="tabDef">
+            
+            <p-toolbar>
+                <div class="p-toolbar-group-left">
+                    <span class="p-input-icon-left p-mr-2">
+                        <i class="pi pi-search"></i>
+                    <input  #input (keyup)="buscarEmployees( input.value )" class="form-control" type="search" pInputText placeholder="Buscar Empleado..." style="width: 30rem;"> 
+                </span>
+
+                    <p-button label="Contabilizar" icon="pi pi-chart-bar" styleClass="p-button-danger" class="p-mr-2"></p-button>
+                    <p-button label="Generar Propuesta de Pago" icon="pi pi-credit-card" styleClass="p-button-warning"></p-button>
+                   
+
+
+                </div>
+                
+                
+            </p-toolbar>
+             
+            <p-toolbar>
+            <div class="div">
+                <span class="text-500 p-mr-2"><small class="text-center text-xs">Periodo: {{period[0].year}}-{{period[0].number}}</small></span>
+                <span class="text-500 p-mr-2"><small>Del:  {{period[0].initialDate | date: 'dd-MM-YYYY': 'GMT +12'}}</small></span>
+                <span class="text-500"><small >Al :  {{period[0].endDate | date: 'dd-MM-YYYY': 'GMT +1'}}</small></span>
+
+            </div>  
+            </p-toolbar>
+
+            <p-table [value]="employeeMovementsPayroll" [(selection)]="employeeMovementsPayroll">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th>Identificacion</th>
+                        <th>Empleado</th>
+                        <th>Dias Laborado</th>
+                        <th>Total Devengado</th>
+                        <th>Total Deducciones</th>
+                        <th>Neto a Pagar</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-employeeMovementPayrolls>
+                    <tr>
+                        <td>
+                            <p-tableCheckbox [value]="employeeMovementsPayroll"></p-tableCheckbox>
+                        </td>
+                        <td>
+                            <div class="p-col flex align-items-center justify-content-center"> 
+                                <span *ngIf="employeeMovementPayrolls.img"><img class="border-circle w-3rem h-3rem" [src]="employeeMovementPayrolls.img" alt="empleado"></span>
+                                <span *ngIf="!employeeMovementPayrolls.img"><img src="assets/images/no-image.png" class="border-circle w-3rem h-3rem" alt="empleado"></span>
+                            </div>
+                        </td>
+                        
+                        <td>{{employeeMovementPayrolls.identification |number}}</td>
+                        <td> {{employeeMovementPayrolls.firstName | titlecase }} {{employeeMovementPayrolls.surname | titlecase}}</td>
+                        <td>{{employeeMovementPayrolls.daysWork}}</td>
+                        <td>{{employeeMovementPayrolls.salaryValue + employeeMovementPayrolls.noSalaryValue | currency:'COP':'symbol-narrow':'1.0-4'}}</td>
+                        <td>{{employeeMovementPayrolls.deductionValue | currency:'COP':'symbol-narrow':'1.0-4'}}</td>
+                        <td>
+                            <p-tag severity="danger" [rounded]="true">
+                                <span>
+                                    {{employeeMovementPayrolls.salaryValue + employeeMovementPayrolls.noSalaryValue - employeeMovementPayrolls.deductionValue | currency:'COP':'symbol-narrow':'1.0-4'}}
+                                </span>
+                            </p-tag>
+                               
+                           
+                           </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+
+
+        </p-tabPanel>
+        
+    </p-tabView>  
+
+
+</div>
+
+<p-dialog header="Calculo Aportes Seguridad Social" [(visible)]="ssModal" [modal]="true" [style]="{width: '50vw'}"
+    [draggable]="false" [resizable]="false">
+<div class="formgrid grid">
+    <div class="field col">
+        <span>Total Salarial:</span>
+    </div>
+    <div class="field col">
+        <span>$ 4.000.000</span>
+    </div>
+</div>
+
+
+<div class="formgrid grid">
+    <div class="field col">
+        <span>Total No Salarial:</span>
+    </div>
+    <div class="field col">
+        <span>$ 1.000.000</span>
+    </div>
+</div>
+<hr class="mb-2 mx-0 border-top-1 border-none surface-border mt-auto" />
+
+<div class="formgrid grid">
+    <div class="field col">
+        <span>Total Ingresos:</span>
+    </div>
+    <div class="field col">
+        <span>$ 5.000.000</span>
+    </div>
+</div>
+
+<hr class="mb-2 mx-0 border-top-1 border-none surface-border mt-auto" />
+<div class="formgrid grid">
+    <div class="field col">
+        <span>40% Excento:</span>
+    </div>
+    <div class="field col">
+        <span>$ 2.000.000</span>
+    </div>
+</div>
+
+<div class="formgrid grid">
+    <div class="field col">
+        <span>Exceso ley 1393:</span>
+    </div>
+    <div class="field col">
+        <span>$ 0</span>
+    </div>
+</div>
+
+<hr class="mb-2 mx-0 border-top-1 border-none surface-border mt-auto" />
+<div class="formgrid grid">
+    <div class="field col">
+        <span>IBC Seguridad Social:</span>
+    </div>
+    <div class="field col">
+        <span>$ 4.000.000</span>
+    </div>
+</div>
+
+<div class="formgrid grid">
+    <div class="field col">
+        <span>Aporte Salud:</span>
+    </div>
+    <div class="field col">
+        <span>$ 160.000</span>
+    </div>
+</div>
+
+<div class="formgrid grid">
+    <div class="field col">
+        <span>Aporte Pensión:</span>
+    </div>
+    <div class="field col">
+        <span>$ 160.000</span>
+    </div>
+</div>
+   
+   
+  
+   
+   
+   
+   
+   
+
+
+ 
+    <ng-template pTemplate="footer">
+        <p-button icon="pi pi-check" (click)="ssModal=false" label="Descagar" styleClass="p-button-text"></p-button>
+     </ng-template>
+</p-dialog>
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,70 @@
+<p-card class="m-1">
+    <!-- <ng-template pTemplate="title">
+        Información Laboral
+    </ng-template> -->
+   
+    <ng-template pTemplate="content">
+  
+ <div class="p-fluid">
+
+    <div class="formgrid grid">
+        <div class="field col-12 md:col-12">
+            <label for="employeeType">Tipo de Empleado</label>
+            <p-dropdown inputId="employeeType" class="p-inputtext-sm" [(ngModel)]="workingInformation.employeeType"
+            [options]="employeeTypes" optionLabel="description" optionValue="id"></p-dropdown>
+        </div>
+
+    </div>
+
+    <div class="formgrid grid">
+        <div class="field col-12 md:col-12">
+            <label for="contractRegime">Regimen Laboral</label>
+            <p-dropdown inputId="contractRegime" class="p-inputtext-sm" [(ngModel)]="workingInformation.contractRegime" 
+            [options]="contractRegimes" optionLabel="description" optionValue="id"></p-dropdown>
+        </div>
+
+    </div>
+
+    <div class="formgrid grid">
+        <div class="field col-12 md:col-12">
+            <label for="workingHour">Jornada Laboral</label>
+            <p-dropdown inputId="workingHour" class="p-inputtext-sm" [(ngModel)]="workingInformation.workingHour"
+            [options]="workingHours" optionLabel="description" optionValue="id"></p-dropdown>
+        </div>
+
+    </div>
+
+    <div class="formgrid grid">
+        <div class="field col-12 md:col-12">
+            <label for="workPlaceRisks">Centro de Trabajo</label>
+            <p-dropdown inputId="workPlaceRisks" class="p-inputtext-sm" [(ngModel)]="workingInformation.workPlaceRisks"
+            [options]="workPlaceRisks" optionLabel= "description" optionValue="id"></p-dropdown>
+        </div>
+
+    </div>
+
+    <div class="formgrid grid">
+    <div class="field-checkbox col-12">
+        <p-checkbox id="transportAssistance" [binary]="true" [(ngModel)]="workingInformation.transportAssistance"></p-checkbox>
+        <label for="transportAssistance" class="p-checkbox-label">Paga Auxilio de Transporte Legal?</label>
+    </div>
+   </div>
+
+   <div class="formgrid grid">
+    <div class="field-checkbox col-12">
+        <p-checkbox id="variableSalary" [binary]="true" [(ngModel)]="workingInformation.variableSalary"></p-checkbox>
+        <label for="variableSalary" class="p-checkbox-label">Sueldo Variable?</label>
+    </div>
+   </div>
+
+
+</div>
+
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <div class="grid grid-nogutter justify-content-between">
+            <p-button label="Anterior" (onClick)="prevPage()" icon="pi pi-angle-left" iconPos="left"></p-button>
+            <p-button label="Siguiente" (onClick)="nextPage()" icon="pi pi-angle-right" iconPos="right"></p-button> 
+        </div>
+    </ng-template>
+</p-card>

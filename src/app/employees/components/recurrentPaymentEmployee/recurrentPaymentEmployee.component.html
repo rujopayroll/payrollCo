@@ -1,0 +1,124 @@
+<div class="grid">
+           
+    <div class="col-4 text-center text-500">
+        <div class= "row">
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            Pagos y Deducciones Recurrentes
+        </div>
+    </div>
+    <div class="col-8" >
+
+    <p-panel header="Pagos y Deducciones Recurrentes" >
+     
+        <p-toast></p-toast>
+        
+    <ng-template pTemplate="icons">
+            
+            <button pButton pRipple type="button"  icon="pi pi-plus" class="p-button-rounded p-button-primary p-button-text text-left" (click)="openNewEmployeeRecurrentPayment()"> </button> 
+      
+         </ng-template>
+
+         <div>
+             <!-- <p-table #dt  [value]="costCenter" [rows]="4" [paginator]="true"  [scrollable]="true"> -->
+                <p-table #dt [value]="employeeRecurrentPayments" [scrollable]="true" scrollHeight="200px"
+                [(selection)]="selectedRecurrentPayment" [rowHover]="true" dataKey="id"
+                 >
+            <!-- <ng-template pTemplate="caption">
+                    <div class="flex align-items-center justify-content-between">
+                       
+                        <span class="p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                             <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Search..." />
+                        </span>
+                    </div>
+                </ng-template> -->
+               
+               <ng-template pTemplate="header">
+             
+                    <tr>
+                        
+                        <th pSortableColumn="code">Concepto <p-sortIcon field="code"></p-sortIcon></th>
+                        <th pSortableColumn="description">Descripción <p-sortIcon field="description"></p-sortIcon></th>
+                        <th pSortableColumn="value">Valor <p-sortIcon field="value"></p-sortIcon></th>
+                        <th pSortableColumn="isActive">Estado <p-sortIcon field="isActive"></p-sortIcon></th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-recurrentPayment>
+                    <tr>
+                        
+                        <td class="text-400 align-items-start justify-content-start">{{recurrentPayment.concept.code}}</td>
+
+                      
+
+
+                        <td class="text-400 align-items-start justify-content-start">{{recurrentPayment.concept.description}}</td>
+                        <td class="text-400 align-items-start justify-content-start">{{recurrentPayment.value | currency}}</td>
+
+                        <td class="text-400 align-items-start justify-content-start">{{recurrentPayment.isActive ? 'Activo' : 'Inactivo'}}</td>
+                        <td>
+                            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editEmployeeRecurrentPayment(recurrentPayment)"></button>
+                            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteEmployeeRecurrentPayment(recurrentPayment)"></button>
+                        </td>
+                    </tr>
+                 </ng-template>
+                
+            </p-table> 
+
+        
+      
+        </div>
+     
+         <p-dialog [(visible)]="recurrentPaymentDialog" [closable]='false' [style]="{width: '500px'}" header="Pagos y Deducciones Recurrentes" [modal]="true" styleClass="p-fluid">
+            <ng-template pTemplate="content">
+                <form autocomplete="off" [formGroup]="forma" (ngSubmit)="guardar()" id="recurrentPaymentform" action="index.html">
+               
+               
+                    <div class="field">
+                        <label for="concept">Concepto</label>
+                        <select [(ngModel)]="recurrentPayments.concept_id" class="form-control form-control-xl" formControlName="concept" [class.is-invalid]="conceptNoValido" 
+                            name="concept" 
+                            id="concept" 
+                            style="border-radius: 0.2rem; width: 28rem; height:2.5rem ; border-width: 1px; border-color:deepskyblue ;  font-family: Arial, Helvetica, sans-serif; font-size: 1rem;"
+                        >      
+                        <option *ngFor="let conce of concepto" [value]="conce.id">
+                          <small>{{conce.code}} - {{conce.description}}</small> 
+                       </option>
+                    </select>
+                    </div>
+               
+               
+               
+                    <div class="field">
+                        <label for="value">Valor</label>
+                        <input type="number" pInputText id="value" name="value" class="form-control form-control-sm" formControlName="value" [class.is-invalid]="valueNoValido" [(ngModel)]="recurrentPayments.value" />
+                        <small class="p-error" *ngIf="submitted && !employeeRecurrentPayments.value">Campo es requerido.</small>
+                    </div>
+               
+
+                <div class="field-checkbox">
+                    <p-checkbox [(ngModel)]="recurrentPayments.isActive" class="form-control form-control-xl" formControlName="estado" [class.is-invalid]="estadoNoValido" [binary]="true" name="estado" inputId="binary"></p-checkbox>
+                    <label for="binary">{{recurrentPayments.isActive ? 'Activo' : 'Inactivo'}}</label>
+                </div>
+        </form>
+               
+            </ng-template>
+        
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+                <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"  (click)="guardar()"></button>
+            </ng-template>
+        </p-dialog>
+  
+
+       <!--   <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog> -->
+
+</p-panel>
+</div>
+</div>

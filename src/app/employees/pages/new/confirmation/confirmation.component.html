@@ -1,0 +1,513 @@
+
+
+
+<p-card class="m-1 z-0">
+    <!-- <ng-template pTemplate="title">
+        Información Salarial
+    </ng-template> -->
+   
+    <ng-template pTemplate="content">
+  
+        
+        <div class="card z-0">
+
+            
+            <div class="card-container yellow-container overflow-hidden z-0">
+                <div class="flex z-0">
+                    <div class="flex-1 align-items-start justify-content-start bg-blue-50 border-600 text-gray-900 m-2 px-5 py-3 border-round">
+                <div class="z-0">
+
+
+                        <div class="grid">
+                            <div class="col-6"> 
+                            <div class="flex align-items-start justify-content-start">
+                                <span class="text-500 font-medium">Tipo Documento:</span></div>
+                            </div>
+                            <div class="col-6">
+                                <span class="text-400 align-items-start justify-content-start">{{identificationType.description}}</span>
+                            </div>
+                            
+                        </div>
+
+
+                        <div class="grid">
+                            <div class="col-6"> 
+                            <div class="flex align-items-start justify-content-start">
+                                <span class="text-500 font-medium">Documento Identidad:</span></div>
+                            </div>
+                            <div class="col-6">
+                                <span class="text-400 align-items-start justify-content-start">{{employeeInformation.personalInformation.documento}}</span>
+                            </div>
+                            
+                        </div>
+
+                        <div class="grid">
+                            <div class="col-6"> 
+                            <div class="flex align-items-start justify-content-start">
+                                <span class="text-500 font-medium">Nombres:</span></div>
+                            </div>
+                            <div class="col-6">
+                                <span class="text-400 align-items-start justify-content-start">{{employeeInformation.personalInformation.pnombre}}  {{employeeInformation.personalInformation.snombre}}</span>
+                            </div>
+                            
+                        </div>
+
+                        <div class="grid">
+                            <div class="col-6"> 
+                            <div class="flex align-items-start justify-content-start">
+                                <span class="text-500 font-medium">Apellidos:</span></div>
+                            </div>
+                            <div class="col-6">
+                                <span class="text-400 align-items-start justify-content-start">{{employeeInformation.personalInformation.papellido}}  {{employeeInformation.personalInformation.sapellido}}</span>
+                            </div>
+                            
+                        </div>
+
+                        <div class="grid">
+                            <div class="col-6"> 
+                            <div class="flex align-items-start justify-content-start">
+                                <span class="text-500 font-medium">Fecha Cumpleaños:</span></div>
+                            </div>
+                            <div class="col-6">
+                                <span class="text-400 align-items-start justify-content-start">{{employeeInformation.personalInformation.fnacimiento | date:'dd-MM-YYYY'}}</span>
+                            </div>
+                            
+                        </div>
+
+                        <div class="grid">
+                            <div class="col-6"> 
+                            <div class="flex align-items-start justify-content-start">
+                                <span class="text-500 font-medium">Género:</span></div>
+                            </div>
+                            <div class="col-6">
+                                <span class="text-400 align-items-start justify-content-start">{{gender.description}}</span>
+                            </div>
+                            
+                        </div>
+
+                        <div class="grid">
+                            <div class="col-6"> 
+                            <div class="flex align-items-start justify-content-start">
+                                <span class="text-500 font-medium">Pais Residencia:</span></div>
+                            </div>
+                            <div class="col-6">
+                                <span class="text-400 align-items-start justify-content-start">{{country.name}}</span>
+                            </div>
+                            
+                        </div>
+
+                        <div class="grid">
+                            <div class="col-6"> 
+                            <div class="flex align-items-start justify-content-start">
+                                <span class="text-500 font-medium">Departamento Residencia:</span></div>
+                            </div>
+                            <div class="col-6">
+                                <span class="text-400 align-items-start justify-content-start">{{state.name}}</span>
+                            </div>
+                            
+                        </div>
+
+                        <div class="grid">
+                            <div class="col-6"> 
+                            <div class="flex align-items-start justify-content-start">
+                                <span class="text-500 font-medium">Municipio Residencia:</span></div>
+                            </div>
+                            <div class="col-6">
+                                <span class="text-400 align-items-start justify-content-start">{{city.name}}</span>
+                            </div>
+                            
+                        </div>
+
+                        <div class="grid">
+                            <div class="col-6"> 
+                            <div class="flex align-items-start justify-content-start">
+                                <span class="text-500 font-medium">Dirección Residencia:</span></div>
+                            </div>
+                            <div class="col-6">
+                                <span class="text-400 align-items-start justify-content-start">{{employeeInformation.personalInformation.direccion}}</span>
+                            </div>
+                            
+                        </div>
+
+                        <div class="grid">
+                            <div class="col-6"> 
+                            <div class="flex align-items-start justify-content-start">
+                                <span class="text-500 font-medium">Telefono Residencia:</span></div>
+                            </div>
+                            <div class="col-6">
+                                <span class="text-400 align-items-start justify-content-start">{{employeeInformation.personalInformation.telefono}}</span>
+                            </div>
+                            
+                        </div>
+
+                        <div class="grid">
+                            <div class="col-6"> 
+                            <div class="flex align-items-start justify-content-start">
+                                <span class="text-500 font-medium">Celular:</span></div>
+                            </div>
+                            <div class="col-6">
+                                <span class="text-400 align-items-start justify-content-start">{{employeeInformation.personalInformation.celular}}</span>
+                            </div>
+                            
+                        </div>
+
+                        <div class="grid">
+                            <div class="col-6"> 
+                            <div class="flex align-items-start justify-content-start">
+                                <span class="text-500 font-medium">Correo Electronico:</span></div>
+                            </div>
+                            <div class="col-6">
+                                <span class="text-400 align-items-start justify-content-start">{{employeeInformation.personalInformation.email}}</span>
+                            </div>
+                            
+                        </div>
+
+
+                    </div>
+
+                    
+                        
+                    </div>
+
+
+  
+                    <div class="flex-1 flex align-items-start justify-content-start bg-blue-50 text-gray-900 m-2 px-5 py-3 border-round">
+                        <div> 
+                        <div class="grid">
+                            <div class="col-6"> 
+                            <div class="flex align-items-start justify-content-start">
+                                <span class="text-500 font-medium">Tipo de Empleado:</span></div>
+                            </div>
+                            <div class="col-6">
+                                <span class="text-400 align-items-start justify-content-start">{{employeeType.description}}</span>
+                            </div>
+                            
+                        </div>
+
+                        <div class="grid">
+                            <div class="col-6"> 
+                            <div class="flex align-items-start justify-content-start">
+                                <span class="text-500 font-medium">Regimen Laboral:</span></div>
+                            </div>
+                            <div class="col-6">
+                                <span class="text-400 align-items-start justify-content-start">{{contractRegime.description}}</span>
+                            </div>
+                            
+                        </div>
+
+                        <div class="grid">
+                            <div class="col-6"> 
+                            <div class="flex align-items-start justify-content-start">
+                                <span class="text-500 font-medium">Jornada Laboral:</span></div>
+                            </div>
+                            <div class="col-6">
+                                <span class="text-400 align-items-start justify-content-start">{{workingHour.description}}</span>
+                            </div>
+                            
+                        </div>
+
+                        <div class="grid">
+                            <div class="col-6"> 
+                            <div class="flex align-items-start justify-content-start">
+                                <span class="text-500 font-medium">Centro de Trabajo:</span></div>
+                            </div>
+                            <div class="col-6">
+                                <span class="text-400 align-items-start justify-content-start">{{workPlaceRisk.percentage}} - {{workPlaceRisk.description}}</span>
+                            </div>
+                            
+                        </div>
+
+                        <div class="grid">
+                            <div class="col-6"> 
+                            <div class="flex align-items-start justify-content-start">
+                                <span class="text-500 font-medium">Auxilio de transporte?:</span></div>
+                            </div>
+                            <div class="col-6">
+                                <span class="text-400 align-items-start justify-content-start">{{employeeInformation.workingInformation.transportAssistence ? 'Si' : 'No'}}</span>
+                            </div>
+                            
+                        </div>
+
+                        <div class="grid">
+                            <div class="col-6"> 
+                            <div class="flex align-items-start justify-content-start">
+                                <span class="text-500 font-medium">Sueldo Variable?:</span></div>
+                            </div>
+                            <div class="col-6">
+                                <span class="text-400 align-items-start justify-content-start">{{employeeInformation.workingInformation.variableSalary ? 'Si' : 'No'}}</span>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    </div>
+
+                    <div class="flex-1 align-items-start justify-content-start bg-blue-50 text-gray-900 m-2 px-5 py-3 border-round">
+                        
+                        <div class="div">
+
+                            <div class="grid">
+                                <div class="col-6"> 
+                                <div class="flex align-items-start justify-content-start">
+                                    <span class="text-500 font-medium">Centro de Costo:</span></div>
+                                </div>
+                                <div class="col-6">
+                                    <span class="text-400 align-items-start justify-content-start">{{costCenter.code ? costCenter.code : '-'}} - {{costCenter.description ? costCenter.description : '-'  }} </span>
+                                </div>
+                                
+                            </div>
+
+                            <div class="grid">
+                                <div class="col-6"> 
+                                <div class="flex align-items-start justify-content-start">
+                                    <span class="text-500 font-medium">Area:</span></div>
+                                </div>
+                                <div class="col-6">
+                                    <span class="text-400 align-items-start justify-content-start">{{area.description}}</span>
+                                </div>
+                                
+                            </div>
+
+                            <div class="grid">
+                                <div class="col-6"> 
+                                <div class="flex align-items-start justify-content-start">
+                                    <span class="text-500 font-medium">Cargo:</span></div>
+                                </div>
+                                <div class="col-6">
+                                    <span class="text-400 align-items-start justify-content-start">{{position.description}}</span>
+                                </div>
+                                
+                            </div>
+
+
+                                <div class="grid">
+                                    <div class="col-6"> 
+                                    <div class="flex align-items-start justify-content-start">
+                                        <span class="text-500 font-medium">Sucursal:</span></div>
+                                    </div>
+                                    <div class="col-6">
+                                        <span class="text-400 align-items-start justify-content-start">{{subsidiary.description}}</span>
+                                    </div>
+                                    
+                                </div>
+
+                                <br>
+                                <br>
+                                <p-divider></p-divider>
+                                <br>
+                                <br>
+                                <div class="grid">
+                                    <div class="col-6"> 
+                                    <div class="flex align-items-start justify-content-start">
+                                        <span class="text-500 font-medium">Banco:</span></div>
+                                    </div>
+                                    <div class="col-6">
+                                        <span class="text-400 align-items-start justify-content-start">{{bank.code}}-{{bank.name}}</span>
+                                    </div>
+                                    
+                                </div>
+    
+                                <div class="grid">
+                                    <div class="col-6"> 
+                                    <div class="flex align-items-start justify-content-start">
+                                        <span class="text-500 font-medium">Tipo de Cuenta:</span></div>
+                                    </div>
+                                    <div class="col-6">
+                                        <span class="text-400 align-items-start justify-content-start">{{accountType.description}}</span>
+                                    </div>
+                                    
+                                </div>
+    
+                                <div class="grid">
+                                    <div class="col-6"> 
+                                    <div class="flex align-items-start justify-content-start">
+                                        <span class="text-500 font-medium">Numero de Cuenta:</span></div>
+                                    </div>
+                                    <div class="col-6">
+                                        <span class="text-400 align-items-start justify-content-start">{{employeeInformation.paymentInformation.accountNumber}}</span>
+                                    </div>
+                                    
+                                </div>
+
+                        </div>
+
+
+                    </div>
+
+
+            
+
+            </div>
+
+
+                <div class="flex">
+                    <div class="flex-1 flex align-items-start justify-content-start bg-blue-50 text-gray-900 m-2 px-5 py-3 border-round">
+                        <div class="div">
+                            
+                            <div class="grid">
+                                <div class="col-6"> 
+                                <div class="flex align-items-start justify-content-start">
+                                    <span class="text-500 font-medium">Entidad de Salud:</span></div>
+                                </div>
+                                <div class="col-6">
+                                    <span class="text-400 align-items-start justify-content-start">{{socialSecurityEntityHealth.identification}} - {{socialSecurityEntityHealth.name}}</span>
+                                </div>
+                                
+                            </div>
+
+                            <div class="grid">
+                                <div class="col-6"> 
+                                <div class="flex align-items-start justify-content-start">
+                                    <span class="text-500 font-medium">Entidad de Pensión:</span></div>
+                                </div>
+                                <div class="col-6">
+                                    <span class="text-400 align-items-start justify-content-start">{{socialSecurityEntityPension.identification}} - {{socialSecurityEntityPension.name}}</span>
+                                </div>
+                                
+                            </div>
+
+                            <div class="grid">
+                                <div class="col-6"> 
+                                <div class="flex align-items-start justify-content-start">
+                                    <span class="text-500 font-medium">Fondo de Cesantias:</span></div>
+                                </div>
+                                <div class="col-6">
+                                    <span class="text-400 align-items-start justify-content-start">{{socialSecurityEntitySeverance.identification}} - {{socialSecurityEntitySeverance.name}}</span>
+                                </div>
+                                
+                            </div>
+
+                            <div class="grid">
+                                <div class="col-6"> 
+                                <div class="flex align-items-start justify-content-start">
+                                    <span class="text-500 font-medium">Tipo de Cotizante:</span></div>
+                                </div>
+                                <div class="col-6">
+                                    <span class="text-400 align-items-start justify-content-start">{{contributorType.description}}</span>
+                                </div>
+                                
+                            </div>
+
+                            <div class="grid">
+                                <div class="col-6"> 
+                                <div class="flex align-items-start justify-content-start">
+                                    <span class="text-500 font-medium">Subtipo de Cotizante:</span></div>
+                                </div>
+                                <div class="col-6">
+                                    <span class="text-400 align-items-start justify-content-start">{{contributorSubType.description}}</span>
+                                </div>
+                                
+                            </div>
+
+
+
+                        </div>
+                    </div>
+
+                    
+                    
+                    
+                    <div class="flex-1 flex align-items-start justify-content-start bg-blue-50 text-gray-900 m-2 px-5 py-3 border-round">
+                        
+                        <div>
+
+                            <div class="grid">
+                                <div class="col-6"> 
+                                <div class="flex align-items-start justify-content-start">
+                                    <span class="text-400 font-medium">Tipo Contrato:</span></div>
+                                </div>
+                                <div class="col-6">
+                                    <span class="text-400 align-items-start justify-content-start">{{contractType.description ? contractType.description: '-' }}</span>
+                                </div>
+                            </div>
+
+
+
+                            <div class="grid">
+                                <div class="col-6"> 
+                                <div class="flex align-items-start justify-content-start">
+                                    <span class="text-500 font-medium">Fecha Inicio:</span></div>
+                                </div>
+                                <div class="col-6">
+                                    <span class="text-400 align-items-start justify-content-start">{{employeeInformation.contractInformation.initialContractDate | date:'dd-MM-YYYY'}}</span>
+                                </div>
+                                
+                            </div>
+
+                            <div class="grid">
+                                <div class="col-6"> 
+                                <div class="flex align-items-start justify-content-start">
+                                    <span class="text-500 font-medium">Fecha Fin:</span></div>
+                                </div>
+                                <div class="col-6">
+                                    <span class="text-400 align-items-start justify-content-start">{{employeeInformation.contractInformation.endContractDate | date:'dd-MM-YYYY'}}</span>
+                                </div>
+                                
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="flex-1 flex align-items-start justify-content-start bg-blue-50 text-gray-700 m-2 px-5 py-3 border-round">
+                        <div class="div">
+                            <div class="grid">
+                                <div class="col-6"> 
+                                <div class="flex align-items-start justify-content-start">
+                                    <span class="text-500 font-medium">Tipo Salario:</span></div>
+                                </div>
+                                <div class="col-6">
+                                    <span class="text-400 align-items-start justify-content-start">{{salaryType.description}}</span>
+                                </div>
+                                
+                            </div>
+
+                            <div class="grid">
+                                <div class="col-6"> 
+                                <div class="flex align-items-start justify-content-start">
+                                    <span class="text-500 font-medium">Fecha Inicio:</span></div>
+                                </div>
+                                <div class="col-6">
+                                    <span class="text-400 align-items-start justify-content-start">{{employeeInformation.salaryInformation.initialSalaryDate | date: 'dd-MM-YYYY'}}</span>
+                                </div>
+                                
+                            </div>
+
+                            <div class="grid">
+                                <div class="col-6"> 
+                                <div class="flex align-items-start justify-content-start">
+                                    <span class="text-500 font-medium">Fecha Fin:</span></div>
+                                </div>
+                                <div class="col-6">
+                                    <span class="text-400 align-items-start justify-content-start">{{employeeInformation.salaryInformation.endSalaryDate | date: 'dd-MM-YYYY'}}</span>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                
+
+            </div>
+         
+           
+       
+       
+       
+       
+        </div>
+        
+    
+
+
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <div class="grid grid-nogutter justify-content-between">
+            <p-button label="Anterior" (onClick)="prevPage()" icon="pi pi-angle-left"></p-button>
+            <p-button label="Guardar" (onClick)="complete()" icon="pi pi-angle-right" iconPos="right" styleClass="p-button-success"></p-button>
+        </div>
+    </ng-template>
+</p-card>

@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Animo...Lista la Nomina</title>
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/logo1.png">
+  
+
+
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="https://unpkg.com/primeflex@3.0.0/primeflex.css">
+  <!-- <link href="assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="//cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css">
+ -->
+
+</head>
+<body>
+  <app-root></app-root>
+ 
+  <script src="assets/plugins/jquery/jquery.min.js"></script>
+  <script src="assets/plugins/jquery/jquery.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  
+  <script>
+    $(document).ready(function() {
+        $(window).scroll(function(){
+                if(document.body.scrollTop > 300)
+                        $('#menufijo').fadeIn( "slow", function() { });
+                else    
+                        $('#menufijo').fadeOut( "slow", function() { });
+        });
+        $('a#srolltotop').click(function(){
+                $('html, body').animate({scrollTop:0}, 100);
+                return false;
+        });
+});
+    </script>
+    
+    <!-- <script src="assets/plugins/bootstrap/js/popper.min.js"></script>
+    <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script> -->
+</body>
+</html>

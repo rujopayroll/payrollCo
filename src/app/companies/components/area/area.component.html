@@ -1,0 +1,102 @@
+<div class="grid">
+           
+    <div class="col-4 text-center text-500">
+        <div class= "row">
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            Areas
+        </div>
+    </div>
+    <div class="col-8" >
+
+    <p-panel header="Areas" >
+     
+        <p-toast></p-toast>
+        
+    <ng-template pTemplate="icons">
+            
+            <button pButton pRipple type="button"  icon="pi pi-plus" class="p-button-rounded p-button-primary p-button-text text-left" (click)="openNewArea()"> </button> 
+      
+         </ng-template>
+
+         <div>
+             <!-- <p-table #dt  [value]="costCenter" [rows]="4" [paginator]="true"  [scrollable]="true"> -->
+                <p-table #dt [value]="area" [scrollable]="true" scrollHeight="200px" [(selection)]="selectedArea" [rowHover]="true" dataKey="id" >
+            <!-- <ng-template pTemplate="caption">
+                    <div class="flex align-items-center justify-content-between">
+                       
+                        <span class="p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                             <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Search..." />
+                        </span>
+                    </div>
+                </ng-template> -->
+               
+               <ng-template pTemplate="header">
+             
+                    <tr>
+                       
+                       
+                        <th pSortableColumn="description">Area <p-sortIcon field="description"></p-sortIcon></th>
+                        <th pSortableColumn="isActive">Estado <p-sortIcon field="isActive"></p-sortIcon></th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-areas>
+                    <tr>
+                        
+                       
+                        <td>{{areas.description}}</td>
+                        
+                        <td>{{areas.isActive ? 'Activo' : 'Inactivo'}}</td>
+                        <td>
+                            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editArea(areas)"></button>
+                            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteArea(areas)"></button>
+                        </td>
+                    </tr>
+                 </ng-template>
+                
+            </p-table> 
+
+        
+      
+        </div>
+     
+        <p-dialog [(visible)]="areaDialog" [style]="{width: '500px'}" header="Area" [modal]="true" styleClass="p-fluid">
+            <ng-template pTemplate="content">
+                <form autocomplete="off" [formGroup]="forma" (ngSubmit)="guardar()" id="areaform" action="index.html">
+                
+                <div class="field">
+                    <label for="description">Area</label>
+                    <input type="text" pInputText id="description" name="descripcion" class="form-control form-control-sm" formControlName="descripcion" [class.is-invalid]="descripcionNoValido" [(ngModel)]="areas.description" required >
+                </div>
+               
+               
+        
+                
+
+                <div class="field-checkbox">
+                    <p-checkbox [(ngModel)]="areas.isActive" class="form-control form-control-xl" formControlName="estado" [class.is-invalid]="estadoNoValido" [binary]="true" name="estado" inputId="binary"></p-checkbox>
+                    <label for="binary">{{areas.isActive ? 'Activo' : 'Inactivo'}}</label>
+                </div>
+        </form>
+               
+            </ng-template>
+        
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+                <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"  (click)="guardar()"></button>
+            </ng-template>
+        </p-dialog>
+  
+
+         <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+
+</p-panel>
+</div>
+</div>

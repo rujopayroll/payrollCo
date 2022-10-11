@@ -1,0 +1,20 @@
+.fijo{
+    position: fixed;
+    width: 98.8%;
+    top: 0;
+    z-index:1
+}
+
+.panel{
+    position:-ms-page;
+    
+}
+
+.p-fileupload .p-fileupload-buttonbar button:nth-child(3):disabled{
+    opacity: 0.5;
+    cursor:default;
+  }
+
+  .p-fileupload .p-fileupload-buttonbar button:nth-child(2){
+    display:none;
+  }

@@ -1,0 +1,67 @@
+<p-card class="m-1">
+   <!--  <ng-template pTemplate="title">
+        Información de Seguridad Social
+    </ng-template> -->
+   
+    <ng-template pTemplate="content">
+  
+ <div class="p-fluid">
+
+    <div class="formgrid grid">
+        <div class="field col-12 md:col-12">
+            <label for="entityHealth">Entidad de Salud</label>
+            <p-dropdown inputId="entityHealth" class="p-inputtext-sm" [(ngModel)]="socialSecurityInformation.entityHealth"
+            [options]="socialSecurityEntityHealths" optionLabel="name" optionValue="id"></p-dropdown>
+        </div>
+
+    </div>
+
+    <div class="formgrid grid">
+        <div class="field col-12 md:col-12">
+            <label for="entityPension">Entidad de Pensión</label>
+            <p-dropdown inputId="entityPension" class="p-inputtext-sm" [(ngModel)]="socialSecurityInformation.entityPension" 
+            [options]="socialSecurityEntityPensions" optionLabel="name" optionValue="id"></p-dropdown>
+        </div>
+
+    </div>
+
+    <div class="formgrid grid">
+        <div class="field col-12 md:col-12">
+            <label for="entitySeverance">Fondo de Pensiones</label>
+            <p-dropdown inputId="entitySeverance" class="p-inputtext-sm" [(ngModel)]="socialSecurityInformation.entitySeverance" 
+            [options]="socialSecurityEntitySeverances" optionLabel="name" optionValue="id"></p-dropdown>
+        </div>
+
+    </div>
+
+    <div class="formgrid grid">
+        <div class="field col-12 md:col-12">
+            <label for="contributorType">Tipo de Cotizante</label>
+            <p-dropdown inputId="contributorType" class="p-inputtext-sm" [(ngModel)]="socialSecurityInformation.contributorType"
+            [options]="contributorTypes" optionLabel= "description" optionValue="id"></p-dropdown>
+        </div>
+
+    </div>
+
+    <div class="formgrid grid">
+        <div class="field col-12 md:col-12">
+            <label for="contributorSubType">SubTipo de Cotizante</label>
+            <p-dropdown inputId="contributorSubType" class="p-inputtext-sm" [(ngModel)]="socialSecurityInformation.contributorSubType"
+            [options]="contributorSubTypes" optionLabel= "description" optionValue="id"></p-dropdown>
+        </div>
+
+    </div>
+
+  
+
+
+</div>
+
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <div class="grid grid-nogutter justify-content-between">
+            <p-button label="Anterior" (onClick)="prevPage()" icon="pi pi-angle-left" iconPos="left"></p-button>
+            <p-button label="Siguiente" (onClick)="nextPage()" icon="pi pi-angle-right" iconPos="right"></p-button> 
+        </div>
+    </ng-template>
+</p-card>

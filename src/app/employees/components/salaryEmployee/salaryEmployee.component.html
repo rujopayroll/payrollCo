@@ -1,0 +1,151 @@
+<div class="grid">
+           
+    <div class="col-4 text-center text-500">
+        <div class= "row">
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            Información de Salario
+        </div>
+    </div>
+    <div class="col-8" >
+
+    <p-panel header="Información de Salario" >
+     
+        <p-toast></p-toast>
+        
+    <ng-template pTemplate="icons">
+            
+            <button pButton pRipple type="button"  icon="pi pi-plus" class="p-button-rounded p-button-primary p-button-text text-left" (click)="openNewEmployeeSalary()"> </button> 
+      
+         </ng-template>
+
+         <div>
+             <!-- <p-table #dt  [value]="costCenter" [rows]="4" [paginator]="true"  [scrollable]="true"> -->
+                <p-table #dt [value]="employeeSalaries" [scrollable]="true" scrollHeight="200px"
+                [(selection)]="selectedEmployeeSalary" [rowHover]="true" dataKey="id"
+                 >
+          
+               
+               <ng-template pTemplate="header">
+             
+                    <tr>
+                        
+                        <th pSortableColumn="salaryT">Concepto<p-sortIcon field="salaryType_id"></p-sortIcon></th>
+                        <th pSortableColumn="salary">Salario<p-sortIcon field="salary"></p-sortIcon></th>
+                        <th pSortableColumn="initialDate">F.Inicial <p-sortIcon field="initialSalaryDate"></p-sortIcon></th>
+                        <th pSortableColumn="endDate">F.Final <p-sortIcon field="endSalaryDate"></p-sortIcon></th>
+                        <th pSortableColumn="isActive">Estado <p-sortIcon field="isActive"></p-sortIcon></th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-employeeSalary>
+                    <tr>
+                        
+                        <td >
+                             <select [(ngModel)]="employeeSalary.salaryType_id" class="form-control form-control-sm" disabled = "false" name="salaryType" style="width: 9rem; border-width: 0px; font-size:15px; appearance:none">
+                                <option *ngFor="let salaryT of salaryType" [value]="salaryT.id">
+                                  <span>{{salaryT.description}}</span> 
+                               </option>
+                            </select> 
+                        </td> 
+
+                        
+
+    
+                        <td class="text-400 align-items-start justify-content-start">{{employeeSalary.salary | currency}}</td>
+                        <td>
+                            <span class="text-400 align-items-start justify-content-start">{{employeeSalary.initialSalaryDate | date: 'dd.MM.YYYY': 'GMT +12'}}</span>
+                           
+                        </td>
+                        <td>
+                            <span class="text-400 align-items-start justify-content-start">{{employeeSalary.endSalaryDate | date: 'dd.MM.YYYY': 'GMT +12'}}</span>
+                           
+                        </td>
+
+
+                        <td class="text-400 align-items-start justify-content-start">{{employeeSalary.isActive ? 'Activo' : 'Inactivo'}}</td>
+                        <td>
+                            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editEmployeeSalary(employeeSalary)"></button>
+                            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteEmployeeSalary(employeeSalary)"></button>
+                        </td>
+                    </tr>
+                 </ng-template>
+                
+            </p-table> 
+
+        
+      
+        </div>
+     
+         <p-dialog [(visible)]="employeeSalaryDialog" [style]="{width: '500px'}" header="Información Salarial" [modal]="true" styleClass="p-fluid">
+            <ng-template pTemplate="content">
+                <form autocomplete="off" [formGroup]="forma" (ngSubmit)="guardar()" id="salaryEmployeeform" action="index.html">
+                
+                
+               
+                 <div class="field">
+                    <label for="salary">Tipo de Salario</label>
+                    <select [(ngModel)]="employeeSalarie.salaryType_id" class="form-control form-control-xl" formControlName="salaryType" [class.is-invalid]="salaryTypeNoValido" 
+                        name="salaryType" 
+                        id="salaryType" 
+                        style="border-radius: 0.2rem; width: 28rem; height:2rem ; border-width: 1px; border-color:lightblue;  font-family: Arial, Helvetica, sans-serif; font-size: 1rem;">         
+                    <option *ngFor="let TypeS of salaryTypes" [value]="TypeS.id">
+                      <small>{{TypeS.code}}-{{TypeS.description}}</small> 
+                   </option>
+                </select>
+                </div> 
+
+
+         <!--      <div class="field">
+                <label for="salary">Tipo de Salario</label>
+                <p-dropdown [options]="salaryTypes" [(ngModel)]="employeeSalaries.salaryType_id"  formControlName="salaryType" optionLabel="description" [showClear]="false"></p-dropdown>
+            </div>
+ -->
+
+                <div class="field">
+                    <label for="salary">Salario</label>
+                    <input type="number" pInputText id="salary" name="salary" class="form-control form-control-sm" formControlName="salary" [class.is-invalid]="salaryNoValido" [(ngModel)]="employeeSalarie.salary" />
+                    <small class="p-error" *ngIf="submitted && !employeeSalarie.salary">Campo es requerido.</small>
+                </div>
+
+                <div class="field">
+                    <label for="initialSalaryDate">Fecha Inicial</label>
+                    <input type="date" pInputText id="initialSalaryDate" name="initialSalaryDate" class="form-control form-control-sm" formControlName="initialSalaryDate" [class.is-invalid]="initialSalaryDateNoValido" 
+                    [(ngModel)]="employeeSalarie.initialSalaryDate" />
+                    <small class="p-error" *ngIf="submitted && !employeeSalarie.initialSalaryDate">Campo es requerido.</small>
+                </div>
+
+                <div class="field">
+                    <label for="endSalaryDate">Fecha Final</label>
+                    <input type="date" pInputText id="endSalaryDate" name="endSalaryDate" class="form-control form-control-sm"     formControlName="endSalaryDate" [class.is-invalid]="endSalaryDateNoValido" 
+                    [(ngModel)]="employeeSalarie.endSalaryDate"/>
+                   
+                    <small class="p-error" *ngIf="submitted && !employeeSalarie.endSalaryDate">Campo es requerido.</small>
+                </div>
+                
+
+                <div class="field-checkbox">
+                    <p-checkbox [(ngModel)]="employeeSalarie.isActive" class="form-control form-control-xl" formControlName="estado" [class.is-invalid]="estadoNoValido" [binary]="true" name="estado" inputId="binary"></p-checkbox>
+                    <label for="binary">{{employeeSalarie.isActive ? 'Activo' : 'Inactivo'}}</label>
+                </div>
+        </form>
+               
+            </ng-template>
+        
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+                <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"  (click)="guardar()"></button>
+            </ng-template>
+        </p-dialog>
+  
+
+       <!--   <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog> -->
+
+</p-panel>
+</div>
+</div>

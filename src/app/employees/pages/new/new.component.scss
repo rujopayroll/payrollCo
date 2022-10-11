@@ -1,0 +1,70 @@
+ .fijo{
+    position: fixed;
+    width: 98.8%;
+    top:0rem;
+    z-index:1
+}
+
+.fijo1{
+   
+    top:20rem;
+    z-index:-1
+}
+ 
+ :host ::ng-deep b {
+    display: block
+}
+
+:host ::ng-deep .p-card-body {
+    padding: 2rem;
+}
+
+.ui-steps .ui-steps-item {
+    width: 25%;
+}
+
+.ui-steps.steps-custom {
+    margin-bottom: 30px;
+}
+
+.ui-steps.steps-custom .ui-steps-item .ui-menuitem-link {
+    padding: 0 1em;
+    overflow: visible;
+}
+
+.ui-steps.steps-custom .ui-steps-item .ui-steps-number {
+    background-color: #0916d6;
+    color: #FFFFFF;
+    display: inline-block;
+    width: 36px;
+    border-radius: 50%;
+    margin-top: -14px;
+    margin-bottom: 10px;
+}
+
+.ui-steps.steps-custom .ui-steps-item .ui-steps-title {
+    color:lightblue;
+}
+
+.card {
+    padding: 0rem;
+    box-shadow: 0 5 px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
+    border-radius: 4px;
+    margin-bottom: 0rem;
+    
+}
+
+
+.card1 {
+    padding: 2rem;
+    box-shadow: 0 5 px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
+    border-radius: 4px;
+    margin-bottom: 2rem;
+    text-align: center;
+    background-color:white;
+    
+}
+
+.color {
+    background-color: greenyellow;
+}

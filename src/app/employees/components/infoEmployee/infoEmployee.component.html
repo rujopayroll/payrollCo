@@ -1,0 +1,387 @@
+<div class="grid">
+    <div class="col-4 text-center text-500">
+        <div class= "row">
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            Información Personal
+        </div>
+    </div>
+    <div class="col-8">
+    <p-panel header="Información Personal">
+        <ng-template pTemplate="icons" class="flex align-items-start">
+            <div class="flex align-items-start">
+            <button pButton pRipple type="button"  icon="pi pi-pencil" class="p-button-rounded p-button-primary p-button-text" (click)="editInfoEmployee(employee)"></button> 
+            
+        </div>
+     </ng-template>
+    <form>
+
+
+        <div class="grid">
+            <div class="col-4"> 
+            <div class="flex align-items-start justify-content-start">
+                <span class="text-500 font-medium">Tipo Documento:</span></div>
+            </div>
+            <div class="col-8">
+                <span class="text-400 align-items-start justify-content-start">{{identificationType.description}}</span>
+            </div>
+            
+        </div>
+
+    <div class="grid">
+        <div class="col-4"> 
+        <div class="flex align-items-start justify-content-start">
+            <span class="text-500 font-medium">Documento Identidad:</span></div>
+        </div>
+        <div class="col-8">
+            <span class="text-400 align-items-start justify-content-start">{{employee.identification}}</span>
+        </div>
+        
+    </div>
+
+    <div class="grid">
+        <div class="col-4"> 
+        <div class="flex align-items-start justify-content-start">
+            <span class="text-500 font-medium">Nombres:</span></div>
+        </div>
+        <div class="col-8">
+            <span class="text-400 align-items-start justify-content-start">{{employee.firstName}} {{employee.secondName}}</span>
+        </div>
+        
+    </div>
+
+    <div class="grid">
+        <div class="col-4"> 
+        <div class="flex align-items-start justify-content-start">
+            <span class="text-500 font-medium">Apellidos:</span></div>
+        </div>
+        <div class="col-8">
+            <span class="text-400 align-items-start justify-content-start">{{employee.surname}} {{employee.secondSurName}}</span>
+        </div>
+        
+    </div>
+
+    <div class="grid">
+        <div class="col-4"> 
+        <div class="flex align-items-start justify-content-start">
+            <span class="text-500 font-medium">Fecha Cumpleaños:</span></div>
+        </div>
+        <div class="col-8">
+            <span class="text-400 align-items-start justify-content-start">{{employee.birthDate | date: 'dd.MM.yyyy'}}</span>
+        </div>
+        
+    </div>
+
+    <div class="grid">
+        <div class="col-4"> 
+        <div class="flex align-items-start justify-content-start">
+            <span class="text-500 font-medium">Genero:</span></div>
+        </div>
+        <div class="col-8">
+            <span class="text-400 align-items-start justify-content-start">{{gender.description}}</span>
+        </div>
+        
+    </div>
+
+    <div class="grid">
+        <div class="col-4"> 
+        <div class="flex align-items-start justify-content-start">
+            <span class="text-500 font-medium">Pais Residencia:</span></div>
+        </div>
+        <div class="col-8">
+            <span class="text-400 align-items-start justify-content-start">{{country.name}}</span>
+        </div>
+        
+    </div>
+
+    <div class="grid">
+        <div class="col-4"> 
+        <div class="flex align-items-start justify-content-start">
+            <span class="text-500 font-medium">Departamento Residencia:</span></div>
+        </div>
+        <div class="col-8">
+            <span class="text-400 align-items-start justify-content-start">{{state.name}}</span>
+        </div>
+        
+    </div>
+
+    <div class="grid">
+        <div class="col-4"> 
+        <div class="flex align-items-start justify-content-start">
+            <span class="text-500 font-medium">Municipio Residencia:</span></div>
+        </div>
+        <div class="col-8">
+            <span class="text-400 align-items-start justify-content-start">{{city.name}}</span>
+        </div>
+        
+    </div>
+
+    <div class="grid">
+        <div class="col-4"> 
+        <div class="flex align-items-start justify-content-start">
+            <span class="text-500 font-medium">Dirección Residencia:</span></div>
+        </div>
+        <div class="col-8">
+            <span class="text-400 align-items-start justify-content-start">{{employee.address}}</span>
+        </div>
+        
+    </div>
+
+    <div class="grid">
+        <div class="col-4"> 
+        <div class="flex align-items-start justify-content-start">
+            <span class="text-500 font-medium">Telefono Residencia:</span></div>
+        </div>
+        <div class="col-8">
+            <span class="text-400 align-items-start justify-content-start">{{employee.phone}}</span>
+        </div>
+        
+    </div>
+
+    <div class="grid">
+        <div class="col-4"> 
+        <div class="flex align-items-start justify-content-start">
+            <span class="text-500 font-medium">Celular:</span></div>
+        </div>
+        <div class="col-8">
+            <span class="text-400 align-items-start justify-content-start">{{employee.cellPhone}}</span>
+        </div>
+        
+    </div>
+
+    <div class="grid">
+        <div class="col-4"> 
+        <div class="flex align-items-start justify-content-start">
+            <span class="text-500 font-medium">Correo Electronico:</span></div>
+        </div>
+        <div class="col-8">
+            <span class="text-400 align-items-start justify-content-start">{{employee.email}}</span>
+        </div>
+        
+    </div>
+
+
+
+
+
+   <!--  <div class="grid">
+        <div class="col-4"> 
+        <div class="flex align-items-start justify-content-start">
+            <span class="text-500 font-medium mr-7">Caja de Compensación:</span></div>
+        </div>
+        <div class="col-8"> 
+            <span class="text-400 align-items-start justify-content-start">{{caja.name}}</span>
+        </div>
+    </div> -->
+
+
+ 
+
+
+    </form>
+
+
+     <p-dialog [(visible)]="infoEmployeeDialog" [style]="{width: '500px'}" header="Información Básica Empleado" [modal]="true" styleClass="p-fluid">
+        <ng-template pTemplate="content">
+            <form autocomplete="off" [formGroup]="forma" (ngSubmit)="guardar(infoEmployee)" id="infoEmployeeform" action="index.html">
+           
+            
+
+   <!--          <div class="field">
+                <label for="tipodoc">Tipo Identificación</label>
+                <select [(ngModel)]="employee.identificationType_id" class="form-control form-control-sm" formControlName="tipodoc" [class.is-invalid]="tipodocNoValido"
+                    name="tipodoc" 
+                    id="tipodoc" 
+                    required autofocus
+                    style="border-radius: 0.2rem; width: 28rem; height:2.5rem ; border-width: 1px; border-color:deepskyblue ;  font-family: Arial, Helvetica, sans-serif; font-size: 1rem;">         
+                <option *ngFor="let tipo of identificationTypes" [value]="tipo.id">
+                  <small>{{tipo.description}}</small> 
+               </option>
+            </select>
+            </div> -->
+
+
+            <div class="field">
+                <label for="tipodoc">Tipo de Documento</label>
+                <p-dropdown inputId="tipodoc" [(ngModel)]="employee.identificationType_id"
+                class="form-control form-control-sm" formControlName="tipodoc" [class.is-invalid]="tipodocNoValido"
+                [options]="identificationTypes" optionLabel="description" optionValue="id"></p-dropdown>
+            </div>
+
+            
+                  <div class="field">
+                
+                    <label for="documento">Número de Documento</label>
+                    <input type="text" pInputText id="documento" name="documento" class="form-control form-control-sm" formControlName="documento" [class.is-invalid]="documentoNoValido" [(ngModel)]="employee.identification" />
+                    <small class="p-error" *ngIf="submitted && !employees.identification">Campo es requerido.</small>
+                 </div>
+
+                 <div class="field">
+                    <label for="pnombre">Primer Nombre</label>
+                    <input type="text" pInputText id="pnombre" name="pnombre" class="form-control form-control-sm" formControlName="pnombre" [class.is-invalid]="pnombreNoValido" [(ngModel)]="employee.firstName" />
+                    <small class="p-error" *ngIf="submitted && !employees.firstName">Campo es requerido.</small>
+                </div>
+
+
+                <div class="field">
+                    <label for="snombre">Segundo Nombre</label>
+                    <input type="text" pInputText id="snombre" name="snombre" class="form-control form-control-sm" formControlName="snombre" [class.is-invalid]="snombreNoValido" [(ngModel)]="employee.secondName" />
+                </div>
+
+                <div class="field">
+                    <label for="papellido">Primer Apellido</label>
+                    <input type="text" pInputText id="papellido" name="papellido" class="form-control form-control-sm" formControlName="papellido" [class.is-invalid]="pnombreNoValido" [(ngModel)]="employee.surname" />
+                    <small class="p-error" *ngIf="submitted && !employees.surname">Campo es requerido.</small>
+                </div>
+
+                <div class="field">
+                    <label for="sapellido">Segundo Apellido</label>
+                    <input type="text" pInputText id="sapellido" name="sapellido" class="form-control form-control-sm" formControlName="sapellido" [class.is-invalid]="sapellidoNoValido" [(ngModel)]="employee.secondSurName" />
+                </div>
+
+                <!-- <div class="field">
+                    <label for="genero">Género</label>
+                    <select [(ngModel)]="employee.gender_id" class="form-control form-control-xl" formControlName="genero" [class.is-invalid]="generoNoValido" 
+                        name="genero" 
+                        id="genero" 
+                        style="border-radius: 0.2rem; width: 28rem; height:2.5rem ; border-width: 1px; border-color:deepskyblue ;  font-family: Arial, Helvetica, sans-serif; font-size: 1rem;">         
+                    <option *ngFor="let gender of genders" [value]="gender.id">
+                      <small>{{gender.description}}</small> 
+                   </option>
+                </select>
+                </div> -->
+
+                <div class="field">
+                    <label for="genero">Género</label>
+                    <p-dropdown inputId="genero" 
+                    class="form-control form-control-xl" formControlName="genero" [class.is-invalid]="generoNoValido"
+                    [(ngModel)]="employee.gender_id" [options]="genders" optionLabel="description" optionValue="id"></p-dropdown>
+                </div>
+
+                <!-- <div class="field">
+                    <label for="fnacimiento">Fecha de Cumpleados</label>
+                    <input type="date" pInputText id="fnacimiento" name="fnacimiento" class="form-control form-control-sm" formControlName="fnacimiento" [class.is-invalid]="fnacimientoNoValido" [(ngModel)]="employee.birthDate" />
+                </div> -->
+
+                <div class="field">
+                    <label for="fnacimiento">Fecha de Cumpleaños</label>
+                    <p-calendar [(ngModel)]="employee.birthDate"
+                    class="form-control form-control-sm" formControlName="fnacimiento" [class.is-invalid]="fnacimientoNoValido" 
+                    dateFormat="yy-mm-dd" inputId="fnacimiento" [showIcon]="true" yearRange="1900:2030"></p-calendar>
+                    
+                </div>
+
+                
+
+           <!--  <div class="field">
+                <label for="paisr">Pais Residencia</label>
+                <select [(ngModel)]="employee.country_id" class="form-control form-control-xl" formControlName="paisr" [class.is-invalid]="paisrNoValido" 
+                    name="paisr" 
+                    id="paisr" 
+                    style="border-radius: 0.2rem; width: 28rem; height:2.5rem ; border-width: 1px; border-color:deepskyblue ;  font-family: Arial, Helvetica, sans-serif; font-size: 1rem;">         
+                <option *ngFor="let countr of countries" [value]="countr.id">
+                  <small>{{countr.name}}</small> 
+               </option>
+            </select>
+            </div> -->
+
+            <div class="field">
+                <label for="paisr">Pais Residencia</label>
+                <p-dropdown inputId="paisr" [(ngModel)]="employee.country_id" 
+                class="form-control form-control-xl" formControlName="paisr" [class.is-invalid]="paisrNoValido" 
+                [options]="countries" optionLabel="name" optionValue="id"></p-dropdown>
+            </div>
+
+            <!-- <div class="field">
+                <label for="deptor">Departamento Residencia</label>
+                <select [(ngModel)]="employee.state_id" class="form-control form-control-xl" formControlName="deptor" [class.is-invalid]="deptorNoValido" 
+                    name="deptor" 
+                    id="deptor" 
+                    style="border-radius: 0.2rem; width: 28rem; height:2.5rem ; border-width: 1px; border-color:deepskyblue ;  font-family: Arial, Helvetica, sans-serif; font-size: 1rem;"
+                    (change)="onSelect($any($event.target).value)" 
+                    > 
+                    
+                <option *ngFor="let state of states" [value]="state.id">
+                  <small>{{state.name}}</small> 
+               </option>
+            </select>
+            </div> -->
+
+            <div class="field">
+                <label for="deptor">Departamento Residencia</label>
+                <p-dropdown inputId="deptor" [(ngModel)]="employee.state_id" [options]="states"
+                class="form-control form-control-xl" formControlName="deptor" [class.is-invalid]="deptorNoValido"
+                optionLabel="name" optionValue="id"   placeholder="Selecciones un departamento" (onChange)="onSelect($event.value)" ></p-dropdown>
+            </div>
+
+            <!-- <div class="field">
+                <label for="ciudadr">Municipio</label>
+                <select [(ngModel)]="employee.city_id" class="form-control form-control-xl" formControlName="ciudadr" [class.is-invalid]="ciudadrNoValido" 
+                    name="ciudadr" 
+                    id="ciudadr" 
+                    style="border-radius: 0.2rem; width: 28rem; height:2.5rem ; border-width: 1px; border-color:deepskyblue ;  font-family: Arial, Helvetica, sans-serif; font-size: 1rem;"
+                >      
+                <option *ngFor="let city of municipios" [value]="city.id">
+                  <small>{{city.name}}</small> 
+               </option>
+            </select>
+            </div> -->
+
+            <div class="field">
+                <label for="ciudadr">Ciudad Residencia</label>
+                <p-dropdown inputId="ciudadr" [(ngModel)]="employee.city_id" [options]="municipios" 
+                class="form-control form-control-xl" formControlName="ciudadr" [class.is-invalid]="ciudadrNoValido"
+                optionLabel="name"  optionValue="id"  ></p-dropdown>
+            </div>
+
+
+            <div class="field">
+                <label for="direccion">Dirección</label>
+                <input type="text" pInputText id="direccion" name="direccion" class="form-control form-control-sm" formControlName="direccion" [class.is-invalid]="direccionNoValido" [(ngModel)]="employee.address" />
+                <small class="p-error" *ngIf="submitted && !employees.address">Campo es requerido.</small>
+            </div>
+
+            <div class="field">
+                <label for="telefono">Telefono</label>
+                <input type="text" pInputText id="telefono" name="telefono" class="form-control form-control-sm" formControlName="telefono" [class.is-invalid]="telefonoNoValido" [(ngModel)]="employee.phone" />
+                <small class="p-error" *ngIf="submitted && !employees.phone">Campo es requerido.</small>
+            </div>
+
+            <div class="field">
+                <label for="celular">Celular</label>
+                <input type="text" pInputText id="celular" name="celular" class="form-control form-control-sm" formControlName="celular" [class.is-invalid]="celularNoValido" [(ngModel)]="employee.cellPhone" />
+                <small class="p-error" *ngIf="submitted && !employees.cellphone">Campo es requerido.</small>
+            </div>
+            
+            <div class="field">
+                <label for="email">Email</label>
+                <input type="text" pInputText id="email" name="email" class="form-control form-control-sm" formControlName="email" [class.is-invalid]="correoNoValido" [(ngModel)]="employee.email" />
+                <small class="p-error" *ngIf="submitted && !employees.email">Campo es requerido.</small>
+            </div>
+        
+            
+
+    </form>
+           
+        </ng-template>
+    
+        <ng-template pTemplate="footer">
+            <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+            <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"  (click)="guardar(infoEmployee)"></button>
+        </ng-template>
+    </p-dialog>
+
+
+     <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+ 
+
+
+    </p-panel>
+</div>
+
+</div>

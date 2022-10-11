@@ -1,0 +1,117 @@
+<div class="grid">
+    <div class="col-4 text-center text-500">
+        <div class= "row">
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            Información Para Pago
+        </div>
+    </div>
+    <div class="col-8">
+    <p-panel header=" Información Para Pago" class="text-600">
+        <ng-template pTemplate="icons">
+            <button pButton pRipple type="button"  icon="pi pi-pencil" class="p-button-rounded p-button-primary p-button-text text-left" (click)="editPaymentEmployee(employeePay)" style="position: inherit;">     
+            </button> 
+    </ng-template> 
+    <form>
+
+
+        <div class="grid">
+            <div class="col-4"> 
+            <div class="flex align-items-start justify-content-start">
+                <span class="text-500 font-medium">Banco:</span></div>
+            </div>
+            <div class="col-8">
+                <span class="text-400 align-items-start justify-content-start">{{bank.code}}-{{bank.name}}</span>
+            </div>
+            
+        </div>
+
+        <div class="grid">
+            <div class="col-4"> 
+            <div class="flex align-items-start justify-content-start">
+                <span class="text-500 font-medium">Tipo de Cuenta:</span></div>
+            </div>
+            <div class="col-8">
+                <span class="text-400 align-items-start justify-content-start">{{accountType.description}}</span>
+            </div>
+            
+        </div>
+
+        <div class="grid">
+            <div class="col-4"> 
+            <div class="flex align-items-start justify-content-start">
+                <span class="text-500 font-medium">Numero de Cuenta:</span></div>
+            </div>
+            <div class="col-8">
+                <span class="text-400 align-items-start justify-content-start">{{employeePay.accountNumber}}</span>
+            </div>
+            
+        </div>
+
+        
+    </form>
+
+
+    <p-dialog [(visible)]="paymentEmployeeDialog" [style]="{width: '500px'}" header="Infomación de Pago" [modal]="true" styleClass="p-fluid">
+        <ng-template pTemplate="content">
+            <form autocomplete="off" [formGroup]="forma" (ngSubmit)="guardar(employeePayment)" id="paymentEmployeeform" action="index.html">
+           
+           
+
+            <div class="field">
+                <label for="bank">Banco</label>
+                <select [(ngModel)]="employeesPayments.bank_id" class="form-control form-control-xl" formControlName="bank" [class.is-invalid]="bankNoValido" 
+                    name="bank" 
+                    id="bank" 
+                    style="border-radius: 0.2rem; width: 28rem; height:2.5rem ; border-width: 1px; border-color:deepskyblue ;  font-family: Arial, Helvetica, sans-serif; font-size: 1rem;"
+                >      
+                <option *ngFor="let bank of banks" [value]="bank.id">
+                  <small>{{bank.name}}</small> 
+               </option>
+            </select>
+            </div>
+
+            <div class="field">
+                <label for="accountType">Tipo de Cuenta</label>
+                <select [(ngModel)]="employeesPayments.accountType_id" class="form-control form-control-xl" formControlName="accountType" [class.is-invalid]="accountTypeNoValido" 
+                    name="accountType" 
+                    id="accountType" 
+                    style="border-radius: 0.2rem; width: 28rem; height:2.5rem ; border-width: 1px; border-color:deepskyblue ;  font-family: Arial, Helvetica, sans-serif; font-size: 1rem;"
+                >      
+                <option *ngFor="let accountType of accountTypes" [value]="accountType.id">
+                  <small>{{accountType.description}}</small> 
+               </option>
+            </select>
+            </div>
+
+          
+            <div class="field">
+                <label for="accountNumber">Número de Cuenta</label>
+                <input type="text" pInputText id="accountNumber" name="accountNumber" class="form-control form-control-sm" formControlName="accountNumber" [class.is-invalid]="accountNumberNoValido" [(ngModel)]="employeesPayments.accountNumber" />
+                <small class="p-error" *ngIf="submitted && !employeesPayments.accountNumber">Campo es requerido.</small>
+            </div>
+
+            
+    </form>
+           
+        </ng-template>
+    
+        <ng-template pTemplate="footer">
+            <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+            <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"  (click)="guardar(employeePayment)"></button>
+        </ng-template>
+    </p-dialog>
+
+
+     <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+
+
+    </p-panel>
+</div>
+
+</div>

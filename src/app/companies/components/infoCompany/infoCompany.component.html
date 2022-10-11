@@ -1,0 +1,317 @@
+<div class="grid">
+    <div class="col-4 text-center text-500">
+        <div class= "row">
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            Información Básica 
+        </div>
+    </div>
+    <div class="col-8">
+    <p-panel header="Información Básica" class="text-600">
+        <ng-template pTemplate="icons">
+            <button pButton pRipple type="button"  icon="pi pi-pencil" class="p-button-rounded p-button-primary p-button-text text-left" (click)="editInfoCompany(companies)" style="position: inherit;">     
+            </button> 
+    </ng-template> 
+    <form>
+
+
+    <div class="grid">
+        <div class="col-4"> 
+        <div class="flex align-items-start justify-content-start">
+            <span class="text-500 font-medium">Nit:</span></div>
+        </div>
+        <div class="col-8">
+            <span class="text-400 align-items-start justify-content-start">{{company.identification}} - {{company.verificationNumber}}</span>
+        </div>
+        
+    </div>
+
+
+    <div class="grid">
+        <div class="col-4"> 
+        <div class="flex align-items-start justify-content-start">
+            <span class="text-500 font-medium">Email:</span></div>
+        </div>
+        <div class="col-8"> 
+            <span class="text-400 align-items-start justify-content-start">{{company.email}}</span>
+        </div>
+        
+    </div>
+
+
+    <div class="grid">
+        <div class="col-4"> 
+        <div class="flex align-items-start justify-content-start">
+            <span class="text-500 font-medium">Dirección:</span></div>
+        </div>
+        <div class="col-8"> 
+            <span class="text-400 align-items-start justify-content-start">{{company.address}}</span>
+        </div>
+        </div>
+
+
+    <div class="grid">
+        <div class="col-4"> 
+        <div class="flex align-items-start justify-content-start">
+            <span class="text-500 font-medium mr-6">Telefono:</span> </div>
+        </div>
+        <div class="col-8"> 
+            <span class="text-400 align-items-start justify-content-start">{{company.phone}}</span>
+        </div>
+    </div>
+       
+
+    <div class="grid">
+        <div class="col-4"> 
+        <div class="flex align-items-start justify-content-start">
+            <span class="text-500 font-medium mr-7">Celular:</span></div>
+        </div>
+        <div class="col-8"> 
+            <span class="text-400 align-items-start justify-content-start">{{company.cellphone}}</span>
+        </div>
+    </div>
+
+
+    <div class="grid">
+        <div class="col-4"> 
+        <div class="flex align-items-start justify-content-start">
+            <span class="text-500 font-medium mr-7">Pais:</span></div>
+        </div>
+        <div class="col-8"> 
+            <span class="text-400 align-items-start justify-content-start">{{country.name}}</span>
+        </div>
+    </div>
+
+
+    <div class="grid">
+        <div class="col-4"> 
+        <div class="flex align-items-start justify-content-start">
+            <span class="text-500 font-medium mr-7">Departamento:</span></div>
+        </div>
+        <div class="col-8"> 
+            <span class="text-400 align-items-start justify-content-start">{{state.name}}</span>
+        </div>
+    </div>
+
+
+    <div class="grid">
+        <div class="col-4"> 
+        <div class="flex align-items-start justify-content-start">
+            <span class="text-500 font-medium mr-7">Municipio:</span></div>
+        </div>
+        <div class="col-8"> 
+            <span class="text-400 align-items-start justify-content-start">{{city.name}}</span>
+        </div>
+    </div>
+
+
+    <div class="grid">
+        <div class="col-4"> 
+        <div class="flex align-items-start justify-content-start">
+            <span class="text-500 font-medium mr-7">Representante Legal:</span></div> 
+        </div> 
+        <div class="col-8"> 
+            <span class="text-400 align-items-start justify-content-start">{{company.legalRepresentant}}</span>
+        </div>  
+    </div>
+
+
+    <div class="grid">
+        <div class="col-4"> 
+        <div class="flex align-items-start justify-content-start">
+            <span class="text-500 font-medium mr-7">Fecha Fundación:</span></div>
+        </div>
+        <div class="col-8"> 
+            <span class="text-400 align-items-start justify-content-start">{{company.fundationDate}}</span>
+        </div>
+    </div>
+
+
+    <div class="grid">
+        <div class="col-4"> 
+        <div class="flex align-items-start justify-content-start">
+            <span class="text-500 font-medium mr-7">Caja de Compensación:</span></div>
+        </div>
+        <div class="col-8"> 
+            <span class="text-400 align-items-start justify-content-start">{{caja.name}}</span>
+        </div>
+    </div>
+
+
+    <div class="grid">
+        <div class="col-4"> 
+        <div class="flex align-items-start justify-content-start">
+            <span class="text-500 font-medium mr-7">Entidad de Riesgo:</span></div>
+        </div>
+        <div class="col-8"> 
+            <span class="text-400 align-items-start justify-content-start">{{riesgo.name}}</span>
+        </div>
+    </div>
+
+
+    </form>
+
+
+    <p-dialog [(visible)]="infoCompanyDialog" [style]="{width: '500px'}" header="Información Básica" [modal]="true" styleClass="p-fluid">
+        <ng-template pTemplate="content">
+            <form autocomplete="off" [formGroup]="forma" (ngSubmit)="guardar(companyInfo)" id="infoCompanyform" action="index.html">
+           
+            <div class="field">
+                <label for="name">Razón Social</label>
+                <input type="text" pInputText id="name" name="name" class="form-control form-control-sm" formControlName="name" [class.is-invalid]="nameNoValido" [(ngModel)]="company.companyName" />
+                <small class="p-error" *ngIf="submitted && !companies.name">Campo es requerido.</small>
+            </div>
+
+            <div class="field">
+                <label for="tidentificacion">Tipo Identificación</label>
+                <select [(ngModel)]="company.identificationType_id" class="form-control form-control-sm" formControlName="tidentificacion" [class.is-invalid]="tidentificacionNoValido" 
+                    name="tidentificacion" 
+                    id="tidentificacion" 
+                    style="border-radius: 0.2rem; width: 28rem; height:2.5rem ; border-width: 1px; border-color:deepskyblue ;  font-family: Arial, Helvetica, sans-serif; font-size: 1rem;">         
+                <option *ngFor="let tipo of tiposd" [value]="tipo.id">
+                  <small>{{tipo.description}}</small> 
+               </option>
+            </select>
+            </div>
+
+            <div class="formgrid grid">
+                  <div class="field col-8">
+                
+                    <label for="nit">Nit</label>
+                    <input type="text" pInputText id="nit" name="nit" class="form-control form-control-sm" formControlName="nit" [class.is-invalid]="nitNoValido" [(ngModel)]="company.identification" />
+                    <small class="p-error" *ngIf="submitted && !companies.identification">Campo es requerido.</small>
+                 </div>
+
+                 <div class="field col-4">
+                    <label for="digitov">Dv</label>
+                    <input type="text" pInputText id="digitov" name="digitov" class="form-control form-control-sm" formControlName="digitov" [class.is-invalid]="digitovNoValido" [(ngModel)]="company.verificationNumber" />
+                    <small class="p-error" *ngIf="submitted && !companies.identification">Campo es requerido.</small>
+                 </div>
+            </div>
+
+            <div class="field">
+                <label for="pais">Pais</label>
+                <select [(ngModel)]="company.country_id" class="form-control form-control-xl" formControlName="pais" [class.is-invalid]="paisNoValido" 
+                    name="pais" 
+                    id="pais" 
+                    style="border-radius: 0.2rem; width: 28rem; height:2.5rem ; border-width: 1px; border-color:deepskyblue ;  font-family: Arial, Helvetica, sans-serif; font-size: 1rem;">         
+                <option *ngFor="let countr of countries" [value]="countr.id">
+                  <small>{{countr.name}}</small> 
+               </option>
+            </select>
+            </div>
+
+            <div class="field">
+                <label for="depto">Departamento</label>
+                <select [(ngModel)]="company.state_id" class="form-control form-control-xl" formControlName="depto" [class.is-invalid]="deptoNoValido" 
+                    name="depto" 
+                    id="depto" 
+                    style="border-radius: 0.2rem; width: 28rem; height:2.5rem ; border-width: 1px; border-color:deepskyblue ;  font-family: Arial, Helvetica, sans-serif; font-size: 1rem;"
+                    (change)="onSelect($any($event.target).value)" 
+                    required autofocus > 
+                    
+                <option *ngFor="let state of states" [value]="state.id">
+                  <small>{{state.name}}</small> 
+               </option>
+            </select>
+            </div>
+
+            <div class="field">
+                <label for="ciudad">Municipio</label>
+                <select [(ngModel)]="company.city_id" class="form-control form-control-xl" formControlName="ciudad" [class.is-invalid]="ciudadNoValido" 
+                    name="ciudad" 
+                    id="ciudad" 
+                    style="border-radius: 0.2rem; width: 28rem; height:2.5rem ; border-width: 1px; border-color:deepskyblue ;  font-family: Arial, Helvetica, sans-serif; font-size: 1rem;"
+                >      
+                <option *ngFor="let city of municipios" [value]="city.id">
+                  <small>{{city.name}}</small> 
+               </option>
+            </select>
+            </div>
+
+            <div class="field">
+                <label for="direccion">Dirección</label>
+                <input type="text" pInputText id="direccion" name="direccion" class="form-control form-control-sm" formControlName="direccion" [class.is-invalid]="direccionNoValido" [(ngModel)]="company.address" />
+                <small class="p-error" *ngIf="submitted && !companies.address">Campo es requerido.</small>
+            </div>
+
+            <div class="field">
+                <label for="telefono">Telefono</label>
+                <input type="text" pInputText id="telefono" name="telefono" class="form-control form-control-sm" formControlName="telefono" [class.is-invalid]="telefonoNoValido" [(ngModel)]="company.phone" />
+                <small class="p-error" *ngIf="submitted && !companies.phone">Campo es requerido.</small>
+            </div>
+
+            <div class="field">
+                <label for="celular">Celular</label>
+                <input type="text" pInputText id="celular" name="celular" class="form-control form-control-sm" formControlName="celular" [class.is-invalid]="telefonoNoValido" [(ngModel)]="company.cellphone" />
+                <small class="p-error" *ngIf="submitted && !companies.cellphone">Campo es requerido.</small>
+            </div>
+            
+            <div class="field">
+                <label for="email">Email</label>
+                <input type="text" pInputText id="email" name="email" class="form-control form-control-sm" formControlName="email" [class.is-invalid]="correoNoValido" [(ngModel)]="company.email" />
+                <small class="p-error" *ngIf="submitted && !companies.email">Campo es requerido.</small>
+            </div>
+
+            <div class="field">
+                <label for="rlegal">Representante Legal</label>
+                <input type="text" pInputText id="rlegal" name="rlegal" class="form-control form-control-sm" formControlName="rlegal" [class.is-invalid]="rlegalNoValido" [(ngModel)]="company.legalRepresentant" />
+                <small class="p-error" *ngIf="submitted && !companies.legalRepresentant">Campo es requerido.</small>
+            </div>
+
+            <div class="field">
+                <label for="ffundacion">Fecha de Fundación</label>
+                <input type="date" pInputText id="ffundacion" name="ffundacion" class="form-control form-control-sm" formControlName="ffundacion" [class.is-invalid]="ffundacionNoValido" [(ngModel)]="company.fundationDate" />
+                <small class="p-error" *ngIf="submitted && !companies.fundationDate">Campo es requerido.</small>
+            </div>
+
+            <div class="field">
+                <label for="riesgoe">Entidad de Riesgos</label>
+                <select [(ngModel)]="company.entityRisks_id" class="form-control form-control-xl" formControlName="riesgoe" [class.is-invalid]="riesgoeNoValido" 
+                    name="riesgoe" 
+                    id="riesgoe" 
+                    style="border-radius: 0.2rem; width: 28rem; height:2.5rem ; border-width: 1px; border-color:deepskyblue ;  font-family: Arial, Helvetica, sans-serif; font-size: 1rem;"
+                >      
+                <option *ngFor="let riesgo of riesgos" [value]="riesgo.id">
+                  <small>{{riesgo.name}}</small> 
+               </option>
+            </select>
+            </div>
+
+            <div class="field">
+                <label for="caja">Caja de Compensación</label>
+                <select [(ngModel)]="company.compensationFund_id" class="form-control form-control-xl" formControlName="caja" [class.is-invalid]="cajaNoValido" 
+                    name="caja" 
+                    id="caja" 
+                    style="border-radius: 0.2rem; width: 28rem; height:2.5rem ; border-width: 1px; border-color:deepskyblue ;  font-family: Arial, Helvetica, sans-serif; font-size: 1rem;"
+                >      
+                <option *ngFor="let caja of cajas" [value]="caja.id">
+                  <small>{{caja.name}}</small> 
+               </option>
+            </select>
+            </div>
+
+    </form>
+           
+        </ng-template>
+    
+        <ng-template pTemplate="footer">
+            <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+            <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"  (click)="guardar(companyInfo)"></button>
+        </ng-template>
+    </p-dialog>
+
+
+     <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+
+
+
+    </p-panel>
+</div>
+
+</div>

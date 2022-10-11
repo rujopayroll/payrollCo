@@ -1,0 +1,92 @@
+
+
+<div class="font-medium text-center text-2xl no-underline text-blue-500 ">Registrate Gratis!!</div>
+<form autocomplete="off" [formGroup]="formaRegister" (ngSubmit)="registrarUsuario()" id="loginform">
+    
+    <div class="p-field mb-3">
+        
+            <label for="name" class="block text-900 font-medium mb-2">Tu Nombre</label>
+            <input formControlName="name" name= "name" id="nombre" type="text" pInputText class="w-full"/>
+                    <small id="name" 
+                    class="p-error"
+                    *ngIf="campoEsValido('name')">Campo Obligatorio.</small>
+
+    </div>
+
+    
+
+    <div class="form-group mb-3">
+        <div class="p-col-xs-12">
+           
+            <label for="companyName" class="block text-900 font-medium mb-2">Nombre Empresa</label>
+            <input formControlName="companyName" name= "companyName" id="companyName" type="text" pInputText class="w-full">
+            <small id="companyName" 
+                    class="p-error"
+                    *ngIf="campoEsValido('companyName')">Campo Obligatorio.</small>
+
+
+
+        </div>
+    </div>
+
+    <div class="form-group mb-3">
+        <div class="p-col-xs-12">
+
+            <label for="email" class="block text-900 font-medium mb-2">Email</label>
+            <input formControlName="email" name= "email" id="email" type="text" pInputText class="w-full">
+            <small id="email" 
+                    class="p-error"
+                    *ngIf="campoEsValido('email')">Campo Obligatorio.</small>
+
+        </div>
+    </div>
+    <div class="form-group mb-3">
+        <div class="p-col-xs-12">
+        
+            
+            <label for="cellPhone" class="block text-900 font-medium mb-2">Telefono</label>
+            <input formControlName="cellPhone" name= "cellPhone" id="cellPhone" type="text" pInputText class="w-full">
+            <small id="cellPhone" 
+            class="p-error"
+            *ngIf="campoEsValido('cellPhone')">Campo Obligatorio.</small>
+        </div>
+    </div>
+    <div class="form-group mb-3">
+        <div class="col-xs-12">
+     
+
+            <label for="password" class="block text-900 font-medium mb-2">Password</label>        
+            <input formControlName="password" name= "password" id="password" type="password" pInputText class="w-full">
+            <small id="password" 
+            class="p-error"
+            *ngIf="campoEsValido('password')">Campo Obligatorio.</small>
+
+        </div>
+    </div>
+   
+
+    <div class="form-group row mb-3">
+        <div class="p-col-xs-12">
+
+            <div class="flex align-items-center">
+                <p-checkbox formControlName="condiciones" name="condiciones" id="condiciones" [binary]="true" styleClass="mr-2"></p-checkbox>
+                <label for="condiciones">Estoy de acuerdo con los <a href="#">Terminos</a></label>
+            </div> 
+        </div>
+    </div>
+
+    <div class="form-group text-center">
+        <div class="p-col-xs-12" primary-box>
+        <button pButton pRipple label="Guardar" icon="pi pi-user" class="p-button-text"  class="w-full" (click)="registrarUsuario()"></button>
+
+                    
+        </div>
+    </div>
+  
+    <div class="form-group m-b-0">
+        <div class="col-sm-12 text-center">
+            <p>Tienes una cuenta? <a routerLink="/auth/login" class="text-info m-l-5"><b>Ingresa ahora</b></a></p>
+        </div>
+    </div>
+</form>
+

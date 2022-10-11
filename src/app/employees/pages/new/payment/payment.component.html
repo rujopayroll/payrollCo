@@ -1,0 +1,53 @@
+<p-card class="m-1">
+    <!-- <ng-template pTemplate="title">
+        Información para Pago
+    </ng-template> -->
+   
+    <ng-template pTemplate="content">
+  
+ <div class="p-fluid">
+
+    <div class="formgrid grid">
+        <div class="field col-12 md:col-12">
+            <label for="bank">Banco</label>
+            <p-dropdown inputId="bank" class="p-inputtext-sm" [(ngModel)]="paymentInformation.bank"
+            [options]="banks" optionLabel="name" optionValue="id"></p-dropdown>
+        </div>
+
+    </div>
+
+    <div class="formgrid grid">
+        <div class="field col-12 md:col-12">
+            <label for="accountType">Tipo de Cuenta</label>
+            <p-dropdown inputId="accountType" class="p-inputtext-sm" [(ngModel)]="paymentInformation.accountType" 
+            [options]="accountTypes" optionLabel="description" optionValue="id"></p-dropdown>
+        </div>
+
+    </div>
+
+   
+
+    <div class="formgrid grid">
+        <div class="field col-12 md:col-12">
+            <label for="accountNumber">Número de Cuenta</label>
+            <input #accountNumber="ngModel" class="p-inputtext-sm" id="accountNumber" type="number" pInputText [(ngModel)]="paymentInformation.accountNumber" [ngClass]="{'ng-dirty': (accountNumber.invalid && submitted) || (accountNumber.dirty && accountNumber.invalid)}"> 
+            <small *ngIf="(accountNumber.invalid && submitted) || (accountNumber.dirty && accountNumber.invalid)" class="p-error">Campo Requerido.</small>
+        </div>        
+
+    </div>
+
+    
+
+   
+
+
+</div>
+
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <div class="grid grid-nogutter justify-content-between">
+            <p-button label="Anterior" (onClick)="prevPage()" icon="pi pi-angle-left" iconPos="left"></p-button>
+            <p-button label="Siguiente" (onClick)="nextPage()" icon="pi pi-angle-right" iconPos="right"></p-button> 
+        </div>
+    </ng-template>
+</p-card>

@@ -1,0 +1,164 @@
+<div class="grid">
+    <div class="col-4 text-center text-500">
+        <div class= "row">
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            Información de Pago
+        </div>
+    </div>
+<div class="col-8">
+    <p-panel header="Información de Pago" class="text-600">
+        <ng-template pTemplate="icons">
+            <button pButton pRipple type="button"  (click)="editPaymentCompany(companyPayments)" icon="pi pi-pencil" class="p-button-rounded p-button-primary p-button-text text-left">     
+            </button> 
+    </ng-template> 
+    <form>
+
+
+    <div class="grid">
+        <div class="col-4"> 
+        <div class="flex align-items-start justify-content-start">
+            <span class="text-500 font-medium">Periocidad de Pago:</span></div>
+        </div>
+        <div class="col-8">
+            <span class="text-400 align-items-start justify-content-start">{{paymentFrequency.description}}</span>
+        </div>
+        
+    </div>
+
+
+    <div class="grid">
+        <div class="col-4"> 
+        <div class="flex align-items-start justify-content-start">
+            <span class="text-500 font-medium">Forma de Pago:</span></div>
+        </div>
+        <div class="col-8"> 
+            <span class="text-400 align-items-start justify-content-start">{{paymentMethod.description}}</span>
+        </div>
+        
+    </div>
+
+
+    <div class="grid">
+        <div class="col-4"> 
+        <div class="flex align-items-start justify-content-start">
+            <span class="text-500 font-medium">Banco Dispersor:</span></div>
+        </div>
+        <div class="col-8"> 
+            <span class="text-400 align-items-start justify-content-start">{{bank.name}}</span>
+        </div>
+        </div>
+
+
+    <div class="grid">
+        <div class="col-4"> 
+        <div class="flex align-items-start justify-content-start">
+            <span class="text-500 font-medium mr-6">Tipo de Cuenta:</span> </div>
+        </div>
+        <div class="col-8"> 
+            <span class="text-400 align-items-start justify-content-start">{{accountType.description}}</span>
+        </div>
+    </div>
+       
+
+    <div class="grid">
+        <div class="col-4"> 
+        <div class="flex align-items-start justify-content-start">
+            <span class="text-500 font-medium mr-7">Número de Cuenta:</span></div>
+        </div>
+        <div class="col-8"> 
+            <span class="text-400 align-items-start justify-content-start">{{companyPayment.accountNumber}}</span>
+        </div>
+    </div>
+
+    </form>
+
+
+    <p-dialog [(visible)]="paymentCompanyDialog" [style]="{width: '500px'}" header="Información para Pago" [modal]="true" styleClass="p-fluid">
+        <ng-template pTemplate="content">
+            <form autocomplete="off" [formGroup]="forma" (ngSubmit)="guardar(companyInfo)" id="infoCompanyform" action="index.html">
+           
+
+            <div class="field">
+                <label for="frecuenciapago">Periocidad de Pago</label>
+                <select [(ngModel)]="companyPayment.paymentFrequency_id" class="form-control form-control-xl" formControlName="frecuenciapago" [class.is-invalid]="frecuenciapagoNoValido" 
+                    name="frecuenciapago" 
+                    id="frecuenciapago" 
+                    style="border-radius: 0.2rem; width: 28rem; height:2.5rem ; border-width: 1px; border-color:deepskyblue ;  font-family: Arial, Helvetica, sans-serif; font-size: 1rem;">         
+                <option *ngFor="let payfreq of paymentFrequencys" [value]="payfreq.id">
+                  <small>{{payfreq.description}}</small> 
+               </option>
+            </select>
+            </div>
+
+
+
+            <div class="field">
+                <label for="metodopago">Forma de Pago</label>
+                <select [(ngModel)]="companyPayment.paymentMethod_id" class="form-control form-control-xl" formControlName="metodopago" [class.is-invalid]="metodopagoNoValido" 
+                    name="metodopago" 
+                    id="metodopago" 
+                    style="border-radius: 0.2rem; width: 28rem; height:2.5rem ; border-width: 1px; border-color:deepskyblue ;  font-family: Arial, Helvetica, sans-serif; font-size: 1rem;">         
+                <option *ngFor="let payMeth of paymentMethods" [value]="payMeth.id">
+                  <small>{{payMeth.description}}</small> 
+               </option>
+            </select>
+            </div>
+
+            <div class="field">
+                <label for="banco">Banco dispersor</label>
+                <select [(ngModel)]="companyPayment.bank_id" class="form-control form-control-xl" formControlName="banco" [class.is-invalid]="bancoNoValido" 
+                    name="banco" 
+                    id="banco" 
+                    style="border-radius: 0.2rem; width: 28rem; height:2.5rem ; border-width: 1px; border-color:deepskyblue ;  font-family: Arial, Helvetica, sans-serif; font-size: 1rem;">         
+                <option *ngFor="let bank of banks" [value]="bank.id">
+                  <small>{{bank.name}}</small> 
+               </option>
+            </select>
+            </div>
+
+
+            <div class="field">
+                <label for="tipocuenta">Tipo de Cuenta</label>
+                <select [(ngModel)]="companyPayment.accountType_id" class="form-control form-control-xl" formControlName="tipocuenta" [class.is-invalid]="tipocuentaNoValido" 
+                    name="tipocuenta" 
+                    id="tipocuenta" 
+                    style="border-radius: 0.2rem; width: 28rem; height:2.5rem ; border-width: 1px; border-color:deepskyblue ;  font-family: Arial, Helvetica, sans-serif; font-size: 1rem;">         
+                <option *ngFor="let accountt of accountTypes" [value]="accountt.id">
+                  <small>{{accountt.description}}</small> 
+               </option>
+            </select>
+            </div>
+
+            
+
+            <div class="field">
+                <label for="numerocuenta">Número Cuenta</label>
+                <input type="text" pInputText id="numerocuenta" name="numerocuenta" class="form-control form-control-sm" formControlName="numerocuenta" [class.is-invalid]="numerocuentaNoValido" [(ngModel)]="companyPayment.accountNumber" />
+                <small class="p-error" *ngIf="submitted && !companyPayments.accountNumber">Campo es requerido.</small>
+            </div>
+
+    </form>
+           
+        </ng-template>
+    
+        <ng-template pTemplate="footer">
+            <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+            <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"  (click)="guardar(companyInfo)"></button>
+        </ng-template>
+    </p-dialog>
+
+
+     <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+
+
+
+    </p-panel>
+</div>
+
+</div>

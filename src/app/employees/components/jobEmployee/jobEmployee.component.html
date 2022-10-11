@@ -1,0 +1,147 @@
+<div class="grid">
+    <div class="col-4 text-center text-500">
+        <div class= "row">
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            Información del Puesto
+        </div>
+    </div>
+    <div class="col-8">
+    <p-panel header="Información del Puesto" class="text-600">
+        <ng-template pTemplate="icons">
+            <button pButton pRipple type="button"  icon="pi pi-pencil" class="p-button-rounded p-button-primary p-button-text text-left" (click)="editJobEmployee(employeeJob)" style="position: inherit;">     
+            </button> 
+    </ng-template> 
+    <form>
+
+
+        <div class="grid">
+            <div class="col-4"> 
+            <div class="flex align-items-start justify-content-start">
+                <span class="text-500 font-medium">Centro de Costo:</span></div>
+            </div>
+            <div class="col-8">
+                <span class="text-400 align-items-start justify-content-start">{{costCenter.code}}-{{costCenter.description}}</span>
+            </div>
+            
+        </div>
+
+        <div class="grid">
+            <div class="col-4"> 
+            <div class="flex align-items-start justify-content-start">
+                <span class="text-500 font-medium">Area:</span></div>
+            </div>
+            <div class="col-8">
+                <span class="text-400 align-items-start justify-content-start">{{area.description}}</span>
+            </div>
+            
+        </div>
+
+        <div class="grid">
+            <div class="col-4"> 
+            <div class="flex align-items-start justify-content-start">
+                <span class="text-500 font-medium">Cargo:</span></div>
+            </div>
+            <div class="col-8">
+                <span class="text-400 align-items-start justify-content-start">{{position.description}}</span>
+            </div>
+            
+        </div>
+
+        <div class="grid">
+            <div class="col-4"> 
+            <div class="flex align-items-start justify-content-start">
+                <span class="text-500 font-medium">Sucursal:</span></div>
+            </div>
+            <div class="col-8">
+                <span class="text-400 align-items-start justify-content-start">{{subsidiary.description}}</span>
+            </div>
+            
+        </div>
+
+    </form>
+
+
+    <p-dialog [(visible)]="jobEmployeeDialog" [style]="{width: '500px'}" header="Información del Puesto" [modal]="true" styleClass="p-fluid">
+        <ng-template pTemplate="content">
+            <form autocomplete="off" [formGroup]="forma" (ngSubmit)="guardar(employeeJob)" id="jobEmployeeform" action="index.html">
+           
+           
+
+            <div class="field">
+                <label for="costCenter">Centro de Costo</label>
+                <select [(ngModel)]="employeeJ.costCenter_id" class="form-control form-control-xl" formControlName="costCenter" [class.is-invalid]="costCenterNoValido" 
+                    name="costCenter" 
+                    id="costCenter" 
+                    style="border-radius: 0.2rem; width: 28rem; height:2.5rem ; border-width: 1px; border-color:deepskyblue ;  font-family: Arial, Helvetica, sans-serif; font-size: 1rem;"
+                >      
+                <option *ngFor="let costC of costCenters" [value]="costC.id">
+                  <small>{{costC.code}} - {{costC.description}}</small> 
+               </option>
+            </select>
+            </div>
+
+            <div class="field">
+                <label for="area">Área</label>
+                <select [(ngModel)]="employeeJ.area_id" class="form-control form-control-xl" formControlName="area" [class.is-invalid]="areaNoValido" 
+                    name="area" 
+                    id="area" 
+                    style="border-radius: 0.2rem; width: 28rem; height:2.5rem ; border-width: 1px; border-color:deepskyblue ;  font-family: Arial, Helvetica, sans-serif; font-size: 1rem;"
+                >      
+                <option *ngFor="let area of areas" [value]="area.id">
+                  <small>{{area.description}}</small> 
+               </option>
+            </select>
+            </div>
+
+            <div class="field">
+                <label for="position">Cargo</label>
+                <select [(ngModel)]="employeeJ.position_id" class="form-control form-control-xl" formControlName="position" [class.is-invalid]="positionNoValido" 
+                    name="position" 
+                    id="position" 
+                    style="border-radius: 0.2rem; width: 28rem; height:2.5rem ; border-width: 1px; border-color:deepskyblue ;  font-family: Arial, Helvetica, sans-serif; font-size: 1rem;"
+                >      
+                <option *ngFor="let position of positions" [value]="position.id">
+                  <small>{{position.description}}</small> 
+               </option>
+            </select>
+            </div>
+
+
+            <div class="field">
+                <label for="subsidiary">Sucursal</label>
+                <select [(ngModel)]="employeeJ.subsidiary_id" class="form-control form-control-xl" formControlName="subsidiary" [class.is-invalid]="subsidiaryNoValido" 
+                    name="subsidiary" 
+                    id="subsidiary" 
+                    style="border-radius: 0.2rem; width: 28rem; height:2.5rem ; border-width: 1px; border-color:deepskyblue ;  font-family: Arial, Helvetica, sans-serif; font-size: 1rem;"
+                >      
+                <option *ngFor="let subsidiary of subsidiarys" [value]="subsidiary.id">
+                  <small>{{subsidiary.description}}</small> 
+               </option>
+            </select>
+            </div>
+
+            
+    </form>
+           
+        </ng-template>
+    
+        <ng-template pTemplate="footer">
+            <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+            <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"  (click)="guardar(employeeJob)"></button>
+        </ng-template>
+    </p-dialog>
+
+
+     <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+
+
+    </p-panel>
+</div>
+
+</div>

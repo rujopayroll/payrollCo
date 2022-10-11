@@ -1,0 +1,167 @@
+<div class="grid">
+    <div class="col-4 text-center text-500">
+        <div class= "row">
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            Información Entidades Seguridad Social
+        </div>
+    </div>
+    <div class="col-8">
+    <p-panel header="Información Entidades Seguridad Social" class="text-600">
+        <ng-template pTemplate="icons">
+            <button pButton pRipple type="button"  icon="pi pi-pencil" class="p-button-rounded p-button-primary p-button-text text-left" (click)="editSSEmployee(employeeSocialSecurity)" style="position: inherit;">     
+            </button> 
+    </ng-template> 
+    <form>
+
+
+        <div class="grid">
+            <div class="col-4"> 
+            <div class="flex align-items-start justify-content-start">
+                <span class="text-500 font-medium">Entidad de Salud:</span></div>
+            </div>
+            <div class="col-8">
+                <span class="text-400 align-items-start justify-content-start">{{socialSecurityEntityHealth.identification}} - {{socialSecurityEntityHealth.name}}</span>
+            </div>
+            
+        </div>
+
+        <div class="grid">
+            <div class="col-4"> 
+            <div class="flex align-items-start justify-content-start">
+                <span class="text-500 font-medium">Entidad de Pensión:</span></div>
+            </div>
+            <div class="col-8">
+                <span class="text-400 align-items-start justify-content-start">{{socialSecurityEntityPension.identification}} - {{socialSecurityEntityPension.name}}</span>
+            </div>
+            
+        </div>
+
+        <div class="grid">
+            <div class="col-4"> 
+            <div class="flex align-items-start justify-content-start">
+                <span class="text-500 font-medium">Fondo de Cesantias:</span></div>
+            </div>
+            <div class="col-8">
+                <span class="text-400 align-items-start justify-content-start">{{socialSecurityEntitySeverance.identification}} - {{socialSecurityEntitySeverance.name}}</span>
+            </div>
+            
+        </div>
+
+        <div class="grid">
+            <div class="col-4"> 
+            <div class="flex align-items-start justify-content-start">
+                <span class="text-500 font-medium">Tipo de Cotizante:</span></div>
+            </div>
+            <div class="col-8">
+                <span class="text-400 align-items-start justify-content-start">{{contributorType.description}}</span>
+            </div>
+            
+        </div>
+
+        <div class="grid">
+            <div class="col-4"> 
+            <div class="flex align-items-start justify-content-start">
+                <span class="text-500 font-medium">Subtipo de Cotizante:</span></div>
+            </div>
+            <div class="col-8">
+                <span class="text-400 align-items-start justify-content-start">{{contributorSubType.description}}</span>
+            </div>
+            
+        </div>
+    </form>
+
+    <p-dialog [(visible)]="ssEmployeeDialog" [style]="{width: '500px'}" header="Información de Seguridad social" [modal]="true" styleClass="p-fluid">
+        <ng-template pTemplate="content">
+            <form autocomplete="off" [formGroup]="forma" (ngSubmit)="guardar(employeesSocialSecurity)" id="ssEmployeeform" action="index.html">
+           
+           
+
+            <div class="field">
+                <label for="entityHealth">Entidad de Salud</label>
+                <select [(ngModel)]="employeeSS.entityHealth_id" class="form-control form-control-xl" formControlName="entityHealth" [class.is-invalid]="entityHealthNoValido" 
+                    name="entityHealth" 
+                    id="entityHealth" 
+                    style="border-radius: 0.2rem; width: 28rem; height:2.5rem ; border-width: 1px; border-color:deepskyblue ;  font-family: Arial, Helvetica, sans-serif; font-size: 1rem;"
+                >      
+                <option *ngFor="let entityHealth of socialSecurityEntityHealths" [value]="entityHealth.id">
+                  <small>{{entityHealth.name}}</small> 
+               </option>
+            </select>
+            </div>
+
+            <div class="field">
+                <label for="entityPension">Entidad de Pensión</label>
+                <select [(ngModel)]="employeeSS.entityPension_id" class="form-control form-control-xl" formControlName="entityPension" [class.is-invalid]="entityPensionNoValido" 
+                    name="entityPension" 
+                    id="entityPension" 
+                    style="border-radius: 0.2rem; width: 28rem; height:2.5rem ; border-width: 1px; border-color:deepskyblue ;  font-family: Arial, Helvetica, sans-serif; font-size: 1rem;"
+                >      
+                <option *ngFor="let EntityPension of socialSecurityEntityPensions" [value]="EntityPension.id">
+                  <small>{{EntityPension.name}}</small> 
+               </option>
+            </select>
+            </div>
+
+            <div class="field">
+                <label for="entitySeverance">Fondo de Cesantias</label>
+                <select [(ngModel)]="employeeSS.entitySeverance_id" class="form-control form-control-xl" formControlName="entitySeverance" [class.is-invalid]="entitySeveranceNoValido" 
+                    name="entitySeverance" 
+                    id="entitySeverance" 
+                    style="border-radius: 0.2rem; width: 28rem; height:2.5rem ; border-width: 1px; border-color:deepskyblue ;  font-family: Arial, Helvetica, sans-serif; font-size: 1rem;"
+                >      
+                <option *ngFor="let EntitySeverance of socialSecurityEntitySeverances" [value]="EntitySeverance.id">
+                  <small>{{EntitySeverance.name}}</small> 
+               </option>
+            </select>
+            </div>
+
+
+            <div class="field">
+                <label for="contributorType">Tipo de Cotizante</label>
+                <select [(ngModel)]="employeeSS.contributorType_id" class="form-control form-control-xl" formControlName="contributorType" [class.is-invalid]="contributorTypeNoValido" 
+                    name="contributorType" 
+                    id="contributorType" 
+                    style="border-radius: 0.2rem; width: 28rem; height:2.5rem ; border-width: 1px; border-color:deepskyblue ;  font-family: Arial, Helvetica, sans-serif; font-size: 1rem;"
+                >      
+                <option *ngFor="let contributorType of contributorTypes" [value]="contributorType.id">
+                  <small>{{contributorType.description}}</small> 
+               </option>
+            </select>
+            </div>
+
+            <div class="field">
+                <label for="contributorSubType">Subtipo de Cotizante</label>
+                <select [(ngModel)]="employeeSS.contributorSubType_id" class="form-control form-control-xl" formControlName="contributorSubType" [class.is-invalid]="contributorSubTypeNoValido" 
+                    name="contributorSubType" 
+                    id="contributorSubType" 
+                    style="border-radius: 0.2rem; width: 28rem; height:2.5rem ; border-width: 1px; border-color:deepskyblue ;  font-family: Arial, Helvetica, sans-serif; font-size: 1rem;"
+                >      
+                <option *ngFor="let contributorSubType of contributorSubTypes" [value]="contributorSubType.id">
+                  <small>{{contributorSubType.description}}</small> 
+               </option>
+            </select>
+            </div>
+
+    </form>
+           
+        </ng-template>
+    
+        <ng-template pTemplate="footer">
+            <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+            <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"  (click)="guardar(employeeSocialSecurity)"></button>
+        </ng-template>
+    </p-dialog>
+
+
+     <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+
+</p-panel>
+</div>
+
+</div>
