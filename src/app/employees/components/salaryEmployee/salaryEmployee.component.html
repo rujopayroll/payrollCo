@@ -20,22 +20,23 @@
         
     <ng-template pTemplate="icons">
             
-            <button pButton pRipple type="button"  icon="pi pi-plus" class="p-button-rounded p-button-primary p-button-text text-left" (click)="openNewEmployeeSalary()"> </button> 
+            <button pButton pRipple type="button"  icon="pi pi-plus" label="Nuevo Salario"class="p-button-rounded p-button-primary p-button-text text-left" (click)="openNewEmployeeSalary()"> </button> 
       
          </ng-template>
 
          <div>
              <!-- <p-table #dt  [value]="costCenter" [rows]="4" [paginator]="true"  [scrollable]="true"> -->
                 <p-table #dt [value]="employeeSalaries" [scrollable]="true" scrollHeight="200px"
-                [(selection)]="selectedEmployeeSalary" [rowHover]="true" dataKey="id"
-                 >
+                [(selection)]="selectedEmployeeSalary" [rowHover]="true" dataKey="id">
           
                
                <ng-template pTemplate="header">
              
-                    <tr>
+                    <tr class="z-0">
+                        <div class=" relative flex justify-content-between align-items-center z-0">
+                            <th class="z-0" pSortableColumn="salaryT">Concepto<p-sortIcon field="salaryType_id"></p-sortIcon></th>
+                        </div>
                         
-                        <th pSortableColumn="salaryT">Concepto<p-sortIcon field="salaryType_id"></p-sortIcon></th>
                         <th pSortableColumn="salary">Salario<p-sortIcon field="salary"></p-sortIcon></th>
                         <th pSortableColumn="initialDate">F.Inicial <p-sortIcon field="initialSalaryDate"></p-sortIcon></th>
                         <th pSortableColumn="endDate">F.Final <p-sortIcon field="endSalaryDate"></p-sortIcon></th>

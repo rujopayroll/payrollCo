@@ -9,6 +9,7 @@ import { AuthService } from '../../../auth/services/authservice.index';
 
 import { Company } from '../../models/company.model';
 import { Subscriber } from 'rxjs';
+import { MessageService } from 'primeng/api';
 
 
 @Component({
@@ -21,6 +22,8 @@ export class ModalUploadComponent implements OnInit {
   public company: any = {};
   empresaseleccionada: any = {};
   empresa: any = {};
+  file!: File;
+  displayModal!: boolean;
   //usuario: Usuario;
   imagenSubir!: File | any;
   @Input() imagenS: any;
@@ -53,12 +56,13 @@ export class ModalUploadComponent implements OnInit {
                   }
                 }
 
-
+               
+                this.displayModal = this._modalUploadService.modal
 
                }
 
   ngOnInit(): void {
-    console.log('holllllaaaaaaaaaaa');
+    this.displayModal=true
   }
 
   verImagen(){
@@ -70,10 +74,12 @@ export class ModalUploadComponent implements OnInit {
   cerrarModal(){
     this.imagenTemp = null;
     this.imagenSubir = null;
+    this.file.name.slice;
     this._modalUploadService.ocultarModal();
+    
   }
 
-  seleccionImagen( archivo: File ){
+  seleccionImagen( archivo: File ): void{
 
     if ( !archivo ){
         this.imagenSubir = null;
@@ -99,7 +105,15 @@ export class ModalUploadComponent implements OnInit {
 
   }
 
+  onUpload(event: any) {
+  
+    this.file = event.files[0];
+    this.imagenSubir = this.file;
+  }
+  
+
   subirImagen(){
+    console.log('entro a subir imagen')
     if (this._modalUploadService.tipo === 'employee') {
 
       this._subirArchivoService.subirArchivoEmployee( this.imagenSubir, this._modalUploadService.tipo, this._modalUploadService.id)
@@ -107,6 +121,7 @@ export class ModalUploadComponent implements OnInit {
       
         this._modalUploadService.notificacion.emit( resp );
         this.cerrarModal();
+        
       
       })
       .catch(resp => {
@@ -131,6 +146,11 @@ export class ModalUploadComponent implements OnInit {
   
   }
 
+ 
+
+
 
 
 }
+ 
+

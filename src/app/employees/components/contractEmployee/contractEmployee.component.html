@@ -20,7 +20,7 @@
         
     <ng-template pTemplate="icons">
             
-            <button pButton pRipple type="button"  icon="pi pi-plus" class="p-button-rounded p-button-primary p-button-text text-left" (click)="openNewEmployeeContract()"> </button> 
+            <button pButton pRipple type="button"  label ="Nuevo Contrato" icon="pi pi-plus" class="p-button-rounded p-button-primary p-button-text text-left" (click)="openNewEmployeeContract()"></button> 
       
          </ng-template>
 
@@ -31,16 +31,16 @@
            
                
                <ng-template pTemplate="header">
-
+                
                 <tr>
                         
-                    <th pSortableColumn="contractType">Tipo Contrato <p-sortIcon field="contractType_id"></p-sortIcon></th>
-                    <th pSortableColumn="initialDate">F.Inicial <p-sortIcon field="initialContractDate"></p-sortIcon></th>
-                    <th pSortableColumn="endDate">F.Final <p-sortIcon field="endContractDate"></p-sortIcon></th>
-                    <th pSortableColumn="isActive">Estado <p-sortIcon field="isActive"></p-sortIcon></th>
+                    <th>Tipo Contrato</th>
+                    <th>F.Inicial</th>
+                    <th>F.Final</th>
+                    <th>Estado</th>
                     <th></th>
                 </tr>
-             
+          
             
                 </ng-template>
                 <ng-template pTemplate="body" let-contractEmployee>

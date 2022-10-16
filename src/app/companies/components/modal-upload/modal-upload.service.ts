@@ -7,7 +7,8 @@ export class ModalUploadService {
 
   public tipo!: string;
   public id!: string;
-  public oculto: string = 'ruben';
+  public oculto: string = 'oculto';
+  public modal!: boolean;
 
   public notificacion = new EventEmitter<any>();
 
@@ -17,11 +18,15 @@ export class ModalUploadService {
     this.oculto! = 'oculto';
     this.tipo = null!;
     this.id = null!;
+    this.modal = false;
   }
 
   mostrarModal( tipo: string, id: string | any ){
     this.oculto = '';
     this.tipo = tipo;
     this.id = id;
+    this.modal = true;
+    console.log('servicio modalupload tipo', tipo)
+    console.log('servicio modalupload id', id)
   }
 }

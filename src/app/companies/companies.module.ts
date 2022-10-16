@@ -16,6 +16,8 @@ import { ConceptComponent } from './components/concept/concept.component';
 
 
 
+
+
 @NgModule({
   declarations: [
     CompaniesComponent,
@@ -26,7 +28,8 @@ import { ConceptComponent } from './components/concept/concept.component';
     PaymentCompanyComponent,
     PayrollCompanyComponent,
     ConceptComponent,
-    InfoCompanyComponent
+    InfoCompanyComponent,
+   
   ],
   imports: [
     CommonModule,

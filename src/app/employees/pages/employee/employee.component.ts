@@ -7,6 +7,7 @@ import {MenuItem} from 'primeng/api';
 import { PageScrollService } from 'ngx-page-scroll-core';
 import { DOCUMENT } from '@angular/common';
 import { Inject } from '@angular/core';
+import { ModalUploadComponent } from '../../../companies/components/modal-upload/modal-upload.component';
 
 
 @Component({
@@ -81,6 +82,7 @@ export class EmployeeComponent implements OnInit {
   actualizarImagen( employee: Employee ){
   
     this._modalUploadServices.mostrarModal('employee', employee.id! );
+    console.log('empleado cambio', employee.id)
     
   }
 

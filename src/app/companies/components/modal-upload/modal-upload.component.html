@@ -1,7 +1,7 @@
 
 <div class="fondo-negro animate fadeIn" [ngClass]="_modalUploadService.oculto" >
 
-    <div class="modal" style="display: block;" tabindex="-1" role="dialog">
+   <!--  <div class="modal" style="display: block;" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -13,8 +13,9 @@
                 <div class="modal-body">
                     
                     <img *ngIf="!imagenTemp" [src]="" class="w150">
-                    <img *ngIf="imagenTemp" [src]="imagenTemp" class="w150">
-                    <input (change)="seleccionImagen( $event.target.files[0] )" type="file">
+                    <img *ngIf="imagenTemp" [src]="imagenTemp" class="w150"> -->
+                    <!-- <input (change)="seleccionImagen( $event.target.files[0] )" type="file"> -->
+                    <!-- <input (change)="upload($event)" type="file">
 
 
                 </div>
@@ -24,9 +25,34 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
- </div>
+    <p-dialog header="Subir Imagen" [(visible)]="displayModal" [modal]="true" [closable]="false" [style]="{width: '50vw'}"
+    [draggable]="false" [resizable]="false">
+    <p-fileUpload chooseLabel="Cargar Imagen" uploadLabel="Subir Imagen" cancelLabel="Cancelar"
+    [previewWidth]="100"  [showUploadButton]="false"
+                  accept="image/*" [customUpload]="true" [maxFileSize]="1000000" (onSelect)="onUpload($event)"></p-fileUpload>
+        <ng-template pTemplate="footer">
+        
+        <button pButton pRipple (click)="subirImagen()" type="button" [disabled]="!file" label="Subir Imagen"></button>
+        <button pButton pRipple type="button" (click)="cerrarModal()" label="Cerrar" class="p-button-danger"></button>
+
+        </ng-template>
+</p-dialog>
+
+
+</div>
+
+
+
+
+
+
+
+ 
+
+
+ 
  
 
 

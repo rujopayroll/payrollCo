@@ -23,6 +23,9 @@ import { SalaryEmployeeComponent } from './components/salaryEmployee/salaryEmplo
 import { NewComponent } from './pages/new/new.component';
 import { PersonalComponent } from './pages/new/personal/personal.component';
 
+
+
+
 @NgModule({
   declarations: [
    ListComponent,
@@ -37,6 +40,7 @@ import { PersonalComponent } from './pages/new/personal/personal.component';
    RecurrentPaymentEmployeeComponent,
    ContractEmployeeComponent,
    SalaryEmployeeComponent,
+   
    
   
   ],
