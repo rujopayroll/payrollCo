@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { Concept } from '../../companies/models/concept.model';
 import { MenuItem } from 'primeng/api';
+//const Swal1: any = require('sweetalert2')
 
 @Component({
   selector: 'app-header',
@@ -43,8 +44,7 @@ export class HeaderComponent implements OnInit {
   company2: any = {};
   autenticado = 'n';
   registro: any = {};
-  view: any={}
-
+  view: any={};
   empresa: any = {};
   empresaseleccionada: any = {};
  
@@ -83,7 +83,7 @@ export class HeaderComponent implements OnInit {
                 
             
                 this.cargarCompanySelect(this.empresa.id);
-                
+                this.cargarEmpresasUsuario(this.usuario.id)
               
                
                }
@@ -151,9 +151,12 @@ export class HeaderComponent implements OnInit {
         });
   } 
 
-  cargarEmpresasUsuario(iduser: string){
+  cargarEmpresasUsuario(iduser: any){
     this._companyService.cargarCompanysUser(iduser)
-    .subscribe ( resp => this.company2 = resp);
+    .subscribe ( resp => {
+      this.company2 = resp
+      console.log('company2', this.company2)
+    });
     
   }
 
@@ -172,19 +175,20 @@ screen(){
     } else {
         
        
-        this.router.navigate(['/employees/list']);
+        this.router.navigate(['/companies/list']);
         
       }
 }); 
   
 }
 
-/*   crearEmpresa(){
+crearEmpresa(){
+  
     Swal.fire({
       title: 'Ingrese el nombre de la Compañia',
       input: 'text',
       showCancelButton: true,
-      inputValidator: (value) => {
+      inputValidator: (value: string | any[]): any => {
         if ( !value || value.length === 0) {
           return 'No ha ingresado ningun dato';
         }
@@ -197,8 +201,12 @@ screen(){
               {
         
                 companyName:value,
-                isActive: this.isActive,
-                user_id: this.usuario.id,
+                email:this.usuario.userName,
+                createUser:this.usuario.id,
+                updateUser:this.usuario.id,
+                user_id:this.usuario.id,
+                isActive: this.isActive, 
+                //user_id: this.usuario.id,
                 
                 
               }
@@ -207,23 +215,19 @@ screen(){
             this.registro =  JSON.parse(JSON.stringify(form[0]));
 
             //mirar aca
-            console.log(this.registro)
+           
             this._companyService.crearCompany( this.registro )
-            .subscribe(respc => {
+            .subscribe(resp => {
               this.cargarEmpresasUsuario(this.usuario.id);
-              this.router.navigate( ['/companies'] );
+              this.router.navigate( ['/companies/list'] );
            
             });
   }
   
 });
-    
-  } */
 
+  } 
 
-
- 
-
-
+  
 
 }

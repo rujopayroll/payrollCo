@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CompaniesComponent } from './pages/companies/companies.component';
+
 import { CostCenterComponent } from './components/costCenter/costCenter.component';
 import { CompaniesRoutingModule } from './companies-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -13,6 +14,12 @@ import { InfoCompanyComponent } from './components/infoCompany/infoCompany.compo
 import { PaymentCompanyComponent } from './components/paymentCompany/paymentCompany.component'
 import { PayrollCompanyComponent } from './components/payrollCompany/payrollCompany.component';
 import { ConceptComponent } from './components/concept/concept.component';
+import { AuthRoutingModule } from '../auth/auth-routing.module';
+import { ListComponent } from '../companies/pages/list/list.component';
+import { CompanyCardComponent } from './components/company-card/company-card.component';
+
+
+
 
 
 
@@ -29,6 +36,8 @@ import { ConceptComponent } from './components/concept/concept.component';
     PayrollCompanyComponent,
     ConceptComponent,
     InfoCompanyComponent,
+    ListComponent,
+    CompanyCardComponent 
    
   ],
   imports: [
@@ -38,6 +47,7 @@ import { ConceptComponent } from './components/concept/concept.component';
     ReactiveFormsModule,
     PrimeNGModule,
     SharedModule,
+    AuthRoutingModule
     
     
   ]

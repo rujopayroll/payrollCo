@@ -48,10 +48,16 @@
                     <button pButton pRipple type="button" label="Mi Perfil" icon="pi pi-user" class="p-button-secondary p-button-text" style="text-align: left;"></button>
 
                 </div>
-                <hr class="mb-2 mx-0 border-top-1 border-none surface-border mt-auto" />
+                <span *ngIf="company2.companies.length > 1"> <hr class="mb-2 mx-0 border-top-1 border-none surface-border mt-auto" /></span>
+                 <div class="mb-2 p-fluid">
+                    
+                    <span *ngIf="company2.companies.length > 1"><button pButton pRipple routerLink="/companies/list" type="button" label="Cambiar de Empresa" icon="pi pi-home" class="p-button-secondary p-button-text" style="text-align: left;"></button></span>
+
+                </div>
+          <hr class="mb-2 mx-0 border-top-1 border-none surface-border mt-auto" />
                 <div class="mb-2 p-fluid">
                     
-                    <button pButton pRipple type="button" label="Cambiar de Empresa" icon="pi pi-home" class="p-button-secondary p-button-text" style="text-align: left;"></button>
+                    <button pButton pRipple type="button" (click)="crearEmpresa()" label="Registrar Nueva Empresa" icon="pi pi-home" class="p-button-secondary p-button-text" style="text-align: left;"></button>
 
                 </div>
                 <hr class="mb-2 mx-0 border-top-1 border-none surface-border mt-auto" />

@@ -6,7 +6,7 @@
     <div class="p-field mb-3">
         
             <label for="name" class="block text-900 font-medium mb-2">Tu Nombre</label>
-            <input formControlName="name" name= "name" id="nombre" type="text" pInputText class="w-full"/>
+            <input formControlName="name" name= "name" id="name" type="text" pInputText class="w-full"/>
                     <small id="name" 
                     class="p-error"
                     *ngIf="campoEsValido('name')">Campo Obligatorio.</small>
@@ -18,11 +18,11 @@
     <div class="form-group mb-3">
         <div class="p-col-xs-12">
            
-            <label for="companyName" class="block text-900 font-medium mb-2">Nombre Empresa</label>
-            <input formControlName="companyName" name= "companyName" id="companyName" type="text" pInputText class="w-full">
-            <small id="companyName" 
+            <label for="company" class="block text-900 font-medium mb-2">Nombre Empresa</label>
+            <input formControlName="company" name= "company" id="company" type="text" pInputText class="w-full">
+            <small id="company" 
                     class="p-error"
-                    *ngIf="campoEsValido('companyName')">Campo Obligatorio.</small>
+                    *ngIf="campoEsValido('company')">Campo Obligatorio.</small>
 
 
 
@@ -77,7 +77,7 @@
 
     <div class="form-group text-center">
         <div class="p-col-xs-12" primary-box>
-        <button pButton pRipple label="Guardar" icon="pi pi-user" class="p-button-text"  class="w-full" (click)="registrarUsuario()"></button>
+        <button pButton pRipple label="Guardar" icon="pi pi-user" class="p-button-text"  class="w-full" type="submit"></button>
 
                     
         </div>

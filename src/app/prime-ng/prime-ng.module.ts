@@ -40,6 +40,7 @@ import { CarouselModule } from 'primeng/carousel';
 import { StepsModule } from 'primeng/steps';
 import { FileUploadModule } from 'primeng/fileupload';
 import { HttpClientModule } from '@angular/common/http';
+import { StyleClassModule } from 'primeng/styleclass';
 
 
 
@@ -92,8 +93,8 @@ import { HttpClientModule } from '@angular/common/http';
     StepsModule,
     CardModule,
     FileUploadModule,
-    HttpClientModule
-
+    HttpClientModule,
+    StyleClassModule
 
   ]
 })

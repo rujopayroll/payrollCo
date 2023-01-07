@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit {
   }
 
   ingresar( forma: NgForm ){
-    console.log('usuario logueado')
+    
   if (forma.invalid){
     return;
   }
@@ -65,11 +65,12 @@ export class LoginComponent implements OnInit {
           
         
           this._router.navigate(['/companies/list']);
+          
         } else {
             
            
             this._router.navigate(['/dashboard']);
-            localStorage.setItem('autenticado', 's');
+            
           }
       });
 

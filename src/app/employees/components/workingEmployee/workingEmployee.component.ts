@@ -136,7 +136,7 @@ export class WorkingEmployeeComponent implements OnInit {
       employeeType   : ['', Validators.required],
       workPlaceRisks     : ['', Validators.required],
       workingHour     : ['', Validators.required],
-      transportAssistence   : ['', Validators.required],
+      transportAssistance   : ['', Validators.required],
       variableSalary   : ['', Validators.required]
      });
     }
@@ -186,7 +186,7 @@ export class WorkingEmployeeComponent implements OnInit {
    
     
       this.registro =  JSON.parse(JSON.stringify(form[0]));
-      
+      console.log('registro', this.registro)
   
       this._employeeWorkingService.actualizarEmployeeWorking( this.employeeW )
               .subscribe( () => this.cargarEmployeesWorking(this.employeeW.id));

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+//import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { tap, map } from 'rxjs/Operators';
@@ -29,6 +30,7 @@ export class AuthService {
   menu: any = {};
   submenu: any = {};
   empresas: any = {};
+  public headers = new HttpHeaders();
 
   get _usuario(): Usuario{
     return {...this._usuario!}
@@ -38,14 +40,14 @@ export class AuthService {
                public _router: Router
               //  public _subirArchivoService: SubirArhivoService
                ) {
-
+                this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
     this.cargarStorage();
    
    
   }
 
   renuevaToken(){
-    let url = this.URL_SERVICIOS + '/login/renuevatoken';
+    let url = this.URL_SERVICIOS + 'login/renuevatoken';
     url += '?token=' + this.token;
 
     return this.http.get( url )
@@ -167,15 +169,15 @@ export class AuthService {
 
 crearUsuario( usuario: any){
   const url = this.URL_SERVICIOS  + '/auth_log/register';
-  return this.http.post( url, usuario)
+  return this.http.post( url, usuario,  {headers: this.headers})
       .map( (resp: any) =>{
 
         Swal.fire({
           text: 'Usuario Creado',
           icon: 'success'
         });
-
-        return resp.usuario;
+        console.log('respuesta register', resp)
+        return resp;
 
       })
       .catch( err =>{
@@ -183,6 +185,7 @@ crearUsuario( usuario: any){
           text: 'El correo ya esta en uso',
           icon: 'warning'
         });
+        console.log('error', err)
         return Observable.throwError( err );
       });
 

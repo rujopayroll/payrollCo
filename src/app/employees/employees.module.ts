@@ -22,7 +22,7 @@ import { ContractEmployeeComponent } from './components/contractEmployee/contrac
 import { SalaryEmployeeComponent } from './components/salaryEmployee/salaryEmployee.component';
 import { NewComponent } from './pages/new/new.component';
 import { PersonalComponent } from './pages/new/personal/personal.component';
-
+//import { ModalUploadComponent } from '../companies/components/modal-upload/modal-upload.component';
 
 
 
@@ -40,7 +40,7 @@ import { PersonalComponent } from './pages/new/personal/personal.component';
    RecurrentPaymentEmployeeComponent,
    ContractEmployeeComponent,
    SalaryEmployeeComponent,
-   
+   //ModalUploadComponent 
    
   
   ],

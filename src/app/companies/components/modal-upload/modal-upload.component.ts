@@ -52,7 +52,10 @@ export class ModalUploadComponent implements OnInit {
                   if(this.company.length > 1 ) {
                     this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
                   } else {
-                    this.empresa =  JSON.parse(JSON.stringify(this.company[0]));
+
+                   this.empresa =  JSON.parse(JSON.stringify(this.company));
+                    console.log('company', this.company[0])
+                    
                   }
                 }
 

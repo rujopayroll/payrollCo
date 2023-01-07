@@ -170,7 +170,7 @@ registerLocaleData(localeEsAr);
       this._employeeSalaryService.cargarEmployeeSalary( id )
           .subscribe( employeeSalaries => {
           this.employeeSalaries = employeeSalaries;
-          console.log('salorder', this.employeeSalaries)
+        
           });
   
     }
@@ -180,7 +180,7 @@ registerLocaleData(localeEsAr);
           .subscribe( employeeSalariesActive => {
           this.employeeSalarieActive = employeeSalariesActive;
           let cambio = moment(this.employeeSalarieActive.endSalaryDate)
-          console.log('sal1', this.employeeSalarieActive)
+          
           this.fecha = moment(this.employeeSalarieActive.endSalaryDate).subtract(1, 'd').format('YYYY-MM-DD')
           });
   

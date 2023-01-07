@@ -93,13 +93,13 @@ crearCompany( company: any){
   
   return this.http.post( url, company, {headers: this.headers})
       .map( (resp: any) =>{
-
-       /*  Swal.fire({
+console.log('servicio2', company)
+        /* Swal.fire({
           text: 'Empresa Creada',
           icon: 'success'
-        }); */
+        });  */
 
-        return resp.company;
+        return resp;
       })
       .catch( err =>{
         // tslint:disable-next-line: deprecation
@@ -108,7 +108,9 @@ crearCompany( company: any){
           text: err.error.errors.message,
           icon: 'error'
         });
+       
         return Observable.throwError( err );
+        
       });
 }
 
@@ -123,7 +125,7 @@ actualizarCompany( company: any ){
           text: 'Informacion básica Actualizada',
           icon: 'success'
         });
-        return resp.companyPayment;
+        return resp;
       });
       /* .catch( err =>{
         Swal.fire({

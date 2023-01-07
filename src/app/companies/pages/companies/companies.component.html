@@ -8,8 +8,9 @@
     
     <div class="col-1 profile-header-img mr-4">
         <!-- <img [src]="company.img | imagen: 'company'" alt="Compañia" width="100"> -->
-        <img class="border-circle w-6rem h-6rem" [src]="company.img" alt="Compañia">
-       <button pButton (click)="actualizarImagen( company )" pRipple type="button" label="Cambiar Logo" class="p-button-warning p-button-text"></button>    
+        <span *ngIf="company.img"><img class="border-circle w-6rem h-6rem" [src]="company.img" alt="Compañia"></span>
+        <span *ngIf="!company.img"><img src="assets/images/SIN-IMAGEN.jpg"  class="border-circle w-6rem h-6rem" alt="companies"></span>
+        <button pButton (click)="actualizarImagen( company )" pRipple type="button" label="Cambiar Logo" class="p-button-warning p-button-text"></button>    
     
      
     

@@ -114,6 +114,7 @@
                 <div class="field col-12 md:col-12">
                     <label for="employeeType">Tipo de Empleado</label>
                     <p-dropdown inputId="employeeType" class="p-inputtext-sm" [(ngModel)]="employeeW.employeeType"
+                    formControlName="employeeType" name='employeeType' id="employeeType"
                     [options]="employeeTypes" optionLabel="description" optionValue="id"></p-dropdown>
                 </div>
         
@@ -182,7 +183,7 @@
     
         <ng-template pTemplate="footer">
             <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-            <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"  (click)="guardar(employeeWorking)"></button>
+            <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="guardar(employeeWorking)"></button>
         </ng-template>
     </p-dialog>
 

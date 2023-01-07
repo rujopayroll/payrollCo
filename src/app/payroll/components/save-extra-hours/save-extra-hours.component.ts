@@ -130,7 +130,7 @@ export class SaveExtraHoursComponent implements OnInit {
 
 
   cancelar(){
-    console.log('cancelo')
+    this.ref.destroy();
   }
 
   saveOverTime(){
@@ -206,8 +206,8 @@ function replacer(key: any, value: any) {
    
     this._movementService.saveNoveltiesOverTime(this.register)
         .subscribe( (resp: any) => {
-         
-          this.ref.close();
+            this.ref.close();
+       
          
        
         }); 

@@ -71,4 +71,20 @@ public headers = new HttpHeaders();
           });
     }
 
+    saveAbsenteeByEmployee(absentee: any){
+      let url = this.URL_SERVICIOS + '/absenteeHistories/';
+      return this.http.post( url, absentee, {headers: this.headers} )
+          .map( (resp: any) => {
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: 'Ausentismo guardado',
+              showConfirmButton: false,
+              timer: 2000
+            })
+            return resp;
+          });     
+    }
+
+
 }

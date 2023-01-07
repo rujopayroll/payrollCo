@@ -174,7 +174,7 @@ export class NoveltiesComponent implements OnInit {
     this._periodService.getPeriodByCompanyByProcess( id)
         .subscribe( (period: any={}) => {
           this.period[0] = period[0];
-          console.log(period,this.period.number,this.period[0].number,'periodo')
+          
           if (this.period) {
            
             this.getMovementByPeriod( this.period[0].id );
@@ -295,8 +295,7 @@ export class NoveltiesComponent implements OnInit {
 
 
   showOverTime(employeeCard: string) {
-    console.log('empleado seleccionado',employeeCard)
-    console.log('lllll',this.employeeSelects)
+    
     this.ref= this.dialogService.open(SaveExtraHoursComponent,{
         header: 'Ingreso Horas Extras y Recargos',
         width: '50%',
@@ -310,15 +309,17 @@ export class NoveltiesComponent implements OnInit {
 
     this.ref.onClose.subscribe(() => {
       this.getMovementPayrollByEmployee( this.empresa.id, this.period[0].id );
+      this.ref.destroy();
   });
   } 
 
   showAbsentee(employeeCard: string) {
     this.ref= this.dialogService.open(SaveAbsenteeHistoryComponent,{
         header: 'Ingreso de Ausentismos',
-        width: '80%',
-        contentStyle: {"max-height": "500px", "overflow": "auto"},
-        baseZIndex: 10000
+        width: '90%',
+        contentStyle: {"height": "1000px"},
+        baseZIndex: 0,
+        closable: false
         
     });
     
@@ -326,7 +327,7 @@ export class NoveltiesComponent implements OnInit {
     
 
     this.ref.onClose.subscribe(() => {
-      
+      this.getMovementPayrollByEmployee( this.empresa.id, this.period[0].id );
   });
   } 
 

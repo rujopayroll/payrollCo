@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  URL_SERVICIOS: 'https://apipayroll.herokuapp.com/api'
+  //URL_SERVICIOS: 'https://apipayroll.herokuapp.com/api'
+  URL_SERVICIOS: 'http://ecs-payroll-services-1128993275.us-east-1.elb.amazonaws.com/api'
 };
 
 /*
