@@ -173,15 +173,20 @@ editEmployeeContract(employeeContract: EmployeeContract) {
 
   getAllContractEmployees( id: string ) {
     this._employeeContractService.cargarEmployeeContract( id )
-        .subscribe( (employeeContract : any[]) => {
+       // .subscribe( (employeeContract : any[]) => {
+          .subscribe(  employeeContract => {
+            console.log('contratos', employeeContract)
           this.employeesContract = employeeContract;
+          console.log('contratos2', this.employeesContract)
         });
 
   }
 
   getAllContractEmployeesActive( id: string ) {
     this._employeeContractService.cargarEmployeeContractActive( id )
-        .subscribe( (employeeContractActive : any[]) => {
+        //.subscribe( (employeeContractActive : any[]) => {
+          .subscribe(employeeContractActive => {
+
           this.employeesContractActive = employeeContractActive;
           console.log('contrattt', this.employeesContractActive)
           this.fecha = moment(this.employeesContractActive.endContractDate).subtract(1, 'd').format('YYYY-MM-DD')

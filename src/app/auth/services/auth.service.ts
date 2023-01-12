@@ -3,7 +3,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { tap, map } from 'rxjs/Operators';
+
+
+//import 'rxjs/add/Operator/tap';
 import 'rxjs/add/Operator/map';
 import 'rxjs/add/Operator/catch';
 import 'rxjs/add/observable/throw';

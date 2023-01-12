@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { CompanyService } from '../../../companies/services/companyService.index';
+import { CompanyService } from '../../../companies/services/company/company.service';
 import { Company } from '../../../companies/models/company.model';
 /* import {MessageService, SelectItem } from 'primeng/api'; */
 import { EmployeeService } from '../../../employees/services/employeeService.index';

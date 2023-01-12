@@ -32,7 +32,7 @@ export class CompanyService {
 
     
       this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
-     
+     console.log('token', this.headers)
      }
 
 
@@ -62,6 +62,7 @@ export class CompanyService {
 
           .map( (resp: any) => {
             
+            console.log('empresas usuario', resp)
             return resp
             
           });

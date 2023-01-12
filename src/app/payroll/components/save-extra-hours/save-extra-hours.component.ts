@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { DynamicDialogRef, DialogService } from 'primeng/dynamicdialog';
 import { AuthService } from 'src/app/auth/services/auth.service';
-import { ConceptService } from 'src/app/companies/services/companyService.index';
+import { ConceptService } from 'src/app/companies/services/concept/concept.service';
 import { EmployeeService } from 'src/app/employees/services/employee/employee.service';
 import { GetEmployeeService } from '../../services/get-employee.service';
 import { PayrollService } from '../../services/payroll.service';

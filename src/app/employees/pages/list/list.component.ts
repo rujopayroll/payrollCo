@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CompanyService } from '../../../companies/services/companyService.index';
+import { CompanyService } from '../../../companies/services/company/company.service';
 import { Company } from '../../../companies/models/company.model';
 
 import {SelectItem } from 'primeng/api';

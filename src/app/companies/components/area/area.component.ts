@@ -134,7 +134,7 @@ export class AreaComponent implements OnInit {
   );
 
     this._areaService.crearArea( area )
-  .subscribe( resp => {
+  .subscribe( (resp: any) => {
     this.areaDialog = false;
     
     this.cargarArea( this.empresa.id );
@@ -172,7 +172,7 @@ editArea(area: Area) {
 
   cargarArea( id: string ) {
     this._areaService.cargarArea( id )
-        .subscribe( area => {
+        .subscribe( (area: any) => {
           this.area = area;
         });
 
@@ -180,7 +180,7 @@ editArea(area: Area) {
 
   cargarCompanySelect( id: string ) {
     this._companyService.cargarCompanys( id )
-        .subscribe( company => {
+        .subscribe( (company: any) => {
           this.company = company;
         });
 
@@ -194,7 +194,7 @@ editArea(area: Area) {
     }
 
     this._areaService.buscarArea( termino )
-        .subscribe( resp => this.area = resp );
+        .subscribe( (resp: any) => this.area = resp );
 }
 
 

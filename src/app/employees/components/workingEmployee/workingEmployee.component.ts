@@ -107,9 +107,12 @@ export class WorkingEmployeeComponent implements OnInit {
 
     this.activatedRoute.params.subscribe( params =>{
       this._modalUploadServices.notificacion
-      this.Id = params[ 'id' ]
+     // this.Id = params[ 'id' ]
       .subscribe( () =>  this.cargarEmployeesWorking( params[ 'id' ]));
     });
+
+
+    
 
     this.pageScrollServ.scroll({
       document: this.document,

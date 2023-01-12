@@ -6,19 +6,20 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { SharedModule } from './shared/shared.module';
-import { CompanyServiceModule } from './companies/services/companyservice.module';
+
 import { EmployeeserviceModule } from './employees/services/employeeService.module';
 import { PayrollModule } from './payroll/payroll.module';
 
 
 import localeES from '@angular/common/locales/en';
-import { registerLocaleData } from '@angular/common';
+import { registerLocaleData, CommonModule, } from '@angular/common';
 import { DashboardRoutingModule } from './dashboard/dashboard-routing.module';
 //import { Ng2PageScrollModule } from 'ng2-page-scroll';
 //import { NgxPageScrollModule } from 'ngx-page-scroll';
 import { NgxPageScrollCoreModule } from 'ngx-page-scroll-core'
 import { ModalUploadComponent } from './companies/components/modal-upload/modal-upload.component';
 import { PrimeNGModule } from './prime-ng/prime-ng.module';
+import { CompanyServiceModule } from './companies/services/companyService.module';
 
 
 
@@ -35,11 +36,13 @@ registerLocaleData(localeES, 'es');
   declarations: [
  AppComponent,
  ModalUploadComponent,
+ 
 
     
   ],
   imports: [
     BrowserModule,
+    CommonModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
@@ -54,6 +57,7 @@ registerLocaleData(localeES, 'es');
     FormsModule,
    ReactiveFormsModule,
    PrimeNGModule,
+   
    
    
   ],

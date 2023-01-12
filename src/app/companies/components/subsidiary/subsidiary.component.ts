@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormGroup, UntypedFormBuilder, Validators, FormControl } from '@angular/forms';
-import { CompanyService, SubsidiaryService } from '../../services/companyService.index';
+import { CompanyService } from '../../services/company/company.service';
+import { SubsidiaryService } from '../../services/subsidiary/subsidiary.service';
 import { Subsidiary } from '../../models/subsidiary.model';
 import { Company } from '../../models/company.model';
 import { AuthService } from '../../../auth/services/authservice.index';

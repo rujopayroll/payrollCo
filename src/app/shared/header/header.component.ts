@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../auth/services/authservice.index';
-import { CompanyService } from '../../companies/services/companyService.index';
+
 import { ActivatedRoute } from '@angular/router';
 import { Usuario } from '../../auth/models/usuario.model';
 
@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { Concept } from '../../companies/models/concept.model';
 import { MenuItem } from 'primeng/api';
+import { CompanyService } from 'src/app/companies/services/company/company.service';
 //const Swal1: any = require('sweetalert2')
 
 @Component({
@@ -146,14 +147,14 @@ export class HeaderComponent implements OnInit {
 
   cargarCompanySelect(id: string){
     this._companyService.cargarCompanys(id)
-        .subscribe ( resp => {
+        .subscribe ( (resp:any) => {
           this.company1 = resp;
         });
   } 
 
   cargarEmpresasUsuario(iduser: any){
     this._companyService.cargarCompanysUser(iduser)
-    .subscribe ( resp => {
+    .subscribe ( (resp:any) => {
       this.company2 = resp
       console.log('company2', this.company2)
     });
@@ -217,7 +218,7 @@ crearEmpresa(){
             //mirar aca
            
             this._companyService.crearCompany( this.registro )
-            .subscribe(resp => {
+            .subscribe((resp:any) => {
               this.cargarEmpresasUsuario(this.usuario.id);
               this.router.navigate( ['/companies/list'] );
            

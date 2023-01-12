@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation, ViewChild, ElementRef  } from '@angular/core';
-import { CompanyService } from '../../../companies/services/companyService.index';
+import { CompanyService } from '../../../companies/services/company/company.service';
 import { Company } from '../../../companies/models/company.model';
 import { DOCUMENT } from '@angular/common';
 import { Inject } from '@angular/core';

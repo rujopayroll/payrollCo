@@ -9,7 +9,7 @@ import { Employee } from '../../../employees/models/employee.model';
 import { Movements } from '../../models/movements.model';
 import { Period} from '../../models/period.model'
 import { PeriodService } from '../../services/payrollService.index';
-import { ConceptService } from '../../../companies/services/companyService.index';
+import { ConceptService } from '../../../companies/services/concept/concept.service';
 import { PayrollService } from '../../services/payrollService.index';
 import { UntypedFormGroup, FormControl, Validators, UntypedFormBuilder } from '@angular/forms';
 import { GetEmployeeService } from '../../services/get-employee.service';
