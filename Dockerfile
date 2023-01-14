@@ -20,7 +20,7 @@
 # 	#Si estas utilizando otra aplicacion cambia PokeApp por el nombre de tu app
 # COPY --from=build-step /app/dist/Payrollco /usr/share/nginx/html
 
-FROM node:14-alpine as node
+FROM node:14-alpine as builder
 WORKDIR /app
 COPY . .
 RUN npm i -g @angular/cli
@@ -28,5 +28,5 @@ RUN npm install
 RUN npm run build
 #stage 2
 FROM nginx:alpine
-COPY --from=builder /app/dist/Angular /usr/share/nginx/html
+COPY --from=builder /app/dist/payrollco /usr/share/nginx/html
 EXPOSE 80
