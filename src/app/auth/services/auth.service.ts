@@ -3,11 +3,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-
+import 'rxjs/Rx';
+import { map, catchError } from 'rxjs/operators';
+//import { catch } from 'rxjs/operators';
 
 //import 'rxjs/add/Operator/tap';
-import 'rxjs/add/Operator/map';
-import 'rxjs/add/Operator/catch';
+//import 'rxjs/add/Operator/map';
+//import 'rxjs/add/Operator/catch';
 import 'rxjs/add/observable/throw';
 import { throwError } from 'rxjs';
 
@@ -53,7 +55,8 @@ export class AuthService {
     url += '?token=' + this.token;
 
     return this.http.get( url )
-        .map( (resp: any) =>{
+    .pipe(    
+    map( (resp: any) =>{
 
           this.token = resp.token;
           localStorage.setItem( 'token', this.token! );
@@ -61,6 +64,7 @@ export class AuthService {
           return true;
 
         })
+    )
         .catch( err => {
           this._router.navigate(['/login']);
           // tslint:disable-next-line: deprecation
@@ -122,7 +126,8 @@ export class AuthService {
     //let url = URL_SERVICIOS + '/login';
     let url = this.URL_SERVICIOS + '/auth_log/login';
     return this.http.post( url, usuario )
-              .map( (resp: any) =>{
+    .pipe(          
+    map( (resp: any) =>{
 
                // this.guardarStorage( resp.id, resp.token, resp.usuario, resp.menu, resp.empresas );
               
@@ -133,11 +138,11 @@ export class AuthService {
 
                 return true;
               })
-
+    )
               
             // })
-            
-              .catch( err =>{
+            .pipe(
+            catchError( err =>{
                 // tslint:disable-next-line: deprecation
                 Swal.fire({
                   title: 'Error en el login',
@@ -145,8 +150,8 @@ export class AuthService {
                   icon: 'error'
                 }); 
                 return Observable.throwError( err );
-              });
-
+              })
+            );
 
               
 
@@ -172,7 +177,8 @@ export class AuthService {
 crearUsuario( usuario: any){
   const url = this.URL_SERVICIOS  + '/auth_log/register';
   return this.http.post( url, usuario,  {headers: this.headers})
-      .map( (resp: any) =>{
+  .pipe(    
+  map( (resp: any) =>{
 
         Swal.fire({
           text: 'Usuario Creado',
@@ -182,14 +188,16 @@ crearUsuario( usuario: any){
         return resp;
 
       })
-      .catch( err =>{
+  )
+  .pipe(
+  catchError( err =>{
         Swal.fire({
           text: 'El correo ya esta en uso',
           icon: 'warning'
         });
         console.log('error', err)
         return Observable.throwError( err );
-      });
+      }));
 
 }
 
@@ -199,7 +207,9 @@ actualizarUsuario( usuario: Usuario ){
   url += '?token=' + this.token;
 
   return this.http.put( url, usuario)
-      .map( (resp: any) =>{
+
+  .pipe(
+      map( (resp: any) =>{
 
         if ( usuario.id === this.usuario.id) {
           const usuarioDB: Usuario = resp.usuario;
@@ -213,15 +223,16 @@ actualizarUsuario( usuario: Usuario ){
 
         return true;
 
-      })
-      .catch( err =>{
+      }))
+      .pipe(
+      catchError( err =>{
         Swal.fire({
           title: err.error.mensaje,
           text: err.error.errors.message,
           icon: 'error'
         });
         return Observable.throwError( err );
-      });
+      }));
 
 }
 
@@ -258,7 +269,8 @@ buscarUsuarios( termino: string ) {
 
   let url = this.URL_SERVICIOS + '/busqueda/coleccion/usuarios/' + termino;
   return this.http.get( url )
-      .map(( resp: any ) => resp.usuarios);
+  .pipe(
+      map(( resp: any ) => resp.usuarios));
 }
 
 borrarUsuario( id: string ){

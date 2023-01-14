@@ -28,5 +28,5 @@ RUN npm install
 RUN npm run build
 #stage 2
 FROM nginx:alpine
-COPY --from=builder /app/dist/payrollco /usr/share/nginx/html
+COPY --from=builder /app/dist/payrollCO /usr/share/nginx/html
 EXPOSE 80

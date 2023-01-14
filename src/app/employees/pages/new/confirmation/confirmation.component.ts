@@ -162,7 +162,7 @@ export class ConfirmationComponent implements OnInit {
 
       getGender( id: string)  {
         this._genderService.obtenerGenero( id )
-            .subscribe( gender => {
+            .subscribe( (gender: any) => {
               this.gender = gender;
       });
       }

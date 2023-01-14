@@ -48,7 +48,9 @@ export class EmployeeContractService  {
 
       let url = this.URL_SERVICIOS + '/employeeContracts?isActive=True&employee_id=' + idEmployee;
       return this.http.get( url, {headers: this.headers} )
-          .map( (resp: any) => resp );
+       
+      .map( (resp: any) => resp );
+      
     }
 
     buscarEmployeeContract( termino: string ) {
