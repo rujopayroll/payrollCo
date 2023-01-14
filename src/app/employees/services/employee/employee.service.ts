@@ -12,7 +12,7 @@ import { Observable } from 'rxjs';
 import { throwError } from 'rxjs';
 import { getLocaleDateFormat } from '@angular/common';
 import { environment } from 'src/environments/environment';
-
+import { map, catchError } from 'rxjs/operators';
 
 
 @Injectable({
@@ -43,10 +43,11 @@ export class EmployeeService {
 
       let url = this.URL_SERVICIOS + '/employees/' + id;
       return this.http.get( url, {headers: this.headers} )
-          .map( (resp: any) => {
+      .pipe(   
+      map( (resp: any) => {
             return resp;
             
-          });
+          }));
            
     }
 
@@ -56,13 +57,15 @@ export class EmployeeService {
       let url = this.URL_SERVICIOS + '/employees?company_id=' + idcompany;
      
       return this.http.get( url, {headers: this.headers} )
-           .map( (resp: any) => resp );
+      .pipe(     
+      map( (resp: any) => resp ));
     }
 
     buscarEmployees( termino: string ) {
       let url = this.URL_SERVICIOS + '/employees/search/' + termino;
       return this.http.get( url, {headers: this.headers} )
-          .map(( resp: any ) => resp);
+      .pipe(    
+      map(( resp: any ) => resp));
 
 
     }
@@ -70,13 +73,14 @@ export class EmployeeService {
       let url = this.URL_SERVICIOS + '/employee/' + id;
       url += '?token=' + this._usuarioService.token;
       return this.http.delete( url )
-          .map( (resp: any) => {
+      .pipe(    
+      map( (resp: any) => {
               Swal.fire({
               text: 'Empleado Eliminado',
               icon: 'success'
             });
               return resp;
-      });
+      }));
     }
 
     crearEmployee( employee: any){
@@ -84,7 +88,8 @@ export class EmployeeService {
       const url = this.URL_SERVICIOS + '/employees';
       console.log('servicio', url)
       return this.http.post( url, employee, {headers: this.headers})
-          .map( (resp: any) =>{
+      .pipe(
+          map( (resp: any) =>{
 
             Swal.fire({
               text: 'Empleado Creado' + '' +  employee.firstName,
@@ -92,8 +97,10 @@ export class EmployeeService {
             });
             return resp;
              
-          })
-          .catch( err =>{
+          }))
+
+          .pipe(
+          catchError( err =>{
             // tslint:disable-next-line: deprecation
             Swal.fire({
               title: err.error.mensaje,
@@ -101,7 +108,7 @@ export class EmployeeService {
               icon: 'error'
             });
             return Observable.throwError( err );
-          });
+          }));
     }
 
     actualizarEmployee( employee: any ){
@@ -109,13 +116,14 @@ export class EmployeeService {
       let url = this.URL_SERVICIOS + '/employees/' + employee.id;
       
       return this.http.put( url, employee, {headers: this.headers})
-          .map( (resp: any) =>{
+      .pipe(    
+      map( (resp: any) =>{
             Swal.fire({
               text: 'Empleado Actualizado' + ' ' +  employee.firstName,
               icon: 'success'
             });
             return resp;
-          });
+          }));
     }
 
 

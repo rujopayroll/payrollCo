@@ -5,7 +5,8 @@ import Swal from 'sweetalert2';
 import { EmployeeJob } from '../../models/employeeJob.model';
 import { AuthService } from '../../../auth/services/authservice.index';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, pipe } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 /* import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw'; */
@@ -44,32 +45,35 @@ public headers = new HttpHeaders();
 
       let url = this.URL_SERVICIOS + '/employeeJobs?id=' + idEmployee;
       return this.http.get( url, {headers: this.headers} )
-      
-          .map( (resp: any) => resp );
+      .pipe(
+          map( (resp: any) => resp ));
           
     }
     buscarEmployeeJob( termino: string ) {
       let url = this.URL_SERVICIOS + '/busqueda/coleccion/companys/' + termino;
       return this.http.get( url )
-          .map(( resp: any ) => resp.employeeJob);
+      .pipe(    
+      map(( resp: any ) => resp.employeeJob));
     }
     borrarEmployeeJob( id: string ){
       let url = this.URL_SERVICIOS + '/employeeJob/' + id;
       url += '?token=' + this._usuarioService.token;
       return this.http.delete( url )
-          .map( (resp: any) => {
+      .pipe(   
+      map( (resp: any) => {
               Swal.fire({
               text: 'informacion del puesto del empleado Eliminado',
               icon: 'success'
             });
               return resp;
-      });
+      }));
     }
     crearEmployeeJob( employeeJob: any){
       let url = this.URL_SERVICIOS + '/employeeJobs';
       
       return this.http.post( url, employeeJob, {headers: this.headers})
-          .map( (resp: any) =>{
+      .pipe(    
+      map( (resp: any) =>{
 
             Swal.fire({
               text: 'informacion del puesto guardada',
@@ -77,8 +81,9 @@ public headers = new HttpHeaders();
             }); 
 
             return resp;
-          })
-          .catch( err =>{
+          }))
+          .pipe(
+          catchError( err =>{
             // tslint:disable-next-line: deprecation
             Swal.fire({
               title: err.error.mensaje,
@@ -86,7 +91,7 @@ public headers = new HttpHeaders();
               icon: 'error'
             });
             return Observable.throwError( err );
-          });
+          }));
     }
 
     actualizarEmployeeJob( employeeJob: EmployeeJob ){
@@ -94,13 +99,14 @@ public headers = new HttpHeaders();
       let url = this.URL_SERVICIOS + '/employeeJobs/' + employeeJob.id;
      
       return this.http.put( url, employeeJob, {headers: this.headers})
-          .map( (resp: any) =>{
+      .pipe(    
+      map( (resp: any) =>{
             Swal.fire({
               text: 'Informacion del puesto Actualizado',
               icon: 'success'
             });
             return resp;
-          });
+          }));
     }
 
   }

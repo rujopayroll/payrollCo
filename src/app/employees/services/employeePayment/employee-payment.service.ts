@@ -7,6 +7,7 @@ import { EmployeePayment } from '../../models/employeesPayment.model';
 
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 /* import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw'; */
@@ -47,31 +48,34 @@ export class EmployeePaymentService  {
 
       let url = this.URL_SERVICIOS + '/employeePayments?id=' + idEmployee;
       return this.http.get( url, {headers: this.headers} )
-          .map( (resp: any) => resp );
+      .pipe(    
+      map( (resp: any) => resp ));
     }
     buscarEmployeePayment( termino: string ) {
       let url = this.URL_SERVICIOS + '/busqueda/coleccion/companys/' + termino;
       return this.http.get( url )
-          .map(( resp: any ) => resp.employeePayment);
+      .pipe(
+          map(( resp: any ) => resp.employeePayment));
     }
     borrarEmployeePayment( id: string ){
       let url = this.URL_SERVICIOS + '/employeePayment/' + id;
       url += '?token=' + this._usuarioService.token;
       return this.http.delete( url )
-          .map( (resp: any) => {
+      .pipe(    
+      map( (resp: any) => {
               Swal.fire({
               text: 'informacion de pago empleado Eliminado',
               icon: 'success'
             });
               return resp;
-      });
+      }));
     }
     crearEmployeePayment( employeePayment: any){
       let url = this.URL_SERVICIOS + '/employeePayments';
       
       return this.http.post( url, employeePayment, {headers: this.headers})
-      
-          .map( (resp: any) =>{
+      .pipe(
+          map( (resp: any) =>{
 
             Swal.fire({
               text: 'datos de pago guardada',
@@ -79,8 +83,9 @@ export class EmployeePaymentService  {
             }); 
 
             return resp;
-          })
-          .catch( err =>{
+          }))
+          .pipe(
+          catchError( err =>{
             // tslint:disable-next-line: deprecation
             Swal.fire({
               title: err.error.mensaje,
@@ -88,7 +93,7 @@ export class EmployeePaymentService  {
               icon: 'error'
             });
             return Observable.throwError( err );
-          });
+          }));
     }
 
     actualizarEmployeePayment( employeePayment: EmployeePayment ){
@@ -96,13 +101,14 @@ export class EmployeePaymentService  {
       let url = this.URL_SERVICIOS + '/employeePayments/' + employeePayment.id;
       
       return this.http.put( url, employeePayment, {headers: this.headers})
-          .map( (resp: any) =>{
+      .pipe(    
+      map( (resp: any) =>{
             Swal.fire({
               text: 'Informacion de Pago Actualizado',
               icon: 'success'
             });
             return resp;
-          });
+          }));
     }
 
   }

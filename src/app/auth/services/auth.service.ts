@@ -65,7 +65,8 @@ export class AuthService {
 
         })
     )
-        .catch( err => {
+    .pipe(
+    catchError( err => {
           this._router.navigate(['/login']);
           // tslint:disable-next-line: deprecation
           Swal.fire({
@@ -74,7 +75,7 @@ export class AuthService {
             icon: 'error'
           });
           return Observable.throwError( err );
-        });
+        }));
   }
 
 

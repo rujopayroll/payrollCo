@@ -8,6 +8,7 @@ import { EmployeeSalary } from '../../models/employeeSalary.model';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 /* import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw'; */
@@ -42,7 +43,8 @@ export class EmployeeSalaryService  {
 
       let url = this.URL_SERVICIOS + '/employeeSalaries?employee_id=' + idEmployee;
       return this.http.get( url, {headers: this.headers} )
-          .map( (resp: any) => resp.reverse() )
+      .pipe(    
+      map( (resp: any) => resp.reverse() ));
           
     }
 
@@ -51,7 +53,8 @@ export class EmployeeSalaryService  {
 
       let url = this.URL_SERVICIOS + '/employeeSalaries?employee_id=' + idEmployee+ '&isActive=true';
       return this.http.get( url, {headers: this.headers} )
-          .map( (resp: any) => resp );
+      .pipe(    
+      map( (resp: any) => resp ));
           
     }
 
@@ -59,26 +62,28 @@ export class EmployeeSalaryService  {
     buscarEmployeeSalary( termino: string ) {
       let url = this.URL_SERVICIOS + '/busqueda/coleccion/companys/' + termino;
       return this.http.get( url )
-          .map(( resp: any ) => resp);
+      .pipe(
+          map(( resp: any ) => resp));
     }
     borrarEmployeeSalary( id: string ){
       let url = this.URL_SERVICIOS + '/employeeSalary/' + id;
       url += '?token=' + this._usuarioService.token;
       return this.http.delete( url )
-          .map( (resp: any) => {
+      .pipe(
+          map( (resp: any) => {
               Swal.fire({
               text: 'informacion de salario empleado Eliminado',
               icon: 'success'
             });
               return resp;
-      });
+      }));
     }
     crearEmployeeSalary( employeeSalary: any){
       let url = this.URL_SERVICIOS + '/employeeSalaries';
      
       return this.http.post( url, employeeSalary,  {headers: this.headers})
-      
-          .map( (resp: any) =>{
+      .pipe(
+          map( (resp: any) =>{
 
             Swal.fire({
               text: 'salario guardada',
@@ -86,8 +91,9 @@ export class EmployeeSalaryService  {
             }); 
 
             return resp;
-          })
-          .catch( err =>{
+          }))
+          .pipe(
+          catchError( err =>{
             // tslint:disable-next-line: deprecation
             Swal.fire({
               title: err.error.mensaje,
@@ -95,7 +101,7 @@ export class EmployeeSalaryService  {
               icon: 'error'
             });
             return Observable.throwError( err );
-          });
+          }));
           
     }
 
@@ -105,13 +111,14 @@ export class EmployeeSalaryService  {
       console.log('salario', employeeSalary)
       console.log('salario1', employeeSalary.id)
       return this.http.put( url, employeeSalary, {headers: this.headers})
-          .map( (resp: any) =>{
+      .pipe(    
+      map( (resp: any) =>{
             Swal.fire({
               text: 'Informacion de Salario Actualizado',
               icon: 'success'
             });
             return resp.employeeSalary;
-          });
+          }));
     }
 
   }

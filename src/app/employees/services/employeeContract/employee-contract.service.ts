@@ -7,6 +7,7 @@ import { EmployeeContract } from '../../models/employeeContract.model';
 
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { getLocaleDateFormat } from '@angular/common';
 import { SubirArchivoService } from '../subir-archivo.service';
@@ -41,40 +42,44 @@ export class EmployeeContractService  {
 
       let url = this.URL_SERVICIOS + '/employeeContracts?employee_id=' + idEmployee;
       return this.http.get( url, {headers: this.headers} )
-          .map( (resp: any) => resp.reverse() );
+      .pipe( 
+      map( (resp: any) => resp.reverse()));
     }
 
     cargarEmployeeContractActive(idEmployee: string){
 
       let url = this.URL_SERVICIOS + '/employeeContracts?isActive=True&employee_id=' + idEmployee;
       return this.http.get( url, {headers: this.headers} )
-       
-      .map( (resp: any) => resp );
+      .pipe( 
+      map( (resp: any) => resp ));
       
     }
 
     buscarEmployeeContract( termino: string ) {
       let url = this.URL_SERVICIOS + '/busqueda/coleccion/companys/' + termino;
       return this.http.get( url )
-          .map(( resp: any ) => resp.employeeContract);
+      .pipe(    
+      map(( resp: any ) => resp.employeeContract));
     }
     borrarEmployeeContract( id: string ){
       let url = this.URL_SERVICIOS + '/employeeContract/' + id;
       
       return this.http.delete( url )
-          .map( (resp: any) => {
+      .pipe(    
+      map( (resp: any) => {
               Swal.fire({
               text: 'informacion de contrato empleado Eliminado',
               icon: 'success'
             });
               return resp;
-      });
+      }));
     }
     crearEmployeeContract( employeeContract: EmployeeContract){
       let url = this.URL_SERVICIOS + '/employeeContracts';
   
       return this.http.post( url, employeeContract, {headers: this.headers})
-          .map( (resp: any) =>{
+      .pipe(    
+      map( (resp: any) =>{
 
             Swal.fire({
               text: 'contrato guardada',
@@ -82,8 +87,9 @@ export class EmployeeContractService  {
             }); 
 
             return resp;
-          })
-          .catch( err =>{
+          }))
+          .pipe(
+          catchError( err =>{
             // tslint:disable-next-line: deprecation
             Swal.fire({
               title: err.error.mensaje,
@@ -91,7 +97,7 @@ export class EmployeeContractService  {
               icon: 'error'
             });
             return Observable.throwError( err );
-          });
+          }));
     }
 
     actualizarEmployeeContract( employeeContract: EmployeeContract ){
@@ -99,13 +105,14 @@ export class EmployeeContractService  {
       let url = this.URL_SERVICIOS + '/employeeContracts/' + employeeContract.id;
       console.log('contratoservicio', employeeContract)
       return this.http.put( url, employeeContract, {headers: this.headers})
-          .map( (resp: any) =>{
+      .pipe(    
+      map( (resp: any) =>{
             Swal.fire({
               text: 'Informacion de Contrato Actualizado',
               icon: 'success'
             });
             return resp;
-          });
+          }));
     }
 
   }
