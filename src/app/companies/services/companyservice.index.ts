@@ -18,5 +18,5 @@ export { AreaService } from './area/area.service';
 export { SubsidiaryService } from './subsidiary/subsidiary.service';
 export { PositionService } from './position/position.service';
 export { IdentificationTypeService } from './identificationType/identification-type.service';
-export { AssistancetypeService } from './AssistanceType/assistancetype.service';
+export { AssistancetypeService } from './AssistanceType/assistancetype.service'
  
