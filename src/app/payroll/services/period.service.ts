@@ -5,10 +5,12 @@ import { CompanyService } from '../../companies/services/company/company.service
 import Swal from 'sweetalert2';
 import { Period } from '../models/period.model';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+
 import { throwError } from 'rxjs';
 import { getLocaleDateFormat } from '@angular/common';
 import { environment } from 'src/environments/environment';
+import { Observable } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 
 
 
@@ -38,10 +40,11 @@ export class PeriodService {
 
       let url = this.URL_SERVICIOS + '/period?company_id=' + id;
       return this.http.get( url, {headers: this.headers} )
-          .map( (resp: any) => {
+      .pipe(
+          map( (resp: any) => {
             return resp;
             
-          });
+          }));
            
     }
 
@@ -51,10 +54,11 @@ export class PeriodService {
 
         let url = this.URL_SERVICIOS + '/period?company_id=' + id + '&description=Proceso';
         return  this.http.get ( url, {headers: this.headers} )
-            .map( (resp: any={}) => {
+        .pipe(
+            map( (resp: any={}) => {
               return resp;
               
-            });
+            }));
              
       }
 
@@ -62,10 +66,11 @@ export class PeriodService {
 
         let url = this.URL_SERVICIOS + '/period?company_id=' + id + '&description=Pagado';
         return this.http.get( url, {headers: this.headers} )
-            .map( (resp: any) => {
+        .pipe(
+            map( (resp: any) => {
               return resp;
               
-            });
+            }));
              
       }
 
@@ -73,10 +78,11 @@ export class PeriodService {
 
         let url = this.URL_SERVICIOS + '/period?company_id=' + id + '&description=Contabilizado';
         return this.http.get( url, {headers: this.headers} )
-            .map( (resp: any) => {
+        .pipe(
+            map( (resp: any) => {
               return resp;
               
-            });
+            }));
              
       }
 
@@ -84,10 +90,11 @@ export class PeriodService {
 
         let url = this.URL_SERVICIOS + '/period?company_id=' + id + '&year=' + year;
         return this.http.post( url, {headers: this.headers} )
-            .map( (resp: any) => {
+        .pipe(
+            map( (resp: any) => {
               return resp;
               
-            });
+            }));
              
       }
 
