@@ -8,6 +8,7 @@ import { Company } from '../../models/company.model';
 import { Router } from '@angular/router';
 
 import { Observable } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 /* import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw'; */
@@ -38,14 +39,16 @@ export class PositionService {
 
       let url = this.URL_SERVICIOS + '/companies/' + id;
       return this.http.get( url, {headers: this.headers} )
-          .map( (resp: any) => resp.positions );
+      .pipe(
+          map( (resp: any) => resp.positions ));
     }
 
     obtenerPosition( id: string){
 
       let url = this.URL_SERVICIOS + '/positions/' + id;
       return this.http.get( url, {headers: this.headers})
-          .map( (resp: any) => resp );
+      .pipe(
+          map( (resp: any) => resp ));
     }
 
     cargarPositionCompany( idcompany: string){
@@ -53,7 +56,8 @@ export class PositionService {
       let url = this.URL_SERVICIOS + '/companies/' + idcompany;
      
       return this.http.get( url, {headers: this.headers})
-          .map( (resp: any) => resp.positions );
+      .pipe(
+          map( (resp: any) => resp.positions ));
     }
 
     cargarPositionCompanyActive( idcompany: string){
@@ -63,39 +67,44 @@ export class PositionService {
       let url = this.URL_SERVICIOS + '/positions?isActive=True' + '&' + 'company_id=' + idcompany;
      
       return this.http.get( url, {headers: this.headers})
-          .map( (resp: any) => resp );
+      .pipe(
+          map( (resp: any) => resp ));
     }
 
 
     buscarPosition( termino: string ) {
       let url = this.URL_SERVICIOS + '/busqueda/coleccion/companys/' + termino;
       return this.http.get( url, {headers: this.headers})
-          .map(( resp: any ) => resp.position);
+      .pipe(
+          map(( resp: any ) => resp.position));
     }
     borrarPosition( id: string ){
       let url = this.URL_SERVICIOS + '/positions/' + id;
       
       return this.http.delete( url, {headers: this.headers} )
-          .map( (resp: any) => {
+      .pipe(
+          map( (resp: any) => {
               Swal.fire({
               text: 'Cargo Eliminada',
               icon: 'success'
             });
               return resp;
-      });
+      }));
     }
     crearPosition( position: Position){
       let url = this.URL_SERVICIOS + '/positions';
       return this.http.post( url, position, {headers: this.headers})
-          .map( (resp: any) =>{
+      .pipe(
+          map( (resp: any) =>{
            
             Swal.fire({
                 text: 'Cargo Creado',
                 icon: 'success'
               });
             return resp.area;
-          })
-          .catch( err =>{
+          }))
+          .pipe(
+          catchError( err =>{
             console.log(err)
             // tslint:disable-next-line: deprecation
             Swal.fire({
@@ -104,7 +113,7 @@ export class PositionService {
               icon: 'error'
             });
             return Observable.throwError( err );
-          });
+          }));
     }
 
     actualizarPosition( position: Position ){
@@ -112,13 +121,14 @@ export class PositionService {
       let url = this.URL_SERVICIOS + '/positions/' + position.id;
       url += '?token=' + this._usuarioService.token;
       return this.http.put( url, position, {headers: this.headers})
-          .map( (resp: any) =>{
+      .pipe(
+          map( (resp: any) =>{
             Swal.fire({
               text: 'Cargo Actualizado',
               icon: 'success'
             });
             return resp.position;
-          });
+          }));
     }
 
   }

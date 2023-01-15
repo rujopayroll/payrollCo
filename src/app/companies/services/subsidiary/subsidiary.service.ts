@@ -7,6 +7,7 @@ import { Subsidiary } from '../../models/subsidiary.model';
 import { Company } from '../../models/company.model';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 /* import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw'; */
@@ -37,14 +38,16 @@ export class SubsidiaryService {
 
       let url = this.URL_SERVICIOS + '/companies/' + id;
       return this.http.get( url, {headers: this.headers} )
-          .map( (resp: any) => resp.subsidiaries );
+      .pipe(
+          map( (resp: any) => resp.subsidiaries ));
     }
 
     obtenerSubsidiary( id: string){
 
       let url = this.URL_SERVICIOS + '/subsidiaries/' + id;
       return this.http.get( url, {headers: this.headers} )
-          .map( (resp: any) => resp );
+      .pipe(
+          map( (resp: any) => resp ));
     }
 
     cargarSubsidiaryCompany( idcompany: string){
@@ -52,7 +55,8 @@ export class SubsidiaryService {
       let url = this.URL_SERVICIOS + '/companies/' + idcompany;
      
       return this.http.get( url, {headers: this.headers} )
-          .map( (resp: any) => resp.subsidiaries );
+      .pipe(
+          map( (resp: any) => resp.subsidiaries ));
     }
 
     cargarSubsidiaryCompanyActive( idcompany: string){
@@ -61,13 +65,15 @@ export class SubsidiaryService {
       let url = this.URL_SERVICIOS + '/subsidiaries?isActive=True' + '&' + 'company_id=' + idcompany;
      
       return this.http.get( url, {headers: this.headers})
-          .map( (resp: any) => resp );
+      .pipe(
+          map( (resp: any) => resp ));
     }
 
     buscarSubsidiary( termino: string ) {
       let url = this.URL_SERVICIOS + '/busqueda/coleccion/companys/' + termino;
       return this.http.get( url, {headers: this.headers})
-          .map(( resp: any ) => resp.subsidiary);
+      .pipe(
+          map(( resp: any ) => resp.subsidiary));
     }
 
     
@@ -75,18 +81,20 @@ export class SubsidiaryService {
       let url = this.URL_SERVICIOS + '/subsidiaries/' + id;
       url += '?token=' + this._usuarioService.token;
       return this.http.delete( url, {headers: this.headers} )
-          .map( (resp: any) => {
+      .pipe(
+          map( (resp: any) => {
               Swal.fire({
               text: 'Sucursal Eliminada',
               icon: 'success'
             });
               return resp;
-      });
+      }));
     }
     crearSubsidiary( subsidiary: Subsidiary){
       const url = this.URL_SERVICIOS + '/subsidiaries';
       return this.http.post( url, subsidiary, {headers: this.headers})
-          .map( (resp: any) =>{
+      .pipe(
+          map( (resp: any) =>{
             Swal.fire({
                 text: 'Sucursal Creada',
                 icon: 'success'
@@ -95,8 +103,9 @@ export class SubsidiaryService {
             
             
             return resp.subsidiaries;
-          })
-          .catch( err =>{
+          }))
+          .pipe(
+          catchError( err =>{
             console.log(err)
             // tslint:disable-next-line: deprecation
             Swal.fire({
@@ -105,7 +114,7 @@ export class SubsidiaryService {
               icon: 'error'
             });
             return Observable.throwError( err );
-          });
+          }));
     }
 
     actualizarSubsidiary( subsidiary: Subsidiary ){
@@ -113,13 +122,14 @@ export class SubsidiaryService {
       let url = this.URL_SERVICIOS + '/subsidiaries/' + subsidiary.id;
       url += '?token=' + this._usuarioService.token;
       return this.http.put( url, subsidiary, {headers: this.headers})
-          .map( (resp: any) =>{
+      .pipe(
+          map( (resp: any) =>{
             Swal.fire({
               text: 'Sucursal Actualizada',
               icon: 'success'
             });
             return resp.subsidiary;
-          });
+          }));
     }
 
   }

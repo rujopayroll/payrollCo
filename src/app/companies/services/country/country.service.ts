@@ -4,6 +4,8 @@ import { AuthService } from 'src/app/auth/services/auth.service';
 import Swal from 'sweetalert2';
 import { Country } from '../../models/country.model';
 import { environment } from 'src/environments/environment';
+import { Observable } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 
 
 @Injectable({
@@ -23,14 +25,16 @@ export class CountryService {
     cargarPaises(){
       let url = this.URL_SERVICIOS + '/countries';
       return this.http.get( url, {headers: this.headers} )
-           .map( (resp: any) => {
+      .pipe(
+           map( (resp: any) => {
             return resp;
-          });
+          }));
     }
     
     obtenerPaises( id: string ){
       let url = this.URL_SERVICIOS + '/countries/' + id;
       return this.http.get( url, {headers: this.headers} )
-          .map( (resp: any ) => resp );
+      .pipe(
+          map( (resp: any ) => resp ));
     }
 }

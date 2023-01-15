@@ -7,6 +7,7 @@ import { Company } from '../../models/company.model';
 import { Router } from '@angular/router';
 //import { SubirArhivoService } from '../subirArchivo/subir-arhivo.service';
 import { Observable } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { getLocaleDateFormat } from '@angular/common';
 import { environment } from 'src/environments/environment';
@@ -32,7 +33,8 @@ export class ConceptService {
       
       let url = this.URL_SERVICIOS + '/concepts/';
       return this.http.get( url )
-          .map( (resp: any) => resp.concept );
+      .pipe(
+          map( (resp: any) => resp.concept ));
     }
 
     getConceptNovelty(idCompany: string){
@@ -40,10 +42,11 @@ export class ConceptService {
       let url = this.URL_SERVICIOS + '/concepts?isNovelty=True&company_id=' + idCompany + '&conceptGroup=SALARIAL';
       console.log(url)
       return this.http.get( url )
-          .map( (resp: any) => {
+      .pipe(
+          map( (resp: any) => {
             
             return resp;
-          });
+          }));
         
     }
 
@@ -52,10 +55,11 @@ export class ConceptService {
       let url = this.URL_SERVICIOS + '/concepts?isNovelty=True&company_id=' + idCompany + '&conceptGroup=NOSALARIAL';
       console.log(url)
       return this.http.get( url )
-          .map( (resp: any) => {
+      .pipe(
+          map( (resp: any) => {
             
             return resp;
-          });
+          }));
         
     }
 
@@ -64,10 +68,11 @@ export class ConceptService {
       let url = this.URL_SERVICIOS + '/concepts?isNovelty=True&company_id=' + idCompany + '&conceptGroup=DEDUCCION';
       console.log(url)
       return this.http.get( url )
-          .map( (resp: any) => {
+      .pipe(
+          map( (resp: any) => {
             
             return resp;
-          });
+          }));
         
     }
 
@@ -76,10 +81,11 @@ export class ConceptService {
       let url = this.URL_SERVICIOS + '/concepts?isNovelty=True&company_id=' + idCompany + '&conceptGroup=DEDUCCION' + '&conceptGroup=NOSALARIAL' + '&conceptGroup=SALARIAL';
       console.log(url)
       return this.http.get( url )
-          .map( (resp: any) => {
+      .pipe(
+          map( (resp: any) => {
             
             return resp;
-          });
+          }));
         
     }
 
@@ -87,21 +93,24 @@ export class ConceptService {
       
       let url = this.URL_SERVICIOS + '/concepts/' + id;
       return this.http.get( url )
-          .map( (resp: any) => resp.concept );
+      .pipe(
+          map( (resp: any) => resp.concept ));
     }
 
     obtenerConceptCompany( id: string, company_id: string){
       
       let url = this.URL_SERVICIOS + '/concepts/' + id + '?' + company_id;
       return this.http.get( url )
-          .map( (resp: any) => resp.concept );
+      .pipe(
+          map( (resp: any) => resp.concept ));
     }
 
     obtenerConceptSalary(idcompany: string){
       
       let url = this.URL_SERVICIOS + '/concepts/category/salar/' + idcompany ;
       return this.http.get( url )
-          .map( (resp: any) => resp.concept );
+      .pipe(
+          map( (resp: any) => resp.concept ));
     }
 
     cargarConceptCompany( idcompany: string){
@@ -109,7 +118,8 @@ export class ConceptService {
       let url = this.URL_SERVICIOS + '/concepts?' + 'company_id=' + idcompany;
      console.log('url',url)
       return this.http.get( url )
-          .map( (resp: any) => resp );
+      .pipe(
+          map( (resp: any) => resp ));
     }
 
     cargarConceptCompanyActive( idcompany: string){
@@ -117,14 +127,16 @@ export class ConceptService {
       let url = this.URL_SERVICIOS + '/concepts/' + idcompany + '/isActive';
      
       return this.http.get( url )
-          .map( (resp: any) => resp.concept );
+      .pipe(
+          map( (resp: any) => resp.concept ));
     }
 
 
     buscarConcept( termino: string ) {
       let url = this.URL_SERVICIOS + '/busqueda/coleccion/companys/' + termino;
       return this.http.get( url )
-          .map(( resp: any ) => resp.companyPayroll);
+      .pipe(
+          map(( resp: any ) => resp.companyPayroll));
     }
 
    /*  crearConcept( concept: Concept){
@@ -165,7 +177,8 @@ export class ConceptService {
     crearConceptStandard(  id: string){
       const url = this.URL_SERVICIOS + '/concepts/estandar/' + id;
       return this.http.post( url, id )
-          .map( (resp: any) => resp.concept);
+      .pipe(
+          map( (resp: any) => resp.concept));
     }
 
 
@@ -175,13 +188,14 @@ export class ConceptService {
       let url = this.URL_SERVICIOS + '/concepts/' + concept.id;
       url += '?token=' + this._usuarioService.token;
       return this.http.put( url, concept)
-          .map( (resp: any) =>{
+      .pipe(
+          map( (resp: any) =>{
             Swal.fire({
               text: 'concepto Actualizado',
               icon: 'success'
             });
             return resp.concept;
-          });
+          }));
     }
 
 }

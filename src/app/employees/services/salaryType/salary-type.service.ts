@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { environment } from 'src/environments/environment';
+import { Observable } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -19,14 +21,16 @@ export class SalaryTypeService {
   cargarTipoSalario(){
     let url = this.URL_SERVICIOS + '/salaryTypes';
     return this.http.get( url, {headers: this.headers} )
-         .map( (resp: any) => {
+    .pipe(
+         map( (resp: any) => {
           return resp;
-        });
+        }));
   }
   obtenerTipoSalario( id: string ){
     let url = this.URL_SERVICIOS + '/salaryTypes/' + id;
     return this.http.get( url, {headers: this.headers} )
-        .map( (resp: any ) => resp );
+    .pipe(
+        map( (resp: any ) => resp ));
   }
 
 

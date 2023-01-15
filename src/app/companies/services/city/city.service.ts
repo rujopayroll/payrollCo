@@ -6,6 +6,8 @@ import { Country } from '../../models/country.model';
 import { State } from '../../models/state.model';
 import { City } from '../../models/city.model';
 import { environment } from 'src/environments/environment';
+import { Observable } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 
 
 @Injectable({
@@ -25,19 +27,22 @@ export class CityService {
     cargarMunicipios(){
       let url = this.URL_SERVICIOS + '/cities';
       return this.http.get( url, {headers: this.headers} )
-           .map( (resp: any) => {
+      .pipe(
+           map( (resp: any) => {
             return resp;
-          });
+          }));
     }
     obtenerMunicipio( id: string ){
       let url = this.URL_SERVICIOS + '/cities/' + id;
       return this.http.get( url, {headers: this.headers} )
-          .map( (resp: any ) => resp );
+      .pipe(    
+      map( (resp: any ) => resp ));
     }
     obtenerMunicipioDepto( id: string ){
       let url = this.URL_SERVICIOS + '/states/' + id;
       return this.http.get( url, {headers: this.headers} )
-          .map( (resp: any ) => resp.cities );
+      .pipe(
+          map( (resp: any ) => resp.cities ));
     }
 }
 

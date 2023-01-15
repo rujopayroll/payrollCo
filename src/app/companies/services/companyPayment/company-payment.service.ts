@@ -8,6 +8,7 @@ import { Company } from '../../models/company.model';
 import { Router } from '@angular/router';
 
 import { Observable } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 /* import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw'; */
@@ -44,29 +45,33 @@ private URL_SERVICIOS: string = environment.URL_SERVICIOS;
 
       let url = this.URL_SERVICIOS + '/companyPayments/' + id;
       return this.http.get( url, {headers: this.headers})
-          .map( (resp: any) => resp );
+      .pipe(
+          map( (resp: any) => resp ));
     }
     buscarCompanyPayment( termino: string ) {
       let url = this.URL_SERVICIOS + '/busqueda/coleccion/companys/' + termino;
       return this.http.get( url, {headers: this.headers} )
-          .map(( resp: any ) => resp.companyPayment);
+      .pipe(
+          map(( resp: any ) => resp.companyPayment));
     }
     borrarCompanyPayment( id: string ){
       let url = this.URL_SERVICIOS + '/companyPayments/' + id;
       url += '?token=' + this._usuarioService.token;
       return this.http.delete( url, {headers: this.headers} )
-          .map( (resp: any) => {
+      .pipe(
+          map( (resp: any) => {
               Swal.fire({
               text: 'Empresa Eliminado',
               icon: 'success'
             });
               return resp;
-      });
+      }));
     }
     crearCompanyPayment( companyPayment: CompanyPayment){
       const url = this.URL_SERVICIOS + '/companyPayments';
       return this.http.post( url, companyPayment, {headers: this.headers})
-          .map( (resp: any) =>{
+      .pipe(
+          map( (resp: any) =>{
 
            /*  Swal.fire({
               text: 'Empresa Creada',
@@ -74,8 +79,9 @@ private URL_SERVICIOS: string = environment.URL_SERVICIOS;
             }); */
 
             return resp.companyPayment;
-          })
-          .catch( err =>{
+          }))
+          .pipe(
+          catchError( err =>{
             // tslint:disable-next-line: deprecation
             Swal.fire({
               title: err.error.mensaje,
@@ -83,7 +89,7 @@ private URL_SERVICIOS: string = environment.URL_SERVICIOS;
               icon: 'error'
             });
             return Observable.throwError( err );
-          });
+          }));
     }
 
     actualizarCompanyPayment( companyPayment: any ){
@@ -91,14 +97,15 @@ private URL_SERVICIOS: string = environment.URL_SERVICIOS;
       let url = this.URL_SERVICIOS + '/companyPayments/' + companyPayment.id;
       
       return this.http.put( url, companyPayment, {headers: this.headers})
-          .map( (resp: any) =>{
+      .pipe(
+          map( (resp: any) =>{
             console.log('servicio', companyPayment )
             Swal.fire({
               text: 'Informacion de pago Actualizado',
               icon: 'success'
             });
             return resp.companyPayment;
-          });
+          }));
     }
 
   }

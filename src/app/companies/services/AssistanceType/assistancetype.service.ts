@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { environment } from 'src/environments/environment';
+import { Observable } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 
 
 @Injectable({
@@ -21,14 +23,16 @@ public headers = new HttpHeaders();
   cargarTipoAuxilio(){
     let url = this.URL_SERVICIOS  + '/assistanceTypes';
     return this.http.get( url, {headers: this.headers} )
-         .map( (resp: any) => {
+    .pipe(
+         map( (resp: any) => {
           return resp;
-        });
+        }));
   }
   obtenerTipoAuxilio( id: string ){
     let url = this.URL_SERVICIOS  + '/assistanceTypes/' + id;
     return this.http.get( url, {headers: this.headers} )
-        .map( (resp: any ) => resp );
+    .pipe(
+        map( (resp: any ) => resp ));
   }
 
 

@@ -3,6 +3,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import Swal from 'sweetalert2';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { environment } from 'src/environments/environment';
+import { Observable } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -21,18 +23,19 @@ export class SpendingAccountService {
     cargarCuentaGastos(){
       let url = this.URL_SERVICIOS + '/spendingAccounts';
       return this.http.get( url, {headers: this.headers} )
-           .map( (resp: any) => {
+      .pipe(
+           map( (resp: any) => {
             return resp;
-          });
+          }));
     }
     
     obtenerCuentaGastos( id: string ){
       let url = this.URL_SERVICIOS + '/spendingAccounts/' + id;
       console.log('url', url)
       return this.http.get( url, {headers: this.headers} )
-          .map( (resp: any ) => {
-        console.log('servicio', resp)
+      .pipe(
+          map( (resp: any ) => {
           return resp
-        });
+        }));
     }
 }

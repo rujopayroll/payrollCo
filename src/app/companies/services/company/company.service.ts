@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Router } from '@angular/router';
 // import { SubirArhivoService } from '../subirArchivo/subir-arhivo.service';
-import { Observable } from 'rxjs';
+
 
 import { throwError } from 'rxjs';
 import { getLocaleDateFormat } from '@angular/common';
@@ -11,6 +11,8 @@ import { environment } from 'src/environments/environment';
 import { Company } from '../../models/company.model';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import Swal from 'sweetalert2';
+import { Observable } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -44,10 +46,10 @@ export class CompanyService {
       let url = this.URL_SERVICIOS + '/companies/' + id;
       
       return this.http.get( url, {headers: this.headers} )
-          .map( (resp: any) => {
-           
+      .pipe(
+          map( (resp: any) => {
             return resp
-          });
+          }));
           
     } 
     
@@ -59,13 +61,13 @@ export class CompanyService {
       
       
       return this.http.get( url, {headers: this.headers})
-
-          .map( (resp: any) => {
+.pipe(
+          map( (resp: any) => {
             
             console.log('empresas usuario', resp)
             return resp
             
-          });
+          }));
           
           
           
@@ -75,34 +77,38 @@ export class CompanyService {
 buscarCompanys( termino: string ) {
   let url = this.URL_SERVICIOS + '/busqueda/coleccion/companys/' + termino;
   return this.http.get( url )
-      .map(( resp: any ) => resp.companys);
+  .pipe(
+      map(( resp: any ) => resp.companys));
 }
 borrarCompanys( id: string ){
   let url = this.URL_SERVICIOS + '/company/' + id;
   url += '?token=' + this._usuarioService.token;
   return this.http.delete( url )
-      .map( (resp: any) => {
+  .pipe(
+      map( (resp: any) => {
           Swal.fire({
           text: 'Empresa Eliminado',
           icon: 'success'
         });
           return resp;
-  });
+  }));
 }
 crearCompany( company: any){
   const url = this.URL_SERVICIOS  + '/companies';
   
   return this.http.post( url, company, {headers: this.headers})
-      .map( (resp: any) =>{
-console.log('servicio2', company)
+  .pipe(
+      map( (resp: any) =>{
+
         /* Swal.fire({
           text: 'Empresa Creada',
           icon: 'success'
         });  */
 
         return resp;
-      })
-      .catch( err =>{
+      }))
+      .pipe(
+      catchError( err =>{
         // tslint:disable-next-line: deprecation
         Swal.fire({
           title: err.error.mensaje,
@@ -112,7 +118,7 @@ console.log('servicio2', company)
        
         return Observable.throwError( err );
         
-      });
+      }));
 }
 
 actualizarCompany( company: any ){
@@ -121,13 +127,14 @@ actualizarCompany( company: any ){
  
 
   return this.http.put( url, company, {headers: this.headers})
-      .map( (resp: any) =>{
+  .pipe(
+      map( (resp: any) =>{
         Swal.fire({
           text: 'Informacion básica Actualizada',
           icon: 'success'
         });
         return resp;
-      });
+      }));
       /* .catch( err =>{
         Swal.fire({
           title: err.error.mensaje,
@@ -145,7 +152,8 @@ cambiarImagen(archivo: File, company: string ){
   const url = this.URL_SERVICIOS  + '/uploadImage/Company/' + company;
   
   return this.http.post( url, archivo, {headers: this.headers})
-      .map( (resp: any) =>{
+  .pipe(
+      map( (resp: any) =>{
 
        /*  Swal.fire({
           text: 'Empresa Creada',
@@ -153,8 +161,9 @@ cambiarImagen(archivo: File, company: string ){
         }); */
 
         return resp;
-      })
-      .catch( err =>{
+      }))
+      .pipe(
+      catchError( err =>{
         // tslint:disable-next-line: deprecation
         Swal.fire({
           title: err.error.mensaje,
@@ -162,7 +171,7 @@ cambiarImagen(archivo: File, company: string ){
           icon: 'error'
         });
         return Observable.throwError( err );
-      });
+      }));
 }
 
 

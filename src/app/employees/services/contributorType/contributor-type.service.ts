@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../../../auth/services/authservice.index';
 import { environment } from 'src/environments/environment';
+import { Observable } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 
 
 @Injectable({
@@ -22,14 +24,16 @@ export class ContributorTypeService {
   cargarTipoCotizante(){
     let url = this.URL_SERVICIOS + '/contributorTypes';
     return this.http.get( url, {headers: this.headers}  )
-         .map( (resp: any) => {
+    .pipe(
+         map( (resp: any) => {
           return resp;
-        });
+        }));
   }
   obtenerTipoCotizante( id: string ){
     let url = this.URL_SERVICIOS + '/contributorTypes/' + id;
     return this.http.get( url, {headers: this.headers}  )
-        .map( (resp: any ) => resp );
+    .pipe(
+        map( (resp: any ) => resp ));
   }
 
 

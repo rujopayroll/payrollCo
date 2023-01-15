@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../../../auth/services/authservice.index';
 import { environment } from 'src/environments/environment';
+import { Observable } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -20,14 +22,16 @@ export class ContractRegimeService {
   cargarTipoRegimen(){
     let url = this.URL_SERVICIOS + '/contractRegimes';
     return this.http.get( url, {headers: this.headers}  )
-         .map( (resp: any) => {
+    .pipe(
+         map( (resp: any) => {
           return resp;
-        });
+        }));
   }
   obtenerTipoRegime( id: string ){
     let url = this.URL_SERVICIOS + '/contractRegimes/' + id;
     return this.http.get( url, {headers: this.headers}  )
-        .map( (resp: any ) => resp );
+    .pipe(
+        map( (resp: any ) => resp ));
   }
 
 

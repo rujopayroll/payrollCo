@@ -10,6 +10,7 @@ import { Movements } from '../models/movements.model'
 import { Router } from '@angular/router';
 
 import { Observable } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 
 import { throwError } from 'rxjs';
 import { getLocaleDateFormat } from '@angular/common';
@@ -43,9 +44,10 @@ public headers = new HttpHeaders();
      getDiagnosis(){
       let url = this.URL_SERVICIOS + '/diagnosis';
       return  this.http.get( url, {headers: this.headers} )
-          .map( (resp: any) => {
+      .pipe(
+          map( (resp: any) => {
             return resp;
-          });
+          }));
     }
 
 }

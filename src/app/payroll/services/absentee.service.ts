@@ -10,6 +10,7 @@ import { Movements } from '../models/movements.model'
 import { Router } from '@angular/router';
 
 import { Observable } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 
 import { throwError } from 'rxjs';
 import { getLocaleDateFormat } from '@angular/common';
@@ -44,37 +45,41 @@ public headers = new HttpHeaders();
       let url = this.URL_SERVICIOS + '/absenteeTypes';
       
       return  this.http.get( url, {headers: this.headers} )
-          .map( (resp: any) => {
+      .pipe(
+          map( (resp: any) => {
             console.log('servicio tipos', resp)
             return resp;
-          });
+          }));
     }
 
     getAbsenteeTypeById(id: string){
       let url = this.URL_SERVICIOS + '/absenteeTypes?id=' + id;
       
       return  this.http.get( url, {headers: this.headers} )
-          .map( (resp: any) => {
+      .pipe(
+          map( (resp: any) => {
             console.log('servicio tipos', resp)
             return resp;
-          });
+          }));
     }
 
     getAbsenteeByEmployeeByPeriod(employee_id: string, iniPeriod:Date, endPeriod:Date){
       let url = this.URL_SERVICIOS + '/absenteeHistories/absenteePeriodByEmployee?employee_id=' + employee_id + '&iniPeriod=' + iniPeriod + '&endPeriod=' + endPeriod;
       console.log(url)
       return  this.http.get( url, {headers: this.headers} )
-          .map( (resp: any) => {
+      .pipe(
+          map( (resp: any) => {
             console.log('servicio',resp)
             return resp;
             
-          });
+          }));
     }
 
     saveAbsenteeByEmployee(absentee: any){
       let url = this.URL_SERVICIOS + '/absenteeHistories/';
       return this.http.post( url, absentee, {headers: this.headers} )
-          .map( (resp: any) => {
+      .pipe(
+          map( (resp: any) => {
             Swal.fire({
               position: 'top-end',
               icon: 'success',
@@ -83,7 +88,7 @@ public headers = new HttpHeaders();
               timer: 2000
             })
             return resp;
-          });     
+          }));     
     }
 
 

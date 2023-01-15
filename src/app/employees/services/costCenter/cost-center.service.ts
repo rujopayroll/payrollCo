@@ -8,7 +8,9 @@ import { Company } from '../../../companies/models/company.model';
 
 import { Router } from '@angular/router';
 
+
 import { Observable } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 /* import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw'; */
@@ -41,14 +43,16 @@ export class CostCenterService {
       
       let url = this.URL_SERVICIOS  + '/companies/' + id;
       return this.http.get( url, {headers: this.headers})
-          .map( (resp: any) => resp.costCenters );
+      .pipe(
+          map( (resp: any) => resp.costCenters ));
     }
 
     obtenerCostCenter( id: string){
     
       let url = this.URL_SERVICIOS  + '/costCenters/' + id;
       return this.http.get( url, {headers: this.headers})
-          .map( (resp: any) => resp );
+      .pipe(
+          map( (resp: any) => resp ));
     }
 
     cargarCostCenterCompany( idcompany: string){
@@ -57,7 +61,8 @@ export class CostCenterService {
       let url = this.URL_SERVICIOS  + '/companies/' + idcompany;
      
       return this.http.get( url, {headers: this.headers})
-          .map( (resp: any) => resp );
+      .pipe(
+          map( (resp: any) => resp ));
     }
 
     cargarCostCenterCompanyActive( idcompany: string){
@@ -66,31 +71,35 @@ export class CostCenterService {
       let url = this.URL_SERVICIOS + '/costCenters?isActive=True' + '&' + 'company_id=' + idcompany;
      
       return this.http.get( url, {headers: this.headers} )
-          .map( (resp: any) => resp );
+      .pipe(
+          map( (resp: any) => resp ));
     }
 
 
     buscarCostCenter( termino: string ) {
       let url = this.URL_SERVICIOS + '/busqueda/coleccion/companys/' + termino;
       return this.http.get( url, {headers: this.headers} )
-          .map(( resp: any ) => resp.companyPayroll);
+      .pipe(
+          map(( resp: any ) => resp.companyPayroll));
     }
     borrarCostCenter( id: string ){
       let url = this.URL_SERVICIOS + '/costCenters/' + id;
       url += '?token=' + this._usuarioService.token;
       return this.http.delete( url, {headers: this.headers} )
-          .map( (resp: any) => {
+      .pipe(
+          map( (resp: any) => {
               Swal.fire({
               text: 'Centro de costo Eliminado',
               icon: 'success'
             });
               return resp;
-      });
+      }));
     }
     crearCostCenter( costCenter: CostCenter){
       const url = this.URL_SERVICIOS + '/costCenters';
       return this.http.post( url, costCenter, {headers: this.headers})
-          .map( (resp: any) =>{
+      .pipe(
+          map( (resp: any) =>{
              Swal.fire({
               position: 'top-end',
               icon: 'success',
@@ -100,7 +109,7 @@ export class CostCenterService {
             }) 
             
             return resp.costCenter;
-          })
+          }));
           
     }
 
@@ -109,13 +118,14 @@ export class CostCenterService {
       let url = this.URL_SERVICIOS + '/costCenters/' + costCenter.id;
       url += '?token=' + this._usuarioService.token;
       return this.http.put( url, costCenter, {headers: this.headers})
-          .map( (resp: any) =>{
+      .pipe(
+          map( (resp: any) =>{
             Swal.fire({
               text: 'Centro de costo Actualizado',
               icon: 'success'
             });
             return resp.costCenter;
-          });
+          }));
     }
 
   }
