@@ -50,17 +50,18 @@ export class CompaniesListComponent implements OnInit {
 
   //this.cargarEmpresas();
   this.usuario = this._usuarioService.usuario;
+  this.cargarEmpresasUsuario(this.usuario.id!);
   // this.cargarEmpresasUsuario(this.usuario.id);
-  
+ 
 
                 }
 
   ngOnInit(): void {
   //  this.cargarEmpresas();
   
-    this.usuario = this._usuarioService.usuario;
-    this.cargarEmpresasUsuario(this.usuario.id!);
-    
+   // this.usuario = this._usuarioService.usuario;
+   // this.cargarEmpresasUsuario(this.usuario.id!);
+   
   }
 
   
