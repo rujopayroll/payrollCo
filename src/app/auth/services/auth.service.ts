@@ -222,7 +222,7 @@ actualizarUsuario( usuario: Usuario ){
           icon: 'success'
         });
 
-        return true;
+        return true
 
       }))
       .pipe(
