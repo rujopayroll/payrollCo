@@ -1,32 +1,16 @@
-# #Primera Etapa
-# FROM node:14-alpine as build-step
 
-# RUN mkdir -p /app
-
-# WORKDIR /app
-
-# COPY package.json /app
-
-# RUN npm i -g @angular/cli
-
-# RUN npm install 
-
-# COPY . /app
-
-# RUN npm run build --prod
-
-# #Segunda Etapa
-# FROM nginx:1.17.1-alpine
-# 	#Si estas utilizando otra aplicacion cambia PokeApp por el nombre de tu app
-# COPY --from=build-step /app/dist/Payrollco /usr/share/nginx/html
-
-FROM node:14-alpine as builder
+FROM node:14-alpine as build
 WORKDIR /app
-COPY . .
+COPY package.json package-lock.json ./
+RUN npm cache clean --force
 RUN npm i -g @angular/cli
 RUN npm install
-RUN npm run build
+COPY . .
+RUN npm run build --prod
 #stage 2
-FROM nginx:alpine
-COPY --from=builder /app/dist/payrollCO /usr/share/nginx/html
+#FROM nginx:alpine
+FROM nginx:latest AS ngi
+COPY --from=build /app/dist/payrollCO /usr/share/nginx/html
+#COPY --from=builder-app /app/dist/payrollCO /usr/share/nginx/html
+COPY /nginx.conf  /etc/nginx/conf.d/default.conf
 EXPOSE 80
