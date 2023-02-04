@@ -48,20 +48,48 @@ export class ListComponent implements OnInit {
                public _modalUploadService: ModalUploadService ) {
 
 
+                //this.company = this._usuarioService.empresas;
+    //this.empresaseleccionada = localStorage.getItem('empresaseleccionada')!;
+    this.usuario = JSON.parse(localStorage.getItem('usuario')!);
+
+   /*  if ( this.empresaseleccionada ){
+      this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
+    } else {
+      if(this.company.length > 1 ) {
+        this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
+      } else {
+        this.empresa =  JSON.parse(JSON.stringify(this.company[0]));
+      }
+    } */
+
+
   //this.cargarEmpresas();
-  this.usuario = this._usuarioService.usuario;
-  // this.cargarEmpresasUsuario(this.usuario.id);
-  
+  //this.usuario = this._usuarioService.usuario;
+ 
+  //this.cargarEmpresasUsuario(this.usuario.id!);
+
+ 
 
                 }
 
   ngOnInit(): void {
   //  this.cargarEmpresas();
   
-    this.usuario = this._usuarioService.usuario;
-    this.cargarEmpresasUsuario(this.usuario.id!);
+    //this.usuario = this._usuarioService.usuario;
+   // debugger
+   
+    this.cargarEmpresasUsuario(this.usuario.id!)
     
+
+   
+    
+ 
+  
+
+
   }
+
+  
 
   
 
@@ -80,12 +108,19 @@ export class ListComponent implements OnInit {
   
   }
 
-  cargarEmpresasUsuario(iduser: string){
-    this._companyService.cargarCompanysUser(iduser)
-    .subscribe ( companyUser => {
-      this.companyUser = companyUser.companies
-    });
-  }
+  
+    cargarEmpresasUsuario(iduser: string){
+      this._companyService.cargarCompanysUser(iduser)
+      .subscribe ( companyUser => {
+        this.companyUser = companyUser.companies
+      });
+    }
+    
+   
+
+  
+
+  
 
  
 

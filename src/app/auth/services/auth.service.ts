@@ -45,7 +45,7 @@ export class AuthService {
               //  public _subirArchivoService: SubirArhivoService
                ) {
                 this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
-    this.cargarStorage();
+                 this.cargarStorage();
    
    
   }
@@ -80,9 +80,11 @@ export class AuthService {
 
 
   //guardarStorage(id: string, token: string, usuario: Usuario, menu: any, empresas:any){
-     guardarStorage(id: string, token: string, usuario: Usuario, empresas:any){
-    localStorage.setItem('id', id);
-    localStorage.setItem('token', token);
+     guardarStorage(token: string,id: string,  usuario: Usuario, empresas:any){
+    
+      localStorage.setItem('token', token);
+      localStorage.setItem('id', id);
+   
     localStorage.setItem('usuario', JSON.stringify(usuario));
     localStorage.setItem('empresas', JSON.stringify(empresas));
 
@@ -134,7 +136,7 @@ export class AuthService {
               
                
                 // this.guardarStorage( resp.user.id, resp.token, resp.user, resp.user.menu.menus, resp.user.companies );
-                this.guardarStorage( resp.user.id, resp.token, resp.user, resp.user.companies );
+                this.guardarStorage( resp.token, resp.user.id, resp.user, resp.user.companies );
 
 
                 return true;
@@ -169,7 +171,7 @@ export class AuthService {
     localStorage.removeItem('menus');
     localStorage.removeItem('empresas');
     localStorage.removeItem('empresaseleccionada');
-
+    localStorage.removeItem('id');
     this._router.navigate(['/auth/login']);
 
   }

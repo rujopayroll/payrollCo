@@ -62,9 +62,12 @@ export class LoginComponent implements OnInit {
         // if (this._usuarioService.empresas.length > 1) {
           if (this._usuarioService.empresas.length > 1) {
             
+            
+              this._router.navigate(['/companies/list']);
           
         
-          this._router.navigate(['/companies/list']);
+           
+              
           
         } else {
             

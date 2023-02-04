@@ -33,10 +33,13 @@ export class CompanyService {
     ) {
 
     
-      this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
-     console.log('token', this.headers)
+    
      }
 
+     ngOnInit(): void {
+       this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
+       
+      }
 
      
 
@@ -53,26 +56,25 @@ export class CompanyService {
           
     } 
     
-    cargarCompanysUser( iduser: string){
-
-      //let url = URL_SERVICIOS + '/company/' + iduser;
+     cargarCompanysUser( iduser: string){
+      this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
+     
       let url = this.URL_SERVICIOS + '/users/' + iduser;
-      
-      
-      
+     
       return this.http.get( url, {headers: this.headers})
+      
 .pipe(
+  
           map( (resp: any) => {
-            
-            console.log('empresas usuario', resp)
+          
             return resp
-            
           }));
           
-          
+        
           
           
 }
+
 
 buscarCompanys( termino: string ) {
   let url = this.URL_SERVICIOS + '/busqueda/coleccion/companys/' + termino;
