@@ -5,7 +5,7 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 #RUN npm cache clean --force
 #RUN npm i -g @angular/cli
-RUN sudo npm install
+RUN npm install
 COPY . .
 RUN npm run build --prod
 #stage 2
