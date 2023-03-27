@@ -1,5 +1,6 @@
 
-FROM node:14-alpine as build
+#FROM node:14-alpine as build
+FROM node:14.21.3-alpine as build
 WORKDIR /app
 COPY package.json package-lock.json ./
 #RUN npm cache clean --force
