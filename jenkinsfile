@@ -1,14 +1,6 @@
-pipeline 
-{
-    agent any
-
-    options 
-    {
-        buildDiscarder(logRotator(numToKeepStr: '2'))
-        disableConcurrentBuilds()
-        timeout(time: 1, unit: 'HOURS')
-        timestamps()
-    }
+pipeline {
+  agent any
+  tools {nodejs "14.20.1"}
 
     environment 
     {
@@ -22,69 +14,34 @@ pipeline
         SERVICE = "AppPayrollService"
     }
 
-    stages 
-    {
-        stage('Logging into AWS ECR') 
-        {
-            steps 
-            {
-                script 
-                {
-                        withCredentials([[
-                        $class: 'AmazonWebServicesCredentialsBinding',
-                        credentialsId: "aws_credentials",
-                        accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-                        secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) 
-                        {
-                            sh '''aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login -u AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/{IMAGE_REPO_NAME}'''
-                            //sh '''aws ecr get-login-password --region us-east-1 | docker login -u AWS --password-stdin 746662389335.dkr.ecr.us-east-1.amazonaws.com/payroll-apiv2'''
-                        }
-
-                            // script 
-                            // {
-                            //     sh '''aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login -u AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/{IMAGE_REPO_NAME}'''
-                            // }
-                }
-            }
-         } 
-        stage('Building image') 
-        {
-            steps
-                {
-                 sh '''time DOCKER_BUILDKIT=1 docker build --no-cache -t ${IMAGE_REPO_NAME}:${IMAGE_TAG} .'''
-                 //sh '''docker buildx build --platform=linux/amd64 -t ${IMAGE_REPO_NAME}:${IMAGE_TAG} .'''
-                }
-        }
-        stage('Pushing to ECR') 
-        {
-            steps
-                {
-                    script 
-                    {
-                    sh '''docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${REPOSITORY_URI}:$IMAGE_TAG'''
-                    sh '''docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}'''
-                    }
-                }
-        }
-        stage('Deploy API') 
-        {
-            steps 
-            {
-                script
-                {
-                     withCredentials([[
-                        $class: 'AmazonWebServicesCredentialsBinding',
-                        credentialsId: "aws_credentials",
-                        accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-                        secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) 
-                        {
-                            sh '''aws ecs register-task-definition --execution-role-arn ${EXECUTION_ROLE_ARN} --cli-input-json file:////$PWD/infra/task-definition.json --region ${AWS_DEFAULT_REGION}'''
-                            sh '''aws ecs update-service --cluster ${CLUSTER} --service ${SERVICE} --force-new-deployment'''
-                         }
-
-                }
-            }
-        }
-       
+  stages {
+    stage('INSTALL PACKAGES') {
+      steps {
+        sh "npm install"
+      }
     }
+    stage('TEST') {
+      steps {
+        echo "insert your testing here"
+      }
+    }
+    stage('BUILD APP') {
+      steps {
+        sh "node_modules/.bin/ng build --prod"
+      }
+    }
+    stage("BUILD DOCKER") {
+      steps {
+        script {
+          dockerImageBuild = docker.build "testapp:latest"
+        }
+      }
+    }
+    
+    stage("DEPLOY & ACTIVATE") {
+      steps {
+        echo 'this part will differ depending on setup'
+      }
+    }
+  }
 }
