@@ -38,13 +38,8 @@ pipeline
                         secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) 
                         {
                             sh '''aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login -u AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/{IMAGE_REPO_NAME}'''
-                            //sh '''aws ecr get-login-password --region us-east-1 | docker login -u AWS --password-stdin 746662389335.dkr.ecr.us-east-1.amazonaws.com/payroll-apiv2'''
+                         
                         }
-
-                            // script 
-                            // {
-                            //     sh '''aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login -u AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/{IMAGE_REPO_NAME}'''
-                            // }
                 }
             }
          } 
@@ -52,8 +47,8 @@ pipeline
         {
             steps
                 {
-                 sh '''time DOCKER_BUILDKIT=1 docker build --no-cache -t ${IMAGE_REPO_NAME}:${IMAGE_TAG} .'''
-                 //sh '''docker buildx build --platform=linux/amd64 -t ${IMAGE_REPO_NAME}:${IMAGE_TAG} .'''
+                 sh '''time DOCKER_BUILDKIT=1 docker build -t ${IMAGE_REPO_NAME}:${IMAGE_TAG} .'''
+                 //sh '''docker buildx build --no-cache  --platform=linux/amd64 -t ${IMAGE_REPO_NAME}:${IMAGE_TAG} .'''
                 }
         }
         stage('Pushing to ECR') 
