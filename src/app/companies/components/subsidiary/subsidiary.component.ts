@@ -24,14 +24,14 @@ declare var $: any;
 
 export class SubsidiaryComponent implements OnInit {
 
-  
+
   public date: Date = new Date();
   forma!: UntypedFormGroup;
   company: any;
   empresaseleccionada: any = {};
   usuario: any = {};
   empresa: any = {};
-  
+
   isActive = true;
   subsidiary: Company[] = [];
   subsidiaries: any= {};
@@ -39,19 +39,19 @@ export class SubsidiaryComponent implements OnInit {
   subsidiaryDialog!: boolean;
   submitted!: boolean;
   new!: boolean;
-  
- 
+
+
 
   constructor(private fb: UntypedFormBuilder,
-    
+
               public _subsidiaryService: SubsidiaryService  ,
               public _companyService: CompanyService,
               public _router: Router,
               public _activatedRoute: ActivatedRoute,
               public _usuarioService: AuthService,
-              private messageService: MessageService, 
+              private messageService: MessageService,
               private confirmationService: ConfirmationService
-              ) { 
+              ) {
 
       this.company = this._usuarioService.empresas;
       this.empresaseleccionada = localStorage.getItem('empresaseleccionada');
@@ -68,19 +68,20 @@ export class SubsidiaryComponent implements OnInit {
                 }
 
 
-      this.cargarSubsidiary( this.empresa.id );
+
+     }
+
+
+    get descripcionNoValido(){return this.forma.get('descripcion')!.invalid && this.forma.get('descripcion')!.touched}
+    get estadoNoValido(){return this.forma.get('estado')!.invalid && this.forma.get('estado')!.touched}
+
+
+  ngOnInit(): void {
+    this.cargarSubsidiary( this.empresa.id );
       this.cargarCompanySelect( this.empresa.id );
 
       this.crearFormulario();
-     }
 
-    
-    get descripcionNoValido(){return this.forma.get('descripcion')!.invalid && this.forma.get('descripcion')!.touched}
-    get estadoNoValido(){return this.forma.get('estado')!.invalid && this.forma.get('estado')!.touched}
-    
-
-  ngOnInit(): void {
-    
   }
 
 
@@ -116,21 +117,21 @@ editSubsidiary(subsidiary: Subsidiary) {
 
 
   guardar(){
-   
+
     if (this.forma.invalid){
-  
-      
-  
+
+
+
       return Object.values (this.forma.controls).forEach( control =>{
-  
+
         if (control instanceof UntypedFormGroup) {
           Object.values (control.controls).forEach( control => control.markAsTouched());
-  
+
         } else{
           control.markAsTouched();
         }
-        
-  
+
+
       });
     }
 
@@ -141,11 +142,11 @@ editSubsidiary(subsidiary: Subsidiary) {
           .subscribe( () => this.cargarSubsidiary(this.empresa.id));
           this.new = false;
           this.subsidiaryDialog = false;
-         
+
         } else {
-  
+
     const subsidiary = new Subsidiary(
-     
+
       this.forma.value.descripcion,
       this.empresa.id,
       this.usuario.id,
@@ -158,7 +159,7 @@ editSubsidiary(subsidiary: Subsidiary) {
     this.subsidiaryDialog = false
     this.new = false;
     this.cargarSubsidiary( this.empresa.id );
-    
+
   });
 
     this.forma.reset();
@@ -201,10 +202,10 @@ editSubsidiary(subsidiary: Subsidiary) {
   guardarSubsidiary( subsidiary: Subsidiary){
 
     this._subsidiaryService.actualizarSubsidiary( subsidiary )
-    
+
           .subscribe( () => this.cargarSubsidiary(this.empresa.id));
   }
-  
+
   deleteSubsidiary( subsidiary: Subsidiary ){
 
 
@@ -215,17 +216,17 @@ editSubsidiary(subsidiary: Subsidiary) {
       acceptLabel:"Si",
       rejectLabel:"No",
       accept: () => {
-          
+
         this._subsidiaryService.borrarSubsidiary( subsidiary.id! )
         .subscribe ( () => this.cargarSubsidiary(this.empresa.id));
-          
+
           //this.messageService.add({severity:'success', summary: 'Successful', detail: 'Centro de costo Eliminado', life: 3000});
       }
   });
-  
-   
-  
+
+
+
   }
-  
+
 
 }

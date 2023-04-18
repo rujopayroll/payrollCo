@@ -1,53 +1,5 @@
-<!-- <div class="row">
-    <div class="col">
-        <div class="card">
-            
 
-            <img (click)="ingresar()" [src]="company.img" class="img-150 img-rounded card-img-top pointer" alt="compañia">
-            <footer style="text-align: center;">
-                <small class="text-muted">
-                        {{company.name}}
-                    </small>
-            </footer>
-            
-        </div>
-    </div>
-</div> -->
-
-
-<!-- <div class="product-list-item">
-    <div class="product-list-detail">
-        <div>   <span *ngIf="company.img"> <img (click)="ingresar()" [src]="company.img" class="img-rounded cursor-pointer" alt="company"></span></div>
-            <div>   <span *ngIf="!company.img"> <img (click)="ingresar()" src="assets/images/no-image.png" class="img-rounded cursor-pointer border-circle w-6rem h-6rem" alt="company"></span></div>
-
-           
-        <div class="product-name">{{company.name}}</div>
-
-    </div> -->
-
-<!-- <p-card header={{company.name}}  [style]="{width: '200px'}" styleClass="p-card-shadow" class="mb-4">
-    <ng-template pTemplate="header">
-        <div>   <span *ngIf="company.img"> <img (click)="ingresar()" [src]="company.img" class="img-rounded cursor-pointer" alt="company"></span></div>
-            <div>   <span *ngIf="!company.img"> <img (click)="ingresar()" src="assets/images/no-image.png" class="img-rounded cursor-pointer border-circle w-6rem h-6rem" alt="company"></span></div>
-    </ng-template>
-    
-    
-</p-card>  -->
-
-<!-- <div class="text-center">
-<div class="col-12 md:col-4 mb-4 px-5">
-    <span class="p-3 shadow-2 mb-3 inline-block surface-card" style="border-radius: 10px">
-        <div>   <span *ngIf="company.img"> <img (click)="ingresar()" [src]="company.img" class="img-rounded cursor-pointer" alt="company"></span></div>
-            <div>   <span *ngIf="!company.img"> <img (click)="ingresar()" src="assets/images/no-image.png" class="img-rounded cursor-pointer border-circle w-6rem h-6rem" alt="company"></span></div>
-            <div class="text-900 mb-3 font-medium mt-2">{{company.name}}</div>
-        </span>
-   
-  
-</div>
-</div> -->
-
-
-<div class="surface-card shadow-2 p-3 border-round cursor-pointer">
+<!-- <div class="surface-card shadow-2 p-3 border-round cursor-pointer">
     <div class="flex justify-content-between mb-3">
         <div>
             <span class="block text-500 font-medium mb-3">{{company.name}}</span>
@@ -56,10 +8,29 @@
         <div class="mr-4">
             <div>   <span *ngIf="company.img"> <img (click)="ingresar()" [src]="company.img" class="img-rounded" alt="company"></span></div>
             <div>   <span *ngIf="!company.img"> <img (click)="ingresar()" src="assets/images/no-image.png" class="img-rounded border-circle w-6rem h-6rem" alt="company"></span></div>
-           
+
 
         </div>
     </div>
     <span class="text-green-500 font-medium">24 new </span>
     <span class="text-500">since last visit</span>
+</div>
+ -->
+
+<div class="mr-3">
+  <div (click)="ingresar()" class="surface-card shadow-2 p-3  cursor-pointer" [style]="{'width': '11.8rem', 'border-radius': '8px', 'height': '7.08rem'}" style="background-image: linear-gradient(180deg, #b2eaff 0, #5389f2 50%, #003265 100%);">
+      <div class="flex justify-content-between mb-3">
+          <div>
+              <!-- <span class="block mb-1 text-base text-white">Nóminas Especiales</span> -->
+              <span class="block mb-1 text-base text-white">{{company.name}}</span>
+
+          </div>
+          <div class="flex align-items-center justify-content-center bg-white-100  border-round" style="width:3rem;height:3rem">
+            <!--   <i class="pi pi-dollar text-pink-500 text-xl"></i> -->
+            <div>   <span *ngIf="company.img"> <img (click)="ingresar()" [src]="company.img" class="img-rounded img-fluid" alt="company" style="width:100%"></span></div>
+            <div>   <span *ngIf="!company.img"> <img (click)="ingresar()" src="assets/images/no-image.png" class="img-rounded img-fluid    border-circle" alt="company" style="width:100%"></span></div>
+          </div>
+      </div>
+
+  </div>
 </div>

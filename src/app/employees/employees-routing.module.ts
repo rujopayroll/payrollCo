@@ -6,33 +6,35 @@ import { LoginComponent } from '../auth/pages/login/login.component';
 import { EmployeeComponent } from './pages/employee/employee.component';
 import { PersonalComponent } from './pages/new/personal/personal.component';
 import { NewEmployeeRoutingModule } from './pages/new/new-routing.module';
+import { LoginGuardsGuard } from '../auth/services/guards/login-guards.guard';
+import { VerificaTokenGuard } from '../auth/services/guards/verifica-token.guard';
 
 const routes: Routes = [
   {
     path: '',
-    
+
     children: [
       {
         path: 'list',
-        component: ListComponent
+        component: ListComponent, canActivate: [ LoginGuardsGuard, VerificaTokenGuard ]
       },
       {
         path: 'new:personal',
-        component: NewComponent
+        component: NewComponent, canActivate: [ LoginGuardsGuard, VerificaTokenGuard ]
       },
       {
         path: 'new:working',
-        component: NewComponent
+        component: NewComponent, canActivate: [ LoginGuardsGuard, VerificaTokenGuard ]
       },
 
       /* {
-      path: 'personal', 
+      path: 'personal',
       component: PersonalComponent
       }, */
 
       {
         path: ':id',
-        component: EmployeeComponent
+        component: EmployeeComponent, canActivate: [ LoginGuardsGuard ]
       },
       {
         path: '**',
@@ -45,7 +47,7 @@ const routes: Routes = [
 
 
 @NgModule({
-  
+
   imports: [
     RouterModule.forChild( routes )
   ],

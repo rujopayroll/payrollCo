@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
 import { AuthService } from '../../auth/services/authservice.index';
 
 import { ActivatedRoute } from '@angular/router';
@@ -48,48 +49,53 @@ export class HeaderComponent implements OnInit {
   view: any={};
   empresa: any = {};
   empresaseleccionada: any = {};
- 
+
   items!: MenuItem[];
   menu!: MenuItem[];
 
- 
+
 
   constructor( public _usuarioService: AuthService,
                public _companyService: CompanyService,
                public activatedRoute: ActivatedRoute,
+               private location: Location,
               // public _modalUploadService:ModalUploadService,
                public router: Router) {
 
                 this.empresaseleccionada = localStorage.getItem('empresaseleccionada');
                 this.usuario = this._usuarioService.usuario;
+                console.log('usuario', this.usuario)
                 // this.cargarEmpresasUsuario(this.usuario.id);
                 //this.company = this._usuarioService.empresas;
                 this.company =  JSON.parse(localStorage.getItem('empresas')!);
-                
-                
+
+
                 if (this.empresaseleccionada) {
-                 
+
                   this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
-                
-                 
+
+
                 } else {
                   if(this.company.length > 1 ){
                     this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
-                   
+
                   } else {
                     this.empresa =  JSON.parse(JSON.stringify(this.company[0]));
-                  
+
                   }
                 }
-                
-            
-                this.cargarCompanySelect(this.empresa.id);
-                this.cargarEmpresasUsuario(this.usuario.id)
-              
-               
+
+console.log('usuario header', this.usuario.id )
+
+
+
                }
 
   ngOnInit(): void {
+    this.usuario = this._usuarioService.usuario;
+    this.cargarCompanySelect(this.empresa.id);
+    this.cargarEmpresasUsuario(this.usuario.id)
+
 
     this.menu = [
       {
@@ -101,36 +107,36 @@ export class HeaderComponent implements OnInit {
               {label: 'Reportes'},
           ]
       },
-      
-  
-  ]; 
-   
+
+
+  ];
+
 
     this.items = [
-      
+
 
       {
           items: [{
-                  label: 'Mi perfil', 
-                  
+                  label: 'Mi perfil',
+
               },
               {label: 'Cambiar Empresa'},
               {label: 'Suscripción'},
               {label: 'Logout'},
           ]
       },
-      
-  
-  ]; 
-  
+
+
+  ];
+
    /*  this._modalUploadService.notificacion
     .subscribe( () => this.cargarCompanySelect(this.empresa.id)); */
 
-    
+
 
   }
 
-  
+
 
   buscar( termino: string){
       this.router.navigate(['/busqueda', termino]);
@@ -150,7 +156,7 @@ export class HeaderComponent implements OnInit {
         .subscribe ( (resp:any) => {
           this.company1 = resp;
         });
-  } 
+  }
 
   cargarEmpresasUsuario(iduser: any){
     this._companyService.cargarCompanysUser(iduser)
@@ -158,7 +164,7 @@ export class HeaderComponent implements OnInit {
       this.company2 = resp
       console.log('company2', this.company2)
     });
-    
+
   }
 
 screen(){
@@ -169,22 +175,22 @@ screen(){
 
     this.view = params
     if (!params[ 'id' ]) {
-            
-          
-        
+
+
+
       this.router.navigate(['/dashboard']);
     } else {
-        
-       
+
+
         this.router.navigate(['/companies/list']);
-        
+
       }
-}); 
-  
+});
+
 }
 
 crearEmpresa(){
-  
+
     Swal.fire({
       title: 'Ingrese el nombre de la Compañia',
       input: 'text',
@@ -193,42 +199,43 @@ crearEmpresa(){
         if ( !value || value.length === 0) {
           return 'No ha ingresado ningun dato';
         }
-       
-      
-        
+
+
+
 
 
             const form = [
               {
-        
+
                 companyName:value,
                 email:this.usuario.userName,
                 createUser:this.usuario.id,
                 updateUser:this.usuario.id,
                 user_id:this.usuario.id,
-                isActive: this.isActive, 
+                isActive: this.isActive,
                 //user_id: this.usuario.id,
-                
-                
+
+
               }
             ]
-        
+
             this.registro =  JSON.parse(JSON.stringify(form[0]));
 
             //mirar aca
-           
+
             this._companyService.crearCompany( this.registro )
             .subscribe((resp:any) => {
               this.cargarEmpresasUsuario(this.usuario.id);
               this.router.navigate( ['/companies/list'] );
-           
+
             });
   }
-  
+
 });
 
-  } 
+  }
 
-  
+
+
 
 }

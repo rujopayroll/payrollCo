@@ -4,14 +4,17 @@
 <p-scrollTop></p-scrollTop>
 
 <section class="fijo" style="z-index: 5;">
-<app-header></app-header> 
+<app-header></app-header>
 
 
- <div class="row bg-blue-600 text-gray-100 p-2 flex justify-content-between lg:justify-content-start align-items-start flex-wrap sidebar">
-    
+<!--  <div class="row bg-blue-600 text-gray-100 p-2 flex justify-content-between lg:justify-content-start align-items-start flex-wrap sidebar"> -->
+
+  <div class="bg-repeat-x flex justify-content-between lg:justify-content-start align-items-start flex-wrap sidebar" style="background-image: url('../../../../assets/images/paisajes3.jpeg')">
+
+
    <div>
     <div class="col-12">
-       
+
         <span *ngIf="employee.img"><img class="border-circle w-10rem h-10rem m-2 flex align-items-center justify-content-center" [src]="employee.img" alt="empleado"></span>
         <span *ngIf="!employee.img"><img src="assets/images/no-image.png" class="border-circle w-10rem h-10rem m-2 flex align-items-center justify-content-center" alt="empleado"></span>
 
@@ -19,30 +22,30 @@
     <div class="flex align-items-center justify-content-center">
         <button pButton (click)="actualizarImagen( employee )" pRipple type="button" label="Editar foto" class="p-button-rounded p-button-warning text-xs" styleClass="p-button-sm"></button>
     </div>
-    
+
 
 </div>
 
-    
 
 
-   
-    
+
+
+
     <div class="grid">
         <div class="col-12 mt-6">
-            
-            <div class="employee-name flex align-items-start justify-content-start">{{employee.gender_id === 'db84c105-4100-49a1-afae-25b69b0756b8' ? "Sr." : "Sra."}} {{employee.firstName}} {{employee.secondName}} {{employee.surname}} {{employee.secondSurName}}</div>
-            <div class="employee-description flex align-items-start justify-content-start">{{employee.identification}}</div>
-            <div class="employee-description flex align-items-start justify-content-start">{{employee.cellPhone}}</div>
-            <div class="employee-description flex align-items-start justify-content-start mb-2">{{employee.email}}</div>
+
+            <div class="employee-name flex align-items-start justify-content-start text-white">{{employee.gender_id === 'db84c105-4100-49a1-afae-25b69b0756b8' ? "Sr." : "Sra."}} {{employee.firstName}} {{employee.secondName}} {{employee.surname}} {{employee.secondSurName}}</div>
+            <div class="employee-description flex align-items-start justify-content-start text-white">{{employee.identification}}</div>
+            <div class="employee-description flex align-items-start justify-content-start text-white">{{employee.cellPhone}}</div>
+            <div class="employee-description flex align-items-start justify-content-start mb-2 text-white">{{employee.email}}</div>
     </div>
 
     </div>
 
 
-    
 
-</div> 
+
+</div>
 
 
 
@@ -56,7 +59,7 @@
         <button [ngClass]="{'active': active === 6}" pageScroll  (click)="onScroll(panel6, 6)" pButton pRipple type="button" label="FORMA DE PAGO" class="flex align-items-center justify-content-center p-button-link font-bold"></button>
         <button [ngClass]="{'active': active === 7}" pageScroll  (click)="onScroll(panel7, 7)" pButton pRipple type="button" label="SEG. SOCIAL" class="flex align-items-center justify-content-center p-button-link font-bold"></button>
         <button [ngClass]="{'active': active === 8}" pageScroll  (click)="onScroll(panel8, 8)" pButton pRipple type="button" label="RECURRENTES" class="flex align-items-center justify-content-center p-button-link font-bold"></button>
-        
+
     </div>
 
 </section >
@@ -69,22 +72,22 @@
 
 
     <div #panel1 style="margin-top: 340px;">
-      
+
            <app-infoEmployee></app-infoEmployee>
-    
+
        <hr>
     </div>
     <div #panel2>
-        
+
          <app-workingEmployee></app-workingEmployee>
 
         <hr>
     </div>
-        
-    
+
+
     <div #panel3 >
       <app-contractEmployee></app-contractEmployee>
-      
+
        <hr>
     </div>
 
@@ -94,32 +97,32 @@
     </div>
 
     <div #panel5 >
-      
-      <app-jobEmployee></app-jobEmployee>  
+
+      <app-jobEmployee></app-jobEmployee>
         <hr>
-          
+
     </div>
 
     <div #panel6 >
-       
+
         <app-paymentEmployee></app-paymentEmployee>
-       
-        <hr>  
-        
+
+        <hr>
+
     </div>
 
     <div #panel7 >
-      
+
         <app-socialSecurityEmployee></app-socialSecurityEmployee>
-        <hr> 
-        
+        <hr>
+
     </div>
-   
+
     <div #panel8>
      <app-recurrentPaymentEmployee></app-recurrentPaymentEmployee>
-      <hr> 
+      <hr>
     </div>
-          
+
 </div>
 
     <p-scrollTop
@@ -130,6 +133,6 @@
     color="primary"
     ></p-scrollTop>
 
-  
+
 
 
