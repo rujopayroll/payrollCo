@@ -24,14 +24,14 @@ declare var $: any;
 
 export class AreaComponent implements OnInit {
 
- 
+
   public date: Date = new Date();
   forma!: UntypedFormGroup;
   company: any;
   empresaseleccionada: any = {};
   usuario: any = {};
   empresa: any = {};
-  
+
   isActive = true;
   area: any = {};
   areas: any= {};
@@ -39,9 +39,9 @@ export class AreaComponent implements OnInit {
   areaDialog!: boolean;
   submitted!: boolean;
   new!: boolean;
-  
+
   // costCenter: CostCenter = new CostCenter('', '', '', '', '', '', true, this.date, this.date, '');
- 
+
 
   constructor(private fb: UntypedFormBuilder,
               public _areaService: AreaService  ,
@@ -49,9 +49,9 @@ export class AreaComponent implements OnInit {
               public _router: Router,
               public _activatedRoute: ActivatedRoute,
               public _usuarioService: AuthService,
-              private messageService: MessageService, 
+              private messageService: MessageService,
               private confirmationService: ConfirmationService
-              ) { 
+              ) {
 
       this.company = this._usuarioService.empresas;
       this.empresaseleccionada = localStorage.getItem('empresaseleccionada');
@@ -68,19 +68,19 @@ export class AreaComponent implements OnInit {
                 }
 
 
-      this.cargarArea( this.empresa.id );
-      this.cargarCompanySelect( this.empresa.id );
-      this.crearFormulario();
+
      }
 
-    
+
     get descripcionNoValido(){return this.forma.get('descripcion')!.invalid && this.forma.get('descripcion')!.touched}
     get estadoNoValido(){return this.forma.get('estado')!.invalid && this.forma.get('estado')!.touched}
-     
-    
+
+
 
   ngOnInit(): void {
-    
+    this.cargarArea( this.empresa.id );
+    this.cargarCompanySelect( this.empresa.id );
+    this.crearFormulario();
   }
 
 
@@ -96,21 +96,21 @@ export class AreaComponent implements OnInit {
 
 
   guardar(){
-   
+
     if (this.forma.invalid){
-  
-      
-  
+
+
+
       return Object.values (this.forma.controls).forEach( control =>{
-  
+
         if (control instanceof UntypedFormGroup) {
           Object.values (control.controls).forEach( control => control.markAsTouched());
-  
+
         } else{
           control.markAsTouched();
         }
-        
-  
+
+
       });
     }
 
@@ -121,11 +121,11 @@ export class AreaComponent implements OnInit {
           .subscribe( () => this.cargarArea(this.empresa.id));
           this.new = false;
           this.areaDialog = false;
-         
+
         } else {
-  
+
     const area = new Area(
-     
+
       this.forma.value.descripcion,
       this.empresa.id,
       this.usuario.id,
@@ -136,9 +136,9 @@ export class AreaComponent implements OnInit {
     this._areaService.crearArea( area )
   .subscribe( (resp: any) => {
     this.areaDialog = false;
-    
+
     this.cargarArea( this.empresa.id );
-    
+
   });
 
     this.forma.reset();
@@ -201,10 +201,10 @@ editArea(area: Area) {
   guardarArea( area: Area){
 
     this._areaService.actualizarArea( area )
-    
+
           .subscribe( () => this.cargarArea(this.empresa.id));
   }
-  
+
   deleteArea( area: Area ){
 
 
@@ -216,20 +216,20 @@ editArea(area: Area) {
       acceptLabel:"Si",
       rejectLabel:"No",
       accept: () => {
-          
+
         this._areaService.borrarArea( area.id! )
         .subscribe ( () => this.cargarArea(this.empresa.id));
-          
-          
-          
+
+
+
           //this.messageService.add({severity:'success', summary: 'Successful', detail: 'Centro de costo Eliminado', life: 3000});
       }
   });
 
-  
-   
-  
+
+
+
   }
-  
+
 
 }

@@ -1,5 +1,5 @@
 <div class="grid">
-    <div class="col-4 text-center text-500">
+  <!--   <div class="col-2 text-center text-500">
         <div class= "row">
             <br>
             <br>
@@ -10,57 +10,259 @@
             <br>
             Conceptos-Contabilidad
         </div>
-    </div>
-    <div class="col-8">
+    </div> -->
+    <div class="col-12">
 
-        <p-panel header="Conceptos">
+        <p-panel>
 
-            
+
 <div>
-<p-accordion [multiple]="true">
-    <p-accordionTab header="Salario y Aux.Transporte">
-        
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-            ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+<p-accordion [multiple]="true" class="w-full">
+    <p-accordionTab>
+      <ng-template pTemplate="header">
+
+      <div class="flex align-items-center">
+
+        <span class="vertical-align-middle">Salariales</span>
+        <!-- <p-button icon="pi pi-pencil" (click) = "edit" styleClass="p-button-rounded p-button-text ml-2"></p-button> -->
+        <!-- <i class="pi pi-pencil ml-2 ml-2"></i> -->
+      </div>
+
+
+    </ng-template>
+    <ng-template pTemplate="content">
+
+      <div>
+        <button pButton pRipple type="button"  label="Nuevo Concepto Salarial" icon="pi pi-plus" class="text-right mb-2" (click)="openNewConcept('SALARIAL')"> </button>
+        <!-- <p-table #dt  [value]="costCenter" [rows]="4" [paginator]="true"  [scrollable]="true"> -->
+
+
+          <p-table #dt [value]="conceptSalary"
+           [(selection)]="conceptSalary" [rowHover]="true" dataKey="id"
+            >
+
+
+          <ng-template pTemplate="header">
+
+               <tr>
+
+                   <th pSortableColumn="code">Código<p-sortIcon field="code"></p-sortIcon></th>
+                   <th pSortableColumn="description">Descripción <p-sortIcon field="description"></p-sortIcon></th>
+                   <th pSortableColumn="account">Cuenta<p-sortIcon field="account"></p-sortIcon></th>
+                   <th pSortableColumn="counterPart">ContraPartida<p-sortIcon field="counterPart"></p-sortIcon></th>
+                   <th pSortableColumn="isActive">Estado <p-sortIcon field="isActive"></p-sortIcon></th>
+                   <th></th>
+               </tr>
+              </ng-template>
+           <ng-template pTemplate="body" let-conceptSalary>
+               <tr>
+
+                   <td>{{conceptSalary.code}}</td>
+                   <td>{{conceptSalary.description}}</td>
+                   <td>{{conceptSalary.account}}</td>
+                   <td>{{conceptSalary.counterPart}}</td>
+                   <td>{{conceptSalary.isActive ? 'Activo' : 'Inactivo'}}</td>
+                   <td>
+                       <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editConcept(conceptSalary, 'SALARIAL')"></button>
+
+                   </td>
+               </tr>
+            </ng-template>
+
+       </p-table>
+
+
+
+   </div>
+  </ng-template>
+
     </p-accordionTab>
-    <p-accordionTab header="Salariales">
-        <ng-template pTemplate="icons">
-                    
-            <button pButton pRipple type="button"  icon="pi pi-plus" class="p-button-rounded p-button-primary p-button-text text-left" > </button> 
-      
-         </ng-template>
-        <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi
-            architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione
-            voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.</p>
-    </p-accordionTab>
+
     <p-accordionTab header="No Salariales">
-        <ng-template pTemplate="icons">
-                    
-            <button pButton pRipple type="button"  icon="pi pi-plus" class="p-button-rounded p-button-primary p-button-text text-left" > </button> 
-      
-         </ng-template>
-        <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati
-            cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio.
-            Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.</p>
+
+      <div>
+        <button pButton pRipple type="button"  label="Nuevo Concepto No Salarial" icon="pi pi-plus" (click)="openNewConcept('NOSALARIAL')" class="text-left mb-2" > </button>
+        <!-- <p-table #dt  [value]="costCenter" [rows]="4" [paginator]="true"  [scrollable]="true"> -->
+           <p-table #dt [value]="conceptNoSalary"
+           [(selection)]="conceptNoSalary" [rowHover]="true" dataKey="id"
+            >
+
+
+          <ng-template pTemplate="header">
+
+               <tr>
+
+                   <th pSortableColumn="code">Código<p-sortIcon field="code"></p-sortIcon></th>
+                   <th pSortableColumn="description">Descripción <p-sortIcon field="description"></p-sortIcon></th>
+                   <th pSortableColumn="account">Cuenta<p-sortIcon field="account"></p-sortIcon></th>
+                   <th pSortableColumn="counterPart">ContraPartida<p-sortIcon field="counterPart"></p-sortIcon></th>
+                   <th pSortableColumn="isActive">Estado <p-sortIcon field="isActive"></p-sortIcon></th>
+                   <th></th>
+               </tr>
+           </ng-template>
+           <ng-template pTemplate="body" let-conceptNoSalary>
+               <tr>
+
+                   <td>{{conceptNoSalary.code}}</td>
+                   <td>{{conceptNoSalary.description}}</td>
+                   <td>{{conceptNoSalary.account}}</td>
+                   <td>{{conceptNoSalary.counterPart}}</td>
+                   <td>{{conceptNoSalary.isActive ? 'Activo' : 'Inactivo'}}</td>
+                   <td>
+                       <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editConcept(conceptNoSalary, 'NOSALARIAL')"></button>
+
+                   </td>
+               </tr>
+            </ng-template>
+
+       </p-table>
+
+
+
+   </div>
+
+
+
     </p-accordionTab>
     <p-accordionTab header="Deducciones">
-        <ng-template pTemplate="icons">
-                    
-            <button pButton pRipple type="button"  icon="pi pi-plus" class="p-button-rounded p-button-primary p-button-text text-left" > </button> 
-      
-         </ng-template>
-        <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati
-            cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio.
-            Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.</p>
+
+
+      <div>
+        <button pButton pRipple type="button"  label="Nuevo Concepto Deducción" icon="pi pi-plus" (click)="openNewConcept('DEDUCCION')" class="text-left mb-2"> </button>
+        <!-- <p-table #dt  [value]="costCenter" [rows]="4" [paginator]="true"  [scrollable]="true"> -->
+           <p-table #dt [value]="conceptDeduction"
+           [(selection)]="conceptDeduction" [rowHover]="true" dataKey="id"
+            >
+
+
+          <ng-template pTemplate="header">
+
+               <tr>
+
+                   <th pSortableColumn="code">Código<p-sortIcon field="code"></p-sortIcon></th>
+                   <th pSortableColumn="description">Descripción <p-sortIcon field="description"></p-sortIcon></th>
+                   <th pSortableColumn="account">Cuenta<p-sortIcon field="account"></p-sortIcon></th>
+                   <th pSortableColumn="counterPart">ContraPartida<p-sortIcon field="counterPart"></p-sortIcon></th>
+                   <th pSortableColumn="isActive">Estado <p-sortIcon field="isActive"></p-sortIcon></th>
+                   <th></th>
+               </tr>
+           </ng-template>
+           <ng-template pTemplate="body" let-conceptDeduction>
+               <tr>
+
+                   <td>{{conceptDeduction.code}}</td>
+                   <td>{{conceptDeduction.description}}</td>
+                   <td>{{conceptDeduction.account}}</td>
+                   <td>{{conceptDeduction.counterPart}}</td>
+                   <td>{{conceptDeduction.isActive ? 'Activo' : 'Inactivo'}}</td>
+                   <td>
+                       <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editConcept(conceptDeduction, 'DEDUCCION')" ></button>
+
+                   </td>
+               </tr>
+            </ng-template>
+
+       </p-table>
+
+
+
+   </div>
+
     </p-accordionTab>
     <p-accordionTab header="Prestaciones Sociales">
-        <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati
-            cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio.
-            Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.</p>
+
+      <div>
+
+        <!-- <p-table #dt  [value]="costCenter" [rows]="4" [paginator]="true"  [scrollable]="true"> -->
+           <p-table #dt [value]="conceptSocialBenefit"
+           [(selection)]="conceptSocialBenefit" [rowHover]="true" dataKey="id"
+            >
+
+
+          <ng-template pTemplate="header">
+
+               <tr>
+
+                   <th pSortableColumn="code">Código<p-sortIcon field="code"></p-sortIcon></th>
+                   <th pSortableColumn="description">Descripción <p-sortIcon field="description"></p-sortIcon></th>
+                   <th pSortableColumn="account">Cuenta<p-sortIcon field="account"></p-sortIcon></th>
+                   <th pSortableColumn="counterPart">ContraPartida<p-sortIcon field="counterPart"></p-sortIcon></th>
+                   <th pSortableColumn="isActive">Estado <p-sortIcon field="isActive"></p-sortIcon></th>
+                   <th></th>
+               </tr>
+           </ng-template>
+           <ng-template pTemplate="body" let-conceptSocialBenefit>
+               <tr>
+
+                   <td>{{conceptSocialBenefit.code}}</td>
+                   <td>{{conceptSocialBenefit.description}}</td>
+                   <td>{{conceptSocialBenefit.account}}</td>
+                   <td>{{conceptSocialBenefit.counterPart}}</td>
+                   <td>{{conceptSocialBenefit.isActive ? 'Activo' : 'Inactivo'}}</td>
+                   <td>
+                       <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" ></button>
+
+                   </td>
+               </tr>
+            </ng-template>
+
+       </p-table>
+
+
+
+   </div>
+
     </p-accordionTab>
 </p-accordion>
 </div>
+
+
+<p-dialog [(visible)]="conceptDialog" [style]="{width: '500px'}" header="Conceptos {{this.cGroup}}" [modal]="true" styleClass="p-fluid">
+  <ng-template pTemplate="content">
+      <form autocomplete="off" [formGroup]="forma" (ngSubmit)="guardar()" id="conceptform" action="index.html">
+      <div class="field">
+          <label for="code">Código</label>
+          <input type="text" pInputText id="code" name="code" class="form-control form-control-sm" [disabled]="true" formControlName="code" [class.is-invalid]="codeNoValido" [(ngModel)]="concept.code"/>
+          <small class="p-error" *ngIf="submitted && !concept.code">Código es requerido.</small>
+      </div>
+      <div class="field">
+          <label for="description">Descripción</label>
+          <input type="text" pInputText id="description" name="descripcion" class="form-control form-control-sm" formControlName="descripcion" [class.is-invalid]="descripcionNoValido" [(ngModel)]="concept.description" required >
+          <small class="p-error" *ngIf="submitted && !concept.description">Descripcion es requerida.</small>
+      </div>
+
+      <div class="field">
+        <label for="account">Cuenta Contable</label>
+        <input type="text" pInputText id="account" name="account" class="form-control form-control-sm" formControlName="account" [class.is-invalid]="accountNoValido" [(ngModel)]="concept.account" required >
+        <small class="p-error" *ngIf="submitted && !concept.account">La Cuenta es requerida.</small>
+    </div>
+
+    <div class="field">
+      <label for="counterPart">Contrapartida</label>
+      <input type="text" pInputText id="counterPart" name="counterPart" class="form-control form-control-sm" formControlName="counterPart" [class.is-invalid]="counterPartNoValido" [(ngModel)]="concept.counterPart" required >
+      <small class="p-error" *ngIf="submitted && !concept.counterPart">La Contrapartida es requerida.</small>
+  </div>
+
+     <div class="field-checkbox">
+          <p-checkbox [(ngModel)]="concept.isActive" class="form-control form-control-xl" formControlName="estado" [class.is-invalid]="estadoNoValido" [binary]="true" name="estado" inputId="binary"></p-checkbox>
+          <label for="binary">{{concept.isActive ? 'Activo' : 'Inactivo'}}</label>
+      </div>
+</form>
+
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+      <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+      <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"  (click)="guardar()"></button>
+  </ng-template>
+</p-dialog>
+
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+
+
+
 </p-panel>
 </div>
 </div>
+

@@ -25,54 +25,54 @@ export class CompanyService {
   company!: Company;
   companyUser: any={};
   token!: string;
-  
 
-  constructor( public http: HttpClient, 
+
+  constructor( public http: HttpClient,
                public _usuarioService: AuthService,
     // public _subirArhivoService: SubirArhivoService,
     ) {
 
-    
-    
+
+
      }
 
      ngOnInit(): void {
        this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
-       
+       console.log('usuario company', this.headers)
       }
 
-     
+
 
      cargarCompanys( id: string){
 
-    
+
       let url = this.URL_SERVICIOS + '/companies/' + id;
-      
+
       return this.http.get( url, {headers: this.headers} )
       .pipe(
           map( (resp: any) => {
             return resp
           }));
-          
-    } 
-    
+
+    }
+
      cargarCompanysUser( iduser: string){
       this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
-     
+
       let url = this.URL_SERVICIOS + '/users/' + iduser;
-     
+
       return this.http.get( url, {headers: this.headers})
-      
+
 .pipe(
-  
+
           map( (resp: any) => {
-          
+
             return resp
           }));
-          
-        
-          
-          
+
+
+
+
 }
 
 
@@ -97,7 +97,7 @@ borrarCompanys( id: string ){
 }
 crearCompany( company: any){
   const url = this.URL_SERVICIOS  + '/companies';
-  
+
   return this.http.post( url, company, {headers: this.headers})
   .pipe(
       map( (resp: any) =>{
@@ -117,16 +117,16 @@ crearCompany( company: any){
           text: err.error.errors.message,
           icon: 'error'
         });
-       
+
         return Observable.throwError( err );
-        
+
       }));
 }
 
 actualizarCompany( company: any ){
 
   let url = this.URL_SERVICIOS  + '/companies/' + company.id;
- 
+
 
   return this.http.put( url, company, {headers: this.headers})
   .pipe(
@@ -152,7 +152,7 @@ actualizarCompany( company: any ){
 cambiarImagen(archivo: File, company: string ){
 
   const url = this.URL_SERVICIOS  + '/uploadImage/Company/' + company;
-  
+
   return this.http.post( url, archivo, {headers: this.headers})
   .pipe(
       map( (resp: any) =>{

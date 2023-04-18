@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders} from '@angular/common/http';
 import { CompanyService } from '../company/company.service';
 import Swal from 'sweetalert2';
 import { Concept } from '../../models/concept.model';
@@ -20,17 +20,21 @@ import { AuthService } from '../../../auth/services/auth.service';
 export class ConceptService {
 
   private URL_SERVICIOS: string = environment.URL_SERVICIOS;
+  public headers = new HttpHeaders();
 
   concept!: Concept;
   company!: Company;
 
-  constructor( public http: HttpClient, 
+  constructor( public http: HttpClient,
     public _usuarioService: AuthService,
     //public _subirArhivoService: SubirArhivoService,
-    public _companyService: CompanyService) { }
+    public _companyService: CompanyService) {
+
+      this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
+    }
 
     cargarConcept(){
-      
+
       let url = this.URL_SERVICIOS + '/concepts/';
       return this.http.get( url )
       .pipe(
@@ -38,59 +42,59 @@ export class ConceptService {
     }
 
     getConceptNovelty(idCompany: string){
-      
+
       let url = this.URL_SERVICIOS + '/concepts?isNovelty=True&company_id=' + idCompany + '&conceptGroup=SALARIAL';
       console.log(url)
       return this.http.get( url )
       .pipe(
           map( (resp: any) => {
-            
+
             return resp;
           }));
-        
+
     }
 
     getConceptNoSalaryNovelty(idCompany: string){
-      
+
       let url = this.URL_SERVICIOS + '/concepts?isNovelty=True&company_id=' + idCompany + '&conceptGroup=NOSALARIAL';
       console.log(url)
       return this.http.get( url )
       .pipe(
           map( (resp: any) => {
-            
+
             return resp;
           }));
-        
+
     }
 
     getConceptDeductionNovelty(idCompany: string){
-      
+
       let url = this.URL_SERVICIOS + '/concepts?isNovelty=True&company_id=' + idCompany + '&conceptGroup=DEDUCCION';
-      console.log(url)
+
       return this.http.get( url )
       .pipe(
           map( (resp: any) => {
-            
+
             return resp;
           }));
-        
+
     }
 
     getAllConceptNovelty(idCompany: string){
-      
-      let url = this.URL_SERVICIOS + '/concepts?isNovelty=True&company_id=' + idCompany + '&conceptGroup=DEDUCCION' + '&conceptGroup=NOSALARIAL' + '&conceptGroup=SALARIAL';
+
+      let url = this.URL_SERVICIOS + '/concepts?isNovelty=True&company_id=' + idCompany;
       console.log(url)
       return this.http.get( url )
       .pipe(
           map( (resp: any) => {
-            
+
             return resp;
           }));
-        
+
     }
 
     obtenerConcept( id: string){
-      
+
       let url = this.URL_SERVICIOS + '/concepts/' + id;
       return this.http.get( url )
       .pipe(
@@ -98,15 +102,17 @@ export class ConceptService {
     }
 
     obtenerConceptCompany( id: string, company_id: string){
-      
+
       let url = this.URL_SERVICIOS + '/concepts/' + id + '?' + company_id;
       return this.http.get( url )
       .pipe(
           map( (resp: any) => resp.concept ));
     }
 
+
+
     obtenerConceptSalary(idcompany: string){
-      
+
       let url = this.URL_SERVICIOS + '/concepts/category/salar/' + idcompany ;
       return this.http.get( url )
       .pipe(
@@ -119,13 +125,67 @@ export class ConceptService {
      console.log('url',url)
       return this.http.get( url )
       .pipe(
-          map( (resp: any) => resp ));
+          map( (resp: any) => resp )
+          );
     }
+
+    getConceptSalaryCompany( idcompany: string){
+
+      let url = this.URL_SERVICIOS + '/concepts?' + 'company_id=' + idcompany + '&conceptGroup=SALARIAL' ;
+
+      return this.http.get( url )
+      .pipe(
+          map( (resp: any) => resp )
+          );
+    }
+
+    getConceptNoSalaryCompany( idcompany: string){
+
+      let url = this.URL_SERVICIOS + '/concepts?' + 'company_id=' + idcompany + '&conceptGroup=NOSALARIAL' ;
+
+      return this.http.get( url )
+      .pipe(
+          map( (resp: any) => resp )
+          );
+    }
+
+    getConceptDeductionCompany( idcompany: string){
+
+      let url = this.URL_SERVICIOS + '/concepts?' + 'company_id=' + idcompany + '&conceptGroup=DEDUCCION' ;
+
+      return this.http.get( url )
+      .pipe(
+          map( (resp: any) => resp )
+          );
+    }
+
+    getConceptSocialBenefitCompany( idcompany: string){
+
+      let url = this.URL_SERVICIOS + '/concepts?' + 'company_id=' + idcompany + '&conceptGroup=PRESTACIONESSOCIALES' ;
+
+      return this.http.get( url )
+      .pipe(
+          map( (resp: any) => resp )
+          );
+    }
+
+    getConceptCustomerCompany( idcompany: string){
+
+      let url = this.URL_SERVICIOS + '/concepts?' + 'company_id=' + idcompany + '&isCustomer=True' ;
+
+      return this.http.get( url )
+      .pipe(
+          map( (resp: any) => resp )
+          );
+    }
+
+
+
 
     cargarConceptCompanyActive( idcompany: string){
 
       let url = this.URL_SERVICIOS + '/concepts/' + idcompany + '/isActive';
-     
+
       return this.http.get( url )
       .pipe(
           map( (resp: any) => resp.concept ));
@@ -154,7 +214,7 @@ export class ConceptService {
                 toast.addEventListener('mouseleave', Swal.resumeTimer)
               }
             })
-            
+
             Toast.fire({
               icon: 'success',
               title: 'Creado Exitosamente'
@@ -163,7 +223,7 @@ export class ConceptService {
           })
           .catch( err =>{
             console.log(err)
-           
+
             Swal.fire({
               title: err.error.mensaje,
               text: err.error.errors.message,
@@ -182,7 +242,7 @@ export class ConceptService {
     }
 
 
- 
+
     actualizarConcept( concept: Concept ){
 
       let url = this.URL_SERVICIOS + '/concepts/' + concept.id;
@@ -195,6 +255,35 @@ export class ConceptService {
               icon: 'success'
             });
             return resp.concept;
+          }));
+    }
+
+
+
+    createConcept( concept: Concept){
+      const url = this.URL_SERVICIOS + '/concepts';
+      return this.http.post( url, concept, {headers: this.headers})
+      .pipe(
+      map( (resp: any) =>{
+        Swal.fire({
+          text: 'Concepto Creado',
+          icon: 'success'
+        });
+        return resp.concept;
+
+
+
+          }))
+          .pipe(
+          catchError( err =>{
+            console.log(err)
+            // tslint:disable-next-line: deprecation
+            Swal.fire({
+              title: err.error.mensaje,
+              text: err.error.errors.message,
+              icon: 'error'
+            });
+            return Observable.throwError( err );
           }));
     }
 

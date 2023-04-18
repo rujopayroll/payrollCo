@@ -3,21 +3,23 @@
 <p-scrollTop></p-scrollTop>
 
 <section class="fijo" style="z-index: 5;">
-<app-header></app-header> 
- <div class="row bg-blue-500 text-gray-100 p-4 flex justify-content-between lg:justify-content-start align-items-start flex-wrap sidebar">
-    
+<app-header></app-header>
+<!--  <div class="row bg-blue-500 text-gray-100 p-4 flex justify-content-between lg:justify-content-start align-items-start flex-wrap sidebar"> -->
+
+  <div class="bg-repeat-x flex justify-content-between lg:justify-content-start align-items-start flex-wrap sidebar" style="background-image: url('../../../../assets/images/paisajes5.jpg')">
+
     <div class="col-1 profile-header-img mr-4">
         <!-- <img [src]="company.img | imagen: 'company'" alt="Compañia" width="100"> -->
         <span *ngIf="company.img"><img class="border-circle w-6rem h-6rem" [src]="company.img" alt="Compañia"></span>
         <span *ngIf="!company.img"><img src="assets/images/SIN-IMAGEN.jpg"  class="border-circle w-6rem h-6rem" alt="companies"></span>
-        <button pButton (click)="actualizarImagen( company )" pRipple type="button" label="Cambiar Logo" class="p-button-warning p-button-text"></button>    
-    
-     
-    
-    
+        <button pButton (click)="actualizarImagen( company )" pRipple type="button" label="Cambiar Logo" class="p-button-warning p-button-text"></button>
+
+
+
+
     </div>
     <div class="grid">
-        <div class="col">
+        <div class="col text-white">
         <h2> {{company.companyName}}</h2>
         <h4>{{company.identification}} - {{company.verificationNumber}}</h4>
     </div>
@@ -25,9 +27,9 @@
     </div>
 
 
-    
 
-</div  >
+
+</div>
 
     <div class="flex justify-content-start flex-wrap card-container blue-container" style="background-color:white;">
 
@@ -39,7 +41,7 @@
         <button [ngClass]="{'active': active === 6}" pageScroll  (click)="onScroll(panel6, 6)" pButton pRipple type="button" label="SUCURSALES" class="flex align-items-center justify-content-center p-button-link font-bold"></button>
         <button [ngClass]="{'active': active === 7}" pageScroll  (click)="onScroll(panel7, 7)" pButton pRipple type="button" label="CARGOS" class="flex align-items-center justify-content-center p-button-link font-bold"></button>
         <button [ngClass]="{'active': active === 8}" pageScroll  (click)="onScroll(panel8, 8)" pButton pRipple type="button" label="CONCEPTOS" class="flex align-items-center justify-content-center p-button-link font-bold"></button>
-        
+
     </div>
 
 </section >
@@ -51,58 +53,67 @@
 
 
 
-    <div #panel1 style="margin-top: 320px;">
-      
+    <div #panel1 style="margin-top: 280px;">
+
             <app-infoCompany></app-infoCompany>
-    
-       <hr>
+
+            <p-divider></p-divider>
     </div>
     <div #panel2 >
-        
+
         <app-paymentCompany></app-paymentCompany>
-        <hr>
+        <p-divider></p-divider>
     </div>
-        
-    
+
+
     <div #panel3 >
-      
+
        <app-payrollCompany></app-payrollCompany>
-       <hr>
+       <p-divider></p-divider>
     </div>
 
     <div #panel4>
         <app-costCenter></app-costCenter>
-      <hr>
+        <p-divider></p-divider>
     </div>
 
     <div #panel5 >
-      
+
         <app-area></app-area>
-        <hr>
-          
-        
+        <p-divider></p-divider>
+
+
     </div>
 
     <div #panel6 >
-      
+
         <app-subsidiary></app-subsidiary>
-        <hr>  
-        
-        
+        <p-divider></p-divider>
+
+
     </div>
 
     <div #panel7 >
-      
+
         <app-position></app-position>
-        <hr> 
-        
+        <p-divider></p-divider>
+
     </div>
-   
+
     <div #panel8>
       <app-concept></app-concept>
-      <hr> 
+
+      <br>
+      <br>
+      <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
     </div>
-          
+
 </div>
 
     <p-scrollTop
@@ -114,5 +125,4 @@
     ></p-scrollTop>
 
 
-   
-    
+

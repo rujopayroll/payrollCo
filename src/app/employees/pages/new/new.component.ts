@@ -4,8 +4,8 @@ import { Company } from '../../../companies/models/company.model';
 import { DOCUMENT } from '@angular/common';
 import { Inject } from '@angular/core';
 import {SelectItem } from 'primeng/api';
-import { Product } from 'src/app/companies/interfaces/producinterface';
-import { ProductService } from 'src/app/companies/services/producto/productservice';
+
+//import { ProductService } from 'src/app/companies/services/producto/productservice';
 import { EmployeeService } from '../../services/employeeService.index';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/services/authservice.index';
@@ -25,16 +25,16 @@ import { Subscription } from 'rxjs';
   templateUrl: './new.component.html',
   styleUrls: ['./new.component.scss'],
   providers: [MessageService],
-  
+
 encapsulation: ViewEncapsulation.None
 })
 export class NewComponent implements OnInit {
 
- 
+
   @ViewChild('scroller1') scroller!: ElementRef;
   employees: Employee[] = [];
   employeeContract: EmployeeContract []= [];
-  
+
   busqueda = '';
   company: any;
   empresaseleccionada: any = {};
@@ -55,13 +55,13 @@ export class NewComponent implements OnInit {
                public _employeeNewService: EmployeeNewService,
                public pageScrollServ: PageScrollService,
                @Inject(DOCUMENT) private document: any
-                ) { 
+                ) {
 
 
                 this.company = this._usuarioService.empresas;
                 this.empresaseleccionada = localStorage.getItem('empresaseleccionada')!;
                 this.usuario = JSON.parse(localStorage.getItem('usuario')!);
-          
+
                 if ( this.empresaseleccionada ){
                             this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
                           } else {
@@ -72,19 +72,19 @@ export class NewComponent implements OnInit {
                             }
                           }
 
-                          
-                        
+
+
 
                }
 
 
-               
-  ngOnInit(){ 
+
+  ngOnInit(){
 
     this.pageScrollServ.scroll({
       document: this.document,
       scrollTarget: '.theEnd',
-    }); 
+    });
 
 
     this.items = [{
@@ -115,7 +115,7 @@ export class NewComponent implements OnInit {
         label: 'Seg. Social',
         routerLink: '/employees/new/socialSecurity'
     },
-    
+
     {
         label: 'Confirmación',
         routerLink: '/employees/new/confirmation'
@@ -129,11 +129,11 @@ this.subscription = this._employeeNewService.socialSecurityComplete$.subscribe((
   console.log('entro al guardar')
 
     this.messageService.add({severity:'success', summary:'Creación de Empleados', detail: 'El Empleado (a), ' + personalInformation.pnombre + ' ' + personalInformation.papellido + ' ha siso creado con éxito.'})
-  
+
 });
 
 /* this.router.navigate(['/employees/list/']); */
- 
+
   }
 
   ngOnDestroy() {
@@ -152,8 +152,8 @@ onScroll(event: HTMLElement) {
 
 }
 
-  
 
 
-  
+
+
 }

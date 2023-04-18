@@ -24,14 +24,14 @@ declare var $: any;
 
 export class PositionComponent implements OnInit {
 
-  
+
   public date: Date = new Date();
   forma!: UntypedFormGroup;
   company: any;
   empresaseleccionada: any = {};
   usuario: any = {};
   empresa: any = {};
-  
+
   isActive = true;
   position: any = {};
   positions: any= {};
@@ -39,20 +39,20 @@ export class PositionComponent implements OnInit {
   positionDialog!: boolean;
   submitted!: boolean;
   new!: boolean;
-  
 
- 
+
+
 
   constructor(private fb: UntypedFormBuilder,
-    
+
               public _positionService: PositionService  ,
               public _companyService: CompanyService,
               public _router: Router,
               public _activatedRoute: ActivatedRoute,
               public _usuarioService: AuthService,
-              private messageService: MessageService, 
+              private messageService: MessageService,
               private confirmationService: ConfirmationService
-              ) { 
+              ) {
 
       this.company = this._usuarioService.empresas;
       this.empresaseleccionada = localStorage.getItem('empresaseleccionada');
@@ -69,19 +69,20 @@ export class PositionComponent implements OnInit {
                 }
 
 
-      this.cargarPosition( this.empresa.id );
+
+     }
+
+
+    get descripcionNoValido(){return this.forma.get('descripcion')!.invalid && this.forma.get('descripcion')!.touched}
+    get estadoNoValido(){return this.forma.get('estado')!.invalid && this.forma.get('estado')!.touched}
+
+
+  ngOnInit(): void {
+    this.cargarPosition( this.empresa.id );
       this.cargarCompanySelect( this.empresa.id );
 
       this.crearFormulario();
-     }
 
-    
-    get descripcionNoValido(){return this.forma.get('descripcion')!.invalid && this.forma.get('descripcion')!.touched}
-    get estadoNoValido(){return this.forma.get('estado')!.invalid && this.forma.get('estado')!.touched}
-    
-
-  ngOnInit(): void {
-    
   }
 
 
@@ -97,21 +98,21 @@ export class PositionComponent implements OnInit {
 
 
   guardar(){
-   
+
     if (this.forma.invalid){
-  
-      
-  
+
+
+
       return Object.values (this.forma.controls).forEach( control =>{
-  
+
         if (control instanceof UntypedFormGroup) {
           Object.values (control.controls).forEach( control => control.markAsTouched());
-  
+
         } else{
           control.markAsTouched();
         }
-        
-  
+
+
       });
     }
 
@@ -122,11 +123,11 @@ export class PositionComponent implements OnInit {
           .subscribe( () => this.cargarPosition(this.empresa.id));
           this.new = false;
           this.positionDialog = false;
-         
+
         } else {
-  
+
     const position = new Position(
-     
+
       this.forma.value.descripcion,
       this.empresa.id,
       this.usuario.id,
@@ -137,9 +138,9 @@ export class PositionComponent implements OnInit {
     this._positionService.crearPosition( position )
   .subscribe( resp => {
    this.positionDialog = false
-    
+
     this.cargarPosition( this.empresa.id );
-    
+
   });
 
     this.forma.reset();
@@ -200,12 +201,12 @@ editPosition(position: Position) {
   guardarPosition( position: Position){
 
     this._positionService.actualizarPosition( position )
-    
+
           .subscribe( () => this.cargarPosition(this.empresa.id));
   }
-  
+
   deletePosition(position: Position){
-    
+
 
 
     this.confirmationService.confirm({
@@ -215,20 +216,20 @@ editPosition(position: Position) {
         acceptLabel:"Si",
         rejectLabel:"No",
         accept: () => {
-            
-            
+
+
             this._positionService.borrarPosition(position.id! )
             .subscribe ( () => this.cargarPosition(this.empresa.id));
-            
-            
+
+
             //this.messageService.add({severity:'success', summary: 'Successful', detail: 'Centro de costo Eliminado', life: 3000});
         }
     });
 
-  
-    
-  
+
+
+
   }
-  
+
 
 }

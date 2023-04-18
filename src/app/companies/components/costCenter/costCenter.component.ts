@@ -33,8 +33,8 @@ import { CostCenter } from '../../models/costCenter.model';
   providers: [MessageService,ConfirmationService]
 })
 export class CostCenterComponent implements OnInit {
-  
-  
+
+
     @ViewChild('scroller1') scroller!: ElementRef;
     active = 1;
     items!: MenuItem[];
@@ -79,19 +79,19 @@ export class CostCenterComponent implements OnInit {
      public _companyService: CompanyService,
      public _router: Router,
      public activatedRoute: ActivatedRoute,
-     private messageService: MessageService, 
+     private messageService: MessageService,
      private confirmationService: ConfirmationService
-  ) { 
+  ) {
 
     this.company = this._usuarioService.empresas;
     this.empresaseleccionada = localStorage.getItem('empresaseleccionada');
     this.usuario = JSON.parse(localStorage.getItem('usuario')!);
-    
+
 
     if ( this.empresaseleccionada ){
       this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
-     
-      
+
+
     } else {
       if(this.company.length > 1 ) {
         this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
@@ -100,11 +100,10 @@ export class CostCenterComponent implements OnInit {
       }
     }
 
-    
-    this.obtenerCostCenter(this.empresa.id)
-    this.crearFormulario();
 
-    
+
+
+
 
   }
 
@@ -112,9 +111,11 @@ export class CostCenterComponent implements OnInit {
     get descripcionNoValido(){return this.forma.get('descripcion')!.invalid && this.forma.get('descripcion')!.touched}
     get cuentagastoNoValido(){return this.forma.get('cuentagasto')!.invalid && this.forma.get('cuentagasto')!.touched}
     get estadoNoValido(){return this.forma.get('estado')!.invalid && this.forma.get('estado')!.touched}
-    
+
 
   ngOnInit(): void {
+    this.obtenerCostCenter(this.empresa.id)
+    this.crearFormulario();
     this.cargarCuentaGasto()
 
   }
@@ -124,24 +125,24 @@ export class CostCenterComponent implements OnInit {
     this._costCenterService.cargarCostCenter( id )
         .subscribe( costCenter => {
           this.costCenter = costCenter;
-          
-          // if (this.costCenter[i].spendingAccount_id) { this.obtenerCuentaGasto(this.costCenter[i].spendingAccount_id)}; 
-          
+
+          // if (this.costCenter[i].spendingAccount_id) { this.obtenerCuentaGasto(this.costCenter[i].spendingAccount_id)};
+
         });
-  
+
   }
-  
+
   cargarCuentaGasto() {
     this._spendingAccountService.cargarCuentaGastos()
     .subscribe( resp => this.cuentagasto = resp);
   }
-  
+
   obtenerCuentaGasto( id: string) {
     this._spendingAccountService.obtenerCuentaGastos( id )
     .subscribe( resp => this.cuentagasto = resp);
     console.log('gasto',this.cuentagasto)
   }
-  
+
   hideDialog() {
     this.costCenterDialog = false;
     this.submitted = false;
@@ -175,21 +176,21 @@ editCostCenter(costCent: CostCenter) {
 
 
   guardar(){
-   
+
     if (this.forma.invalid){
-  
-      
-  
+
+
+
       return Object.values (this.forma.controls).forEach( control =>{
-  
+
         if (control instanceof UntypedFormGroup) {
           Object.values (control.controls).forEach( control => control.markAsTouched());
-  
+
         } else{
           control.markAsTouched();
         }
-        
-  
+
+
       });
     }
 
@@ -200,9 +201,9 @@ editCostCenter(costCent: CostCenter) {
           .subscribe( () => this.obtenerCostCenter(this.empresa.id));
           this.new = false;
           this.costCenterDialog = false;
-         
+
         } else {
-  
+
     const centroCosto = new CostCenter(
       this.forma.value.codigo,
       this.forma.value.descripcion,
@@ -216,16 +217,16 @@ editCostCenter(costCent: CostCenter) {
     this._costCenterService.crearCostCenter( centroCosto )
   .subscribe( resp => {
     this.costCenterDialog = false;
-    
+
     this.obtenerCostCenter( this.empresa.id );
-    
+
   });
 
     this.forma.reset();
     this.crearFormulario();
 
   }
-    
+
 });
 }
 
@@ -238,16 +239,16 @@ editCostCenter(costCent: CostCenter) {
         acceptLabel:"Si",
         rejectLabel:"No",
         accept: () => {
-            
-            
+
+
 
             this._costCenterService.borrarCostCenter( costCenter.id! )
             .subscribe ( () => this.obtenerCostCenter(this.empresa.id));
-            
+
             //this.messageService.add({severity:'success', summary: 'Successful', detail: 'Centro de costo Eliminado', life: 3000});
         }
     });
-} 
+}
 
 
 }
