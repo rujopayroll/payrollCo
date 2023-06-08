@@ -3,8 +3,8 @@ import { CompanyService } from '../../../companies/services/company/company.serv
 import { Company } from '../../../companies/models/company.model';
 
 import {SelectItem } from 'primeng/api';
-import { Product } from 'src/app/companies/interfaces/producinterface';
-import { ProductService } from 'src/app/companies/services/producto/productservice';
+//import { Product } from 'src/app/companies/interfaces/producinterface';
+//import { ProductService } from 'src/app/companies/services/producto/productservice';
 import { EmployeeService } from '../../services/employeeService.index';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/services/authservice.index';
@@ -19,11 +19,11 @@ import { EmployeeContractService } from '../../services/employeeService.index';
 })
 export class ListComponent implements OnInit {
 
- 
+
 
   employees: Employee[] = [];
   employeeContract: EmployeeContract []= [];
-  
+
   busqueda = '';
   company: any;
   empresaseleccionada: any = {};
@@ -37,13 +37,13 @@ export class ListComponent implements OnInit {
                public router: Router,
                public activateRoute: ActivatedRoute,
                public _usuarioService: AuthService
-                ) { 
+                ) {
 
 
                 this.company = this._usuarioService.empresas;
                 this.empresaseleccionada = localStorage.getItem('empresaseleccionada')!;
                 this.usuario = JSON.parse(localStorage.getItem('usuario')!);
-          
+
                 if ( this.empresaseleccionada ){
                             this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
                           } else {
@@ -54,19 +54,21 @@ export class ListComponent implements OnInit {
                             }
                           }
 
-                          
-                          this.getEmployees( this.empresa.id );
+
+
 
                }
 
 
-               
-  ngOnInit(){ }
+
+  ngOnInit(){
+    this.getEmployees( this.empresa.id );
+  }
 
   veremployee( idx: number ){
-  
+
     this.router.navigate( ['/employees/', idx] );
-    
+
   }
 
   searchemployee( termino: string ) {
@@ -74,12 +76,12 @@ export class ListComponent implements OnInit {
   }
 
   getEmployees( id: string ) {
-    
+
     this._employeeService.cargarEmployeeCompany( id)
         .subscribe( (employee: any) => {
           this.totalRegistros = employee.length;
           this.employees = employee;
-         
+
         });
 
   }
@@ -87,11 +89,11 @@ export class ListComponent implements OnInit {
   getEmployeesContract( id: string ) {
     this._employeeContract.cargarEmployeeContract( id )
         .subscribe( employeeContract => {
-          
+
           this.employeeContract = employeeContract;
           /* if (this.employeeContract){
             this.obtenerContractType();
-           
+
           } */
         });
   }
@@ -105,18 +107,18 @@ export class ListComponent implements OnInit {
   buscarEmployees( termino: string){
 
     if ( termino.length <= 0 ){
-     
+
       this.getEmployees( this.empresa.id);
       return;
     }
 
     this._employeeService.buscarEmployees( termino )
         .subscribe( resp => {
-          this.employees = resp 
+          this.employees = resp
         });
 }
 
-  
+
 }
 
 

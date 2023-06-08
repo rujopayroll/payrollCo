@@ -52,8 +52,8 @@ export class CompaniesComponent implements OnInit {
   city: any = {};
   caja: any = {};
   riesgo: any = {};
- 
-  
+
+
 
 
 
@@ -61,32 +61,32 @@ export class CompaniesComponent implements OnInit {
   constructor(
     public _usuarioService: AuthService,
      public _companyService: CompanyService,
-     
+
      public _countryService: CountryService,
      public _stateService: StateService,
      public _cityService: CityService,
      public _socialSecurityEntityService: SocialSecurityEntityService,
-     
+
      public _router: Router,
      public _activatedRoute: ActivatedRoute,
      public _modalUploadService: ModalUploadService,
      public _subirArchivoService: SubirArchivoService,
      public pageScrollServ: PageScrollService,
-     private messageService: MessageService, 
+     private messageService: MessageService,
      private confirmationService: ConfirmationService,
-     
+
      @Inject(DOCUMENT) private document: any
-     
-  ) { 
+
+  ) {
 
     this.company = this._usuarioService.empresas;
     this.empresaseleccionada = localStorage.getItem('empresaseleccionada');
-    
+
 
     if ( this.empresaseleccionada ){
       this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
-     
-      
+
+
     } else {
       if(this.company.length > 1 ) {
         this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
@@ -95,19 +95,20 @@ export class CompaniesComponent implements OnInit {
       }
     }
 
-    this.cargarCompanyInfo( this.empresa.id );
-    this.cargarCompanySelect( this.empresa.id );
+
 
   }
 
   ngOnInit(): void {
-    
+    this.cargarCompanyInfo( this.empresa.id );
+    this.cargarCompanySelect( this.empresa.id );
+
     this._modalUploadService.notificacion
     .subscribe( () => this.cargarCompanyInfo(this.empresa.id));
-    
+
     this._modalUploadService.notificacion
     .subscribe( () => this.cargarCompanySelect(this.empresa.id));
-    
+
   this.pageScrollServ.scroll({
     document: this.document,
     scrollTarget: '.theEnd',
@@ -129,14 +130,29 @@ export class CompaniesComponent implements OnInit {
   }
 
    onScroll(event: HTMLElement, i:any) {
-    this.pageScrollServ.scroll({
-      scrollTarget: event,
-      scrollOffset: 310,
-      document: this.document
-    });
+
+    if(i==8){
+      this.pageScrollServ.scroll({
+        scrollTarget: event,
+        scrollOffset: 230,
+        document: this.document
+      });
+    }else{
+      this.pageScrollServ.scroll({
+        scrollTarget: event,
+        scrollOffset: 280,
+        document: this.document
+      });
+    }
+
 
     this.active = i;
-  } 
+
+
+  }
+
+
+
 
   /* onUpload(event: any) {
     for(let file of event.files) {
@@ -145,43 +161,43 @@ export class CompaniesComponent implements OnInit {
   }
  */
 
-  
+
 
   cargarCompanyInfo( id: string ) {
     //this._companyInfoService.cargarCompanyInfo( id )
     this._companyService.cargarCompanys( id )
         .subscribe( company => {
           this.company = company;
-          
+
            if (this.company.country_id) {this.obtenerCountry( this.company.country_id )};
           if (this.company.state_id) {this.obtenerState(this.company.state_id)};
           if (this.company.city_id) {this.obtenerCity(this.company.city_id)};
           if (this.company.compensationFund_id) {this.obtenerCajasCompensacion(this.company.compensationFund_id)};
-          if (this.company.entityRisks_id) {this.obtenerEntidadRiesgos(this.company.entityRisks_id)}; 
-          
+          if (this.company.entityRisks_id) {this.obtenerEntidadRiesgos(this.company.entityRisks_id)};
+
         });
 
   }
 
- 
+
 
   actualizarImagen( company: Company){
-  
+
     console.log('entroaca')
     this._modalUploadService.mostrarModal('companys', company.id);
     this._modalUploadService.oculto
     console.log( 'oculto',this._modalUploadService.oculto)
-    
-    
+
+
   }
 
- 
+
 
   obtenerCountry( id: string)  {
     this._countryService.obtenerPaises( id )
         .subscribe( country => {
           this.country = country;
-          
+
   });
 }
 
@@ -204,13 +220,13 @@ obtenerCajasCompensacion(id : string)  {
       .subscribe( socialSecurityEntity => {
         this.caja = socialSecurityEntity;
 });
-} 
+}
 
 obtenerEntidadRiesgos(id: string)  {
   this._socialSecurityEntityService.obtenerEntidadSS(id)
       .subscribe( socialSecurityEntity => {
         this.riesgo = socialSecurityEntity;
-      
+
 });
 }
 

@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 //import { HttpClient } from '@angular/common/http';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import 'rxjs/Rx';
-import { map, catchError } from 'rxjs/operators';
+import { map, catchError, tap } from 'rxjs/operators';
 //import { catch } from 'rxjs/operators';
 
 //import 'rxjs/add/Operator/tap';
@@ -31,10 +31,15 @@ export class AuthService {
 
   usuario!: Usuario;
   token!: string;
+  refreshToken!: string;
   menu: any = {};
   submenu: any = {};
   empresas: any = {};
+
   public headers = new HttpHeaders();
+
+  private user = new BehaviorSubject< Usuario | null > (null);
+  user$ = this.user.asObservable();
 
   get _usuario(): Usuario{
     return {...this._usuario!}
@@ -46,20 +51,26 @@ export class AuthService {
                ) {
                 this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
                  this.cargarStorage();
-   
-   
+
+
   }
 
-  renuevaToken(){
-    let url = this.URL_SERVICIOS + 'login/renuevatoken';
-    url += '?token=' + this.token;
+  renuevaToken(usuario: string){
+    let url = this.URL_SERVICIOS + '/auth_tok/getToken';
+    // url += '?token=' + this.token;
+    /* url += '?id' + this.usuario.id;
+     url += '?token=' + this.token; */
+     console.log('renueva', url)
+     console.log('header', this.headers)
+    return this.http.post( url, usuario, {headers: this.headers})
 
-    return this.http.get( url )
-    .pipe(    
+    .pipe(
     map( (resp: any) =>{
-
-          this.token = resp.token;
-          localStorage.setItem( 'token', this.token! );
+          console.log('respuesta', resp)
+          this.token = resp.data.token;
+          this.refreshToken = resp.data.refreshToken
+          localStorage.setItem( 'token', this.token );
+          localStorage.setItem( 'refreshToken', this.refreshToken);
 
           return true;
 
@@ -67,7 +78,8 @@ export class AuthService {
     )
     .pipe(
     catchError( err => {
-          this._router.navigate(['/login']);
+      console.log('error', err)
+          this._router.navigate(['/auth/login']);
           // tslint:disable-next-line: deprecation
           Swal.fire({
             title: 'No se pudo renovar el token',
@@ -80,23 +92,25 @@ export class AuthService {
 
 
   //guardarStorage(id: string, token: string, usuario: Usuario, menu: any, empresas:any){
-     guardarStorage(token: string,id: string,  usuario: Usuario, empresas:any){
-    
+     guardarStorage(token: string,id: string,  usuario: Usuario, empresas:any, refreshToken: string){
+
       localStorage.setItem('token', token);
+      localStorage.setItem('refreshToken', refreshToken);
       localStorage.setItem('id', id);
-   
+
     localStorage.setItem('usuario', JSON.stringify(usuario));
     localStorage.setItem('empresas', JSON.stringify(empresas));
 
     this.usuario = usuario;
     this.token = token;
+    this.refreshToken = refreshToken;
     this.empresas = empresas;
 
   }
 
-  
 
-  
+
+
 
 
   estaLogueado(){
@@ -106,6 +120,7 @@ export class AuthService {
   cargarStorage(){
     if ( localStorage.getItem('token')){
           this.token = localStorage.getItem('token')!;
+          this.refreshToken = localStorage.getItem('refreshToken')!;
           this.usuario =  JSON.parse(localStorage.getItem('usuario')!);
           this.menu =  JSON.parse(localStorage.getItem('menu')!);
           this.empresas =  JSON.parse(localStorage.getItem('empresas')!);
@@ -125,24 +140,25 @@ export class AuthService {
     } else {
       localStorage.removeItem('email');
     }
-  
+
     //let url = URL_SERVICIOS + '/login';
     let url = this.URL_SERVICIOS + '/auth_log/login';
     return this.http.post( url, usuario )
-    .pipe(          
+    .pipe(
+
     map( (resp: any) =>{
 
                // this.guardarStorage( resp.id, resp.token, resp.usuario, resp.menu, resp.empresas );
-              
-               
+
+
                 // this.guardarStorage( resp.user.id, resp.token, resp.user, resp.user.menu.menus, resp.user.companies );
-                this.guardarStorage( resp.token, resp.user.id, resp.user, resp.user.companies );
+                this.guardarStorage( resp.token, resp.user.id, resp.user, resp.user.companies, resp.refreshToken );
 
 
                 return true;
               })
     )
-              
+
             // })
             .pipe(
             catchError( err =>{
@@ -151,12 +167,12 @@ export class AuthService {
                   title: 'Error en el login',
                   text: 'error al autenticar',
                   icon: 'error'
-                }); 
+                });
                 return Observable.throwError( err );
               })
             );
 
-              
+
 
 
   }
@@ -164,8 +180,10 @@ export class AuthService {
   logout(){
 
     this.token = '';
+    this.refreshToken = '';
     this.usuario = null!;
 
+    localStorage.removeItem('refreshToken');
     localStorage.removeItem('token');
     localStorage.removeItem('usuario');
     localStorage.removeItem('menus');
@@ -180,7 +198,7 @@ export class AuthService {
 crearUsuario( usuario: any){
   const url = this.URL_SERVICIOS  + '/auth_log/register';
   return this.http.post( url, usuario,  {headers: this.headers})
-  .pipe(    
+  .pipe(
   map( (resp: any) =>{
 
         Swal.fire({
@@ -217,7 +235,7 @@ actualizarUsuario( usuario: Usuario ){
         if ( usuario.id === this.usuario.id) {
           const usuarioDB: Usuario = resp.usuario;
            //this.guardarStorage( usuarioDB.id, this.token, usuarioDB,  this.menu, this.empresas);
-          this.guardarStorage( usuarioDB.id!, this.token, usuarioDB, this.empresas);
+          this.guardarStorage( usuarioDB.id!, this.token, usuarioDB, this.empresas, this.refreshToken);
         }
         Swal.fire({
           text: 'Usuario Actualizado',
@@ -264,7 +282,7 @@ cargarUsuarios( desde: number = 0){
 
   let url = this.URL_SERVICIOS + '/usuario?desde=' + desde;
   return this.http.get( url );
-  
+
 
 }
 
@@ -287,29 +305,29 @@ borrarUsuario( id: string ){
 
 obtenerMenu( id: string ){
 
-  let url = this.URL_SERVICIOS + '/menu/menuByUser/' + id;       
-    
+  let url = this.URL_SERVICIOS + '/menu/menuByUser/' + id;
+
     return this.http.get(url)
           .subscribe( (respm: any) => {
-            
+
             this.menu = respm.menus;
             localStorage.setItem( 'menus', JSON.stringify(this.menu ));
-            
-           
+
+
 
             return true;
           });
-          
+
           /* console.log('ruta',this.http.get( url ))*/
-         
-        
-         
+
+
+
           //return respm;
         }
 
 
   registro(){
 
-  }      
+  }
 
 }

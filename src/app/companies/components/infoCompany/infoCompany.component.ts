@@ -84,16 +84,16 @@ export class InfoCompanyComponent implements OnInit {
      public _stateService: StateService,
      public _cityService: CityService,
      public _identificationTypeService: IdentificationTypeService,
-     
+
      public _socialSecurityEntityService: SocialSecurityEntityService,
      public _router: Router,
      public _activatedRoute: ActivatedRoute,
      public _modalUploadService: ModalUploadService,
      public _subirArchivoService: SubirArchivoService,
      public pageScrollServ: PageScrollService,
-     private messageService: MessageService, 
+     private messageService: MessageService,
      private confirmationService: ConfirmationService,
-     
+
      @Inject(DOCUMENT) private document: any
      /* public _countryService: CountryService,
      public _usuarioService: UsuarioService,
@@ -105,16 +105,16 @@ export class InfoCompanyComponent implements OnInit {
      public _paymentMethodService: PaymentMethodService,
      public _bankService: BankService,
      public _accounttypeService: AccounttypeService */
-  ) { 
+  ) {
 
     this.company = this._usuarioService.empresas;
     this.empresaseleccionada = localStorage.getItem('empresaseleccionada');
-    
+
 
     if ( this.empresaseleccionada ){
       this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
-     
-      
+
+
     } else {
       if(this.company.length > 1 ) {
         this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
@@ -126,10 +126,10 @@ export class InfoCompanyComponent implements OnInit {
     this.usuario = JSON.parse(localStorage.getItem('usuario')!);
 
     this.cargarCompanyInfo( this.empresa.id );
-    
+
     this.crearFormulario();
-    
-    
+
+
 
 
   }
@@ -148,14 +148,14 @@ export class InfoCompanyComponent implements OnInit {
   get rlegalNoValido(){return this.forma.get('rlegal')!.invalid && this.forma.get('rlegal')!.touched}
   get ffundacionNoValido(){return this.forma.get('ffundacion')!.invalid && this.forma.get('ffundacion')!.touched}
   get riesgoeNoValido(){return this.forma.get('riesgoe')!.invalid && this.forma.get('riesgoe')!.touched}
-  get cajaNoValido(){return this.forma.get('caja')!.invalid && this.forma.get('caja')!.touched} 
+  get cajaNoValido(){return this.forma.get('caja')!.invalid && this.forma.get('caja')!.touched}
 
 
   ngOnInit(): void {
 
     this._modalUploadService.notificacion
     .subscribe( () => this.cargarCompanyInfo(this.empresa.id));
-    
+
     this.cargarTiposd();
     this.getAllCountry();
     this.getAllState();
@@ -189,14 +189,14 @@ export class InfoCompanyComponent implements OnInit {
       rlegal      :[''],
       ffundacion  :[''],
       riesgoe     :['',Validators.required],
-      caja        :['',Validators.required] 
+      caja        :['',Validators.required]
 
     });
 
   }
 
 
-  
+
 
    onScroll(event: HTMLElement, i:any) {
     this.pageScrollServ.scroll({
@@ -206,34 +206,34 @@ export class InfoCompanyComponent implements OnInit {
     });
 
     this.active = i;
-  } 
+  }
 
-  
+
   guardar(company: Company){
 
     if (this.forma.invalid){
-  
-      
-  
+
+
+
       return Object.values (this.forma.controls).forEach( control =>{
-  
+
         if (control instanceof UntypedFormGroup) {
           Object.values (control.controls).forEach( control => control.markAsTouched());
-  
+
         } else{
           control.markAsTouched();
         }
-        
-  
+
+
       });
     }
 
 
-  
+
 
     let form = [
       {
-  
+
         id: this.empresa.id,
         name: this.forma.value.name,
         updateUser: this.usuario.id,
@@ -251,22 +251,22 @@ export class InfoCompanyComponent implements OnInit {
         state_id: this.forma.value.depto,
         country_id: this.forma.value.pais,
         identificationType_id: this.forma.value.tidentificacion,
-       
+
 
       }
     ]
-  
+
     this.registro =  JSON.parse(JSON.stringify(form[0]));
-    
+
 
     this._companyService.actualizarCompany( this.registro )
             .subscribe( () => this.cargarCompanyInfo(this.empresa.id));
             this.infoCompanyDialog = false;
-    
-    
-  
+
+
+
     // this.forma.reset();
-  
+
   }
 
 
@@ -286,7 +286,7 @@ editInfoCompany(company: Company) {
     this.infoCompanyDialog = true;
     this.new= false;
 }
-  
+
 
 cargarTiposd() {
     this._identificationTypeService.cargarTiposDocumentos()
@@ -296,36 +296,36 @@ cargarTiposd() {
 
 
   cargarCompanyInfo( id: string ) {
-    
+
     this._companyService.cargarCompanys( id )
         .subscribe( company => {
           this.company = company;
-          
+
            if (this.company.country_id) {this.obtenerCountry( this.company.country_id )};
           if (this.company.state_id) {this.obtenerState(this.company.state_id)};
           if (this.company.city_id) {this.obtenerCity(this.company.city_id)};
           if (this.company.city_id) {this.cargarMunicipiosDeptos(this.company.state_id)};
           if (this.company.compensationFund_id) {this.obtenerCajasCompensacion(this.company.compensationFund_id)};
-          if (this.company.entityRisks_id) {this.obtenerEntidadRiesgos(this.company.entityRisks_id)}; 
-          
+          if (this.company.entityRisks_id) {this.obtenerEntidadRiesgos(this.company.entityRisks_id)};
+
         });
 
   }
 
-  
+
 
   actualizarImagen( company: Company){
-  
+
     this._modalUploadService.mostrarModal('companys', company.id! );
-    
-    
+
+
   }
 
   obtenerCountry( id: string)  {
     this._countryService.obtenerPaises( id )
         .subscribe( country => {
           this.country = country;
-          
+
   });
 }
 
@@ -334,7 +334,7 @@ getAllCountry()  {
         .subscribe( countries => {
           this.countries = countries;
           console.log(this.countries)
-          
+
   });
 }
 
@@ -374,13 +374,13 @@ obtenerCajasCompensacion(id : string)  {
       .subscribe( socialSecurityEntity => {
         this.caja = socialSecurityEntity;
 });
-} 
+}
 
 obtenerEntidadRiesgos(id: string)  {
   this._socialSecurityEntityService.obtenerEntidadSS(id)
       .subscribe( socialSecurityEntity => {
         this.riesgo = socialSecurityEntity;
-      
+
 });
 }
 
@@ -396,13 +396,13 @@ onSelect(id: string): void {
   cargarCajasCompensacion() {
     this._socialSecurityEntityService.obtenerEntidadSSPorTipo('CCF')
     .subscribe( resp => this.cajas = resp);
-    
-  } 
+
+  }
 
   cargarEntidadesRiegos() {
     this._socialSecurityEntityService.obtenerEntidadSSPorTipo('ARL')
     .subscribe( resp => this.riesgos = resp);
- 
+
   }
 
 

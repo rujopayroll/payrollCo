@@ -47,7 +47,7 @@ export class SaveExtraHoursComponent implements OnInit {
   hend: number = 0;
   hond: number = 0;
   recd: number = 0;
-  
+
 
 
   formaOverTime: UntypedFormGroup = this.fb.group({
@@ -63,7 +63,7 @@ export class SaveExtraHoursComponent implements OnInit {
   constructor(  private fb: UntypedFormBuilder,
                 private messageService: MessageService,
                 public dialogService: DialogService,
-               public ref: DynamicDialogRef, 
+               public ref: DynamicDialogRef,
                public _employeeService:EmployeeService,
                public router: Router,
                public activateRoute: ActivatedRoute,
@@ -89,43 +89,43 @@ export class SaveExtraHoursComponent implements OnInit {
               }
 
               this._getEmployeeService.recibirGroup.subscribe(group =>{
-                
-                
+
+
              })
-              
-             this.getPeriodByProcess(this.empresa.id) 
+
+             this.getPeriodByProcess(this.empresa.id)
 
                  }
 
   ngOnInit(): void {
 
-  
-    
+
+
   }
 
    getPeriodByProcess( id: string ) {
-    
-  
-  
+
+
+
     this._periodService.getPeriodByCompanyByProcess( id)
         .subscribe( (period: Period) => {
           this.period = period;
-          
+
           if (this.period) {
-           
+
           this._getEmployeeService.recibir.subscribe(dato =>{
             this.employeeSelect = dato
             this.getOverTimeByEmployee(this.employeeSelect, this.empresa.id, this.period[0].id)
          })
-  
-         
-  
+
+
+
            }
-  
-  
+
+
         });
-  
-  } 
+
+  }
 
 
 
@@ -137,7 +137,7 @@ export class SaveExtraHoursComponent implements OnInit {
 
 
 function replacer(key: any, value: any) {
-  
+
   if (value.quantity == 0) {
     return undefined;
   }
@@ -185,9 +185,9 @@ function replacer(key: any, value: any) {
 
     ]
 
-     this.extras =  JSON.parse(JSON.stringify(formExtras, replacer)) 
+     this.extras =  JSON.parse(JSON.stringify(formExtras, replacer))
 
-    
+
 
      var extrasDef = this.extras.filter(function (overTime: any) {
        return overTime != null;
@@ -201,21 +201,20 @@ function replacer(key: any, value: any) {
         noveltiesOverTime: extrasDef
       }
     ]
-    
+
     this.register =  JSON.parse(JSON.stringify(form[0]));
-   
+
     this._movementService.saveNoveltiesOverTime(this.register)
         .subscribe( (resp: any) => {
+
             this.ref.close();
-       
-         
-       
-        }); 
+            console.log('res', resp)
+        });
 
   }
 
   campoEsValido( campo: string){
-    return this.formaOverTime.controls[campo].errors 
+    return this.formaOverTime.controls[campo].errors
         && this.formaOverTime.controls[campo].touched
   }
 

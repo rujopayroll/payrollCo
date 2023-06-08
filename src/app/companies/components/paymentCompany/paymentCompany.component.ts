@@ -63,7 +63,7 @@ export class PaymentCompanyComponent implements OnInit {
   bank: any = {};
   accountType: any = {};
   public costCenter: any= {};
-  
+
   cuentagasto: any= {};
   registro: any = {};
   selectedPaymentCompany: any = [];
@@ -72,8 +72,8 @@ export class PaymentCompanyComponent implements OnInit {
   new!: boolean;
 
   companyPayment: CompanyPayment = new CompanyPayment('', '', '', true, 0, '', '', '', '', this.date, this.date);
-  
-  
+
+
 
 
 
@@ -94,21 +94,21 @@ export class PaymentCompanyComponent implements OnInit {
      public _modalUploadService: ModalUploadService,
      public _subirArchivoService: SubirArchivoService,
      public pageScrollServ: PageScrollService,
-     private messageService: MessageService, 
+     private messageService: MessageService,
      private confirmationService: ConfirmationService,
-     
+
      @Inject(DOCUMENT) private document: any
-     
-  ) { 
+
+  ) {
 
     this.company = this._usuarioService.empresas;
     this.empresaseleccionada = localStorage.getItem('empresaseleccionada');
-    
+
 
     if ( this.empresaseleccionada ){
       this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
-     
-      
+
+
     } else {
       if(this.company.length > 1 ) {
         this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
@@ -129,7 +129,7 @@ export class PaymentCompanyComponent implements OnInit {
   get bancoNoValido(){return this.forma.get('banco')!.invalid && this.forma.get('banco')!.touched}
   get tipocuentaNoValido(){return this.forma.get('tipocuenta')!.invalid && this.forma.get('tipocuenta')!.touched}
   get numerocuentaNoValido(){return this.forma.get('numerocuenta')!.invalid && this.forma.get('numerocuenta')!.touched}
-  
+
 
 
   ngOnInit(): void {
@@ -139,7 +139,7 @@ export class PaymentCompanyComponent implements OnInit {
     this.gelAllBank();
     this.gelAllAccountType();
 
- 
+
 
 
   this.pageScrollServ.scroll({
@@ -162,9 +162,9 @@ export class PaymentCompanyComponent implements OnInit {
   }
 
 
-  
 
-   onScroll(event: HTMLElement, i:any) {
+
+    onScroll(event: HTMLElement, i:any) {
     this.pageScrollServ.scroll({
       scrollTarget: event,
       scrollOffset: 300,
@@ -172,7 +172,7 @@ export class PaymentCompanyComponent implements OnInit {
     });
 
     this.active = i;
-  } 
+  }
 
 
   hideDialog() {
@@ -193,22 +193,22 @@ editPaymentCompany(companyPayment: CompanyPayment) {
   guardar(companyPayment: CompanyPayment){
 
     if (this.forma.invalid){
-  
-      
-  
+
+
+
       return Object.values (this.forma.controls).forEach( control =>{
-  
+
         if (control instanceof UntypedFormGroup) {
           Object.values (control.controls).forEach( control => control.markAsTouched());
-  
+
         } else{
           control.markAsTouched();
         }
-        
-  
+
+
       });
     }
-  
+
 
 
   let form = [
@@ -221,9 +221,9 @@ editPaymentCompany(companyPayment: CompanyPayment) {
       paymentMethod_id: this.forma.value.metodopago,
       bank_id:this.forma.value.banco,
       accountType_id: this.forma.value.tipocuenta
-      
-      
-      
+
+
+
     }
   ]
 
@@ -233,39 +233,39 @@ console.log(this.registro)
     this._companyPaymentService.actualizarCompanyPayment( this.registro )
             .subscribe( () => this.cargarCompanyPayment(this.empresa.id));
             this.paymentCompanyDialog = false;
-    
-  
+
+
     // this.forma.reset();
-  
+
   }
 
 
-  
 
-  
+
+
 
   cargarCompanyPayment( id: string ) {
     this._companyPaymentService.cargarCompanyPayment( id )
         .subscribe( company => {
           this.companyPayment = company;
-         
+
           if (this.companyPayment.paymentFrequency_id) {this.obtenerPaymentFrequency( this.companyPayment.paymentFrequency_id )};
            if (this.companyPayment.paymentMethod_id) {this.obtenerPaymentMetod( this.companyPayment.paymentMethod_id )};
           if (this.companyPayment.bank_id) {this.obtenerBank( this.companyPayment.bank_id )};
           if (this.companyPayment.accountType_id) {this.obtenerAccountType( this.companyPayment.accountType_id)};
-          
+
         });
 
   }
 
   actualizarImagen( company: Company){
-  
+
     this._modalUploadService.mostrarModal('companys', company.id! );
-    
-    
+
+
   }
 
- 
+
 
 obtenerPaymentFrequency( id: string ) {
   this._paymentFrequencyService.obtenerFrecuenciaPago( id )
@@ -294,14 +294,14 @@ gelAllPaymentMetod() {
 obtenerBank( id: string) {
   this._bankService.obtenerBanco( id )
   .subscribe( resp => this.bank = resp);
-  
-} 
+
+}
 
 gelAllBank() {
     this._bankService.cargarBancos()
     .subscribe( resp => this.banks = resp);
-    
-  } 
+
+  }
 
 
 
@@ -314,7 +314,7 @@ obtenerAccountType( id: string ) {
 gelAllAccountType() {
     this._accounttypeService.cargarTipoCuentas()
     .subscribe( resp => this.accountTypes = resp);
-  
+
   }
 
 

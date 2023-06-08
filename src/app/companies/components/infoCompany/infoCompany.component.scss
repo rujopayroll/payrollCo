@@ -2,3 +2,30 @@ select:focus {
     border-color:deepskyblue;
   }
 
+
+
+
+.customTitleBar > .ui-panel-titlebar {
+  background: #BBBBBB;
+}
+
+:host ::ng-deep {
+  .p-panel .p-panel-header{
+    padding: 0.0rem;
+    padding-left: 1rem;
+    text-align: initial;
+
+    /* background: linear-gradient(-206deg, #4b6cb7 5%, #182848 100%);
+    color: #ffffff; */
+  }
+}
+
+:host ::ng-deep {
+  .p-panel-header-icon{
+    padding: 0.0rem;
+    float: left;
+    box-shadow: none !important;
+  }
+}
+
+

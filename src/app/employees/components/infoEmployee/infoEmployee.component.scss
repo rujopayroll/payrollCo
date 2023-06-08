@@ -1,0 +1,23 @@
+
+
+::ng-deep .custom-panel .p-panel-header {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+::ng-deep .custom-panel .p-panel-title {
+  margin-left: 5rem;
+}
+
+::ng-deep .custom-panel .p-panel .p-panel-icons-start {
+  margin-left: 5rem;
+
+}
+
+.ui-panel .ui-panel-titlebar-icon .p-panel-icons-start {
+  float: left;
+}
+
+.font{
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
