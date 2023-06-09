@@ -11,12 +11,13 @@ RUN npm ci
 #RUN npm i -g @angular/cli@14.1.3
 #RUN ngcc
 COPY . .
-RUN node --max_old_space_size=8192 ./node_modules/@angular/cli/bin/ng build --prod
+#RUN node --max_old_space_size=8192 ./node_modules/@angular/cli/bin/ng build --prod
+#RUN ng build --prod
 #CMD RUN npm run build:prod
-#RUN npm run build --prod
+RUN npm run build
 #stage 2
 #FROM nginx:alpine
 FROM nginx:latest AS ngi
 COPY --from=build /app/dist/payrollCO /usr/share/nginx/html
 COPY /nginx.conf  /etc/nginx/conf.d/default.conf
-EXPOSE 80
+EXPOSE 80   
