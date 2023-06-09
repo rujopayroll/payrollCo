@@ -2,7 +2,7 @@
 #FROM node:14-alpine as build
 FROM node:14.20.1-alpine as build
 WORKDIR /app
-RUN npm install -g @angular/cli
+#RUN npm install -g @angular/cli
 COPY package.json package-lock.json ./
 #RUN npm cache clean --force
 #RUN npm i -g @angular/cli
