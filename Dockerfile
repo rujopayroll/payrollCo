@@ -6,8 +6,10 @@ COPY package.json package-lock.json ./
 #RUN npm cache clean --force
 #RUN npm i -g @angular/cli
 RUN npm install
+RUN npm i -g @angular/cli@14.1.3
 COPY . .
-CMD RUN npm run build:prod
+RUN node --max_old_space_size=8192 ./node_modules/@angular/cli/bin/ng build --prod
+#CMD RUN npm run build:prod
 #RUN npm run build --prod
 #stage 2
 #FROM nginx:alpine
