@@ -7,6 +7,7 @@ COPY package.json package-lock.json ./
 #RUN npm i -g @angular/cli
 RUN npm install
 RUN npm i -g @angular/cli@14.1.3
+RUN ngcc
 COPY . .
 RUN node --max_old_space_size=8192 ./node_modules/@angular/cli/bin/ng build --prod
 #CMD RUN npm run build:prod
