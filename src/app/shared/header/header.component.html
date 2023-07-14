@@ -30,12 +30,13 @@
 
 
     <ng-template pTemplate="end">
-        <div>
+        <div class="flex align-content-center flex-wrap">
       <!--   <span class="flex align-content-center flex-wrap text-blue-500 p-mr-2">Bienvenido(a):</span>
         <span class="flex align-content-center flex-wrap"><p-splitButton class="flex align-content-center flex-wrap mr-2" label="{{usuario.name | titlecase}}" [model]="items" styleClass="p-button-primary"></p-splitButton></span> -->
 <!--         <span class="flex align-content-center flex-wrap p-mr-2">{{usuario.name | titlecase}}</span> -->
-        <span *ngIf="usuario.img"><img [src]="usuario.img" height="40" class="p-mr-2 cursor-pointer" (click)="op.toggle($event)" style="border-radius: 50%" alt="user"></span>
-        <span *ngIf="!usuario.img"> <img src="assets/images/no-image.png" height="40" class="p-mr-2 cursor-pointer" (click)="op.toggle($event)" style="border-radius: 50%"></span>
+        <span class="flex align-items-center justify-content-center font-bold text-600 font-medium text-lg m-2">{{ usuario.name | titlecase}}</span>
+        <span *ngIf="usuario.img"><img [src]="usuario.img" height="40" class="p-mr-2 cursor-pointer flex align-content-center flex-wrap" (click)="op.toggle($event)" style="border-radius: 50%" alt="user"></span>
+        <span *ngIf="!usuario.img"> <img src="assets/images/no-image.png" height="40" class="p-mr-2 cursor-pointer flex align-content-center flex-wrap" (click)="op.toggle($event)" style="border-radius: 50%"></span>
 
         <p-overlayPanel #op [showCloseIcon]="false" appendTo="body" [style]="{width: '250px'}">
             <ng-template pTemplate>

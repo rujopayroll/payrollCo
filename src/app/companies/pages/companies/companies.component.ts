@@ -183,7 +183,7 @@ export class CompaniesComponent implements OnInit {
 
   actualizarImagen( company: Company){
 
-    console.log('entroaca')
+
     this._modalUploadService.mostrarModal('companys', company.id);
     this._modalUploadService.oculto
     console.log( 'oculto',this._modalUploadService.oculto)
