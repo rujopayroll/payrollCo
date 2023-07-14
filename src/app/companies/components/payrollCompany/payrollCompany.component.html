@@ -14,65 +14,65 @@
 <div class="col-8">
     <p-panel header="Información de Nomina" class="text-600">
         <ng-template pTemplate="icons">
-            <button pButton pRipple type="button"  (click)="editPayrollCompany(companyPayrolls)" icon="pi pi-pencil" class="p-button-rounded p-button-primary p-button-text text-left">     
-            </button> 
-    </ng-template> 
+            <button pButton pRipple type="button"  (click)="editPayrollCompany(companyPayrolls)" icon="pi pi-pencil" class="p-button-rounded p-button-primary p-button-text text-left">
+            </button>
+    </ng-template>
     <form>
 
 
-    
+
 
 
 
 
 
     <div class="grid">
-        <div class="col-4"> 
+        <div class="col-4">
         <div class="flex align-items-start justify-content-start">
             <span class="text-500 font-medium">Tipo Auxilio Incapaciadad:</span></div>
         </div>
-        <div class="col-8"> 
+        <div class="col-8">
             <span class="text-400 align-items-start justify-content-start">{{assistanceType.description}}</span>
         </div>
         </div>
 
 
         <div class="grid">
-            <div class="col-4"> 
+            <div class="col-4">
             <div class="flex align-items-start justify-content-start">
                 <span class="text-500 font-medium">Aplica ley 1393:</span></div>
             </div>
-            <div class="col-8"> 
+            <div class="col-8">
                 <span class="text-400 align-items-start justify-content-start">{{companyPayroll.law1393 ? 'Si' : 'No'}}</span>
             </div>
         </div>
 
         <div class="grid">
-            <div class="col-4"> 
+            <div class="col-4">
             <div class="flex align-items-start justify-content-start">
                 <span class="text-500 font-medium">Exonerado CREE:</span></div>
             </div>
-            <div class="col-8"> 
+            <div class="col-8">
                 <span class="text-400 align-items-start justify-content-start">{{companyPayroll.exoneratedCREE ? 'Si' : 'No'}}</span>
             </div>
         </div>
 
         <div class="grid">
-            <div class="col-4"> 
+            <div class="col-4">
             <div class="flex align-items-start justify-content-start">
                 <span class="text-500 font-medium">Ausentismos Afectan Prima Legal:</span></div>
             </div>
-            <div class="col-8"> 
-                <span class="text-400 align-items-start justify-content-start">{{companyPayroll.affectAbsenteeLB ? 'Si' : 'No'}}</span>
+            <div class="col-8">
+                <span class="text-400 align-items-start justify-cyyhontent-start">{{companyPayroll.affectAbsenteeLB ? 'Si' : 'No'}}</span>
             </div>
         </div>
 
         <div class="grid">
-            <div class="col-4"> 
+            <div class="col-4">
             <div class="flex align-items-start justify-content-start">
                 <span class="text-500 font-medium">Paga dia 31 en vacaciones:</span></div>
             </div>
-            <div class="col-8"> 
+            <div class="col-8">
                 <span class="text-400 align-items-start justify-content-start">{{companyPayroll.payday31vacation ? 'Si' : 'No'}}</span>
             </div>
         </div>
@@ -81,10 +81,10 @@
 
 
 
-    
-       
 
-    
+
+
+
 
     </form>
 
@@ -92,22 +92,22 @@
     <p-dialog [(visible)]="payrollCompanyDialog" [style]="{width: '500px'}" header="Información para Nomina" [modal]="true" styleClass="p-fluid">
         <ng-template pTemplate="content">
             <form autocomplete="off" [formGroup]="forma" (ngSubmit)="guardar(companyPayroll)" id="payrollCompanyform" action="index.html">
-           
+
 
             <div class="field">
                 <label for="assistanceType">Tipo Auxilio Incapacidad</label>
-                <select [(ngModel)]="companyPayroll.assistanceType" class="form-control form-control-xl" formControlName="assistanceType" [class.is-invalid]="assistanceTypeNoValido" 
-                    name="assistanceType" 
-                    id="assistanceType" 
-                    style="border-radius: 0.2rem; width: 28rem; height:2.5rem ; border-width: 1px; border-color:deepskyblue ;  font-family: Arial, Helvetica, sans-serif; font-size: 1rem;">         
+                <select [(ngModel)]="companyPayroll.assistanceType" class="form-control form-control-xl" formControlName="assistanceType" [class.is-invalid]="assistanceTypeNoValido"
+                    name="assistanceType"
+                    id="assistanceType"
+                    style="border-radius: 0.2rem; width: 28rem; height:2.5rem ; border-width: 1px; border-color:deepskyblue ;  font-family: Arial, Helvetica, sans-serif; font-size: 1rem;">
                 <option *ngFor="let assistanceType of assistanceTypes" [value]="assistanceType.id">
-                  <small>{{assistanceType.description}}</small> 
+                  <small>{{assistanceType.description}}</small>
                </option>
             </select>
             </div>
 
             <div class="field-checkbox">
-                
+
                 <p-checkbox [(ngModel)]="companyPayroll.law1393" class="form-control form-control-xl" formControlName="law1393" [class.is-invalid]="law1393NoValido" [binary]="true" name="law1393" inputId="binary"
                 id="law1393"></p-checkbox>
                 <label for="law1393">Aplica ley 1393?</label>
@@ -115,41 +115,41 @@
             </div>
 
             <div class="field-checkbox">
-                
+
                 <p-checkbox [(ngModel)]="companyPayroll.exoneratedCREE" id="exoneratedCREE" class="form-control form-control-xl" formControlName="exoneratedCREE" [class.is-invalid]="exoneratedCREENoValido" [binary]="true" name="exoneratedCREE" inputId="binary"></p-checkbox>
                 <label for="exoneratedCREE">Exonerado CREE?</label>
                 <!-- <label for="binary">{{companyPayroll.exoneratedCREE ? 'Si' : 'No'}}</label> -->
             </div>
 
             <div class="field-checkbox">
-               
+
                 <p-checkbox [(ngModel)]="companyPayroll.affectAbsenteeLB" class="form-control form-control-xl" formControlName="affectAbsenteeLB" [class.is-invalid]="affectAbsenteeLBNoValido" [binary]="true" name="affectAbsenteeLB" inputId="binary"></p-checkbox>
                 <label for="affectAbsenteeLB">Ausentismos Afectan Prima Legal?</label>
                 <!-- <label for="binary">{{companyPayroll.affectAbsenteeLB ? 'Si' : 'No'}}</label> -->
             </div>
 
             <div class="field-checkbox">
-                
+
                 <p-checkbox [(ngModel)]="companyPayroll.payday31vacation" class="form-control form-control-xl" formControlName="payday31vacation" [class.is-invalid]="payday31vacationNoValido" [binary]="true" name="payday31vacation" inputId="binary"></p-checkbox>
                 <label for="payday31vacation">Paga dia 31 en vacaciones?</label>
                 <!-- <label for="binary">{{companyPayroll.payday31vacation ? 'Si' : 'No'}}</label> -->
             </div>
 
 
-            
-            
 
 
-            
 
-            
 
-           
+
+
+
+
+
 
     </form>
-           
+
         </ng-template>
-    
+
         <ng-template pTemplate="footer">
             <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
             <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"  (click)="guardar(companyPayroll)"></button>

@@ -282,7 +282,7 @@ guardar(){
     "SI",
     "SI",
     "SI",
-    this.isActive,
+    this.notActive,
     "SI",
     this.isActive,
     this.notActive,
