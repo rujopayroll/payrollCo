@@ -48,6 +48,6 @@ stages:
           
           echo "start process to update service app"
           
-          aws ecs update-service --cluster PayrollCluster --service AppTest-service --desired-count 2 --task-definition app --force-new-deployment --region us-east-1
+          aws ecs update-service --cluster PayrollCluster --service AppPayrollService --desired-count 2 --task-definition app --force-new-deployment --region us-east-1
 
 
