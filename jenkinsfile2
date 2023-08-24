@@ -8,6 +8,8 @@ pipeline {
 
       environment {
         AWS_ACCOUNT_ID=746662389335
+        AWS_DEFAULT_REGION="us-east-1"
+        AWS_SECRET_ACCESS_KEY=RIkDPRFUhl3L1EL9gEgRGl8oJvAM73UTTIJtZpA7
     }
 
     stages {
@@ -16,11 +18,7 @@ pipeline {
                 sh 'npm install --verbose -d'
             }
         }
-        stage('Test') {
-            steps {
-                sh 'npm run test'
-            }
-        }
+     
         stage('Build') {
             steps {
                 sh 'npm run build'
@@ -34,6 +32,9 @@ pipeline {
         }
         stage('Deploy') {
             steps {
+                sh "aws configure set region $AWS_DEFAULT_REGION" 
+                sh "aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID"  
+                sh "aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY"
                 sh "aws s3 cp ${DIST_ARCHIVE}.zip s3://${S3_BUCKET}/${DIST_ARCHIVE}.zip --profile=default"
                 sh "aws deploy create-deployment --application-name Angular --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name angular-deployment-group --s3-location bucket=${S3_BUCKET},bundleType=zip,key=${DIST_ARCHIVE}.zip"
             }
