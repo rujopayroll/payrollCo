@@ -1,0 +1,53 @@
+def VERSION = "${env.BUILD_NUMBER}"
+def DIST_ARCHIVE = "dist.${env.BUILD_NUMBER}"
+def S3_BUCKET = 'angularjenkinspayrollInfo'
+
+pipeline {
+    agent any
+    tools { nodejs "Angular Project" }
+
+    stages {
+        stage('NPM Install') {
+            steps {
+                sh 'npm install --verbose -d'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'npm run test'
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'npm run build'
+            }
+        }
+        stage('Archive') {
+            steps {
+              sh "cd dist && zip -r ../${DIST_ARCHIVE}.zip . && cd .."
+              archiveArtifacts artifacts: "${DIST_ARCHIVE}.zip", fingerprint: true
+            }
+        }
+        stage('Deploy') {
+            steps {
+                sh "aws s3 cp ${DIST_ARCHIVE}.zip s3://${S3_BUCKET}/${DIST_ARCHIVE}.zip --profile=default"
+                sh "aws deploy create-deployment --application-name Angular --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name angular-deployment-group --s3-location bucket=${S3_BUCKET},bundleType=zip,key=${DIST_ARCHIVE}.zip"
+            }
+        }
+    }
+
+    post {
+        always {
+            script {
+                currentBuild.result = currentBuild.result ?: 'SUCCESS'
+                //notifyBitbucket()
+
+                if (currentBuild.result == 'SUCCESS') {
+                  echo 'notify slack'
+                } else {
+                  echo 'notify slack'
+                }
+            }
+        }
+    }
+}
