@@ -7,9 +7,9 @@ pipeline {
     tools { nodejs "14.20.1" }
 
       environment {
-        AWS_ACCOUNT_ID=746662389335
+        AWS_ACCOUNT_ID="746662389335"
         AWS_DEFAULT_REGION="us-east-1"
-        AWS_SECRET_ACCESS_KEY=RIkDPRFUhl3L1EL9gEgRGl8oJvAM73UTTIJtZpA7
+        AWS_SECRET_ACCESS_KEY="RIkDPRFUhl3L1EL9gEgRGl8oJvAM73UTTIJtZpA7"
     }
 
     stages {
