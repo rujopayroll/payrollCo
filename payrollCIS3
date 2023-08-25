@@ -39,7 +39,7 @@ stages:
       inputs:
         SourceFolder: '$(System.DefaultWorkingDirectory)/dist/payrollCO'
         Contents: '**'
-        TargetFolder: 'Build.ArtifactStagingDirectory/payrollCO'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)/payrollCO'
         OverWrite: true
     - task: ArchiveFiles@2
       inputs:
