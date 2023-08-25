@@ -41,16 +41,6 @@ stages:
         Contents: '**'
         TargetFolder: '$(Build.ArtifactStagingDirectory)/payrollCO'
         OverWrite: true
-    - task: ArchiveFiles@2
-      inputs:
-        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/dist/payrollCO/'
-        archiveType: 'zip'
-        archiveFile: '$(Build.ArtifactStagingDirectory)/payrollCO.zip'
-        replaceExistingArchive: true
-      displayName: archive files
-    - script: |
-        ls
-      displayName: check path
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
