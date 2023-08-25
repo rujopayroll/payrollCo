@@ -37,7 +37,7 @@ stages:
       displayName:  'nmp install and build'
     - task: CopyFiles@2
       inputs:
-        SourceFolder: 'System.DefaultWorkingDirectory/dist/payrollCO'
+        SourceFolder: '$(System.DefaultWorkingDirectory)/dist/payrollCO'
         Contents: '**'
         TargetFolder: 'Build.ArtifactStagingDirectory/payrollCO'
         OverWrite: true
