@@ -2,6 +2,8 @@ def VERSION = "${env.BUILD_NUMBER}"
 def DIST_ARCHIVE = "dist.${env.BUILD_NUMBER}"
 def S3_BUCKET = 'angularjenkinspayrollInfo'
 
+
+
 pipeline {
     agent any
     tools { nodejs "14.20.1" }
