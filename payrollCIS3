@@ -42,7 +42,9 @@ stages:
         archiveType: 'zip'
         archiveFile: '$(Build.ArtifactStagingDirectory)/payrollCO.zip'
         replaceExistingArchive: true
-     
+      displayName: check location
+    - script: |
+        ls
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)/payrollCO.zip)'
