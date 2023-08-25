@@ -37,7 +37,7 @@ stages:
       displayName:  'nmp install and build'
     - task: ArchiveFiles@2
       inputs:
-        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/payrollfront/dist/payrollCO/'
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/dist/payrollCO/'
         includeRootFolder: false
         archiveType: 'zip'
         archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
