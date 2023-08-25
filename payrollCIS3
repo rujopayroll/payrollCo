@@ -40,7 +40,7 @@ stages:
         rootFolderOrFile: '$(System.DefaultWorkingDirectory)/dist/payrollCO/'
         includeRootFolder: false
         archiveType: 'zip'
-        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+        archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
         replaceExistingArchive: true
      
     - task: PublishBuildArtifacts@1
