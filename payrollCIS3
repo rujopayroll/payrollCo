@@ -40,12 +40,12 @@ stages:
         rootFolderOrFile: '$(System.DefaultWorkingDirectory)/dist/payrollCO/'
         includeRootFolder: false
         archiveType: 'zip'
-        archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+        archiveFile: '$(Build.ArtifactStagingDirectory)/payrollCO.zip'
         replaceExistingArchive: true
      
     - task: PublishBuildArtifacts@1
       inputs:
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip)'
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)/payrollCO.zip)'
         ArtifactName: 'drop'
         publishLocation: 'Container'
    
