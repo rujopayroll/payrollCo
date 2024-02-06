@@ -17,9 +17,9 @@ pipeline
    stages {
         stage('NPM Install') {
             steps {
-                script {
-                    notifyBitbucket(buildStatus: 'INPROGRESS')
-                }
+                // script {
+                //     notifyBitbucket(buildStatus: 'INPROGRESS')
+                // }
                 sh 'npm install --verbose -d'
             }
         }
