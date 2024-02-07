@@ -20,7 +20,7 @@ pipeline
                 // script {
                 //     notifyBitbucket(buildStatus: 'INPROGRESS')
                 // }
-                sh 'npm install --verbose -d'
+                sh 'npm install --no-audit'
             }
         }
         stage('Test') {
