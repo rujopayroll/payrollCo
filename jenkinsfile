@@ -20,6 +20,7 @@ pipeline
                 // script {
                 //     notifyBitbucket(buildStatus: 'INPROGRESS')
                 // }
+               
                 sh 'npm install --no-audit'
             }
         }
@@ -30,7 +31,8 @@ pipeline
         // }
         stage('Build') {
             steps {
-                sh 'CI=false npm run build'
+                sh '/usr/bin/ng -- build --optimization=true --source-map=false'
+                //sh 'CI=false npm run build'
             }
         }
         stage('Archive') {
