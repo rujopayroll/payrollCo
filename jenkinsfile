@@ -35,8 +35,9 @@ pipeline
                      nodejs(nodeJSInstallationName: 'node 18.19.0') {
                         //  sh 'corepack enable'
                         //  sh 'corepack prepare pnpm@latest-8 --activate'
-                         sh 'pnpm install'
-                         sh 'pnpm build:prod'
+                        sh '/usr/bin/ng --build --optimization=true --source-map=false --configuration production --aot'
+                        //  sh 'pnpm install'
+                        //  sh 'pnpm build:prod'
                      }
                     // echo "Build number ${GIT_COMMIT}"
                     // docker.withRegistry('https://registry.openexl.com/repository/d1', 'jenkins_docker') {
