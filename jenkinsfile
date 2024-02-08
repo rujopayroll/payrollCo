@@ -32,7 +32,7 @@ pipeline
         stage('Build') {
             steps {
                 script {
-                     nodejs(nodeJSInstallationName: 'node 18.19.0') {
+                     nodejs(nodeJSInstallationName: 'v16.20.0') {
                         //  sh 'corepack enable'
                         //  sh 'corepack prepare pnpm@latest-8 --activate'
                         sh '/usr/bin/ng --build --optimization=true --source-map=false --configuration production --aot'
