@@ -15,15 +15,15 @@ pipeline
     }
 
    stages {
-        // stage('NPM Install') {
-        //     steps {
-        //         // script {
-        //         //     notifyBitbucket(buildStatus: 'INPROGRESS')
-        //         // }
+        stage('NPM Install') {
+            steps {
+                // script {
+                //     notifyBitbucket(buildStatus: 'INPROGRESS')
+                // }
                
-        //         sh 'npm install --no-audit'
-        //     }
-        // }
+              sh 'npm install --no-audit'
+         }
+      }
         // stage('Test') {
         //     steps {
         //         sh 'npm run test'
@@ -35,9 +35,10 @@ pipeline
                      nodejs(nodeJSInstallationName: 'v16.20.0') {
                         //  sh 'corepack enable'
                         //  sh 'corepack prepare pnpm@latest-8 --activate'
-                        sh '/usr/bin/ng --build --optimization=true --source-map=false'
+                        //sh '/usr/bin/ng --build --optimization=true --source-map=false'
                         //  sh 'pnpm install'
                         //  sh 'pnpm build:prod'
+                        sh 'npm run build'
                      }
                     // echo "Build number ${GIT_COMMIT}"
                     // docker.withRegistry('https://registry.openexl.com/repository/d1', 'jenkins_docker') {
