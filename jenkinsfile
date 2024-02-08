@@ -33,8 +33,8 @@ pipeline
             steps {
                 script {
                      nodejs(nodeJSInstallationName: 'node 18.19.0') {
-                         sh 'corepack enable'
-                         sh 'corepack prepare pnpm@latest-8 --activate'
+                        //  sh 'corepack enable'
+                        //  sh 'corepack prepare pnpm@latest-8 --activate'
                          sh 'pnpm install'
                          sh 'pnpm build:prod'
                      }
