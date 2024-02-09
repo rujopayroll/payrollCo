@@ -12,6 +12,7 @@ pipeline
     {
         AWS_ACCOUNT_ID=746662389335
         AWS_DEFAULT_REGION="us-east-1"
+        bucket = "dev-payroll-web"
     }
 
    stages {
@@ -48,17 +49,41 @@ pipeline
                 //sh 'CI=false npm run build'
             }
         }
+        stage('Deploy') {
+            withCredentials([[
+                        $class: 'AmazonWebServicesCredentialsBinding',
+                        credentialsId: "aws_credentials",
+                        accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                        secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) 
+                        {
+                            sh "cd dist"
+                            sh "aws s3 cp dist  s3://${S3_BUCKET}"
+                        }
+        }
+
         stage('Archive') {
             steps {
               sh "cd dist && zip -r ../${DIST_ARCHIVE}.zip . && cd .."
               archiveArtifacts artifacts: "${DIST_ARCHIVE}.zip", fingerprint: true
             }
         }
-        stage('Deploy') {
-            steps {
-                sh "aws s3 cp ${DIST_ARCHIVE}.zip s3://${S3_BUCKET}/${DIST_ARCHIVE}.zip --profile=default"
-                sh "aws deploy create-deployment --application-name Angular --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name angular-deployment-group --s3-location bucket=${S3_BUCKET},bundleType=zip,key=${DIST_ARCHIVE}.zip"
-            }
+        // stage("Upload"){
+        //     steps{
+        //              withAWS(region:"${region}", credentials:"${aws_credential}"){
+        //                  s3Upload(file:"${TAG_NAME}", bucket:"${S3_BUCKET}", path:"${TAG_NAME}/")
+        //              }
+        //         }    
+        // }
+
+        stage('Deploy2') {
+                
+            // steps {
+            //     def identity=awsIdentity();
+            //     s3Upload acl: 'PublicRead', bucket: "${S3_BUCKET}", file: 'THE_ARTIFACT_TO_BE_UPLOADED_FROM_JENKINS', path: "PATH_ON_S3_BUCKET", workingDir: '.'
+
+            //     //sh "aws s3 cp ${DIST_ARCHIVE}.zip s3://${S3_BUCKET}/${DIST_ARCHIVE}.zip --profile=default"
+            //     //sh "aws deploy create-deployment --application-name Angular --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name angular-deployment-group --s3-location bucket=${S3_BUCKET},bundleType=zip,key=${DIST_ARCHIVE}.zip"
+            // }
         }
     }
 
