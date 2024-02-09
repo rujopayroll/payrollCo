@@ -75,16 +75,16 @@ pipeline
         //         }    
         // }
 
-        stage('Deploy2') {
+        // stage('Deploy2') {
                 
-            // steps {
-            //     def identity=awsIdentity();
-            //     s3Upload acl: 'PublicRead', bucket: "${S3_BUCKET}", file: 'THE_ARTIFACT_TO_BE_UPLOADED_FROM_JENKINS', path: "PATH_ON_S3_BUCKET", workingDir: '.'
+        //     // steps {
+        //     //     def identity=awsIdentity();
+        //     //     s3Upload acl: 'PublicRead', bucket: "${S3_BUCKET}", file: 'THE_ARTIFACT_TO_BE_UPLOADED_FROM_JENKINS', path: "PATH_ON_S3_BUCKET", workingDir: '.'
 
-            //     //sh "aws s3 cp ${DIST_ARCHIVE}.zip s3://${S3_BUCKET}/${DIST_ARCHIVE}.zip --profile=default"
-            //     //sh "aws deploy create-deployment --application-name Angular --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name angular-deployment-group --s3-location bucket=${S3_BUCKET},bundleType=zip,key=${DIST_ARCHIVE}.zip"
-            // }
-        }
+        //     //     //sh "aws s3 cp ${DIST_ARCHIVE}.zip s3://${S3_BUCKET}/${DIST_ARCHIVE}.zip --profile=default"
+        //     //     //sh "aws deploy create-deployment --application-name Angular --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name angular-deployment-group --s3-location bucket=${S3_BUCKET},bundleType=zip,key=${DIST_ARCHIVE}.zip"
+        //     // }
+        // }
     }
 
     post {
