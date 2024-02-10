@@ -6,7 +6,6 @@ pipeline
 {
     agent any
     tools {nodejs "14.20.1"}
-
    
     environment 
     {
@@ -49,58 +48,17 @@ pipeline
                             }
             }
         }
-
-        // stage('Archive') {
-        //     steps {
-        //       sh "cd dist && zip -r ../${DIST_ARCHIVE}.zip . && cd .."
-        //       archiveArtifacts artifacts: "${DIST_ARCHIVE}.zip", fingerprint: true
-        //     }
-        // }
-        // stage("Upload"){
-        //     steps{
-        //              withAWS(region:"${region}", credentials:"${aws_credential}"){
-        //                  s3Upload(file:"${TAG_NAME}", bucket:"${S3_BUCKET}", path:"${TAG_NAME}/")
-        //              }
-        //         }    
-        // }
-
-        // stage('Deploy2') {
-                
-        //     // steps {
-        //     //     def identity=awsIdentity();
-        //     //     s3Upload acl: 'PublicRead', bucket: "${S3_BUCKET}", file: 'THE_ARTIFACT_TO_BE_UPLOADED_FROM_JENKINS', path: "PATH_ON_S3_BUCKET", workingDir: '.'
-
-        //     //     //sh "aws s3 cp ${DIST_ARCHIVE}.zip s3://${S3_BUCKET}/${DIST_ARCHIVE}.zip --profile=default"
-        //     //     //sh "aws deploy create-deployment --application-name Angular --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name angular-deployment-group --s3-location bucket=${S3_BUCKET},bundleType=zip,key=${DIST_ARCHIVE}.zip"
-        //     // }
-        // }
     }
     post {
             success {
                 script {
-                    slackSend (channel: "payroll", message: "my-first-pipeline-slack passed successfully")
-                    
-                //     botUser: true, 
-                //     channel: 'payroll', 
-                //     color: '#00ff00', 
-                //     message: 'Testing Jekins with Slack', 
-                //     tokenCredentialId: 'slack-token'//(channel: "jenkins", message: "my-first-pipeline-slack passed successfully")
-                // }
-            }
-        }
+                    slackSend (channel: "payroll", message: "Se realizo el deploy correctamente")
+                      }
+                   }
+         failure {
+            script {
+                    slackSend (channel: "payroll", message: "Ocurrio un error realizando el deploy, consulte el log en jenkis")
+                   }
+           }
     }
-    // post {
-    //     always {
-    //         script {
-    //             currentBuild.result = currentBuild.result ?: 'SUCCESS'
-    //             notifyBitbucket()
-
-    //             if (currentBuild.result == 'SUCCESS') {
-    //               echo 'notify slack'
-    //             } else {
-    //               echo 'notify slack'
-    //             }
-    //         }
-    //     }
-    // }
 }
