@@ -89,18 +89,18 @@ pipeline
         // }
     }
 
-    post {
-        always {
-            script {
-                currentBuild.result = currentBuild.result ?: 'SUCCESS'
-                notifyBitbucket()
+    // post {
+    //     always {
+    //         script {
+    //             currentBuild.result = currentBuild.result ?: 'SUCCESS'
+    //             notifyBitbucket()
 
-                if (currentBuild.result == 'SUCCESS') {
-                  echo 'notify slack'
-                } else {
-                  echo 'notify slack'
-                }
-            }
-        }
-    }
+    //             if (currentBuild.result == 'SUCCESS') {
+    //               echo 'notify slack'
+    //             } else {
+    //               echo 'notify slack'
+    //             }
+    //         }
+    //     }
+    // }
 }
