@@ -78,8 +78,14 @@ pipeline
     post {
             success {
                 script {
-                    slackSend(channel: "jenkins", message: "my-first-pipeline-slack passed successfully")
-                }
+                    slackSend (channel: "payroll", message: "my-first-pipeline-slack passed successfully")
+                    
+                //     botUser: true, 
+                //     channel: 'payroll', 
+                //     color: '#00ff00', 
+                //     message: 'Testing Jekins with Slack', 
+                //     tokenCredentialId: 'slack-token'//(channel: "jenkins", message: "my-first-pipeline-slack passed successfully")
+                // }
             }
         }
 
