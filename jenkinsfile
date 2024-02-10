@@ -18,10 +18,6 @@ pipeline
    stages {
         stage('NPM Install') {
             steps {
-                // script {
-                //     notifyBitbucket(buildStatus: 'INPROGRESS')
-                // }
-               
               sh 'npm install --no-audit'
          }
       }
@@ -34,19 +30,10 @@ pipeline
             steps {
                 script {
                      nodejs(nodeJSInstallationName: 'v16.20.0') {
-                        //  sh 'corepack enable'
-                        //  sh 'corepack prepare pnpm@latest-8 --activate'
-                        //sh '/usr/bin/ng --build --optimization=true --source-map=false'
-                        //  sh 'pnpm install'
-                        //  sh 'pnpm build:prod'
                         sh 'npm run build'
                      }
-                    // echo "Build number ${GIT_COMMIT}"
-                    // docker.withRegistry('https://registry.openexl.com/repository/d1', 'jenkins_docker') {
-                    // def app = docker.build("piggys-wallet-frontend:${GIT_COMMIT}", "--build-arg PIGGYS_BUILD_SHA=${SHORT_COMMIT} -f ${DOCKERFILE} .").push()
-                  }
-                //sh '/usr/bin/ng --build --optimization=true --source-map=false --configuration production --aot'
-                //sh 'CI=false npm run build'
+               }
+
             }
         }
         stage('Deploy') {
@@ -88,6 +75,13 @@ pipeline
         //     // }
         // }
     }
+    post {
+            success {
+                script {
+                    slackSend(channel: "jenkins", message: "my-first-pipeline-slack passed successfully")
+                }
+            }
+        }
 
     // post {
     //     always {
