@@ -58,7 +58,7 @@ pipeline
                             secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) 
                             {
                                 sh "cd dist"
-                                sh "aws s3 cp dist  s3://${S3_BUCKET}"
+                                sh "aws s3 cp dist/  s3://${S3_BUCKET} --recursive"
                             }
             }
         }
