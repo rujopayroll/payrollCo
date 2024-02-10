@@ -63,12 +63,12 @@ pipeline
             }
         }
 
-        stage('Archive') {
-            steps {
-              sh "cd dist && zip -r ../${DIST_ARCHIVE}.zip . && cd .."
-              archiveArtifacts artifacts: "${DIST_ARCHIVE}.zip", fingerprint: true
-            }
-        }
+        // stage('Archive') {
+        //     steps {
+        //       sh "cd dist && zip -r ../${DIST_ARCHIVE}.zip . && cd .."
+        //       archiveArtifacts artifacts: "${DIST_ARCHIVE}.zip", fingerprint: true
+        //     }
+        // }
         // stage("Upload"){
         //     steps{
         //              withAWS(region:"${region}", credentials:"${aws_credential}"){
