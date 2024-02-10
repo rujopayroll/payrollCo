@@ -50,15 +50,17 @@ pipeline
             }
         }
         stage('Deploy') {
-            withCredentials([[
-                        $class: 'AmazonWebServicesCredentialsBinding',
-                        credentialsId: "aws_credentials",
-                        accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-                        secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) 
-                        {
-                            sh "cd dist"
-                            sh "aws s3 cp dist  s3://${S3_BUCKET}"
-                        }
+            steps {
+                withCredentials([[
+                            $class: 'AmazonWebServicesCredentialsBinding',
+                            credentialsId: "aws_credentials",
+                            accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                            secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) 
+                            {
+                                sh "cd dist"
+                                sh "aws s3 cp dist  s3://${S3_BUCKET}"
+                            }
+            }
         }
 
         stage('Archive') {
