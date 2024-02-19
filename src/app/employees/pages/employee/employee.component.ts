@@ -29,7 +29,7 @@ export class EmployeeComponent implements OnInit {
   version = 'Angular: v' + VERSION.full;
 
   employee: any = {};
-  
+
 
 
   constructor(private activatedRoute: ActivatedRoute,
@@ -37,7 +37,7 @@ export class EmployeeComponent implements OnInit {
               public _modalUploadServices: ModalUploadService,
               public pageScrollServ: PageScrollService,
               @Inject(DOCUMENT) private document: any
-              ) { 
+              ) {
 
                 this.activatedRoute.params.subscribe( params =>{
                   this.cargarEmployees( params[ 'id' ]);
@@ -57,8 +57,8 @@ export class EmployeeComponent implements OnInit {
       scrollTarget: '.theEnd',
     });
 
-   
-    
+
+
   }
 
   onScroll(event: HTMLElement, i:any) {
@@ -69,7 +69,7 @@ export class EmployeeComponent implements OnInit {
     });
 
     this.active = i;
-  } 
+  }
 
   cargarEmployees( id: string ) {
     this._employeeService.cargarEmployees( id )
@@ -80,16 +80,16 @@ export class EmployeeComponent implements OnInit {
   }
 
   actualizarImagen( employee: Employee ){
-  
+
     this._modalUploadServices.mostrarModal('employee', employee.id! );
-    console.log('empleado cambio', employee.id)
-    
+
+
   }
 
 
 
-  
 
-  
+
+
 
 }

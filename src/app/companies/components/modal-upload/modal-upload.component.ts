@@ -30,24 +30,24 @@ export class ModalUploadComponent implements OnInit {
   imagenTemp!: string | ArrayBuffer | any;
 
   @Output() public imagenSelect: EventEmitter<any> =  new EventEmitter();
-  
+
 
 
   constructor( public _subirArchivoService: SubirArchivoService,
                public _modalUploadService: ModalUploadService,
                public _companyService: CompanyService,
-               public _usuarioService: AuthService,) { 
+               public _usuarioService: AuthService,) {
 
                 this.imagenSelect = new EventEmitter();
 
                 this.company = this._usuarioService.empresas;
                 this.empresaseleccionada = localStorage.getItem('empresaseleccionada');
-                
-            
+
+
                 if ( this.empresaseleccionada ){
                   this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
-                 
-                  
+
+
                 } else {
                   if(this.company.length > 1 ) {
                     this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
@@ -55,11 +55,11 @@ export class ModalUploadComponent implements OnInit {
 
                    this.empresa =  JSON.parse(JSON.stringify(this.company));
                     console.log('company', this.company[0])
-                    
+
                   }
                 }
 
-               
+
                 this.displayModal = this._modalUploadService.modal
 
                }
@@ -73,13 +73,13 @@ export class ModalUploadComponent implements OnInit {
     // this.router.navigate( ['/employee',this.index] );
    this.imagenSelect.emit({imagenS: this.imagenSubir});
   }
- 
+
   cerrarModal(){
     this.imagenTemp = null;
     this.imagenSubir = null;
-    this.file.name.slice;
+    //this.file.name.slice!;
     this._modalUploadService.ocultarModal();
-    
+
   }
 
   seleccionImagen( archivo: File ): void{
@@ -109,11 +109,11 @@ export class ModalUploadComponent implements OnInit {
   }
 
   onUpload(event: any) {
-  
+
     this.file = event.files[0];
     this.imagenSubir = this.file;
   }
-  
+
 
   subirImagen(){
     console.log('entro a subir imagen')
@@ -121,39 +121,56 @@ export class ModalUploadComponent implements OnInit {
 
       this._subirArchivoService.subirArchivoEmployee( this.imagenSubir, this._modalUploadService.tipo, this._modalUploadService.id)
       .then( resp => {
-      
+
         this._modalUploadService.notificacion.emit( resp );
         this.cerrarModal();
-        
-      
+
+
       })
       .catch(resp => {
-      
+
         console.log('Error en la carga')
       });
-    
-    }else {
+
+    } else if (this._modalUploadService.tipo === 'user') {
+
+      this._subirArchivoService.subirArchivoUser( this.imagenSubir, this._modalUploadService.tipo, this._modalUploadService.id)
+      .then( resp => {
+
+        this._modalUploadService.notificacion.emit( resp );
+
+
+        this.cerrarModal();
+
+
+      })
+      .catch(resp => {
+
+        console.log('Error en la carga')
+      });
+
+    } else {
         this._subirArchivoService.subirArchivo( this.imagenSubir, this._modalUploadService.tipo, this.empresa.id)
         .then( resp => {
-      
+
           this._modalUploadService.notificacion.emit( resp );
           this.cerrarModal();
-        
+
         })
         .catch(resp => {
-        
+
           console.log('Error en la carga')
         });
       }
-    
-  
+
+
   }
 
- 
+
 
 
 
 
 }
- 
+
 

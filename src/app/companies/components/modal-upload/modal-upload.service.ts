@@ -26,7 +26,5 @@ export class ModalUploadService {
     this.tipo = tipo;
     this.id = id;
     this.modal = true;
-    console.log('servicio modalupload tipo', tipo)
-    console.log('servicio modalupload id', id)
   }
 }

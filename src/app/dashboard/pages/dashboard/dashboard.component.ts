@@ -105,7 +105,11 @@ export class DashboardComponent implements OnInit {
 
   createdPeriod(id: string, year:number) {
     this._periodService.createPeriod(id, year)
-        .subscribe((periodCreated: any) => {})
+
+        .subscribe((periodCreated: any) => {
+          console.log('entro a crear el periodo', periodCreated)
+        })
+
   }
 
 

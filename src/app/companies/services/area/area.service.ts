@@ -27,11 +27,11 @@ export class AreaService {
   public headers = new HttpHeaders();
   area!: Area;
   company!: Company;
-  
 
-  constructor( public http: HttpClient, 
+
+  constructor( public http: HttpClient,
                public _usuarioService: AuthService,
-               public _companyService: CompanyService) { 
+               public _companyService: CompanyService) {
 
                 this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
                }
@@ -55,7 +55,7 @@ export class AreaService {
     cargarAreaCompany( idcompany: string){
 
       let url = this.URL_SERVICIOS + '/companies/' + idcompany;
-     
+
       return this.http.get( url )
       .pipe(
           map( (resp: any) => resp ));
@@ -64,7 +64,7 @@ export class AreaService {
     cargarAreaCompanyActive( idcompany: string){
 
       let url = this.URL_SERVICIOS + '/areas?isActive=True' + '&' + 'company_id=' + idcompany ;
-     
+
       return this.http.get( url, {headers: this.headers} )
       .pipe(
           map( (resp: any) => resp ));
@@ -131,8 +131,4 @@ export class AreaService {
             return resp.area;
           }));
     }
-
-
-  
-
   }
