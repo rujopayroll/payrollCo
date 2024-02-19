@@ -1,87 +1,64 @@
+def VERSION = "${env.BUILD_NUMBER}"
+def DIST_ARCHIVE = "dist.${env.BUILD_NUMBER}"
+def S3_BUCKET = 'dev-payroll-web'
+
 pipeline 
 {
     agent any
     tools {nodejs "14.20.1"}
-
-    options 
-    {
-        buildDiscarder(logRotator(numToKeepStr: '2'))
-        disableConcurrentBuilds()
-        timeout(time: 1, unit: 'HOURS')
-        timestamps()
-        
-    }
-
+   
     environment 
     {
         AWS_ACCOUNT_ID=746662389335
         AWS_DEFAULT_REGION="us-east-1"
-        IMAGE_REPO_NAME="payroll-app"
-        IMAGE_TAG="latest"
-        REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
-        EXECUTION_ROLE_ARN = "arn:aws:iam::746662389335:role/iam-ECSTaskExecutionRole-OSWKTFM1Z7UT"
-        CLUSTER = "PayrollCluster"
-        SERVICE = "AppPayrollService"
+        bucket = "dev-payroll-web"
     }
 
-    stages 
-    {
-        stage('Logging into AWS ECR') 
-        {
-            steps 
-            {
-                script 
-                {
-                        withCredentials([[
-                        $class: 'AmazonWebServicesCredentialsBinding',
-                        credentialsId: "aws_credentials",
-                        accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-                        secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) 
-                        {
-                            sh '''aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login -u AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/{IMAGE_REPO_NAME}'''
-                         
-                        }
-                }
-            }
-         } 
-        stage('Building image') 
-        {
-            steps
-                {
-                 sh '''time DOCKER_BUILDKIT=1 docker build --no-cache -t ${IMAGE_REPO_NAME}:${IMAGE_TAG} .'''
-                 //sh ''' time DOCKER_BUILDKIT=1 docker buildx build --no-cache  --platform=linux/amd64 -t ${IMAGE_REPO_NAME}:${IMAGE_TAG} .'''
-                }
-        }
-        stage('Pushing to ECR') 
-        {
-            steps
-                {
-                    script 
-                    {
-                    sh '''docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${REPOSITORY_URI}:$IMAGE_TAG'''
-                    sh '''docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}'''
-                    }
-                }
-        }
-        stage('Deploy API') 
-        {
-            steps 
-            {
-                script
-                {
-                     withCredentials([[
-                        $class: 'AmazonWebServicesCredentialsBinding',
-                        credentialsId: "aws_credentials",
-                        accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-                        secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) 
-                        {
-                            sh '''aws ecs register-task-definition --execution-role-arn ${EXECUTION_ROLE_ARN} --cli-input-json file:////$PWD/infra/task-definition.json --region ${AWS_DEFAULT_REGION}'''
-                            sh '''aws ecs update-service --cluster ${CLUSTER} --service ${SERVICE} --force-new-deployment'''
-                         }
+   stages {
+        stage('NPM Install') {
+            steps {
+              sh 'npm install --no-audit'
+         }
+      }
+        // stage('Test') {
+        //     steps {
+        //         sh 'npm run test'
+        //     }
+        // }
+        stage('Build') {
+            steps {
+                script {
+                     nodejs(nodeJSInstallationName: 'v16.20.0') {
+                        sh 'npm run build'
+                     }
+               }
 
-                }
             }
         }
-       
+        stage('Deploy') {
+            steps {
+                withCredentials([[
+                            $class: 'AmazonWebServicesCredentialsBinding',
+                            credentialsId: "aws_credentials",
+                            accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                            secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) 
+                            {
+                                sh "cd dist"
+                                sh "aws s3 cp dist/  s3://${S3_BUCKET} --recursive"
+                            }
+            }
+        }
+    }
+    post {
+            success {
+                script {
+                    slackSend (channel: "payroll", message: "Se realizo el deploy correctamente")
+                      }
+                   }
+         failure {
+            script {
+                    slackSend (channel: "payroll", message: "Ocurrio un error realizando el deploy, consulte el log en jenkis")
+                   }
+           }
     }
 }

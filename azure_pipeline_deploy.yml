@@ -50,4 +50,20 @@ stages:
           
           aws ecs update-service --cluster PayrollCluster --service AppPayrollService --desired-count 2 --task-definition app --force-new-deployment --region us-east-1
 
-
+#  - task: Docker@2
+#       displayName: Build an image
+#       inputs:
+#         command: build
+#         dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
+#         buildContext: '$(Build.SourcesDirectory)'
+#         repository: $(DOCKER_REPOSITORY_NAME)
+    
+#     - task: ECRPushImage@1  
+#       inputs:
+#         awsCredentials: 'AWS_connection'
+#         regionName: $(AWS_REGION)
+#         imageSource: 'imagename'
+#         sourceImageName: $(DOCKER_REPOSITORY_NAME)
+#         sourceImageTag: $(Build.BuildId)
+#         pushTag: latest
+#         repositoryName: $(DOCKER_REPOSITORY_NAME)

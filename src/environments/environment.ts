@@ -4,11 +4,11 @@
 
 export const environment = {
   production: false,
-  //URL_SERVICIOS: 'https://apipayroll.herokuapp.com/api'
-  //URL_SERVICIOS: 'http://ecs-payroll-services-1128993275.us-east-1.elb.amazonaws.com/api'
+
   //URL_SERVICIOS: 'http://lb-payroll-1324469670.us-east-1.elb.amazonaws.com/api'
   //URL_SERVICIOS: 'https://api.animorh.com/api'
   URL_SERVICIOS: 'https://devapi.animorh.com/api'
+
 };
 
 /*
