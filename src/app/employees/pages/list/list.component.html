@@ -1,7 +1,7 @@
 
 <app-header></app-header>
 <div class="card1">
-  
+
 
     <p-tabView>
         <p-tabPanel header="Activos">
@@ -9,20 +9,20 @@
             layout="grid">
                 <ng-template pTemplate="header">
                     <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
-                   
+
                         <span class="p-input-icon-left p-mb-2 p-mb-md-0" >
                             <i class="pi pi-search"></i>
-                            
+
                             <input #input (keyup)="buscarEmployees( input.value )" class="form-control" type="search" pInputText placeholder="Buscar Empleado..." style="width: 25rem;">
-                        </span> 
+                        </span>
                         <div class="card flex justify-content-end flex-wrap">
                             <button pButton  routerLink="/employees/new/personal" styleClass="p-button-sm" class="mr-7 p-button-warning" label="Nuevo Empleado" icon="pi pi-user-plus"></button>
-                            <button pButton class="mr-2" icon="pi pi-upload" styleClass="p-button-sm" label="Importar Empleado"></button>
-                            <button pButton  icon="pi pi-download" styleClass="p-button-sm" label="Descargar Listado Empleado"></button>
-                       
+                            <button pButton class="mr-2 bg-cyan-600" icon="pi pi-upload" styleClass="p-button-sm" label="Importar Empleado"></button>
+                            <button pButton  class="bg-cyan-600" icon="pi pi-download" styleClass="p-button-sm" label="Descargar Listado Empleado"></button>
+
                         </div>
-                        
-                        
+
+
                      <!--    <p-dataViewLayoutOptions></p-dataViewLayoutOptions> -->
                     </div>
                 </ng-template>
@@ -30,7 +30,7 @@
                     <div class="p-col-12">
                         <div class="product-list-item">
                             <div class="product-list-detail">
-                                <div> 
+                                <div>
                                     <img class="border-circle w-6rem h-6rem m-2 bg-yellow-500 flex align-items-center justify-content-center" [src]="employee.img" alt="empleado">
                                 </div>
                                 <div class="product-name">{{employee.firstName}} {{employee.surname}}</div>
@@ -44,34 +44,34 @@
                     </div>
                 </ng-template> -->
                 <ng-template let-employee pTemplate="gridItem">
-                    
+
                      <div>
-                         <div class="product-grid-item cardEmployee cursor-pointer surface-0" 
+                         <div class="product-grid-item cardEmployee cursor-pointer surface-0"
                                 (click)="veremployee(employee.id)" style="width: 25rem;">
                             <!-- <div class="product-grid-item-top">
                                 <div>
                                     <i class="pi pi-tag product-category-icon"></i>
-                                    
+
                                     <span class="product-category"></span>
                                     <div class="product-description"></div>
                                 </div>
-                               
+
                             </div> -->
-                            
+
                             <div>
-                                <div class="flex align-items-center justify-content-center"> 
+                                <div class="flex align-items-center justify-content-center">
                                     <span *ngIf="employee.img"><img class="border-circle w-6rem h-6rem" [src]="employee.img" alt="empleado"></span>
                                     <span *ngIf="!employee.img"><img src="assets/images/no-image.png" class="border-circle w-6rem h-6rem" alt="empleado"></span>
-                                              
+
                                  </div>
-                               
+
                                 <div class="product-name flex align-items-center justify-content-center">{{employee.firstName}} {{employee.surname}}</div>
                                 <div class="product-description flex align-items-center justify-content-center">{{employee.identification}}</div>
                                 <div class="product-description flex align-items-center justify-content-center">{{employee.cellPhone}}</div>
                                 <div class="product-description flex align-items-center justify-content-center mb-2">{{employee.email}}</div>
-                                
+
                             </div>
-                            
+
                         </div>
                     </div>
                 </ng-template>
@@ -80,8 +80,8 @@
         <p-tabPanel header="Retirados">
             Content 2
         </p-tabPanel>
-        
-    </p-tabView>  
+
+    </p-tabView>
 
 </div>
 

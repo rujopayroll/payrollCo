@@ -22,19 +22,20 @@ export class PeriodService {
     private URL_SERVICIOS: string = environment.URL_SERVICIOS;
 
  public headers = new HttpHeaders();
- 
-  
 
-  constructor( public http: HttpClient, 
+
+
+  constructor( public http: HttpClient,
     public _usuarioService: AuthService,
-    public _companyService: CompanyService) { 
+    public _companyService: CompanyService) {
 
       this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
+
     }
 
 
-    
- 
+
+
 
     getPeriodByCompany( id: string){
 
@@ -43,9 +44,9 @@ export class PeriodService {
       .pipe(
           map( (resp: any) => {
             return resp;
-            
+
           }));
-           
+
     }
 
 
@@ -57,9 +58,9 @@ export class PeriodService {
         .pipe(
             map( (resp: any={}) => {
               return resp;
-              
+
             }));
-             
+
       }
 
       getPeriodByCompanyByPaid( id: string){
@@ -69,9 +70,9 @@ export class PeriodService {
         .pipe(
             map( (resp: any) => {
               return resp;
-              
+
             }));
-             
+
       }
 
       getPeriodByCompanyByAccounted( id: string){
@@ -81,21 +82,23 @@ export class PeriodService {
         .pipe(
             map( (resp: any) => {
               return resp;
-              
+
             }));
-             
+
       }
 
       createPeriod( id: string, year: number){
 
         let url = this.URL_SERVICIOS + '/period?company_id=' + id + '&year=' + year;
+        console.log('token periodo', this.headers)
         return this.http.post( url, {headers: this.headers} )
         .pipe(
             map( (resp: any) => {
+              console.log('servicio periodo', resp, url)
               return resp;
-              
+
             }));
-             
+
       }
 
 }

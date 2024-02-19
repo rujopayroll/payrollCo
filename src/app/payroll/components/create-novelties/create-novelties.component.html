@@ -1,91 +1,69 @@
-<!--  <div class="card1">
-    
-   
-         <button (click)="add()">Add</button>
-          
 
-         <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>
-                        <h6 class="text-color"><strong>Concepto</strong></h6>
-                    </th>
-                    <th>
-                        <h6 class="text-color"><strong>Valor</strong></h6>
-                    </th>
-                   
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let novelty of novelties let i= index">
-                   
-                    <td>
-                        <select [(ngModel)]="novelty.concept_id" class="form-control form-control-sm"  name="concept" style="width: 12rem; border-width: 0px;">
-
-                             
-                             <option *ngFor="let concep of concepts" [value]="concep.id">
-                               <small>{{concep.description}}-{{concep.code}}</small> 
-                            </option>
-                         </select>
-                    </td>
-                    
-
-                    <td>
-                        <input [(ngModel)]="novelty.value"  name="value" type="text" class="form-control form-control-sm "  style="width: 6rem; border-width: 0px;">
-                    </td>
-                </tr>
-            </tbody>
-
-        </table>
-
-        <button pButton pRipple type="button" (click) ="saveNovelties(novelties)" label="Guardar"></button>
-    
-    </div>
-  -->
   <p-toast></p-toast>
-
+  <!-- <form autocomplete="off" [formGroup]="formaNovelty" id="formaNoveltyform"> -->
  <div class="card">
 
     <div class="text-right mb-2">
         <p-button pRipple type="button" label="Nuevo" (click)="add()" icon="pi pi-plus" iconPos="left"></p-button>
     </div>
 
-    
+
     <p-table class="mt-2" [value]="novelties" dataKey="id" responsiveLayout="scroll">
         <ng-template pTemplate="header">
             <tr>
                 <th>Concepto</th>
                 <th>Valor</th>
                 <th style="width:8rem"></th>
-               
+
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-novelty let-ri="rowIndex">
             <tr>
-               
+
                 <td>
-                    
-                
-                         <select [(ngModel)]="novelty.concept_id" class="form-control form-control-sm"  name="concept" id="concept" style="width: 20rem; border-width: 0px; font-family: Arial, Helvetica, sans-serif; font-size: 1rem;">
- 
-                             
+
+
+                       <!--  <select [(ngModel)]="novelty.concept_id" class="form-control form-control-sm"
+                        name="concept" id="concept" placeholder="Seleccionar Concepto"
+                        style="width: 20rem; border-width: 0px; font-family: Arial, Helvetica, sans-serif; font-size: 1rem;">
+
+
                             <option *ngFor="let concep of concepts" [value]="concep.id">
-                              <small>{{concep.code}}-{{concep.description}}</small> 
+                              <small>{{concep.code}}-{{concep.description}}</small>
                            </option>
-                        </select>
-                     
-                       
-                    
+                        </select> -->
+
+
+                      <div class="field">
+
+                          <p-dropdown inputId="concept" [(ngModel)]="novelty.concept_id"
+                          class="form-control form-control-sm"
+                          [options]="concepts" appendTo="body" [style]="{'width':'70%'}" optionLabel="description"
+                          optionValue="id"></p-dropdown>
+                      </div>
+
+
+
+
+
+
+
+
                 </td>
 
                 <td pEditableColumn>
                     <p-cellEditor>
                         <ng-template pTemplate="input">
-                            <input pInputText type="number" [(ngModel)]="novelty.value" class="form-control form-control-sm"  name="value" id="value">
-                            <small id="value" 
-                            class="p-error"
-                            *ngIf="campoEsValido('value')">Campo Obligatorio.</small>
-                       
+                            <!-- <input type="number"
+                            [(ngModel)]="novelty.value"
+                            name="value" id="value">
+                            <small id="value" class="p-error" *ngIf="campoEsValido('value')">Campo Obligatorio.</small> -->
+
+
+                            <p-inputNumber inputId="integeronly" [(ngModel)]="novelty.value" name="value" id="value"></p-inputNumber>
+
+
+
                         </ng-template>
                         <ng-template pTemplate="output">
                             {{novelty.value | currency}}
@@ -94,7 +72,7 @@
                 </td>
 
                 <td style="text-align:center">
-                    
+
                     <button pButton pRipple type="button" icon="pi pi-times" (click)="deleteNovelty(ri)" class="p-button-rounded p-button-text p-button-danger"></button>
                 </td>
             </tr>
@@ -102,14 +80,14 @@
     </p-table>
     <div class="p-grid flex justify-content-end mt-4">
         <!-- <button class="w-full" pButton pRipple type="button" (click) ="saveNovelties(novelties)" label="Guardar"></button> -->
-   
-    
-    
+
+
+
         <div class="p-col-xs-12 mr-2" primary-box>
 
 
             <button pRipple pButton type="button"
-                    label="Guardar" 
+                    label="Guardar"
                     (click) ="saveNovelties(novelties)"
                     icon="pi pi-save">
                 </button>
@@ -119,18 +97,16 @@
 
 
             <button pRipple pButton
-                    label="Cancelar" 
-                   
+                    label="Cancelar"
+
                     class="p-button-danger"
-                    icon="pi pi-times-circle" 
+                    icon="pi pi-times-circle"
             ></button>
 </div>
-    
-    
+
+
     </div>
-    
+
 </div>
-
- 
-
+<!-- </form> -->
 

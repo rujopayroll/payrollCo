@@ -13,7 +13,7 @@ import { map, catchError, tap } from 'rxjs/operators';
 import 'rxjs/add/observable/throw';
 import { throwError } from 'rxjs';
 
-
+import { ModalUploadService } from '../../companies/components/modal-upload/modal-upload.service';
 import Swal from 'sweetalert2';
 // import { SubirArhivoService } from '../subirArchivo/subir-arhivo.service';
 import { environment } from 'src/environments/environment';
@@ -46,8 +46,9 @@ export class AuthService {
   }
 
   constructor( public http: HttpClient,
-               public _router: Router
-              //  public _subirArchivoService: SubirArhivoService
+               public _router: Router,
+               public _modalUploadServices: ModalUploadService
+               //public _subirArchivoService: SubirArhivoService
                ) {
                 this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
                  this.cargarStorage();
@@ -108,6 +109,28 @@ export class AuthService {
 
   }
 
+  //guardarSessionStorage(token: string,id: string,  usuario: Usuario, empresas:any, refreshToken: string){
+
+  guardarSessionStorage(id: string){
+
+
+    //sessionStorage.setItem('refreshToken', refreshToken);
+    //sessionStorage.setItem('id', id);
+
+  sessionStorage.setItem('Id', id);
+  //sessionStorage.setItem('userName', JSON.stringify(usuario.name));
+  //sessionStorage.setItem('userEmail', JSON.stringify(usuario.userName));
+  //sessionStorage.setItem('userToken', token);
+  //sessionStorage.setItem('empresas', JSON.stringify(empresas));
+
+
+  //this.usuario = usuario;
+  //this.token = token;
+  //this.refreshToken = refreshToken;
+  //this.empresas = empresas;
+
+}
+
 
 
 
@@ -153,7 +176,7 @@ export class AuthService {
 
                 // this.guardarStorage( resp.user.id, resp.token, resp.user, resp.user.menu.menus, resp.user.companies );
                 this.guardarStorage( resp.token, resp.user.id, resp.user, resp.user.companies, resp.refreshToken );
-
+                //this.guardarSessionStorage( resp.id, resp.user.id, resp.user, resp.user.companies, resp.refreshToken );
 
                 return true;
               })
@@ -177,6 +200,34 @@ export class AuthService {
 
   }
 
+
+
+
+   Autologin( usuario: Usuario) {
+
+    let url = 'https://app-backanimo.atc-onlinead.com/autologin';
+    return this.http.post( url, usuario )
+    .pipe(
+
+    map( (resp: any) =>{
+
+
+                this.guardarSessionStorage(resp.id);
+
+
+                return true;
+              })
+    )
+  }
+
+
+
+
+
+
+
+
+
   logout(){
 
     this.token = '';
@@ -190,6 +241,7 @@ export class AuthService {
     localStorage.removeItem('empresas');
     localStorage.removeItem('empresaseleccionada');
     localStorage.removeItem('id');
+    sessionStorage.removeItem('Id');
     this._router.navigate(['/auth/login']);
 
   }
@@ -224,38 +276,34 @@ crearUsuario( usuario: any){
 
 actualizarUsuario( usuario: Usuario ){
 
-  let url = this.URL_SERVICIOS + '/usuario/' + usuario.id;
+  let url = this.URL_SERVICIOS + '/users/' + this.usuario.id;
   url += '?token=' + this.token;
 
-  return this.http.put( url, usuario)
+  return this.http.put( url, usuario, {headers: this.headers})
 
   .pipe(
       map( (resp: any) =>{
 
         if ( usuario.id === this.usuario.id) {
-          const usuarioDB: Usuario = resp.usuario;
+
+          /* const usuarioDB: Usuario = resp.usuario;
+          console.log('pass33', usuarioDB) */
            //this.guardarStorage( usuarioDB.id, this.token, usuarioDB,  this.menu, this.empresas);
-          this.guardarStorage( usuarioDB.id!, this.token, usuarioDB, this.empresas, this.refreshToken);
+          this.guardarStorage( this.token, usuario.id!, usuario, this.empresas, this.refreshToken);
         }
         Swal.fire({
           text: 'Usuario Actualizado',
           icon: 'success'
         });
-
+        this._modalUploadServices.notificacion.emit( resp );
         return true
 
-      }))
-      .pipe(
-      catchError( err =>{
-        Swal.fire({
-          title: err.error.mensaje,
-          text: err.error.errors.message,
-          icon: 'error'
-        });
-        return Observable.throwError( err );
       }));
 
+
 }
+
+
 
 /* cambiarImagen( archivo: File, id: string ){
 
@@ -284,6 +332,22 @@ cargarUsuarios( desde: number = 0){
   return this.http.get( url );
 
 
+}
+
+getAllUsers(){
+  let url = this.URL_SERVICIOS + '/users';
+  return this.http.get( url, {headers: this.headers} )
+  .pipe(
+       map( (resp: any) => {
+        return resp;
+      }));
+}
+
+getUsers( id: string ){
+  let url = this.URL_SERVICIOS + '/users/' + id;
+  return this.http.get( url, {headers: this.headers} )
+  .pipe(
+      map( (resp: any ) => resp ));
 }
 
 buscarUsuarios( termino: string ) {

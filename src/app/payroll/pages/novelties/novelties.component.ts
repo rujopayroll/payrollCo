@@ -28,7 +28,7 @@ declare var $: any;
   templateUrl: './novelties.component.html',
   styleUrls: ['./novelties.component.scss'],
   providers: [DialogService],
-  
+
 })
 export class NoveltiesComponent implements OnInit {
 
@@ -61,10 +61,10 @@ export class NoveltiesComponent implements OnInit {
   employeeSelects!: string
   indexTab: number = 0;
   activeItem:any;
- 
+
 
   forma: UntypedFormGroup = this.fb.group({
-   
+
   });
 
 
@@ -75,18 +75,18 @@ export class NoveltiesComponent implements OnInit {
                public _periodService: PeriodService,
                public _movementService: PayrollService,
               public dialogService: DialogService,
-              public _getEmployeeService: GetEmployeeService, 
+              public _getEmployeeService: GetEmployeeService,
               private _absenteeService: AbsenteeService,
               private fb: UntypedFormBuilder,
-            
-              
-                ) { 
+
+
+                ) {
 
 
                 this.company = this._usuarioService.empresas;
                 this.empresaseleccionada = localStorage.getItem('empresaseleccionada')!;
                 this.usuario = JSON.parse(localStorage.getItem('usuario')!);
-          
+
                 if ( this.empresaseleccionada ){
                             this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
                           } else {
@@ -97,14 +97,15 @@ export class NoveltiesComponent implements OnInit {
                             }
                           }
 
-                          
+
+
                           this.createdPayroll(this.empresa.id)
                           this.getEmployeeByCompany(this.empresa.id)
                           this.getPeriodByProcess(this.empresa.id)
 
                           this.employeeSelect = new EventEmitter();
-                         
-                      
+
+
 
                }
 
@@ -112,90 +113,92 @@ export class NoveltiesComponent implements OnInit {
 
   ngOnInit(){
 
+
+
     this.items = [{
     label:'Novedades',
       items: [{
           label: 'Ausentismos',
           command: () => {
             this.showAbsentee(this.activeItem);
-        } 
+        }
       },
       {
           label: 'Horas Extras',
-          
+
            command: () => {
             this.showOverTime(this.activeItem);
-        } 
-          
+        }
+
       },
       {
         label: 'Pagos Salariales',
         command: () => {
           this.show(this.activeItem, 'SALARIAL');
-      } 
+      }
     },
 
     {
       label: 'Pagos No Salariales',
-      
+
       command: () => {
         this.show(this.activeItem, 'NOSALARIAL');
-    } 
+    }
   },
   {
     label: 'Deducciones',
-    
+
     command: () => {
       this.show(this.activeItem, 'DEDUCCION');
-  } 
+  }
 },
       ]},
-      
+
   ];
 
    }
 
-  
+
 
    openNext() {
     this.indexTab = (this.indexTab === 2) ? 0 : this.indexTab + 1;
-    
+
 
     $(document).ready(function() {
       $("#tabDef").disabled = 'true';
     });
 
-    
+
 
 }
 
     getPeriodByProcess( id: string ) {
-    
+
     this._periodService.getPeriodByCompanyByProcess( id)
         .subscribe( (period: any={}) => {
           this.period[0] = period[0];
-          
-          if (this.period) {
-           
+console.log('period actual',this.period[0])
+          if (this.period[0]) {
+
             this.getMovementByPeriod( this.period[0].id );
-            this.getMovementPayrollByEmployee( this.empresa.id, this.period[0].id ); 
+            this.getMovementPayrollByEmployee( this.empresa.id, this.period[0].id );
           }
         });
 
-  } 
-  
+  }
+
 
   getMovementByPeriod( id: string ) {
-    
+
     this._movementService.getMovementsByPeriod(id)
         .subscribe( (movement:Movements) => {
           this.movements = movement
           console.log(movement,'MovementByperiod')
           if (this.movements) {
-           
-            
+
+
             this.getMovementByConcept( this.movements[40].concept_id, this.movements[40].period_id)
-            
+
           }
         });
 
@@ -205,12 +208,12 @@ export class NoveltiesComponent implements OnInit {
     this._movementService.getMovementsByEmployee( id, period )
         .subscribe( employeeMovements => {
           this.employeeMovements = employeeMovements
-          console.log(employeeMovements,'movimientoempleados')
+          console.log('movimientoempleados',employeeMovements)
           if (this.employeeMovements) {
-           
+
             this.getEmployeeById( this.employeeMovements[0].employee_id );
-            
-            
+
+
           }
 
         });
@@ -220,12 +223,12 @@ export class NoveltiesComponent implements OnInit {
     this._movementService.getMovementsPayrollByEmployee( id, period )
         .subscribe( employeeMovementsPayroll => {
           this.employeeMovementsPayroll = employeeMovementsPayroll
-        
+
           if (this.employeeMovementsPayroll) {
-           
+
             this.getEmployeeById( this.employeeMovementsPayroll[0].employee_id );
-            
-            
+
+
           }
 
         });
@@ -237,7 +240,7 @@ export class NoveltiesComponent implements OnInit {
           this.concept = conceptMovements
         });
   }
-  
+
   createdPayroll(id: string) {
     this._movementService.createPayroll(id)
         .subscribe((payrollCreated: any) => {
@@ -265,7 +268,7 @@ export class NoveltiesComponent implements OnInit {
           console.log(this.employeesCompany)
         })
   }
-  
+
   buscarEmployees( termino: string){
 
   }
@@ -276,16 +279,16 @@ export class NoveltiesComponent implements OnInit {
         width: '70%',
         contentStyle: {"max-height": "500px", "overflow": "auto"},
         baseZIndex: 10000
-        
+
     });
-    
+
     this._getEmployeeService.enviar(employeeCard);
     this._getEmployeeService.enviarGroup(group);
 
     this.ref.onClose.subscribe(() => {
       this.getMovementPayrollByEmployee( this.empresa.id, this.period[0].id );
   });
-  } 
+  }
 
   ngOnDestroy() {
     if (this.ref) {
@@ -295,23 +298,23 @@ export class NoveltiesComponent implements OnInit {
 
 
   showOverTime(employeeCard: string) {
-    
+
     this.ref= this.dialogService.open(SaveExtraHoursComponent,{
         header: 'Ingreso Horas Extras y Recargos',
         width: '50%',
         contentStyle: {"max-height": "500px", "overflow": "auto"},
         baseZIndex: 10000
-        
+
     });
-    
+
      this._getEmployeeService.enviar(employeeCard);
-    
+
 
     this.ref.onClose.subscribe(() => {
       this.getMovementPayrollByEmployee( this.empresa.id, this.period[0].id );
       this.ref.destroy();
   });
-  } 
+  }
 
   showAbsentee(employeeCard: string) {
     this.ref= this.dialogService.open(SaveAbsenteeHistoryComponent,{
@@ -320,23 +323,23 @@ export class NoveltiesComponent implements OnInit {
         contentStyle: {"height": "1000px"},
         baseZIndex: 0,
         closable: false
-        
+
     });
-    
+
      this._getEmployeeService.enviar(employeeCard);
-    
+
 
     this.ref.onClose.subscribe(() => {
       this.getMovementPayrollByEmployee( this.empresa.id, this.period[0].id );
   });
-  } 
-
-
-  
-  veremployee(idx: number){
-   console.log('empleado', idx) 
   }
- 
+
+
+
+  veremployee(idx: number){
+   console.log('empleado', idx)
+  }
+
 /*   buscarEmployees( termino: string){
 
     if ( termino.length <= 0 ){
@@ -347,7 +350,7 @@ export class NoveltiesComponent implements OnInit {
 
     this._employeeService.buscarEmployees( termino )
         .subscribe( resp => {
-          this.employees = resp 
+          this.employees = resp
           console.log(this.employees)
         });
 } */

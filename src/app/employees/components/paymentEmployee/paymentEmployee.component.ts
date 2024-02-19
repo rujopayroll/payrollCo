@@ -83,8 +83,8 @@ export class PaymentEmployeeComponent implements OnInit {
                    }
 
                  this.usuario = JSON.parse(localStorage.getItem('usuario')!);
- this.activatedRoute.params.subscribe( params =>{
-  this._modalUploadServices.notificacion
+                this.activatedRoute.params.subscribe( params =>{
+                this._modalUploadServices.notificacion
       this.cargarEmployeesPayment( params[ 'id' ]);
  });
 
