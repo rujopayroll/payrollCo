@@ -13,10 +13,10 @@
 
 
    <ng-template pTemplate="end">
-       <div>
-
-       <span *ngIf="usuario.img"><img [src]="usuario.img" height="40" class="p-mr-2 cursor-pointer" (click)="op.toggle($event)" style="border-radius: 50%" alt="user"></span>
-       <span *ngIf="!usuario.img"> <img src="assets/images/no-image.png" height="40" class="p-mr-2 cursor-pointer" (click)="op.toggle($event)" style="border-radius: 50%"></span>
+       <div class="flex align-content-center flex-wrap">
+      <span class="flex align-items-center justify-content-center font-bold text-600 font-medium text-lg m-2">{{ usuario.name | titlecase}}</span>
+       <span *ngIf="usuario.img"><img [src]="usuario.img" height="40" class="cursor-pointer" (click)="op.toggle($event)" style="border-radius: 50%" alt="user"></span>
+       <span *ngIf="!usuario.img"> <img src="assets/images/no-image.png" height="40" class="cursor-pointer" (click)="op.toggle($event)" style="border-radius: 50%"></span>
 
        <p-overlayPanel #op [showCloseIcon]="false" appendTo="body" [style]="{width: '250px'}">
            <ng-template pTemplate>
@@ -26,11 +26,11 @@
 
                </div>
                <hr class="mb-2 mx-0 border-top-1 border-none surface-border mt-auto" />
-               <div class="mb-2 p-fluid">
+               <!-- <div class="mb-2 p-fluid">
 
-                   <button pButton pRipple type="button" label="Mi Perfil" icon="pi pi-user" class="p-button-secondary p-button-text" style="text-align: left;"></button>
+                   <button pButton pRipple type="button" routerLink="/auth/profile" label="Mi Perfil" icon="pi pi-user" class="p-button-secondary p-button-text" style="text-align: left;"></button>
 
-               </div>
+               </div> -->
 
                <div class="mb-2 p-fluid">
 

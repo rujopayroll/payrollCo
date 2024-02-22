@@ -68,8 +68,7 @@ export class HeaderComponent implements OnInit {
 
                 this.empresaseleccionada = localStorage.getItem('empresaseleccionada');
                 this.usuario = this._usuarioService.usuario;
-                this.getUsers(this._usuarioService.usuario.id!);
-                console.log('usuario', this.usuario)
+
                 // this.cargarEmpresasUsuario(this.usuario.id);
                 //this.company = this._usuarioService.empresas;
                 this.company =  JSON.parse(localStorage.getItem('empresas')!);
@@ -99,6 +98,7 @@ export class HeaderComponent implements OnInit {
                }
 
   ngOnInit(): void {
+    console.log('entro init')
     this.usuario = this._usuarioService.usuario;
     this.cargarCompanySelect(this.empresa.id);
     this.cargarEmpresasUsuario(this.usuario.id);
@@ -278,7 +278,7 @@ getUsers(id: string) {
       .subscribe( user => {
 
         this.user = user
-        console.log('usuario', user)
+
       });
 
 }

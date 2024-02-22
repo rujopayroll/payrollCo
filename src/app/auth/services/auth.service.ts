@@ -50,8 +50,10 @@ export class AuthService {
                public _modalUploadServices: ModalUploadService
                //public _subirArchivoService: SubirArhivoService
                ) {
-                this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
-                 this.cargarStorage();
+                this.cargarStorage();
+
+                this.headers = this.headers.set('Authorization', 'Bearer '+ this.token);
+
 
 
   }
@@ -61,13 +63,12 @@ export class AuthService {
     // url += '?token=' + this.token;
     /* url += '?id' + this.usuario.id;
      url += '?token=' + this.token; */
-     console.log('renueva', url)
-     console.log('header', this.headers)
+
     return this.http.post( url, usuario, {headers: this.headers})
 
     .pipe(
     map( (resp: any) =>{
-          console.log('respuesta', resp)
+
           this.token = resp.data.token;
           this.refreshToken = resp.data.refreshToken
           localStorage.setItem( 'token', this.token );
@@ -345,9 +346,14 @@ getAllUsers(){
 
 getUsers( id: string ){
   let url = this.URL_SERVICIOS + '/users/' + id;
+
+  this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
   return this.http.get( url, {headers: this.headers} )
   .pipe(
-      map( (resp: any ) => resp ));
+      map( (resp: any ) => {
+
+        return resp
+      }));
 }
 
 buscarUsuarios( termino: string ) {
