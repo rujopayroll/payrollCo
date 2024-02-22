@@ -33,7 +33,7 @@ export class ProfileComponent implements OnInit {
                @Inject(DOCUMENT) private document: any ) {
 
     this.usuario = this._usuarioService.usuario;
-    this.getUsers(this.usuario.id!)
+    /* this.getUsers(this.usuario.id!) */
     this._modalUploadServices.notificacion
 
   }
@@ -108,6 +108,8 @@ console.log('entro',user)
         .subscribe( user => {
 
           this.user = user
+          console.log('user', user)
+          console.log('user2', this.user)
         });
 
   }
