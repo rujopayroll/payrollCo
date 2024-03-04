@@ -50,7 +50,7 @@ body { margin: 1; font-family: "Calibri", sans-serif; background-color: var(--su
 }
 .menu-fijo li{ display:inline; }
 .menu-fijo a{
-        ont-size:0.9em;
+        font-size:0.9em;
         color:#fff;
         text-shadow:1px 1px #5E8BC5;
         padding:0 0 0 10px;
