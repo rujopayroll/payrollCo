@@ -4,11 +4,7 @@
 
 export const environment = {
   production: false,
-
-  //URL_SERVICIOS: 'http://lb-payroll-1324469670.us-east-1.elb.amazonaws.com/api'
-  //URL_SERVICIOS: 'https://api.animorh.com/api'
   URL_SERVICIOS: 'https://devapi.animorh.com/api'
-
 };
 
 /*
