@@ -29,7 +29,7 @@ pipeline
             steps {
                 script {
                      nodejs(nodeJSInstallationName: 'v16.20.0') {
-                        sh 'npm run build --configuration=stage'
+                        sh 'npm run build'
                      }
                }
 
