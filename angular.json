@@ -74,6 +74,39 @@
                   "maximumError": "4kb"
                 }
               ]
+            },
+            "stage": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.stage.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "none",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "progress": false,
+              "showCircularDependencies": false,
+              "statsJson": false,
+              "aot": true,
+              "vendorChunk": false,
+              "buildOptimizer": false,
+              "serviceWorker": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ]
             }
           },
           "defaultConfiguration": ""
