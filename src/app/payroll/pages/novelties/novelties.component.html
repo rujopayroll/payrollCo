@@ -258,19 +258,21 @@
                                         <span class="font-bold flex justify-content-start text-500 font-medium text-xs mr-auto text-left"><p-button styleClass="p-button-link font-bold text-500 font-medium text-left text-xs mr-auto p-button-text" label="Salariales" pTooltip="Pagos Salariales" tooltipPosition="bottom" (click)="op.toggle($event)"></p-button></span>
                                         <p-overlayPanel #op [showCloseIcon]="false" [style]="{width: '450px'}" class="fijo" appendTo="body" showEvent="mouseover" hideEvent="mousedown">
                                             <ng-template pTemplate>
-                                                <p-table [value]="employeeMovements" selectionMode="single" responsiveLayout="scroll">
+                                                <p-table [value]="employeeMovementPayrolls.salariales" selectionMode="single" responsiveLayout="scroll">
                                                     <ng-template pTemplate="header">
                                                         <tr>
                                                             <th pSortableColumn="name">Código<p-sortIcon field="name"></p-sortIcon></th>
-                                                            <th pSortableColumn="price">Concepto<p-sortIcon field="price"></p-sortIcon></th>
-                                                            <th pSortableColumn="price">Valor<p-sortIcon field="salary"></p-sortIcon></th>
+                                                            <th pSortableColumn="description">Concepto<p-sortIcon field="description"></p-sortIcon></th>
+                                                            <th pSortableColumn="quantity">Valor<p-sortIcon field="quantity"></p-sortIcon></th>
+                                                            <th pSortableColumn="value">Valor<p-sortIcon field="value"></p-sortIcon></th>
                                                         </tr>
                                                     </ng-template>
                                                     <ng-template pTemplate="body" let-rowData let-movement>
                                                         <tr [pSelectableRow]="rowData">
-                                                            <td>{{movement.concept_id}}</td>
-                                                            <td>{{movement.year}}</td>
-                                                            <td>{{movement.salary}}</td>
+                                                            <td>{{movement.concept.code}}</td>
+                                                            <td>{{movement.concept.description}}</td>
+                                                            <td>{{movement.quantity}}</td>
+                                                            <td>{{movement.value}}</td>
                                                         </tr>
                                                     </ng-template>
                                                 </p-table>
@@ -283,13 +285,63 @@
                                     <hr class="mb-2 mx-0 border-top-1 border-none surface-border mt-auto" />
 
                                     <div class="flex align-items-center mb-2">
-                                        <span class="font-bold flex justify-content-start text-500 font-medium text-xs mr-auto text-left"><p-button styleClass="p-button-link font-bold text-500 font-medium text-left text-xs mr-auto p-button-text" label="No Salariales"></p-button></span>
+                                        <span class="font-bold flex justify-content-start text-500 font-medium text-xs mr-auto text-left"><p-button styleClass="p-button-link font-bold text-500 font-medium text-left text-xs mr-auto p-button-text" label="No Salariales" (click)="opns.toggle($event)"></p-button></span>
+
+                                        <p-overlayPanel #opns [showCloseIcon]="false" [style]="{width: '450px'}" class="fijo" appendTo="body" showEvent="mouseover" hideEvent="mousedown">
+                                          <ng-template pTemplate>
+                                              <p-table [value]="employeeMovementPayrolls.nosalariales" selectionMode="single" responsiveLayout="scroll">
+                                                  <ng-template pTemplate="header">
+                                                      <tr>
+                                                          <th pSortableColumn="name">Código<p-sortIcon field="name"></p-sortIcon></th>
+                                                          <th pSortableColumn="description">Concepto<p-sortIcon field="description"></p-sortIcon></th>
+                                                          <th pSortableColumn="quantity">Valor<p-sortIcon field="quantity"></p-sortIcon></th>
+                                                          <th pSortableColumn="value">Valor<p-sortIcon field="value"></p-sortIcon></th>
+                                                      </tr>
+                                                  </ng-template>
+                                                  <ng-template pTemplate="body" let-rowData let-movement>
+                                                      <tr [pSelectableRow]="rowData">
+                                                          <td>{{movement.concept.code}}</td>
+                                                          <td>{{movement.concept.description}}</td>
+                                                          <td>{{movement.quantity}}</td>
+                                                          <td>{{movement.value}}</td>
+                                                      </tr>
+                                                  </ng-template>
+                                              </p-table>
+                                          </ng-template>
+                                      </p-overlayPanel>
+
+
+
                                         <span class="text-right flex justify-content-end ml-8 font-bold text-600 font-medium text-sm">{{employeeMovementPayrolls.noSalaryValue | currency:'COP':'symbol-narrow':'1.0-4'}}</span>
                                     </div>
                                     <hr class="mb-2 mx-0 border-top-1 border-none surface-border mt-auto" />
 
                                     <div class="flex align-items-center mb-2">
-                                        <span class="font-bold flex justify-content-start text-500 font-medium text-xs mr-auto text-left"><p-button styleClass="p-button-link font-bold text-500 font-medium text-left text-xs mr-auto p-button-text" label="Deducciones"></p-button></span>
+                                        <span class="font-bold flex justify-content-start text-500 font-medium text-xs mr-auto text-left"><p-button styleClass="p-button-link font-bold text-500 font-medium text-left text-xs mr-auto p-button-text" label="Deducciones" (click)="opd.toggle($event)"></p-button></span>
+
+                                        <p-overlayPanel #opd [showCloseIcon]="false" [style]="{width: '450px'}" class="fijo" appendTo="body" showEvent="mouseover" hideEvent="mousedown">
+                                          <ng-template pTemplate>
+                                              <p-table [value]="employeeMovementPayrolls.deducciones" selectionMode="single" responsiveLayout="scroll">
+                                                  <ng-template pTemplate="header">
+                                                      <tr>
+                                                          <th pSortableColumn="name">Código<p-sortIcon field="name"></p-sortIcon></th>
+                                                          <th pSortableColumn="description">Concepto<p-sortIcon field="description"></p-sortIcon></th>
+                                                          <th pSortableColumn="quantity">Cantidad<p-sortIcon field="quantity"></p-sortIcon></th>
+                                                          <th pSortableColumn="value">Valor<p-sortIcon field="value"></p-sortIcon></th>
+                                                      </tr>
+                                                  </ng-template>
+                                                  <ng-template pTemplate="body" let-rowData let-movement>
+                                                      <tr [pSelectableRow]="rowData">
+                                                          <td>{{movement.concept.code}}</td>
+                                                          <td>{{movement.concept.description}}</td>
+                                                          <td>{{movement.quantity}}</td>
+                                                          <td>{{movement.value}}</td>
+                                                      </tr>
+                                                  </ng-template>
+                                              </p-table>
+                                          </ng-template>
+                                      </p-overlayPanel>
+
                                         <span class="text-right flex justify-content-end ml-8 font-bold text-600 font-medium text-sm">{{employeeMovementPayrolls.deductionValue | currency:'COP':'symbol-narrow':'1.0-4'}}</span>
                                     </div>
                                     <hr class="mb-2 mx-0 border-top-1 border-none surface-border mt-auto" />

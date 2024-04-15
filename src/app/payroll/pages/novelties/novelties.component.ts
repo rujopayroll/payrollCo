@@ -18,6 +18,7 @@ import {MenuItem} from 'primeng/api';
 import {DialogService, DynamicDialogRef} from 'primeng/dynamicdialog';
 import { UntypedFormGroup, FormControl, Validators, UntypedFormBuilder } from '@angular/forms';
 import { GetEmployeeService } from '../../services/get-employee.service';
+
 //import { stringify } from '@angular/compiler/src/util';
 
 declare var $: any;
@@ -49,6 +50,8 @@ export class NoveltiesComponent implements OnInit {
   employeesCompany: any = {};
   employeeMovements: any = [];
   employeeMovementsPayroll: any[] = [];
+  filter: any[] = [];
+  filter1: any[] = [];
   period: any = {};
   empleado!: string;
   absenteeEmployee: any = {};
@@ -222,15 +225,16 @@ console.log('period actual',this.period[0])
   getMovementPayrollByEmployee(id: string, period: string ) {
     this._movementService.getMovementsPayrollByEmployee( id, period )
         .subscribe( employeeMovementsPayroll => {
-          this.employeeMovementsPayroll = employeeMovementsPayroll
+         this.employeeMovementsPayroll = employeeMovementsPayroll
 
-          if (this.employeeMovementsPayroll) {
+         /* this.filter = employeeMovementsPayroll[0].salariales;
+          console.log('filter',this.filter)
+          this.filter1 = _.map(this.filter, function(o) { */
+            //if (o.name == "john") return o;
+            if (this.employeeMovementsPayroll) {
 
-            this.getEmployeeById( this.employeeMovementsPayroll[0].employee_id );
-
-
-          }
-
+              this.getEmployeeById( this.employeeMovementsPayroll[0].employee_id );
+            }
         });
   }
 

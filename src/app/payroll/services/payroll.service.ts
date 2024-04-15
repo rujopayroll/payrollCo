@@ -10,7 +10,7 @@ import { Movements } from '../models/movements.model'
 import { Router } from '@angular/router';
 
 import { Observable } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { map, catchError, filter } from 'rxjs/operators';
 import 'rxjs/Rx';
 //import 'rxjs/add/operator/map'
 import { throwError } from 'rxjs';
@@ -27,20 +27,20 @@ export class PayrollService {
 
 private URL_SERVICIOS: string = environment.URL_SERVICIOS;
 public headers = new HttpHeaders();
- 
-  
 
-  constructor( public http: HttpClient, 
+
+
+  constructor( public http: HttpClient,
     public _usuarioService: AuthService,
     public _companyService: CompanyService,
-    public _periodService: PeriodService) { 
+    public _periodService: PeriodService) {
 
     this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
     }
 
 
-    
- 
+
+
 
      getMovementsByPeriod( id: string){
       let url = this.URL_SERVICIOS + '/movements?period_id=' + id;
@@ -57,16 +57,19 @@ public headers = new HttpHeaders();
         .pipe(
             map( (resp: any) => {
               return resp;
-            }));      
+            }));
       }
 
       getMovementsPayrollByEmployee( id: string, period:string){
         let url = this.URL_SERVICIOS + '/payroll/getResumePayroll?company_id=' + id + '&period_id=' + period;
         return this.http.get( url, {headers: this.headers} )
         .pipe(
+
+
             map( (resp: any) => {
               return resp;
-            }));   
+            }));
+
       }
 
 
@@ -77,7 +80,7 @@ public headers = new HttpHeaders();
         .pipe(
             map( (resp: any) => {
               return resp;
-            }));   
+            }));
       }
 
       getMovementsNovelty(employeId: string, companyId: string, periodId: string ){
@@ -86,7 +89,7 @@ public headers = new HttpHeaders();
         .pipe(
         map( (resp: any) => {
           return resp
-        })); 
+        }));
       }
 
       getMovementsNoveltyNoSalary(employeId: string, companyId: string, periodId: string ){
@@ -95,7 +98,7 @@ public headers = new HttpHeaders();
         .pipe(
         map( (resp: any) => {
           return resp
-        } )); 
+        } ));
       }
 
       getMovementsNoveltyDeduction(employeId: string, companyId: string, periodId: string ){
@@ -104,25 +107,25 @@ public headers = new HttpHeaders();
         .pipe(
         map( (resp: any) => {
           return resp
-        })); 
+        }));
       }
-      
-    
+
+
 
 
       createPayroll( id: string){
         let url = this.URL_SERVICIOS + '/payroll?company_id=' + id;
         return this.http.post( url, {headers: this.headers} )
-        .pipe(    
+        .pipe(
         map((resp: any) => {
               return resp;
-            }));     
+            }));
       }
 
       saveNovelties( novelties: any){
         let url = this.URL_SERVICIOS + '/novelty/saveNovelties';
         return this.http.post( url, novelties, {headers: this.headers} )
-        .pipe(    
+        .pipe(
         map( (resp: any) => {
               Swal.fire({
                 position: 'top-end',
@@ -132,14 +135,14 @@ public headers = new HttpHeaders();
                 timer: 2000
               })
               return resp;
-            }));     
+            }));
       }
 
 
       saveNoveltiesOverTime( overTime: any){
         let url = this.URL_SERVICIOS + '/novelty/saveNoveltiesOverTime';
         return this.http.post( url, overTime, {headers: this.headers} )
-        .pipe(    
+        .pipe(
         map( (resp: any) => {
               Swal.fire({
                 position: 'top-end',
@@ -150,19 +153,19 @@ public headers = new HttpHeaders();
               })
               return resp;
             }));
-             
+
       }
 
       getNoveltiesOverTimeByEmployee( employee_id: any, company_id: any, period_id: any){
         let url = this.URL_SERVICIOS + '/novelty/getNoveltiesOverTime?employee_id=' + employee_id + '&company_id=' + company_id + '&period_id=' + period_id;
         return this.http.get( url,  {headers: this.headers} )
-        .pipe(    
+        .pipe(
         map( (resp: any) => {
               return resp;
-            }));    
+            }));
       }
 
-    
+
 
 
 
