@@ -32,7 +32,7 @@ interface City {
         :host ::ng-deep .p-dialog {
              width: 50vw;
             margin: 0 auto 20rem auto;
-             display: block; 
+             display: block;
         }
     `],
     providers: [MessageService,ConfirmationService]
@@ -40,7 +40,7 @@ interface City {
 export class SaveAbsenteeHistoryComponent implements OnInit {
 
 
-  
+
 
   forma!: FormGroup
   absenteeDialog!: boolean;
@@ -77,26 +77,26 @@ export class SaveAbsenteeHistoryComponent implements OnInit {
     displayPosition!: boolean;
 
     position!: string;
-  
+
 
 
   constructor(private fb: FormBuilder,
-              private messageService: MessageService, 
+              private messageService: MessageService,
               private confirmationService: ConfirmationService,
               public ref: DynamicDialogRef,
               private _absenteeService: AbsenteeService,
               private _diagnosisService: DiagnosisService,
               private _periodService: PeriodService,
               public _usuarioService: AuthService,
-              public _getEmployeeService: GetEmployeeService, 
-              ) { 
+              public _getEmployeeService: GetEmployeeService,
+              ) {
 
                 moment.locale('es');
 
                 this.company = this._usuarioService.empresas;
                 this.empresaseleccionada = localStorage.getItem('empresaseleccionada')!;
                 this.usuario = JSON.parse(localStorage.getItem('usuario')!);
-          
+
                 if ( this.empresaseleccionada ){
                             this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
                           } else {
@@ -111,13 +111,13 @@ export class SaveAbsenteeHistoryComponent implements OnInit {
                 this.getDiagnosis();
                 this.getPeriodByProcess(this.empresa.id)
 this.crearFormulario()
-                
-                
 
-                
+
+
+
   }
   get absenteeTypeNoValido(){return this.forma.get('absenteeType')!.invalid && this.forma.get('absenteeType')!.touched}
-  
+
 
 
   ngOnInit(): void {
@@ -180,7 +180,7 @@ getAbsenteeType(){
   this._absenteeService.getAbsenteeType()
         .subscribe( (absenteeType: any) => {
           this.absenteeType = absenteeType;
-          
+
         });
 }
 
@@ -237,17 +237,18 @@ getAbsenteeByEmployeeByPeriod(employee_id: string, ini_period: Date, end_period:
   this._absenteeService.getAbsenteeByEmployeeByPeriod(employee_id, ini_period, end_period)
         .subscribe( (absentees: any) => {
           this.absenteeEmployee = absentees;
-          if (this.absenteeEmployee) {
+          console.log('ausencia', this.absenteeEmployee )
+          if (this.absenteeEmployee != 0) {
             this.getAbsenteeTypeById(this.absenteeEmployee[0].absenteeType_id)
           }
           console.log('ausentismos', this.absenteeEmployee)
-          
+
         });
 }
 
 
 getPeriodByProcess( id: string ) {
-    
+
   this._periodService.getPeriodByCompanyByProcess( id)
       .subscribe( (period: any) => {
         this.period[0] = period[0];
@@ -259,32 +260,32 @@ getPeriodByProcess( id: string ) {
             this.employeeSelect = dato
             this.getAbsenteeByEmployeeByPeriod(this.employeeSelect,this.period[0].initialDate, this.period[0].endDate)
          })
-          
+
           /* this.getMovementByPeriod( this.period[0].id );
           this.getMovementPayrollByEmployee( this.empresa.id, this.period[0].id );  */
-        } 
+        }
       });
 
-} 
+}
 
 
   saveAbsenteeHistory(){
 
-    
+
     if (this.forma.invalid){
-  
+
       return Object.values (this.forma.controls).forEach( control =>{
-  
+
         if (control instanceof FormGroup) {
           Object.values (control.controls).forEach( control => control.markAsTouched());
-  
+
         } else{
           control.markAsTouched();
         }
       });
-    } 
-  
-  
+    }
+
+
     const form = [
       {
         employee_id: this.employeeSelect,
@@ -304,25 +305,25 @@ getPeriodByProcess( id: string ) {
         referenceInhability:this.forma.value.referenceInhability
       }
     ]
-  
-   
-    
+
+
+
     this.registro =  JSON.parse(JSON.stringify(form[0]));
-    
+
     console.log('registro', this.registro)
      /* this._movementService.saveNovelties(this.novelties)
           .subscribe( () => this.getMovementPayrollByEmployee( this.empresa.id, this.period[0].id ));  */
-  
-  
+
+
           this._absenteeService.saveAbsenteeByEmployee(this.registro)
           .subscribe( (resp: any) => {
-           
+
             this.submitted = false;
             this.absenteeDialog = false;
             this.getPeriodByProcess(this.empresa.id)
-           
-         
-          }); 
+
+
+          });
 
 
   }
@@ -334,7 +335,7 @@ getPeriodByProcess( id: string ) {
     this.position = position;
     this.displayPosition = true;
 
-    
+
     //this._getEmployeeService.enviar(employeeCard);
   }
 
@@ -372,26 +373,26 @@ getPeriodByProcess( id: string ) {
   }
 
   onSelect(id: string): void {
-    
+
     this.getAbsenteeTypeById(id)
-  
+
   }
 
   dateSelect(date: string): void {
-    
+
     if (date) {
       this.day()
     }
-    
+
   }
 
   dateiSelect(datei: string): void {
-    
+
     if (datei) {
-     
+
       this.day()
     }
-    
+
   }
 
   day(){
@@ -400,15 +401,15 @@ getPeriodByProcess( id: string ) {
 
     this.quantity  = moment(this.forma.value.endDate).diff(moment(this.forma.value.initialDate), 'days') + 1;
     this.forma.value.day = this.quantity
-    
+
     //this.endDatei = moment(this.formaAbsenteeHistory.value.initialDate).format('DD-MM-YYYY')
     //this.formaAbsenteeHistory.value.endDate = this.endDatei
 
     this.returnDatei = moment(this.forma.value.initialDate).add(this.quantity , 'days').format('DD-MM-YYYY')
     this.forma.value.returnDate = this.returnDatei
-    
 
-    
+
+
   }
 
 }
