@@ -1,6 +1,7 @@
 def VERSION = "${env.BUILD_NUMBER}"
 def DIST_ARCHIVE = "dist.${env.BUILD_NUMBER}"
 def S3_BUCKET = 'dev-payroll-web'
+def BRANCH = GIT_BRANCH
 
 pipeline 
 {
@@ -28,8 +29,24 @@ pipeline
         stage('Build') {
             steps {
                 script {
+                    println BRANCH
                      nodejs(nodeJSInstallationName: 'v16.20.0') {
-                        sh 'npm run build'
+                         switch(BRANCH) {
+                            case "develop":
+                                  sh 'npm run build:development'
+                                break
+                            case "test":
+                                     sh 'npm run build:stage'
+                                break
+                            case "production":
+                                     sh 'npm run build:production'
+                                break
+                          
+                            default:
+                                  sh 'npm run build:development'
+                                break
+                            }
+                        
                      }
                }
 
