@@ -1,7 +1,7 @@
 def VERSION = "${env.BUILD_NUMBER}"
 def DIST_ARCHIVE = "dist.${env.BUILD_NUMBER}"
 def S3_BUCKET = 'dev-payroll-web'
-def branchName = "${env.BRANCH_NAME}".
+def BRANCH_NAME = "${env.BRANCH_NAME}".
 
 pipeline 
 {
@@ -29,9 +29,9 @@ pipeline
         stage('Build') {
             steps {
                 script {
-                     echo "this is the branch ${branchName}"
+                     echo "this is the branch ${BRANCH_NAME}"
                      nodejs(nodeJSInstallationName: 'v16.20.0') {
-                         switch(branchName) {
+                         switch(BRANCH_NAME) {
                             case "develop":
                                   sh 'npm run build:development'
                                 break
