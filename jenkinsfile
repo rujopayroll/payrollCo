@@ -1,7 +1,7 @@
 def VERSION = "${env.BUILD_NUMBER}"
 def DIST_ARCHIVE = "dist.${env.BUILD_NUMBER}"
 def S3_BUCKET = 'dev-payroll-web'
-def branchName = env.BRANCH_NAME
+def branchName = checkout(scm).GIT_BRANCH
 
 pipeline 
 {
