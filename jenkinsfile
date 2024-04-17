@@ -1,7 +1,7 @@
 def VERSION = "${env.BUILD_NUMBER}"
 def DIST_ARCHIVE = "dist.${env.BUILD_NUMBER}"
 def S3_BUCKET = 'dev-payroll-web'
-def BRANCH_NAME = "${env.BRANCH_NAME}".
+
 
 pipeline 
 {
@@ -16,6 +16,14 @@ pipeline
     }
 
    stages {
+      stage('Get Git Branch') {
+            steps {
+                script {
+                    def BRANCH_NAME = sh(script: 'git rev-parse --abbrev-ref HEAD', returnStdout: true).trim()
+                    echo "Current Git branch: ${BRANCH_NAME}"
+                }
+            }
+        }
         stage('NPM Install') {
             steps {
               sh 'npm install --no-audit'
