@@ -1,7 +1,7 @@
 def VERSION = "${env.BUILD_NUMBER}"
 def DIST_ARCHIVE = "dist.${env.BUILD_NUMBER}"
 def S3_BUCKET = 'dev-payroll-web'
-def branchName = sh(script: 'git rev-parse --abbrev-ref HEAD', returnStdout: true).trim()
+def branchName = env.BRANCH_NAME
 
 pipeline 
 {
@@ -29,6 +29,7 @@ pipeline
         stage('Build') {
             steps {
                 script {
+                     println branchName
                      nodejs(nodeJSInstallationName: 'v16.20.0') {
                          switch(branchName) {
                             case "develop":
