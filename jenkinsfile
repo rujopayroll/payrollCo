@@ -19,8 +19,8 @@ pipeline
       stage('Get Git Branch') {
             steps {
                 script {
-                    def BRANCH_NAME = sh(script: 'git rev-parse --abbrev-ref HEAD', returnStdout: true).trim()
-                    echo "Current Git branch: ${BRANCH_NAME}"
+                    def BRANCH_NAME = scm.branches[0].name
+                    echo BRANCH_NAME
                 }
             }
         }
