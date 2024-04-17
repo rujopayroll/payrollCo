@@ -29,7 +29,6 @@ pipeline
         stage('Build') {
             steps {
                 script {
-                    println BRANCH
                      nodejs(nodeJSInstallationName: 'v16.20.0') {
                          switch(branchName) {
                             case "develop":
