@@ -16,27 +16,19 @@ pipeline
     }
 
    stages {
-      stage('Get Git Branch') {
-            steps {
-                script {
-                    def BRANCH_NAME = scm.branches[0].name
-                    echo BRANCH_NAME
-                }
-            }
-        }
         stage('NPM Install') {
             steps {
               sh 'npm install --no-audit'
          }
       }
-        // stage('Test') {
-        //     steps {
-        //         sh 'npm run test'
-        //     }
-        // }
         stage('Build') {
             steps {
                 script {
+                     def BRANCH_NAME = scm.branches[0].name
+                     if (BRANCH_NAME.contains("*/"))
+                     {
+                        BRANCH_NAME = BRANCH_NAME.split("\\*/")[1]
+                     }
                      echo "this is the branch ${BRANCH_NAME}"
                      nodejs(nodeJSInstallationName: 'v16.20.0') {
                          switch(BRANCH_NAME) {
