@@ -39,7 +39,7 @@ jobs:
       - name: Deploy to S3
         run: |
           aws s3 sync ./dist s3://${{ env.BUCKET }} --delete
-          aws s3 cp ./dist/index.html s3://${{ env.BUCKET }} --recursive
+          aws s3 cp ./dist/ s3://${{ env.BUCKET }} --recursive
 
       #
       # - name: Invalidate CloudFront Cache (optional)
