@@ -41,6 +41,7 @@ jobs:
           aws s3 sync ./dist s3://${{ env.BUCKET }} --delete
           aws s3 cp ./dist/index.html s3://${{ env.BUCKET }} --recursive
 
+      #
       # - name: Invalidate CloudFront Cache (optional)
       #   run: |
       #     aws cloudfront create-invalidation --distribution-id YOUR_DISTRIBUTION_ID --paths "/*"
