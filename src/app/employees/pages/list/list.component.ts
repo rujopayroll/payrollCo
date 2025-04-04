@@ -11,6 +11,12 @@ import { AuthService } from 'src/app/auth/services/authservice.index';
 import { Employee } from '../../models/employee.model';
 import { EmployeeContract } from '../../models/employeeContract.model';
 import { EmployeeContractService } from '../../services/employeeService.index';
+interface PageEvent {
+  first: number;
+  rows: number;
+  page: number;
+  pageCount: number;
+}
 
 @Component({
   selector: 'app-list',
@@ -19,7 +25,9 @@ import { EmployeeContractService } from '../../services/employeeService.index';
 })
 export class ListComponent implements OnInit {
 
+  first: number = 0;
 
+  rows: number = 10;
 
   employees: Employee[] = [];
   employeeContract: EmployeeContract []= [];
@@ -79,8 +87,8 @@ export class ListComponent implements OnInit {
 
     this._employeeService.cargarEmployeeCompany( id)
         .subscribe( (employee: any) => {
-          this.totalRegistros = employee.length;
-          this.employees = employee;
+          this.totalRegistros = employee.total;
+          this.employees = employee.data;
 
         });
 
@@ -114,8 +122,15 @@ export class ListComponent implements OnInit {
 
     this._employeeService.buscarEmployees( termino )
         .subscribe( resp => {
-          this.employees = resp
+          console.log('termino', termino)
+          this.employees = resp.data
         });
+}
+
+
+onPageChange(event: PageEvent) {
+  this.first = event.first;
+  this.rows = event.rows;
 }
 
 

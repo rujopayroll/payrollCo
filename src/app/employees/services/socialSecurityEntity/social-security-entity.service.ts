@@ -18,33 +18,33 @@ export class SocialSecurityEntityService {
 
 
          constructor( public http: HttpClient,
-               public _usuarioService: AuthService ) { 
+               public _usuarioService: AuthService ) {
 
-                this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
+                //this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
                }
 
     cargarEntidadesSS(){
-      let url = this.URL_SERVICIOS + '/socialsecurityentities';
-      return this.http.get( url, {headers: this.headers} )
+      let url = this.URL_SERVICIOS + '/socialsecurityentity';
+      return this.http.get( url, {withCredentials:true} )
       .pipe(
            map( (resp: any) => {
             return resp;
           }));
     }
 
-    
+
 
 
     obtenerEntidadSS( id: string ){
-      let url = this.URL_SERVICIOS + '/socialsecurityentities/' + id;
-      return this.http.get( url, {headers: this.headers} )
-      .pipe(    
+      let url = this.URL_SERVICIOS + '/socialsecurityentity/' + id;
+      return this.http.get( url, {withCredentials:true} )
+      .pipe(
       map( (resp: any ) => resp ));
     }
 
     obtenerEntidadSSPorTipo( type: string ){
-      let url = this.URL_SERVICIOS + '/socialsecurityentities/' +'ByType/' + type ;
-      return this.http.get( url, {headers: this.headers} )
+      let url = this.URL_SERVICIOS + '/socialsecurityentity/' +'ByType/' + type ;
+      return this.http.get( url, {withCredentials:true} )
       .pipe(
           map( (resp: any ) => resp ));
     }
@@ -54,7 +54,7 @@ export class SocialSecurityEntityService {
       return this.http.get( url )
       .pipe(
           map( (resp: any ) => resp.socialSecurityEntity ));
-    } 
+    }
 
     obtenerEntidadesRiesgo(){
       let url = this.URL_SERVICIOS + '/socialSecurityEntity/riesgo';
@@ -87,5 +87,5 @@ export class SocialSecurityEntityService {
       .pipe(
           map( (resp: any ) => resp.socialSecurityEntity ));
     }
-    
+
 }

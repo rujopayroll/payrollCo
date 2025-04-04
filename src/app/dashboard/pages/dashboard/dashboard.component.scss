@@ -1,0 +1,21 @@
+.custom-card-title {
+  font-size: 20px;           /* Tamaño del texto */
+  color: #d3d3d3;            /* Color azul */
+  display: flex;
+  align-items: center;
+  justify-content: center;   /* Centra horizontalmente */
+  font-weight: bold;
+  gap: 8px;
+}
+
+.icon-title {
+  font-size: 20px;
+  color: #ff9900;            /* Color del ícono */
+}
+
+.card-header {
+  height: 5px;
+  background-color: #28a745; /* Color verde */
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}

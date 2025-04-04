@@ -56,7 +56,7 @@ constructor( public _usuarioService: AuthService,
 
         console.log('refresh', this.registro)
 
-        this._usuarioService.renuevaToken(this.registro)
+        this._usuarioService.renuevaToken()
             .subscribe( () =>{
               resolve( true );
             }, () =>{

@@ -20,27 +20,27 @@ import { environment } from 'src/environments/environment';
 })
 export class EmployeeSocialSecurityService  {
 
-  private URL_SERVICIOS: string = environment.URL_SERVICIOS;  
+  private URL_SERVICIOS: string = environment.URL_SERVICIOS;
   public headers = new HttpHeaders();
   employeeSocialSecurity!: EmployeeSocialSecurity;
-  
-  
 
-  constructor( public http: HttpClient, 
+
+
+  constructor( public http: HttpClient,
     public _usuarioService: AuthService,
-    public _companyService: CompanyService) { 
+    public _companyService: CompanyService) {
 
-      this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
+      //this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
     }
 
 
-    
- 
+
+
 
     cargarEmployeeSocialSecurity( idEmployee: string){
 
-      let url = this.URL_SERVICIOS + '/employeeSocialSecurities?id=' + idEmployee;
-      return this.http.get( url, {headers: this.headers} )
+      let url = this.URL_SERVICIOS + '/employeeSocialSecurity?id=' + idEmployee;
+      return this.http.get( url, {withCredentials:true} )
       .pipe(
           map( (resp: any) => resp ));
     }
@@ -52,8 +52,8 @@ export class EmployeeSocialSecurityService  {
     }
     borrarEmployeeSocialSecurity( id: string ){
       let url = this.URL_SERVICIOS + '/employeeSocialSecurity/' + id;
-      url += '?token=' + this._usuarioService.token;
-      return this.http.delete( url )
+
+      return this.http.delete( url,{withCredentials:true} )
       .pipe(
           map( (resp: any) => {
               Swal.fire({
@@ -64,17 +64,17 @@ export class EmployeeSocialSecurityService  {
       }));
     }
     crearEmployeeSocialSecurity( employeeSocialSecurity: any){
-      let url = this.URL_SERVICIOS + '/employeeSocialSecurities';
-      
+      let url = this.URL_SERVICIOS + '/employeeSocialSecurity';
+
       console.log('hola',  employeeSocialSecurity )
-      return this.http.post( url, employeeSocialSecurity, {headers: this.headers})
+      return this.http.post( url, employeeSocialSecurity, {withCredentials:true})
       .pipe(
           map( (resp: any) =>{
 
             Swal.fire({
               text: 'informacion de seguridad social guardada',
               icon: 'success'
-            }); 
+            });
 
             return resp;
           }))
@@ -92,9 +92,9 @@ export class EmployeeSocialSecurityService  {
 
     actualizarEmployeeSocialSecurity( employeeSocialSecurity: EmployeeSocialSecurity ){
 
-      let url = this.URL_SERVICIOS + '/employeeSocialSecurities/' + employeeSocialSecurity.id;
-   
-      return this.http.put( url, employeeSocialSecurity, {headers: this.headers})
+      let url = this.URL_SERVICIOS + '/employeeSocialSecurity/' + employeeSocialSecurity.id;
+
+      return this.http.put( url, employeeSocialSecurity, {withCredentials:true})
       .pipe(
           map( (resp: any) =>{
             Swal.fire({

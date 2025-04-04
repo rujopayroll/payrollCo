@@ -37,8 +37,8 @@ export class CompanyService {
      }
 
      ngOnInit(): void {
-       this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
-       console.log('usuario company', this.headers)
+       //this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
+
       }
 
 
@@ -48,7 +48,7 @@ export class CompanyService {
 
       let url = this.URL_SERVICIOS + '/companies/' + id;
 
-      return this.http.get( url, {headers: this.headers} )
+      return this.http.get( url, {withCredentials:true} )
       .pipe(
           map( (resp: any) => {
             return resp
@@ -57,11 +57,12 @@ export class CompanyService {
     }
 
      cargarCompanysUser( iduser: string){
-      this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
+      //this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
+console.log('user servicio', iduser)
+      let url = this.URL_SERVICIOS + '/users/' + iduser + '/companies';
 
-      let url = this.URL_SERVICIOS + '/users/' + iduser;
+     return this.http.get( url, {withCredentials: true})
 
-      return this.http.get( url, {headers: this.headers})
 
 .pipe(
 
@@ -98,7 +99,7 @@ borrarCompanys( id: string ){
 crearCompany( company: any){
   const url = this.URL_SERVICIOS  + '/companies';
 
-  return this.http.post( url, company, {headers: this.headers})
+  return this.http.post( url, company, {withCredentials:true})
   .pipe(
       map( (resp: any) =>{
 
@@ -128,7 +129,7 @@ actualizarCompany( company: any ){
   let url = this.URL_SERVICIOS  + '/companies/' + company.id;
 
 
-  return this.http.put( url, company, {headers: this.headers})
+  return this.http.put( url, company, {withCredentials:true})
   .pipe(
       map( (resp: any) =>{
         Swal.fire({
@@ -153,7 +154,7 @@ cambiarImagen(archivo: File, company: string ){
 
   const url = this.URL_SERVICIOS  + '/uploadImage/Company/' + company;
 
-  return this.http.post( url, archivo, {headers: this.headers})
+  return this.http.post( url, archivo, {withCredentials:true})
   .pipe(
       map( (resp: any) =>{
 

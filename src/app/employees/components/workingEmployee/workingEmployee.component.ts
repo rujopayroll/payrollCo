@@ -58,7 +58,7 @@ export class WorkingEmployeeComponent implements OnInit {
   workingHours: WorkingHour[]= [];
   workPlaceRisks: WorkPlaceRisks[] = [];
   Id: any;
-  
+
   employeeWorking: EmployeeWorking = new EmployeeWorking('', '', true, '', '', '', '', true, true, this.date, this.date);
 
   constructor(private fb: UntypedFormBuilder,
@@ -73,7 +73,7 @@ export class WorkingEmployeeComponent implements OnInit {
               public _modalUploadServices: ModalUploadService,
               public pageScrollServ: PageScrollService,
               @Inject(DOCUMENT) private document: any
-              ) { 
+              ) {
 
                 this.company = this._usuarioService.empresas;
                 this.empresaseleccionada = localStorage.getItem('empresaseleccionada');
@@ -92,7 +92,7 @@ export class WorkingEmployeeComponent implements OnInit {
                  this.activatedRoute.params.subscribe( params =>{
                   this.Id = params[ 'id' ]
                   this.cargarEmployeesWorking( params[ 'id' ]);
-              }); 
+              });
 
               this.crearFormulario();
 
@@ -112,15 +112,15 @@ export class WorkingEmployeeComponent implements OnInit {
     });
 
 
-    
+
 
     this.pageScrollServ.scroll({
       document: this.document,
       scrollTarget: '.theEnd',
     });
 
-   
-    
+
+
   }
 
   get contractRegimeNoValido(){return this.forma.get('contractRegime')!.invalid && this.forma.get('contractRegime')!.touched}
@@ -148,30 +148,30 @@ export class WorkingEmployeeComponent implements OnInit {
     guardar(workingEmployee: EmployeeWorking){
 
       if (this.forma.invalid){
-    
+
         console.log('invalido')
-    
+
         return Object.values (this.forma.controls).forEach( control =>{
-    
+
           if (control instanceof UntypedFormGroup) {
             Object.values (control.controls).forEach( control => control.markAsTouched());
-    
+
           } else{
             control.markAsTouched();
           }
-          
-    
+
+
         });
       }
-  
-    
+
+
       this.activatedRoute.params.subscribe( params => {
         const Id = params[ 'id' ];
-    
-  
+
+
       let form = [
         {
-    
+
           createUser: this.usuario,
           updateUser: this.usuario,
           isActive: this.isActive,
@@ -182,23 +182,23 @@ export class WorkingEmployeeComponent implements OnInit {
           workingHour_id:  this.forma.value.workingHour,
           transportAssistance: this.forma.value.transportAssistance,
           variableSalary: this.forma.value.variableSalary
-         
-  
+
+
         }
       ]
-   
-    
+
+
       this.registro =  JSON.parse(JSON.stringify(form[0]));
       console.log('registro', this.registro)
-  
+
       this._employeeWorkingService.actualizarEmployeeWorking( this.employeeW )
               .subscribe( () => this.cargarEmployeesWorking(this.employeeW.id));
               this.workingEmployeeDialog = false;
-      
-      
-    
+
+
+
       // this.forma.reset();
-    }) 
+    })
     }
 
 
@@ -210,7 +210,7 @@ export class WorkingEmployeeComponent implements OnInit {
     });
 
     this.active = i;
-  } 
+  }
 
   hideDialog() {
     this.workingEmployeeDialog = false;
@@ -224,19 +224,22 @@ editWorkingEmployee(workingEmployee: EmployeeWorking) {
 }
 
   cargarEmployeesWorking( id: string ) {
+
+
     this._employeeWorkingService.cargarEmployeeWorking( id )
         .subscribe( employeeWorking => {
 
-          this.employeeW = employeeWorking[0];
-        
+
+          this.employeeW = employeeWorking.data[0];
+
           if (this.employeeW) {
-           
+
             this.getEmployeeType( this.employeeW.employeeType_id );
             this.getContractRegime( this.employeeW.contractRegime_id);
             this.getWorkingHour( this.employeeW.workingHour_id);
             this.getWorkPlaceRisks( this.employeeW.workPlaceRisks_id);
-            
-          } 
+
+          }
         });
 
   }
@@ -255,12 +258,12 @@ editWorkingEmployee(workingEmployee: EmployeeWorking) {
           this.employeeTypes = employeeType;
   });
   }
-  
+
   getContractRegime( id: string)  {
     this._contractRegimeService.obtenerTipoRegime( id )
         .subscribe( contractRegime => {
           this.contractRegime = contractRegime;
-         
+
   });
   }
 
@@ -268,7 +271,7 @@ editWorkingEmployee(workingEmployee: EmployeeWorking) {
     this._contractRegimeService.cargarTipoRegimen( )
         .subscribe( contractRegime => {
           this.contractRegimes = contractRegime;
-         
+
   });
   }
 
@@ -285,7 +288,7 @@ editWorkingEmployee(workingEmployee: EmployeeWorking) {
           this.workingHours = workingHour;
   });
   }
-  
+
   getWorkPlaceRisks( id: string)  {
     this._workPlaceRisksService.obtenerCentroTrabajo( id )
         .subscribe( workPlaceRisks => {
@@ -299,8 +302,8 @@ editWorkingEmployee(workingEmployee: EmployeeWorking) {
           this.workPlaceRisks = workPlaceRisks;
   });
   }
-  
 
-  
-  
+
+
+
 }

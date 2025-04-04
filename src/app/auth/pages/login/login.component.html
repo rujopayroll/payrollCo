@@ -1,11 +1,18 @@
 
 
+
+
+
+
+
+
 <div class="mb-5">
-<div class="text-900 text-center text-3xl font-medium mb-3">Bienvenido!!</div>
+<div class="text-900 text-center text-3xl font-medium mb-2">Bienvenido!!</div>
 <span class="text-600 text-center font-medium line-height-3">Aun no tienes una cuenta?</span>
 <a routerLink="/auth/register" class="font-medium no-underline ml-2 text-orange-500 cursor-pointer">Creala Gratis!</a>
 </div>
-<form ngNativeValidate #f="ngForm" (ngSubmit)="ingresar( f )">
+<!-- <form ngNativeValidate #f="ngForm" (ngSubmit)="ingresar( f )"> -->
+  <form ngNativeValidate #f="ngForm" (ngSubmit)="ingresar(f)">
     <div>
         <label for="email" class="block text-900 font-medium mb-2">Email</label>
         <input [ngModel] name= "email" id="email" type="text" pInputText class="w-full mb-3">
@@ -15,7 +22,7 @@
 
         <div class="flex align-items-center justify-content-between mb-6">
              <div class="flex align-items-center">
-                <p-checkbox [(ngModel)]="recuerdame" name="recuerdame" id="rememberme" [binary]="true" styleClass="mr-2"></p-checkbox>
+                <p-checkbox [(ngModel)]="recuerdame" name="recuerdame" id="rememberme" [binary]="true" styleClass="mr-2 color=red" ></p-checkbox>
                 <label for="rememberme">Recuerdame</label>
             </div>
             <a class="font-medium no-underline ml-2 text-orange-500 text-right cursor-pointer">Recordar password?</a>
@@ -24,4 +31,5 @@
         <button pButton type="submit" label="Ingresar"  icon="pi pi-user" class="w-full bg-cyan-600"></button>
     </div>
 </form>
+
 

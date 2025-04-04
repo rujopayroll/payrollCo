@@ -33,10 +33,10 @@ registerLocaleData(localeEsAr);
     styleUrls: ['./salaryEmployee.component.scss'],
     providers: [MessageService,ConfirmationService]
   })
-  
+
   export class SalaryEmployeeComponent implements OnInit {
-    
-    
+
+
       @ViewChild('scroller1') scroller!: ElementRef;
       active = 1;
       items!: MenuItem[];
@@ -64,11 +64,11 @@ registerLocaleData(localeEsAr);
       salaryType: SalaryType[] = [];
       salaryTypes: any = {};
       new!: boolean;
-    
-  
+
+
       employeeSalaryNew: EmployeeSalary = new EmployeeSalary('', '', true, '', '', this.date, this.date,0,'',this.date,this.date);
-  
-  
+
+
     constructor(private fb: UntypedFormBuilder,
       public _employeeSalaryService: EmployeeSalaryService,
       public _salaryTypeService: SalaryTypeService,
@@ -76,27 +76,27 @@ registerLocaleData(localeEsAr);
        public _companyService: CompanyService,
        public _router: Router,
        public activatedRoute: ActivatedRoute,
-       private messageService: MessageService, 
+       private messageService: MessageService,
        public _modalUploadServices: ModalUploadService,
        private confirmationService: ConfirmationService,
        public pageScrollServ: PageScrollService,
                 @Inject(DOCUMENT) private document: any
-    ) { 
-  
+    ) {
+
       this.activatedRoute.params.subscribe( params =>{
           this.getEmployeesSalary( params[ 'id' ]);
           this.getEmployeesSalaryIsActive( params[ 'id' ]);
-      }); 
-  
+      });
+
       this.company = this._usuarioService.empresas;
       this.empresaseleccionada = localStorage.getItem('empresaseleccionada');
       this.usuario = JSON.parse(localStorage.getItem('usuario')!);
-      
-  
+
+
       if ( this.empresaseleccionada ){
         this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
-       
-        
+
+
       } else {
         if(this.company.length > 1 ) {
           this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
@@ -104,35 +104,35 @@ registerLocaleData(localeEsAr);
           this.empresa =  JSON.parse(JSON.stringify(this.company[0]));
         }
       }
-  
-      
+
+
        this.crearFormulario();
-  
-      
-  
+
+
+
     }
-  
-     
-  
+
+
+
     ngOnInit(): void {
-      
+
       /* this.activatedRoute.params.subscribe( params =>{
           this._modalUploadServices.notificacion
           .subscribe( () =>  this.getEmployeesRecurrentPayment( params[ 'id' ]));
         }); */
-  
+
         this.getSalaryType();
         this.getAllSalaryType();
-    
+
         this.pageScrollServ.scroll({
           document: this.document,
           scrollTarget: '.theEnd',
         });
-        this.activatedRoute.params.subscribe( params =>{
+       /*  this.activatedRoute.params.subscribe( params =>{
           this._modalUploadServices.notificacion
           .subscribe( () => this.getEmployeesSalary( params[ 'id' ]));
         });
-      
+ */
 
 
       }
@@ -142,7 +142,7 @@ registerLocaleData(localeEsAr);
   get initialSalaryDateNoValido(){return this.forma.get('initialSalaryDate')!.invalid && this.forma.get('initialSalaryDate')!.touched}
   get endSalaryDateNoValido(){return this.forma.get('endSalaryDate')!.invalid && this.forma.get('endSalaryDate')!.touched}
   get estadoNoValido(){return this.forma.get('estado')!.invalid && this.forma.get('estado')!.touched}
-  
+
   crearFormulario(){
 
     this.forma = this.fb.group({
@@ -154,7 +154,7 @@ registerLocaleData(localeEsAr);
      });
     }
 
-    
+
 
     onScroll(event: HTMLElement, i:any) {
       this.pageScrollServ.scroll({
@@ -162,46 +162,47 @@ registerLocaleData(localeEsAr);
         scrollOffset: 300,
         document: this.document
       });
-  
+
       this.active = i
-    } 
-  
+    }
+
     getEmployeesSalary( id: string ) {
       this._employeeSalaryService.cargarEmployeeSalary( id )
           .subscribe( employeeSalaries => {
-          this.employeeSalaries = employeeSalaries;
-        
+            console.log('salary',employeeSalaries )
+          this.employeeSalaries =  Array.isArray(employeeSalaries.data) ? employeeSalaries.data : [employeeSalaries.data];
+
           });
-  
+
     }
 
     getEmployeesSalaryIsActive( id: string ) {
       this._employeeSalaryService.cargarEmployeeSalaryIsActive( id )
           .subscribe( employeeSalariesActive => {
-          this.employeeSalarieActive = employeeSalariesActive;
+          this.employeeSalarieActive =  Array.isArray(employeeSalariesActive.data) ? employeeSalariesActive.data : [employeeSalariesActive.data];
           let cambio = moment(this.employeeSalarieActive.endSalaryDate)
-          
+
           this.fecha = moment(this.employeeSalarieActive.endSalaryDate).subtract(1, 'd').format('YYYY-MM-DD')
           });
-  
+
     }
-  
+
     getSalaryType() {
         this._salaryTypeService.cargarTipoSalario()
-        .subscribe( resp => this.salaryType = resp);
+        .subscribe( resp => this.salaryType = resp.data);
       }
-    
+
       getAllSalaryType() {
         this._salaryTypeService.cargarTipoSalario()
-        .subscribe( resp => this.salaryTypes = resp);
+        .subscribe( resp => this.salaryTypes = resp.data);
       }
-    
-    
+
+
     hideDialog() {
       this.employeeSalaryDialog = false;
       this.submitted = false;
   }
-  
+
   openNewEmployeeSalary() {
       this.employeeSalarie! = {};
       this.employeeSalarie.isActive="true";
@@ -210,43 +211,43 @@ registerLocaleData(localeEsAr);
       this.employeeSalaryDialog = true;
       this.new= true;
   }
-  
-  
+
+
   editEmployeeSalary(employeeSalary: EmployeeSalary) {
       this.employeeSalarie = {...employeeSalary};
       this.employeeSalaryDialog = true;
       this.new= false;
   }
-  
-  
+
+
     guardar(){
-     
+
       if (this.forma.invalid){
-    
-        
-    
+
+
+
         return Object.values (this.forma.controls).forEach( control =>{
-    
+
           if (control instanceof UntypedFormGroup) {
             Object.values (control.controls).forEach( control => control.markAsTouched());
-    
+
           } else{
             control.markAsTouched();
           }
-          
-    
+
+
         });
       }
-  
+
       this.activatedRoute.params.subscribe( params => {
           const id = params['id'];
-          
+
           if ( this.new !== true) {
               this._employeeSalaryService.actualizarEmployeeSalary( this.employeeSalarie )
               .subscribe( () =>  this.getEmployeesSalary(id));
               this.new = false;
               this.employeeSalaryDialog = false;
-           
+
           } else {
 
             const employeeSalaryActive = new EmployeeSalary(
@@ -262,12 +263,12 @@ registerLocaleData(localeEsAr);
               this.employeeSalarieActive[0].createdAt,
               this.date,
 
-              
+
           );
           console.log('actualizar',employeeSalaryActive)
           this._employeeSalaryService.actualizarEmployeeSalary( employeeSalaryActive )
           .subscribe( () =>  this.getEmployeesSalaryIsActive(id));
-    
+
       const employeeSalary = new EmployeeSalary(
         this.usuario.id,
         this.usuario.id,
@@ -277,9 +278,9 @@ registerLocaleData(localeEsAr);
         this.forma.value.initialSalaryDate,
         this.forma.value.endSalaryDate,
         this.forma.value.salary
-        
-        
-        
+
+
+
     );
 
 
@@ -287,16 +288,16 @@ registerLocaleData(localeEsAr);
               .subscribe( () =>  this.getEmployeesSalary(id));
               this.new = false;
               this.employeeSalaryDialog = false
-  
+
       this.forma.reset();
        this.crearFormulario();
-  
+
     }
-      
+
   });
   }
-  
-  
+
+
     deleteEmployeeSalary(employeeSalary: EmployeeSalary) {
       this.confirmationService.confirm({
           message: 'Estas seguro de eliminar el salario' + '?',
@@ -305,24 +306,24 @@ registerLocaleData(localeEsAr);
           acceptLabel:"Si",
           rejectLabel:"No",
           accept: () => {
-              
-              
-  
+
+
+
               this._employeeSalaryService.borrarEmployeeSalary( employeeSalary.id! )
-            
+
               .subscribe( resp => {
                   this.employeeSalaryDialog= false;
-                  
+
                   this.activatedRoute.params.subscribe( params =>{
                       this._modalUploadServices.notificacion
                       .subscribe( () =>  this.getEmployeesSalary( params[ 'id' ]));
                     });
-                  
+
                 });
               //this.messageService.add({severity:'success', summary: 'Successful', detail: 'Centro de costo Eliminado', life: 3000});
           }
       });
-  } 
-  
-  
+  }
+
+
   }

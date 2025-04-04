@@ -15,22 +15,22 @@ export class AccounttypeService {
 
 public headers = new HttpHeaders();
   constructor( public http: HttpClient,
-    public _usuarioService: AuthService) { 
+    public _usuarioService: AuthService) {
 
-      this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
+      //this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
     }
 
   cargarTipoCuentas(){
-    let url = this.URL_SERVICIOS  + '/accountTypes';
-    return this.http.get( url, {headers: this.headers} )
+    let url = this.URL_SERVICIOS  + '/account-types';
+    return this.http.get( url, {withCredentials:true} )
     .pipe(
          map( (resp: any) => {
           return resp;
         }));
   }
   obtenerTipoCuenta( id: string ){
-    let url = this.URL_SERVICIOS  + '/accountTypes/' + id;
-    return this.http.get( url, {headers: this.headers} )
+    let url = this.URL_SERVICIOS  + '/account-types/' + id;
+    return this.http.get( url, {withCredentials:true} )
     .pipe(
         map( (resp: any ) => resp ));
   }

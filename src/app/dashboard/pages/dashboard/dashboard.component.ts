@@ -1,43 +1,53 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef, PLATFORM_ID} from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/services/authservice.index';
 import { Period } from 'src/app/payroll/models/period.model';
 import { PeriodService } from '../../../payroll/services/payrollService.index';
 import { async } from 'rxjs';
 import { getSafePropertyAccessString } from '@angular/compiler';
-
+import { CardModule } from 'primeng/card';
+import { CompanyService } from '../../../companies/services/company/company.service';
+import { Usuario } from '../../../auth/models/usuario.model';
+import { NgModule } from '@angular/core';
+import { TableModule } from 'primeng/table';
 
 
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styles: [
-  ]
+  styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
 
   visibleSidebar2: any;
   empresaseleccionada: any = {};
-  usuario: any = {};
-  period: any =[0];
+  //usuario: any = {};
+  period: any ={};
   empresa: any = {};
   company: any;
   yearPeriod!: number;
   Date = new Date();
   texto = "";
   ahora = new Date();
+  companyUser: any[]=[]
+  usuario!: Usuario;
+
+
+
 
 
 
   constructor( public _periodService: PeriodService,
                public _usuarioService: AuthService,
+               public _companyService: CompanyService,
                public router: Router) {
 
 
-    this.company = this._usuarioService.empresas;
+//SOLO SE COMENTO PARA EDITAR EL DASHBOARD.....
+    //this.company = this._usuarioService.empresas;
     this.empresaseleccionada = localStorage.getItem('empresaseleccionada')!;
-    this.usuario = JSON.parse(localStorage.getItem('usuario')!);
+    //this.usuario = JSON.parse(localStorage.getItem('usuario')!);
 
     if ( this.empresaseleccionada ){
       this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
@@ -50,13 +60,15 @@ export class DashboardComponent implements OnInit {
     }
 
 
-     this.createdPeriod(this.empresa.id, this.yearPeriod = new Date().getFullYear())
+
 
 
 
 
 
   }
+
+
 
   greeting (): void{
     var hours = this.ahora.getHours();
@@ -81,7 +93,7 @@ export class DashboardComponent implements OnInit {
 
     this.getPeriodByProcess( this.empresa.id );
     this.greeting();
-    console.log(this.period[0].year, 'init')
+
     /* this.getPeriodByProcess( this.empresa.id ) */
 
 
@@ -90,17 +102,23 @@ export class DashboardComponent implements OnInit {
 
    getPeriodByProcess( id: string ) {
 
-    /* let variable = await this._periodService.getPeriodByCompanyByProcess( id ) */
-
      this._periodService.getPeriodByCompanyByProcess( id )
         .subscribe ( (period: any) => {
-          this.period[0] = period[0];
-          console.log(this.period[0].year)
-        });
 
+          if (period && Array.isArray(period.data)) {
+            console.log('periodo',period)
+            this.period = period.data[0];
+            console.log('periodo2', this.period)
+          }else{
+            this.createdPeriod(this.empresa.id, this.yearPeriod = new Date().getFullYear())
+          }
+        },
+        (error) => {
+          console.error('Error al cargar periodo en proceso', error);
+          this.period = []; // Manejo de error para evitar undefined
+        }
 
-
-
+        );
   }
 
   createdPeriod(id: string, year:number) {
@@ -113,7 +131,13 @@ export class DashboardComponent implements OnInit {
   }
 
 
-
+  cargarEmpresasUsuario(iduser: string){
+    this._companyService.cargarCompanysUser(iduser)
+    .subscribe ( companyUser => {
+      this.companyUser = companyUser.companies
+      this.usuario = companyUser.user
+    });
+  }
 
 
 

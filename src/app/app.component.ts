@@ -12,8 +12,9 @@ export class AppComponent {
   title = 'payrollCO';
 
   constructor(private primengConfig: PrimeNGConfig) { }
-  
+
   ngOnInit() {
     this.primengConfig.ripple = true;
+
   }
 }

@@ -40,7 +40,7 @@ export class HeaderComponent implements OnInit {
 
   compa: any = {}
   companys: Company [] = [];
-  usuario: Usuario;
+  usuario!: Usuario;
   company: Company [] = [];
   concept: Concept[] = [];
   company1: any = {};
@@ -66,12 +66,15 @@ export class HeaderComponent implements OnInit {
                public router: Router,
                @Inject(DOCUMENT) private document: Document) {
 
+                this.idUser = localStorage.getItem('id')!;
+                this.correo = localStorage.getItem('usuario')!;
+
                 this.empresaseleccionada = localStorage.getItem('empresaseleccionada');
-                this.usuario = this._usuarioService.usuario;
+                //this.usuario = this._usuarioService.usuario;
 
                 // this.cargarEmpresasUsuario(this.usuario.id);
                 //this.company = this._usuarioService.empresas;
-                this.company =  JSON.parse(localStorage.getItem('empresas')!);
+                //this.company =  JSON.parse(localStorage.getItem('empresas')!);
 
 
                 if (this.empresaseleccionada) {
@@ -90,19 +93,21 @@ export class HeaderComponent implements OnInit {
                 }
 
                 this._modalUploadService.notificacion
-                .subscribe( () => this.getUsers(this.usuario.id!));
+                .subscribe( () => this.getUsers(this.idUser!));
 
                 this._modalUploadService.notificacion
                .subscribe( () => this.cargarCompanySelect(this.empresa.id));
 
+
+               this.cargarEmpresasUsuario(this.idUser);
                }
 
   ngOnInit(): void {
-    console.log('entro init')
-    this.usuario = this._usuarioService.usuario;
+
+    //this.usuario = this._usuarioService.usuario;
     this.cargarCompanySelect(this.empresa.id);
-    this.cargarEmpresasUsuario(this.usuario.id);
-    this.getUsers(this.usuario.id!);
+
+    this.getUsers(this.idUser!);
 
 
     this.menu = [
@@ -141,7 +146,7 @@ export class HeaderComponent implements OnInit {
     .subscribe( () => this.cargarCompanySelect(this.empresa.id));
 
     this._modalUploadService.notificacion
-    .subscribe( () => this.getUsers(this.usuario.id!));
+    .subscribe( () => this.getUsers(this.idUser!));
 
   }
 
@@ -169,13 +174,39 @@ export class HeaderComponent implements OnInit {
         });
   }
 
-  cargarEmpresasUsuario(iduser: any){
-    this._companyService.cargarCompanysUser(iduser)
-    .subscribe ( (resp:any) => {
-      this.company2 = resp
-      console.log('company2', this.company2)
-    });
 
+
+  /* cargarEmpresasUsuario(iduser: any){
+  this._companyService.cargarCompanysUser(iduser).subscribe((resp: any) => {
+    console.log('Respuesta de la API:', resp);
+    if (resp && resp.companies) {
+      this.company2 = { companies: resp.companies };
+      this.usuario = resp.user;
+    } else {
+      this.company2 = { companies: [] };
+    }
+  });
+  } */
+
+
+  cargarEmpresasUsuario(iduser: any) {
+    this._companyService.cargarCompanysUser(iduser).subscribe(
+      (resp: any) => {
+        console.log('Respuesta de la API:', resp); // 👀 Verifica qué devuelve la API
+
+        if (resp && resp.companies) {
+          this.company2 = { companies: resp.companies };
+        } else {
+          this.company2 = { companies: [] }; // Evita errores si la API devuelve un valor inesperado
+        }
+
+        this.usuario = resp?.user || {}; // Evita que `usuario` sea undefined
+      },
+      (error) => {
+        console.error('Error al cargar las empresas:', error);
+        this.company2 = { companies: [] }; // En caso de error, aseguramos que no falle
+      }
+    );
   }
 
 screen(){
@@ -236,7 +267,7 @@ crearEmpresa(){
 
             this._companyService.crearCompany( this.registro )
             .subscribe((resp:any) => {
-              this.cargarEmpresasUsuario(this.usuario.id);
+              this.cargarEmpresasUsuario(this.idUser);
               this.router.navigate( ['/companies/list'] );
 
             });

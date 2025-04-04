@@ -59,7 +59,8 @@
         <button [ngClass]="{'active': active === 6}" pageScroll  (click)="onScroll(panel6, 6)" pButton pRipple type="button" label="FORMA DE PAGO" class="flex align-items-center justify-content-center p-button-link font-bold"></button>
         <button [ngClass]="{'active': active === 7}" pageScroll  (click)="onScroll(panel7, 7)" pButton pRipple type="button" label="SEG. SOCIAL" class="flex align-items-center justify-content-center p-button-link font-bold"></button>
         <button [ngClass]="{'active': active === 8}" pageScroll  (click)="onScroll(panel8, 8)" pButton pRipple type="button" label="RECURRENTES" class="flex align-items-center justify-content-center p-button-link font-bold"></button>
-
+        <button [ngClass]="{'active': active === 9}" pageScroll  (click)="onScroll(panel9, 9)" pButton pRipple type="button" label="RETIRO CESANTIAS" class="flex align-items-center justify-content-center p-button-link font-bold"></button>
+        <button [ngClass]="{'active': active === 10}" pageScroll  (click)="onScroll(panel10, 10)" pButton pRipple type="button" label="LIQUIDACION CONTRATO" class="flex align-items-center justify-content-center p-button-link font-bold"></button>
     </div>
 
 </section >
@@ -71,7 +72,7 @@
 
 
 
-    <div #panel1 style="margin-top: 340px;">
+    <div #panel1 style="margin-top: 390px;">
 
            <app-infoEmployee></app-infoEmployee>
 
@@ -122,6 +123,16 @@
      <app-recurrentPaymentEmployee></app-recurrentPaymentEmployee>
       <hr>
     </div>
+
+    <div #panel9>
+
+       <hr>
+     </div>
+
+     <div #panel10>
+
+       <hr>
+     </div>
 
 </div>
 

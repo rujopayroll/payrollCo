@@ -204,7 +204,7 @@ editPaymentEmployee(paymentEmployee: EmployeePayment) {
   cargarEmployeesPayment( id: string ) {
     this._employeepaymentService.cargarEmployeePayment( id )
         .subscribe( employeePayment => {
-        this.employeePay = employeePayment[0];
+        this.employeePay = employeePayment.data[0];
 
         if(this.employeePay){
           this.getBank( this.employeePay.bank_id );

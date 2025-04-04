@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 
 import { Observable } from 'rxjs';
 import { map, catchError, filter } from 'rxjs/operators';
-import 'rxjs/Rx';
+//import 'rxjs/Rx';
 //import 'rxjs/add/operator/map'
 import { throwError } from 'rxjs';
 import { getLocaleDateFormat } from '@angular/common';
@@ -35,7 +35,7 @@ public headers = new HttpHeaders();
     public _companyService: CompanyService,
     public _periodService: PeriodService) {
 
-    this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
+    //this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
     }
 
 
@@ -43,8 +43,8 @@ public headers = new HttpHeaders();
 
 
      getMovementsByPeriod( id: string){
-      let url = this.URL_SERVICIOS + '/movements?period_id=' + id;
-      return  this.http.get( url, {headers: this.headers} )
+      let url = this.URL_SERVICIOS + '/movement?period_id=' + id;
+      return  this.http.get( url, {withCredentials:true} )
       .pipe(
           map( (resp: any) => {
             return resp;
@@ -53,7 +53,7 @@ public headers = new HttpHeaders();
 
     getMovementsByEmployee( id: string, period:string){
         let url = this.URL_SERVICIOS + '/payroll/getPayroll?company_id=' + id + '&period_id=' + period;
-        return this.http.get( url, {headers: this.headers} )
+        return this.http.get( url, {withCredentials:true} )
         .pipe(
             map( (resp: any) => {
               return resp;
@@ -62,7 +62,7 @@ public headers = new HttpHeaders();
 
       getMovementsPayrollByEmployee( id: string, period:string){
         let url = this.URL_SERVICIOS + '/payroll/getResumePayroll?company_id=' + id + '&period_id=' + period;
-        return this.http.get( url, {headers: this.headers} )
+        return this.http.get( url, {withCredentials:true} )
         .pipe(
 
 
@@ -75,8 +75,8 @@ public headers = new HttpHeaders();
 
 
     getMovementsByConcept( id: string, period:string){
-        let url = this.URL_SERVICIOS + '/movements?concept_id=' + id + '&period_id=' + period;
-        return this.http.get( url, {headers: this.headers} )
+        let url = this.URL_SERVICIOS + '/movement?concept_id=' + id + '&period_id=' + period;
+        return this.http.get( url, {withCredentials:true} )
         .pipe(
             map( (resp: any) => {
               return resp;
@@ -85,7 +85,7 @@ public headers = new HttpHeaders();
 
       getMovementsNovelty(employeId: string, companyId: string, periodId: string ){
         let url = this.URL_SERVICIOS + '/novelty/getNovelties?employee_id=' + employeId + '&company_id=' + companyId + '&period_id=' + periodId + '&conceptGroup=SALARIAL';
-        return this.http.get( url, {headers: this.headers} )
+        return this.http.get( url, {withCredentials:true} )
         .pipe(
         map( (resp: any) => {
           return resp
@@ -94,7 +94,7 @@ public headers = new HttpHeaders();
 
       getMovementsNoveltyNoSalary(employeId: string, companyId: string, periodId: string ){
         let url = this.URL_SERVICIOS + '/novelty/getNovelties?employee_id=' + employeId + '&company_id=' + companyId + '&period_id=' + periodId + '&conceptGroup=NOSALARIAL';
-        return this.http.get( url, {headers: this.headers} )
+        return this.http.get( url, {withCredentials:true} )
         .pipe(
         map( (resp: any) => {
           return resp
@@ -103,7 +103,7 @@ public headers = new HttpHeaders();
 
       getMovementsNoveltyDeduction(employeId: string, companyId: string, periodId: string ){
         let url = this.URL_SERVICIOS + '/novelty/getNovelties?employee_id=' + employeId + '&company_id=' + companyId + '&period_id=' + periodId + '&conceptGroup=DEDUCCION';
-        return this.http.get( url, {headers: this.headers} )
+        return this.http.get( url, {withCredentials:true} )
         .pipe(
         map( (resp: any) => {
           return resp
@@ -115,7 +115,7 @@ public headers = new HttpHeaders();
 
       createPayroll( id: string){
         let url = this.URL_SERVICIOS + '/payroll?company_id=' + id;
-        return this.http.post( url, {headers: this.headers} )
+        return this.http.post( url, {withCredentials:true}  )
         .pipe(
         map((resp: any) => {
               return resp;
@@ -124,7 +124,7 @@ public headers = new HttpHeaders();
 
       saveNovelties( novelties: any){
         let url = this.URL_SERVICIOS + '/novelty/saveNovelties';
-        return this.http.post( url, novelties, {headers: this.headers} )
+        return this.http.post( url, novelties, {withCredentials:true}  )
         .pipe(
         map( (resp: any) => {
               Swal.fire({
@@ -141,7 +141,7 @@ public headers = new HttpHeaders();
 
       saveNoveltiesOverTime( overTime: any){
         let url = this.URL_SERVICIOS + '/novelty/saveNoveltiesOverTime';
-        return this.http.post( url, overTime, {headers: this.headers} )
+        return this.http.post( url, overTime, {withCredentials:true}  )
         .pipe(
         map( (resp: any) => {
               Swal.fire({
@@ -158,15 +158,11 @@ public headers = new HttpHeaders();
 
       getNoveltiesOverTimeByEmployee( employee_id: any, company_id: any, period_id: any){
         let url = this.URL_SERVICIOS + '/novelty/getNoveltiesOverTime?employee_id=' + employee_id + '&company_id=' + company_id + '&period_id=' + period_id;
-        return this.http.get( url,  {headers: this.headers} )
+        return this.http.get( url,  {withCredentials:true} )
         .pipe(
         map( (resp: any) => {
               return resp;
             }));
       }
-
-
-
-
 
 }

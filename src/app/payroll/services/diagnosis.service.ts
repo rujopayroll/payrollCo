@@ -26,24 +26,24 @@ export class DiagnosisService {
 
 private URL_SERVICIOS: string = environment.URL_SERVICIOS;
 public headers = new HttpHeaders();
- 
-  
 
-  constructor( public http: HttpClient, 
+
+
+  constructor( public http: HttpClient,
     public _usuarioService: AuthService,
     public _companyService: CompanyService,
-    public _periodService: PeriodService) { 
+    public _periodService: PeriodService) {
 
-    this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
+    //this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
     }
 
 
-    
- 
+
+
 
      getDiagnosis(){
       let url = this.URL_SERVICIOS + '/diagnosis';
-      return  this.http.get( url, {headers: this.headers} )
+      return  this.http.get( url, {withCredentials:true})
       .pipe(
           map( (resp: any) => {
             return resp;

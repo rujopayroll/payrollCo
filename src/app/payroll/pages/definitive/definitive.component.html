@@ -1,1 +1,127 @@
-<p>definitive works!</p>
+<!-- <p>definitive works!</p> -->
+
+
+<p-toolbar>
+  <div class="p-toolbar-group-left">
+      <span class="p-input-icon-left p-mr-2">
+          <i class="pi pi-search"></i>
+      <input  #input (keyup)="buscarEmployees( input.value )" class="form-control" type="search" pInputText placeholder="Buscar Empleado..." style="width: 30rem;">
+  </span>
+
+      <p-button label="Contabilizar" [disabled]="(!selectMovementsPayroll || !selectMovementsPayroll.length) && periodProcess" (click)="showDialog()" icon="pi pi-chart-bar" styleClass="p-button-danger" class="p-mr-2"></p-button>
+      <p-button label="Generar Propuesta de Pago" [disabled]="!periodContability"  (click)="showDialogBank()" icon="pi pi-credit-card" styleClass="p-button-warning"></p-button>
+
+
+
+  </div>
+
+
+</p-toolbar>
+
+<p-toolbar>
+<div class="div">
+  <span class="text-500 p-mr-2"><small class="text-center text-xs">Periodo: {{period.year}}-{{period.number}}</small></span>
+  <span class="text-500 p-mr-2"><small>Del:  {{period.initialDate | date: 'dd-MM-YYYY': 'GMT +12'}}</small></span>
+  <span class="text-500"><small >Al :  {{period.endDate | date: 'dd-MM-YYYY': 'GMT +1'}}</small></span>
+
+</div>
+</p-toolbar>
+
+<p-table #dt [value]="employeeMovementsPayroll" [rowHover]="true" [scrollable]="true" scrollHeight="400px"
+[(selection)]="selectMovementsPayroll" dataKey="identification">
+  <ng-template pTemplate="header">
+      <tr>
+
+          <th style="width: 4rem">
+            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+        </th>
+        <th></th>
+          <th>Identificacion</th>
+          <th>Empleado</th>
+          <th>Dias Laborados</th>
+          <th>Total Devengados</th>
+          <th>Total Deducciones</th>
+          <th>Neto a Pagar</th>
+      </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-employeeMovementPayrolls>
+      <tr>
+          <td>
+              <p-tableCheckbox [value]="employeeMovementPayrolls"></p-tableCheckbox>
+          </td>
+          <td>
+              <div class="p-col flex align-items-center justify-content-center">
+                  <span *ngIf="employeeMovementPayrolls.img"><img class="border-circle w-3rem h-3rem" [src]="employeeMovementPayrolls.img" alt="empleado"></span>
+                  <span *ngIf="!employeeMovementPayrolls.img"><img src="assets/images/no-image.png" class="border-circle w-3rem h-3rem" alt="empleado"></span>
+              </div>
+          </td>
+
+          <td>{{employeeMovementPayrolls.identification |number}}</td>
+          <td> {{employeeMovementPayrolls.firstName | titlecase }} {{employeeMovementPayrolls.surname | titlecase}}</td>
+          <td>{{employeeMovementPayrolls.daysWork}}</td>
+          <td>{{employeeMovementPayrolls.salaryValue + employeeMovementPayrolls.noSalaryValue | currency:'COP':'symbol-narrow':'1.0-4'}}</td>
+          <td>{{employeeMovementPayrolls.deductionValue | currency:'COP':'symbol-narrow':'1.0-4'}}</td>
+          <td>
+              <p-tag severity="danger" [rounded]="true">
+                  <span>
+                      {{employeeMovementPayrolls.salaryValue + employeeMovementPayrolls.noSalaryValue - employeeMovementPayrolls.deductionValue | currency:'COP':'symbol-narrow':'1.0-4'}}
+                  </span>
+              </p-tag>
+
+
+             </td>
+      </tr>
+  </ng-template>
+</p-table>
+
+
+
+<p-dialog header="Generar Interfaz Contable" [modal]="true" [(visible)]="visibleContable" [style]="{ width: '25rem' }">
+  <span class="p-text-secondary block mb-5">Seleccione el Software Contable</span>
+  <div class="flex align-items-center gap-3 mb-3 relative flex align-items-center justify-content-center">
+    <p-dropdown [(ngModel)]="selectSoftware" appendTo="body"
+    class="form-control form-control-sm relative flex align-items-center justify-content-center"
+    [options]="software" optionLabel="label" optionValue="value"></p-dropdown>
+  </div>
+
+  <div class="flex justify-content-end gap-2 relative flex align-items-center justify-content-center">
+      <button pButton class="m-1"label="Cancelar" severity="secondary"></button>
+
+      <button pButton label="Generar Plano" (click)="contabilizar()"></button>
+  </div>
+</p-dialog>
+
+
+
+
+
+
+
+
+<p-dialog header="Seleccione el Banco Pagador" [(visible)]="visibleBank" [style]="{ width: '500px', height: '300px'}" [modal]="true" styleClass="p-fluid">
+
+<ng-template pTemplate="content">
+<form autocomplete="off"  action="index.html">
+
+<div class="field">
+
+    <p-dropdown [(ngModel)]="selectBank" appendTo="body"
+    class="form-control form-control-sm relative flex align-items-center justify-content-center"
+    [options]="bank" optionLabel="label" optionValue="value"></p-dropdown>
+</div>
+
+</form>
+
+</ng-template>
+
+<ng-template pTemplate="footer">
+<div class="relative flex align-items-center justify-content-center">
+<button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+<button pButton pRipple label="Aceptar" icon="pi pi-check" class="p-button-text"  (click)="hideDialog()"></button>
+</div>
+</ng-template>
+
+<!-- <p-dropdown [options]="software" [(ngModel)]="selectSoftware" optionLabel="label" [showClear]="true" placeholder="Select a City"></p-dropdown> -->
+
+
+</p-dialog>

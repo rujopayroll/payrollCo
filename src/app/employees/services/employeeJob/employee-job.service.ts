@@ -26,40 +26,40 @@ private URL_SERVICIOS: string = environment.URL_SERVICIOS;
 
 public headers = new HttpHeaders();
   employeeJob!: EmployeeJob;
-  
-  
 
-  constructor( public http: HttpClient, 
+
+
+  constructor( public http: HttpClient,
     public _usuarioService: AuthService,
-    public _companyService: CompanyService) { 
+    public _companyService: CompanyService) {
 
       this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
     }
-    
-  
-    
 
-    
+
+
+
+
 
     cargarEmployeeJob( idEmployee: string){
 
-      let url = this.URL_SERVICIOS + '/employeeJobs?id=' + idEmployee;
-      return this.http.get( url, {headers: this.headers} )
+      let url = this.URL_SERVICIOS + '/employeeJob?id=' + idEmployee;
+      return this.http.get( url, {withCredentials:true} )
       .pipe(
           map( (resp: any) => resp ));
-          
+
     }
     buscarEmployeeJob( termino: string ) {
       let url = this.URL_SERVICIOS + '/busqueda/coleccion/companys/' + termino;
       return this.http.get( url )
-      .pipe(    
+      .pipe(
       map(( resp: any ) => resp.employeeJob));
     }
     borrarEmployeeJob( id: string ){
       let url = this.URL_SERVICIOS + '/employeeJob/' + id;
-      url += '?token=' + this._usuarioService.token;
-      return this.http.delete( url )
-      .pipe(   
+      /* url += '?token=' + this._usuarioService.token; */
+      return this.http.delete( url, {withCredentials: true} )
+      .pipe(
       map( (resp: any) => {
               Swal.fire({
               text: 'informacion del puesto del empleado Eliminado',
@@ -69,16 +69,16 @@ public headers = new HttpHeaders();
       }));
     }
     crearEmployeeJob( employeeJob: any){
-      let url = this.URL_SERVICIOS + '/employeeJobs';
-      
-      return this.http.post( url, employeeJob, {headers: this.headers})
-      .pipe(    
+      let url = this.URL_SERVICIOS + '/employeeJob';
+
+      return this.http.post( url, employeeJob, {withCredentials:true})
+      .pipe(
       map( (resp: any) =>{
 
             Swal.fire({
               text: 'informacion del puesto guardada',
               icon: 'success'
-            }); 
+            });
 
             return resp;
           }))
@@ -96,10 +96,10 @@ public headers = new HttpHeaders();
 
     actualizarEmployeeJob( employeeJob: EmployeeJob ){
 
-      let url = this.URL_SERVICIOS + '/employeeJobs/' + employeeJob.id;
-     
-      return this.http.put( url, employeeJob, {headers: this.headers})
-      .pipe(    
+      let url = this.URL_SERVICIOS + '/employeeJob/' + employeeJob.id;
+
+      return this.http.put( url, employeeJob, {withCredentials: true})
+      .pipe(
       map( (resp: any) =>{
             Swal.fire({
               text: 'Informacion del puesto Actualizado',

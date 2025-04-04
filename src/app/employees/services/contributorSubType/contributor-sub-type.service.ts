@@ -13,27 +13,27 @@ import { map, catchError } from 'rxjs/operators';
 })
 export class ContributorSubTypeService {
 
-    private URL_SERVICIOS: string = environment.URL_SERVICIOS;  
+    private URL_SERVICIOS: string = environment.URL_SERVICIOS;
 
   public headers = new HttpHeaders();
 
   constructor( public http: HttpClient,
-    public _usuarioService: AuthService) { 
+    public _usuarioService: AuthService) {
 
-      this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
+      // this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
     }
 
   cargarSubTipoCotizante(){
-    let url = this.URL_SERVICIOS + '/contributorSubTypes';
-    return this.http.get( url, {headers: this.headers} )
+    let url = this.URL_SERVICIOS + '/contributorSubType';
+    return this.http.get( url, {withCredentials:true} )
     .pipe(
          map( (resp: any) => {
           return resp;
         }));
   }
   obtenerSubTipoCotizante( id: string ){
-    let url = this.URL_SERVICIOS + '/contributorSubTypes/' + id;
-    return this.http.get( url, {headers: this.headers} )
+    let url = this.URL_SERVICIOS + '/contributorSubType/' + id;
+    return this.http.get( url, {withCredentials:true} )
     .pipe(
         map( (resp: any ) => resp ));
   }

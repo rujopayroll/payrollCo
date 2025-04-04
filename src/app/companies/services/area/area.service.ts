@@ -33,13 +33,13 @@ export class AreaService {
                public _usuarioService: AuthService,
                public _companyService: CompanyService) {
 
-                this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
+                //this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
                }
 
     cargarArea( id: string){
 
       let url = this.URL_SERVICIOS + '/companies/' + id;
-      return this.http.get( url, {headers: this.headers} )
+      return this.http.get( url, {withCredentials:true} )
       .pipe(
           map( (resp: any) => resp.areas ));
     }
@@ -47,7 +47,7 @@ export class AreaService {
     obtenerArea( id: string){
 
       let url = this.URL_SERVICIOS + '/areas/' + id;
-      return this.http.get( url, {headers: this.headers} )
+      return this.http.get( url, {withCredentials:true} )
       .pipe(
           map( (resp: any) => resp ));
     }
@@ -65,7 +65,7 @@ export class AreaService {
 
       let url = this.URL_SERVICIOS + '/areas?isActive=True' + '&' + 'company_id=' + idcompany ;
 
-      return this.http.get( url, {headers: this.headers} )
+      return this.http.get( url, {withCredentials:true} )
       .pipe(
           map( (resp: any) => resp ));
     }
@@ -81,8 +81,8 @@ export class AreaService {
 
     borrarArea( id: string ){
       let url = this.URL_SERVICIOS + '/areas/' + id;
-      url += '?token=' + this._usuarioService.token;
-      return this.http.delete( url , {headers: this.headers})
+
+      return this.http.delete( url , {withCredentials:true})
       .pipe(
           map( (resp: any) => {
               Swal.fire({
@@ -94,7 +94,7 @@ export class AreaService {
     }
     crearArea( area: Area){
       const url = this.URL_SERVICIOS + '/areas';
-      return this.http.post( url, area, {headers: this.headers})
+      return this.http.post( url, area, {withCredentials:true})
       .pipe(
       map( (resp: any) =>{
         Swal.fire({
@@ -119,9 +119,8 @@ export class AreaService {
     actualizarArea( area: Area ){
 
       let url = this.URL_SERVICIOS + '/areas/' + area.id;
-      url += '?token=' + this._usuarioService.token;
-      console.log('servicio',area.id)
-      return this.http.put( url,  area, {headers: this.headers})
+
+      return this.http.put( url,  area, {withCredentials:true})
       .pipe(
           map( (resp: any) =>{
             Swal.fire({

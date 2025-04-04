@@ -26,27 +26,27 @@ export class PositionService {
   public headers = new HttpHeaders();
   position!: Position;
   company!: Company;
-  
 
-  constructor( public http: HttpClient, 
+
+  constructor( public http: HttpClient,
                public _usuarioService: AuthService,
-               public _companyService: CompanyService) { 
+               public _companyService: CompanyService) {
 
-                this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
+                //this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
                }
 
     cargarPosition( id: string){
 
       let url = this.URL_SERVICIOS + '/companies/' + id;
-      return this.http.get( url, {headers: this.headers} )
+      return this.http.get( url, {withCredentials:true})
       .pipe(
           map( (resp: any) => resp.positions ));
     }
 
     obtenerPosition( id: string){
 
-      let url = this.URL_SERVICIOS + '/positions/' + id;
-      return this.http.get( url, {headers: this.headers})
+      let url = this.URL_SERVICIOS + '/position/' + id;
+      return this.http.get( url, {withCredentials:true})
       .pipe(
           map( (resp: any) => resp ));
     }
@@ -54,8 +54,8 @@ export class PositionService {
     cargarPositionCompany( idcompany: string){
 
       let url = this.URL_SERVICIOS + '/companies/' + idcompany;
-     
-      return this.http.get( url, {headers: this.headers})
+
+      return this.http.get( url, {withCredentials:true})
       .pipe(
           map( (resp: any) => resp.positions ));
     }
@@ -64,9 +64,9 @@ export class PositionService {
 
 
       //let url = URL_SERVICIOS_HEROKU + '/positions/' + idcompany + '/isActive';
-      let url = this.URL_SERVICIOS + '/positions?isActive=True' + '&' + 'company_id=' + idcompany;
-     
-      return this.http.get( url, {headers: this.headers})
+      let url = this.URL_SERVICIOS + '/position?isActive=True' + '&' + 'company_id=' + idcompany;
+
+      return this.http.get( url, {withCredentials:true})
       .pipe(
           map( (resp: any) => resp ));
     }
@@ -74,14 +74,14 @@ export class PositionService {
 
     buscarPosition( termino: string ) {
       let url = this.URL_SERVICIOS + '/busqueda/coleccion/companys/' + termino;
-      return this.http.get( url, {headers: this.headers})
+      return this.http.get( url, {withCredentials:true})
       .pipe(
           map(( resp: any ) => resp.position));
     }
     borrarPosition( id: string ){
-      let url = this.URL_SERVICIOS + '/positions/' + id;
-      
-      return this.http.delete( url, {headers: this.headers} )
+      let url = this.URL_SERVICIOS + '/position/' + id;
+
+      return this.http.delete( url, {withCredentials:true} )
       .pipe(
           map( (resp: any) => {
               Swal.fire({
@@ -92,11 +92,11 @@ export class PositionService {
       }));
     }
     crearPosition( position: Position){
-      let url = this.URL_SERVICIOS + '/positions';
-      return this.http.post( url, position, {headers: this.headers})
+      let url = this.URL_SERVICIOS + '/position';
+      return this.http.post( url, position, {withCredentials:true})
       .pipe(
           map( (resp: any) =>{
-           
+
             Swal.fire({
                 text: 'Cargo Creado',
                 icon: 'success'
@@ -118,16 +118,16 @@ export class PositionService {
 
     actualizarPosition( position: Position ){
 
-      let url = this.URL_SERVICIOS + '/positions/' + position.id;
+      let url = this.URL_SERVICIOS + '/position/' + position.id;
       url += '?token=' + this._usuarioService.token;
-      return this.http.put( url, position, {headers: this.headers})
+      return this.http.put( url, position, {withCredentials:true})
       .pipe(
           map( (resp: any) =>{
             Swal.fire({
               text: 'Cargo Actualizado',
               icon: 'success'
             });
-            return resp.position;
+            return resp;
           }));
     }
 

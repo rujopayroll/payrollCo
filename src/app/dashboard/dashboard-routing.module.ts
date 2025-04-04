@@ -12,7 +12,8 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        component: DashboardComponent, canActivate: [ LoginGuardsGuard, VerificaTokenGuard]
+       component: DashboardComponent
+        //component: DashboardComponent, canActivate: [ LoginGuardsGuard]
       },
 
       {

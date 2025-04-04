@@ -64,7 +64,7 @@ export class EmployeeComponent implements OnInit {
   onScroll(event: HTMLElement, i:any) {
     this.pageScrollServ.scroll({
       scrollTarget: event,
-      scrollOffset: 350,
+      scrollOffset: 390,
       document: this.document
     });
 

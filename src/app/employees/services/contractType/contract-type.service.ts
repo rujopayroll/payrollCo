@@ -12,29 +12,29 @@ import { map, catchError } from 'rxjs/operators';
 })
 export class ContractTypeService {
 
-  private URL_SERVICIOS: string = environment.URL_SERVICIOS;  
+  private URL_SERVICIOS: string = environment.URL_SERVICIOS;
   public headers = new HttpHeaders();
   constructor( public http: HttpClient,
-               public _usuarioService: AuthService) { 
+               public _usuarioService: AuthService) {
 
-                this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
+               /*  this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token')); */
                }
 
   cargarTipoContrato(){
-    let url = this.URL_SERVICIOS + '/contractTypes';
-    return this.http.get( url, {headers: this.headers} )
+    let url = this.URL_SERVICIOS + '/contractType';
+    return this.http.get( url, {withCredentials:true} )
     .pipe(
          map( (resp: any) => {
           return resp;
         }));
   }
   obtenerTipoContrato( id: string ){
-    let url = this.URL_SERVICIOS + '/contractTypes/' + id;
-    
-    return this.http.get( url, {headers: this.headers} )
+    let url = this.URL_SERVICIOS + '/contractType/' + id;
+
+    return this.http.get( url, {withCredentials:true} )
     .pipe(
         map( (resp: any ) => resp ));
-    
+
 
   }
 

@@ -1,5 +1,5 @@
 <div class="grid">
-           
+
     <div class="col-4 text-center text-500">
         <div class= "row">
             <br>
@@ -15,54 +15,54 @@
     <div class="col-8" >
 
     <p-panel header="Información del Contrato" >
-     
+
         <p-toast></p-toast>
-        
+
     <ng-template pTemplate="icons">
-            
-            <button pButton pRipple type="button"  label ="Nuevo Contrato" icon="pi pi-plus" class="p-button-rounded p-button-primary p-button-text text-left" (click)="openNewEmployeeContract()"></button> 
-      
+
+            <button pButton pRipple type="button"  label ="Nuevo Contrato" icon="pi pi-plus" class="p-button-rounded p-button-primary p-button-text text-left" (click)="openNewEmployeeContract()"></button>
+
          </ng-template>
 
          <div>
              <!-- <p-table #dt  [value]="costCenter" [rows]="4" [paginator]="true"  [scrollable]="true"> -->
                 <p-table #dt [value]="employeesContract" [scrollable]="true" scrollHeight="200px"
                 [(selection)]="selectedEmployeesContract" [rowHover]="true" dataKey="id">
-           
-               
+
+
                <ng-template pTemplate="header">
-                
+
                 <tr>
-                        
+
                     <th>Tipo Contrato</th>
                     <th>F.Inicial</th>
                     <th>F.Final</th>
                     <th>Estado</th>
                     <th></th>
                 </tr>
-          
-            
+
+
                 </ng-template>
                 <ng-template pTemplate="body" let-contractEmployee>
                     <tr>
                         <td>
-                            <select [(ngModel)]="contractEmployee.contractType_id" disabled = "false" class="form-control form-control-sm" name="contractTypes" style="width: 10rem; border-width: 0px; font-size:15px; align-items: flex-end; appearance:none;">
+                            <select [(ngModel)]="contractEmployee.contractType.id" disabled = "false" class="form-control form-control-sm" name="contractTypes" style="width: 10rem; border-width: 0px; font-size:15px; align-items: flex-end; appearance:none;">
 
                                     <option *ngFor="let contractT of contractType" [value]="contractT.id">
-                                      <span>{{contractT.description}}</span> 
+                                      <span>{{contractT.description}}</span>
                                    </option>
                                 </select>
                         </td>
 
                         <td>
                              <span class="text-400 align-items-start justify-content-start">{{contractEmployee.initialContractDate | date: 'dd.MM.yyyy'}}</span>
-                           
+
                         </td>
                         <td>
                             <span class="text-400 align-items-start justify-content-start">{{contractEmployee.endContractDate | date: 'dd.MM.yyyy'}}</span>
-                           
+
                         </td>
-                        
+
                             <td class="text-400 align-items-start justify-content-start">{{contractEmployee.isActive ? 'Activo' : 'Inactivo'}}</td>
 
                             <td>
@@ -72,71 +72,71 @@
                             </td>
 
 
-                           
-                        
+
+
                     </tr>
                  </ng-template>
-                
-            </p-table> 
 
-        
-      
+            </p-table>
+
+
+
         </div>
-     
+
         <p-dialog [(visible)]="employeeContractDialog" [style]="{width: '500px'}" header="Información de Contrato" [modal]="true" styleClass="p-fluid">
             <ng-template pTemplate="content">
                 <form autocomplete="off" [formGroup]="forma" (ngSubmit)="guardar()" id="employeeContractform" action="index.html">
-               
-               
-               
-               
+
+
+
+
                     <div class="field">
                         <label for="contractType">Tipo de Contrato</label>
-                        <select [(ngModel)]="employeeContracts.contractType_id" class="form-control form-control-xl" formControlName="contractType" [class.is-invalid]="contractTypeNoValido" 
-                            name="contractType" 
-                            id="contractType" 
-                            style="border-radius: 0.2rem; width: 28rem; height:2rem ; border-width: 1px; border-color:lightblue;  font-family: Arial, Helvetica, sans-serif; font-size: 1rem;">         
+                        <select [(ngModel)]="employeeContracts.contractType_id" class="form-control form-control-xl" formControlName="contractType" [class.is-invalid]="contractTypeNoValido"
+                            name="contractType"
+                            id="contractType"
+                            style="border-radius: 0.2rem; width: 28rem; height:2rem ; border-width: 1px; border-color:lightblue;  font-family: Arial, Helvetica, sans-serif; font-size: 1rem;">
                         <option *ngFor="let TypeC of contractTypes" [value]="TypeC.id">
-                          <small>{{TypeC.code}}-{{TypeC.description}}</small> 
+                          <small>{{TypeC.code}}-{{TypeC.description}}</small>
                        </option>
                     </select>
-                    </div> 
-               
+                    </div>
+
                     <div class="field">
                         <label for="initialContractDate">Fecha Inicial</label>
-                        <input type="date" pInputText id="initialContractDate" name="initialContractDate" class="form-control form-control-sm" formControlName="initialContractDate" [class.is-invalid]="initialContractDateNoValido" 
+                        <input type="date" pInputText id="initialContractDate" name="initialContractDate" class="form-control form-control-sm" formControlName="initialContractDate" [class.is-invalid]="initialContractDateNoValido"
                         [(ngModel)]="employeeContracts.initialContractDate" />
                         <small class="p-error" *ngIf="submitted && !employeeContracts.initialContractDate">Campo es requerido.</small>
                     </div>
-    
+
                     <div class="field">
                         <label for="endContractDate">Fecha Final</label>
-                        <input type="date" pInputText id="endContractDate" name="endContractDate" class="form-control form-control-sm"     formControlName="endContractDate" [class.is-invalid]="endContractDateNoValido" 
+                        <input type="date" pInputText id="endContractDate" name="endContractDate" class="form-control form-control-sm"     formControlName="endContractDate" [class.is-invalid]="endContractDateNoValido"
                         [(ngModel)]="employeeContracts.endContractDate"/>
-                       
+
                         <small class="p-error" *ngIf="submitted && !employeeContracts.endContractDate">Campo es requerido.</small>
                     </div>
-                    
-    
+
+
                     <div class="field-checkbox">
                         <p-checkbox [(ngModel)]="employeeContracts.isActive" class="form-control form-control-xl" formControlName="estado" [class.is-invalid]="estadoNoValido" [binary]="true" name="estado" inputId="binary"></p-checkbox>
                         <label for="binary">{{employeeContracts.isActive ? 'Activo' : 'Inactivo'}}</label>
                     </div>
 
-               
-                   
+
+
         </form>
-               
+
             </ng-template>
-        
+
             <ng-template pTemplate="footer">
                 <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
                 <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"  (click)="guardar()"></button>
             </ng-template>
         </p-dialog>
-  
 
-         <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog> 
+
+         <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
 
 </p-panel>
 </div>

@@ -17,47 +17,47 @@ export class SocialSecurityEntityService {
 
 public headers = new HttpHeaders();
   constructor( public http: HttpClient,
-               public _usuarioService: AuthService ) { 
+               public _usuarioService: AuthService ) {
 
-                this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
+                //this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
                }
 
     cargarEntidadesSS(){
-      let url = this.URL_SERVICIOS + '/socialsecurityentities';
-      return this.http.get( url, {headers: this.headers} )
+      let url = this.URL_SERVICIOS + '/socialsecurityentity';
+      return this.http.get( url, {withCredentials:true} )
       .pipe(
            map( (resp: any) => {
             return resp;
           }));
     }
 
-    
+
 
 
     obtenerEntidadSS( id: string ){
-      let url = this.URL_SERVICIOS + '/socialsecurityentities/' + id;
-      return this.http.get( url, {headers: this.headers} )
+      let url = this.URL_SERVICIOS + '/socialsecurityentity/' + id;
+      return this.http.get( url, {withCredentials:true} )
       .pipe(
           map( (resp: any ) => resp ));
     }
 
     obtenerEntidadSSPorTipo( type: string ){
-      let url = this.URL_SERVICIOS + '/socialsecurityentities/' +'ByType/' + type ;
-      return this.http.get( url, {headers: this.headers} )
+      let url = this.URL_SERVICIOS + '/socialsecurityentity/' +'ByType/' + type ;
+      return this.http.get( url, {withCredentials:true} )
       .pipe(
           map( (resp: any ) => resp ));
     }
 
      obtenerCajasCompensacion(){
       let url = this.URL_SERVICIOS + '/socialSecurityEntity/caja';
-      return this.http.get( url )
+      return this.http.get( url, {withCredentials:true} )
       .pipe(
           map( (resp: any ) => resp.socialSecurityEntity ));
-    } 
+    }
 
     obtenerEntidadesRiesgo(){
       let url = this.URL_SERVICIOS + '/socialSecurityEntity/riesgo';
-      return this.http.get( url )
+      return this.http.get( url, {withCredentials:true} )
       .pipe(
           map( (resp: any ) => resp.socialSecurityEntity ));
     }
@@ -65,7 +65,7 @@ public headers = new HttpHeaders();
     obtenerEntidadesSalud(){
       let url = this.URL_SERVICIOS + '/socialSecurityEntity/salud';
       console.log(url);
-      return this.http.get( url )
+      return this.http.get( url , {withCredentials:true})
       .pipe(
           map( (resp: any ) => resp.socialSecurityEntity ));
     }
@@ -73,17 +73,17 @@ public headers = new HttpHeaders();
     obtenerEntidadesPension(){
       let url = this.URL_SERVICIOS+ '/socialSecurityEntity/pension';
       console.log(url);
-      return this.http.get( url )
+      return this.http.get( url, {withCredentials:true} )
       .pipe(
           map( (resp: any ) => resp.socialSecurityEntity ));
     }
 
     obtenerEntidadesCesantia(){
       let url = this.URL_SERVICIOS + '/socialSecurityEntity/cesantia';
-     
-      return this.http.get( url )
+
+      return this.http.get( url, {withCredentials:true} )
       .pipe(
           map( (resp: any ) => resp.socialSecurityEntity ));
     }
-    
+
 }

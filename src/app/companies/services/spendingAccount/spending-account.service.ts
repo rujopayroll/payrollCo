@@ -15,24 +15,24 @@ export class SpendingAccountService {
 
   public headers = new HttpHeaders();
   constructor( public http: HttpClient,
-               public _usuarioService: AuthService ) { 
+               public _usuarioService: AuthService ) {
 
-                this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
+               // this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
                }
 
     cargarCuentaGastos(){
-      let url = this.URL_SERVICIOS + '/spendingAccounts';
-      return this.http.get( url, {headers: this.headers} )
+      let url = this.URL_SERVICIOS + '/spendingAccount';
+      return this.http.get( url, {withCredentials:true} )
       .pipe(
            map( (resp: any) => {
             return resp;
           }));
     }
-    
+
     obtenerCuentaGastos( id: string ){
-      let url = this.URL_SERVICIOS + '/spendingAccounts/' + id;
+      let url = this.URL_SERVICIOS + '/spendingAccount/' + id;
       console.log('url', url)
-      return this.http.get( url, {headers: this.headers} )
+      return this.http.get( url, {withCredentials:true} )
       .pipe(
           map( (resp: any ) => {
           return resp

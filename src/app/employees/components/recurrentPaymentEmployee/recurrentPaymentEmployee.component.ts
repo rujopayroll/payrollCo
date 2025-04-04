@@ -90,19 +90,19 @@ export class RecurrentPaymentEmployeeComponent implements OnInit {
     this.company = this._usuarioService.empresas;
     this.empresaseleccionada = localStorage.getItem('empresaseleccionada');
     this.usuario = JSON.parse(localStorage.getItem('usuario')!);
-    console.log('empresa1', this.empresaseleccionada)
+
 
     if ( this.empresaseleccionada ){
       this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
-      console.log('empresa2', this.empresa)
+
 
     } else {
       if(this.company.length > 1 ) {
         this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
-        console.log('empresa3', this.empresa)
+
       } else {
         this.empresa =  JSON.parse(JSON.stringify(this.company[0]));
-        console.log('empresa4', this.empresa)
+
       }
     }
 
@@ -159,8 +159,8 @@ export class RecurrentPaymentEmployeeComponent implements OnInit {
   getEmployeesRecurrentPayment( id: string ) {
     this._employeeRecurrentPaymentService.getEmployeeRecurrentPayment( id )
         .subscribe( employeeRecurrentPayment => {
-
-        this.employeeRecurrentPayments = employeeRecurrentPayment;
+          console.log('recurrenteff',employeeRecurrentPayment)
+        this.employeeRecurrentPayments =  Array.isArray(employeeRecurrentPayment.data) ? employeeRecurrentPayment.data : [employeeRecurrentPayment.data];
 
         });
 
@@ -169,9 +169,9 @@ export class RecurrentPaymentEmployeeComponent implements OnInit {
   getRecurrentPayment( id: string ) {
     this._employeeRecurrentPaymentService.cargarEmployeeRecurrentPayment( id )
         .subscribe( recurrentPayment => {
-
-        this.recurrentPayments = recurrentPayment;
-
+console.log('recurrente',recurrentPayment)
+        this.recurrentPayments = Array.isArray(recurrentPayment.data ) ? recurrentPayment.data : [recurrentPayment.data ];
+        console.log('recurrente3333',this.recurrentPayments)
         });
 
   }
@@ -181,7 +181,7 @@ export class RecurrentPaymentEmployeeComponent implements OnInit {
   getConcept( id:string)  {
     this._conceptService.cargarConceptCompany(id)
         .subscribe( concepts => {
-          this.concepts = concepts;
+          this.concepts = concepts.data;
           console.log('conce', this.concepts)
   });
   }
@@ -190,7 +190,7 @@ export class RecurrentPaymentEmployeeComponent implements OnInit {
     this._conceptService.getAllConceptNovelty( id )
         .subscribe( concepts => {
 
-          this.concepto = concepts;
+          this.concepto = concepts.data;
 
   });
   }

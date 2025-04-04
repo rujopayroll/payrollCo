@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/services/authservice.index';
 import { Employee } from '../../../employees/models/employee.model';
 import { Movements } from '../../models/movements.model';
+import { DefinitiveComponent } from '../definitive/definitive.component';
 import { Period} from '../../models/period.model'
 import { PeriodService } from '../../services/payrollService.index';
 import { PayrollService } from '../../services/payrollService.index';
@@ -18,6 +19,7 @@ import {MenuItem} from 'primeng/api';
 import {DialogService, DynamicDialogRef} from 'primeng/dynamicdialog';
 import { UntypedFormGroup, FormControl, Validators, UntypedFormBuilder } from '@angular/forms';
 import { GetEmployeeService } from '../../services/get-employee.service';
+import { ConfirmationService, MessageService, ConfirmEventType } from 'primeng/api';
 
 //import { stringify } from '@angular/compiler/src/util';
 
@@ -28,7 +30,7 @@ declare var $: any;
   selector: 'app-novelties',
   templateUrl: './novelties.component.html',
   styleUrls: ['./novelties.component.scss'],
-  providers: [DialogService],
+  providers: [DialogService, ConfirmationService, MessageService],
 
 })
 export class NoveltiesComponent implements OnInit {
@@ -64,7 +66,14 @@ export class NoveltiesComponent implements OnInit {
   employeeSelects!: string
   indexTab: number = 0;
   activeItem:any;
+  selectMovementsPayroll: any[] = [];
 
+  software!: any[];
+  selectSoftware!: any [];
+  bank!: any[];
+  selectBank!: any [];
+  visible: boolean = false;
+  visibleBank: boolean = false;
 
   forma: UntypedFormGroup = this.fb.group({
 
@@ -81,7 +90,8 @@ export class NoveltiesComponent implements OnInit {
               public _getEmployeeService: GetEmployeeService,
               private _absenteeService: AbsenteeService,
               private fb: UntypedFormBuilder,
-
+              private confirmationService: ConfirmationService,
+              private messageService: MessageService
 
                 ) {
 
@@ -116,7 +126,24 @@ export class NoveltiesComponent implements OnInit {
 
   ngOnInit(){
 
+    this.software = [
+      { label: 'No Aplica', value: 'noaplica' },
+      { label: 'Alegra', value: 'alegra' },
+      { label: 'Sigo', value: 'sigo' },
+      { label: 'Sap', value: 'sap' },
+      { label: 'Contai', value: 'contai' }
 
+  ];
+
+  this.bank = [
+    { label: 'Bancolombia', value: '1' },
+    { label: 'Davivienda', value: '2' },
+    { label: 'Banco Bogota', value: '3' },
+
+
+];
+
+    this.getPeriodByProcess(this.empresa.id)
 
     this.items = [{
     label:'Novedades',
@@ -175,20 +202,31 @@ export class NoveltiesComponent implements OnInit {
 
 }
 
-    getPeriodByProcess( id: string ) {
+getPeriodByProcess( id: string ) {
 
-    this._periodService.getPeriodByCompanyByProcess( id)
-        .subscribe( (period: any={}) => {
-          this.period[0] = period[0];
-console.log('period actual',this.period[0])
-          if (this.period[0]) {
+  this._periodService.getPeriodByCompanyByProcess( id )
+     .subscribe ( (period: any) => {
+      this.period = period.data[0];
+       if (period && Array.isArray(period.data)) {
+console.log('period_nove',this.period)
+console.log('period_id',this.period.id)
+        this.getMovementByPeriod( this.period.id );
+        this.getMovementPayrollByEmployee( this.empresa.id, this.period.id );
+      }
 
-            this.getMovementByPeriod( this.period[0].id );
-            this.getMovementPayrollByEmployee( this.empresa.id, this.period[0].id );
-          }
-        });
+     },
+     (error) => {
+       console.error('Error al cargar periodo en proceso', error);
+       this.period = []; // Manejo de error para evitar undefined
+     }
 
-  }
+     );
+}
+
+
+
+
+
 
 
   getMovementByPeriod( id: string ) {
@@ -211,7 +249,7 @@ console.log('period actual',this.period[0])
     this._movementService.getMovementsByEmployee( id, period )
         .subscribe( employeeMovements => {
           this.employeeMovements = employeeMovements
-          console.log('movimientoempleados',employeeMovements)
+
           if (this.employeeMovements) {
 
             this.getEmployeeById( this.employeeMovements[0].employee_id );
@@ -227,16 +265,16 @@ console.log('period actual',this.period[0])
         .subscribe( employeeMovementsPayroll => {
          this.employeeMovementsPayroll = employeeMovementsPayroll
 
-         /* this.filter = employeeMovementsPayroll[0].salariales;
-          console.log('filter',this.filter)
-          this.filter1 = _.map(this.filter, function(o) { */
-            //if (o.name == "john") return o;
+
             if (this.employeeMovementsPayroll) {
 
               this.getEmployeeById( this.employeeMovementsPayroll[0].employee_id );
             }
         });
   }
+
+
+
 
   getMovementByConcept(id: string , period: string) {
     this._movementService.getMovementsByConcept( id, period )
@@ -248,7 +286,7 @@ console.log('period actual',this.period[0])
   createdPayroll(id: string) {
     this._movementService.createPayroll(id)
         .subscribe((payrollCreated: any) => {
-          console.log(payrollCreated,'creado')
+
         })
   }
 
@@ -258,18 +296,18 @@ console.log('period actual',this.period[0])
   getEmployeeById( id: string) {
     this._employeeService.cargarEmployees( id )
         .subscribe((employee:Employee) => {
-          console.log(employee)
+
           this.employee  = employee
-          console.log(this.employee,'solo')
+
         })
   }
 
   getEmployeeByCompany( id: string) {
     this._employeeService.cargarEmployeeCompany( id )
         .subscribe((employeesCompany:Employee) => {
-          console.log(employeesCompany)
+
           this.employeesCompany  = employeesCompany
-          console.log(this.employeesCompany)
+
         })
   }
 
@@ -290,7 +328,7 @@ console.log('period actual',this.period[0])
     this._getEmployeeService.enviarGroup(group);
 
     this.ref.onClose.subscribe(() => {
-      this.getMovementPayrollByEmployee( this.empresa.id, this.period[0].id );
+      this.getMovementPayrollByEmployee( this.empresa.id, this.period.id );
   });
   }
 
@@ -315,7 +353,7 @@ console.log('period actual',this.period[0])
 
 
     this.ref.onClose.subscribe(() => {
-      this.getMovementPayrollByEmployee( this.empresa.id, this.period[0].id );
+      this.getMovementPayrollByEmployee( this.empresa.id, this.period.id );
       this.ref.destroy();
   });
   }
@@ -334,7 +372,7 @@ console.log('period actual',this.period[0])
 
 
     this.ref.onClose.subscribe(() => {
-      this.getMovementPayrollByEmployee( this.empresa.id, this.period[0].id );
+      this.getMovementPayrollByEmployee( this.empresa.id, this.period.id );
   });
   }
 
@@ -363,5 +401,18 @@ ssModalDialog() {
   this.ssModal = true;
 }
 
+showDialog() {
+  this.visible = true;
+}
+
+showDialogBank() {
+  this.visibleBank = true;
+}
+
+hideDialog() {
+  /* this.infoEmployeeDialog = false;
+  this.submitted = false; */
+}
 
 }
+

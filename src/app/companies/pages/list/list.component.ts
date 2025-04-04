@@ -39,7 +39,7 @@ export class ListComponent implements OnInit {
 
   companys: Company [] = [];
   companyUser: any[]=[]
-  usuario: Usuario;
+  usuario!: Usuario;
 
   constructor( public _usuarioService: AuthService,
                public _companyService: CompanyService,
@@ -50,7 +50,8 @@ export class ListComponent implements OnInit {
 
                 //this.company = this._usuarioService.empresas;
     //this.empresaseleccionada = localStorage.getItem('empresaseleccionada')!;
-    this.usuario = JSON.parse(localStorage.getItem('usuario')!);
+    this.idUser = localStorage.getItem('id')!;
+    this.correo = localStorage.getItem('usuario')!;
 
    /*  if ( this.empresaseleccionada ){
       this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
@@ -67,25 +68,12 @@ export class ListComponent implements OnInit {
   //this.usuario = this._usuarioService.usuario;
 
   //this.cargarEmpresasUsuario(this.usuario.id!);
-
+  this.cargarEmpresasUsuario(this.idUser!)
 
 
                 }
 
   ngOnInit(): void {
-  //  this.cargarEmpresas();
-
-    //this.usuario = this._usuarioService.usuario;
-   // debugger
-
-    this.cargarEmpresasUsuario(this.usuario.id!)
-
-
-
-
-
-
-
 
   }
 
@@ -113,6 +101,7 @@ export class ListComponent implements OnInit {
       this._companyService.cargarCompanysUser(iduser)
       .subscribe ( companyUser => {
         this.companyUser = companyUser.companies
+        this.usuario = companyUser.user
       });
     }
 
@@ -140,10 +129,10 @@ export class ListComponent implements OnInit {
           {
 
             companyName:value,
-            email:this.usuario.userName,
-            createUser:this.usuario.id,
+            email:this.correo,
+            createUser:this.idUser,
             isActive: this.isActive,
-            user_id: this.usuario.id,
+            user_id: this.idUser,
 
 
           }
@@ -155,7 +144,7 @@ export class ListComponent implements OnInit {
 
         this._companyService.crearCompany( this.registro )
         .subscribe(respc => {
-          this.cargarEmpresasUsuario(this.usuario.id!);
+          this.cargarEmpresasUsuario(this.idUser!);
 
 
         });

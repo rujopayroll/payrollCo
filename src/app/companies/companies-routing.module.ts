@@ -15,7 +15,7 @@ const routes: Routes = [
 
       {
         path: 'config',
-        component: CompaniesComponent, canActivate: [ LoginGuardsGuard, VerificaTokenGuard]
+        component: CompaniesComponent
       },
       {
         path: 'list',

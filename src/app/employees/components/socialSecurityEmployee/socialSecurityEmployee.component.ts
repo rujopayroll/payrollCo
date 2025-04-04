@@ -57,8 +57,8 @@ export class SocialSecurityEmployeeComponent implements OnInit  {
   contributorSubTypes:  ContributorSubType[] = [];
   contributorType: any = {};
   contributorTypes: ContributorType[] = [];
-  
-  
+
+
   employeeSocialSecurity: EmployeeSocialSecurity = new EmployeeSocialSecurity('', '', true, '', '', '', '', '', this.date, this.date, '');
 
 
@@ -74,7 +74,7 @@ export class SocialSecurityEmployeeComponent implements OnInit  {
               public pageScrollServ: PageScrollService,
               public _modalUploadServices: ModalUploadService,
               @Inject(DOCUMENT) private document: any
-              ) { 
+              ) {
 
                 this.company = this._usuarioService.empresas;
                 this.empresaseleccionada = localStorage.getItem('empresaseleccionada');
@@ -92,7 +92,7 @@ export class SocialSecurityEmployeeComponent implements OnInit  {
 
                  this.activatedRoute.params.subscribe( params =>{
                   this.cargarEmployeesSocialSecurity( params[ 'id' ]);
-              }); 
+              });
 
               this.crearFormulario();
 
@@ -124,11 +124,11 @@ export class SocialSecurityEmployeeComponent implements OnInit  {
   get entityHealthNoValido(){return this.forma.get('entityHealth')!.invalid && this.forma.get('entityHealth')!.touched}
   get entityPensionNoValido(){return this.forma.get('entityPension')!.invalid && this.forma.get('entityPension')!.touched}
   get entitySeveranceNoValido(){return this.forma.get('entitySeverance')!.invalid && this.forma.get('entitySeverance')!.touched}
- 
+
   crearFormulario(){
 
     this.forma = this.fb.group({
-     
+
       contributorType       : ['', Validators.required],
       contributorSubType:  ['', Validators.required],
       entityHealth    : ['', Validators.required],
@@ -140,30 +140,30 @@ export class SocialSecurityEmployeeComponent implements OnInit  {
     guardar(socialSecurityEmployee: EmployeeSocialSecurity){
 
       if (this.forma.invalid){
-    
+
         console.log('invalido')
-    
+
         return Object.values (this.forma.controls).forEach( control =>{
-    
+
           if (control instanceof UntypedFormGroup) {
             Object.values (control.controls).forEach( control => control.markAsTouched());
-    
+
           } else{
             control.markAsTouched();
           }
-          
-    
+
+
         });
       }
-  
-    
+
+
       this.activatedRoute.params.subscribe( params => {
         const id = params[ 'id' ];
-    
-  
+
+
       let form = [
         {
-    
+
           updateUser: this.usuario,
           isActive: this.isActive,
           id: id,
@@ -172,23 +172,23 @@ export class SocialSecurityEmployeeComponent implements OnInit  {
           entityHealth_id: this.forma.value.entityHealth,
           entityPension_id: this.forma.value.entityPension,
           entitySeverance_id: this.forma.value.entitySeverance
-         
-  
+
+
         }
       ]
-   
-    
+
+
       this.registro =  JSON.parse(JSON.stringify(form[0]));
-      
-  
+
+
       this._employeeSocialSecurityService.actualizarEmployeeSocialSecurity( this.employeeSS )
               .subscribe( () => this.cargarEmployeesSocialSecurity(this.employeeSS.id));
               this.ssEmployeeDialog = false;
-      
-      
-    
+
+
+
       // this.forma.reset();
-    }) 
+    })
     }
 
   onScroll(event: HTMLElement, i:any) {
@@ -199,7 +199,7 @@ export class SocialSecurityEmployeeComponent implements OnInit  {
     });
 
     this.active = i;
-  } 
+  }
 
   hideDialog() {
     this.ssEmployeeDialog = false;
@@ -215,8 +215,8 @@ editSSEmployee(socialSecurityEmployee: EmployeeSocialSecurity) {
   cargarEmployeesSocialSecurity( id: string ) {
     this._employeeSocialSecurityService.cargarEmployeeSocialSecurity( id )
         .subscribe( employeeSocialSecurity => {
-          this.employeeSS = employeeSocialSecurity[0];
-         
+          this.employeeSS = employeeSocialSecurity.data[0];
+
           if (this.employeeSS){
 
             this.getSocialSecurityEntityHealth( this.employeeSS.entityHealth_id );
@@ -224,9 +224,9 @@ editSSEmployee(socialSecurityEmployee: EmployeeSocialSecurity) {
             this.getSocialSecurityEntitySeverance( this.employeeSS.entitySeverance_id);
             this.getContributorType( this.employeeSS.contributorType_id);
             this.getContributorSubType( this.employeeSS.contributorSubType_id);
-          } 
-        
-         
+          }
+
+
         });
 
   }
@@ -234,7 +234,7 @@ editSSEmployee(socialSecurityEmployee: EmployeeSocialSecurity) {
   getSocialSecurityEntityHealth( id: string)  {
     this._socialSecurityEntityService.obtenerEntidadSS(id)
         .subscribe( socialSecurityEntityHealth => {
-         
+
           this.socialSecurityEntityHealth = socialSecurityEntityHealth;
   });
   }
@@ -242,11 +242,11 @@ editSSEmployee(socialSecurityEmployee: EmployeeSocialSecurity) {
   getAllSocialSecurityEntityHealth()  {
     this._socialSecurityEntityService.obtenerEntidadSSPorTipo('EPS')
         .subscribe( socialSecurityEntityHealth => {
-         
+
           this.socialSecurityEntityHealths = socialSecurityEntityHealth;
   });
   }
-  
+
   getSocialSecurityEntityPension( id: string)  {
     this._socialSecurityEntityService.obtenerEntidadSS( id )
         .subscribe( socialSecurityEntityPension => {
@@ -260,7 +260,7 @@ editSSEmployee(socialSecurityEmployee: EmployeeSocialSecurity) {
           this.socialSecurityEntityPensions = socialSecurityEntityPension;
   });
   }
-  
+
   getSocialSecurityEntitySeverance( id: string)  {
     this._socialSecurityEntityService.obtenerEntidadSS( id )
         .subscribe( socialSecurityEntitySeverance => {
@@ -274,7 +274,7 @@ editSSEmployee(socialSecurityEmployee: EmployeeSocialSecurity) {
           this.socialSecurityEntitySeverances = socialSecurityEntitySeverance;
   });
   }
-  
+
   getContributorSubType( id: string)  {
     this._contributorSubTypeService.obtenerSubTipoCotizante( id )
         .subscribe( contributorSubType => {
@@ -288,7 +288,7 @@ editSSEmployee(socialSecurityEmployee: EmployeeSocialSecurity) {
           this.contributorSubTypes = contributorSubType;
   });
   }
-  
+
   getContributorType( id: string)  {
     this._contributorTypeService.obtenerTipoCotizante( id )
         .subscribe( contributorType => {
@@ -302,6 +302,6 @@ editSSEmployee(socialSecurityEmployee: EmployeeSocialSecurity) {
           this.contributorTypes = contributorType;
   });
   }
- 
+
 
 }

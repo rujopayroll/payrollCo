@@ -269,12 +269,12 @@ console.log(this.registro)
 
 obtenerPaymentFrequency( id: string ) {
   this._paymentFrequencyService.obtenerFrecuenciaPago( id )
-  .subscribe( resp => this.paymentFrequency = resp);
+  .subscribe( resp => this.paymentFrequency = resp.data);
 }
 
 gelAllPaymentFrequency() {
     this._paymentFrequencyService.cargarFrecuenciaPago()
-    .subscribe( resp => this.paymentFrequencys = resp);
+    .subscribe( resp => this.paymentFrequencys = resp.data);
   }
 
 

@@ -16,24 +16,26 @@ export class GenderService {
 
 public headers = new HttpHeaders();
   constructor( public http: HttpClient,
-               public _usuarioService: AuthService ) { 
+               public _usuarioService: AuthService ) {
 
                 this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
                }
 
     cargarGeneros(){
-      let url = this.URL_SERVICIOS + '/genders';
-      return this.http.get( url, {headers: this.headers} )
+      let url = this.URL_SERVICIOS + '/gender';
+      return this.http.get( url, {withCredentials: true} )
       .pipe(
            map( (resp: any) => {
             return resp;
           }));
     }
-    
+
     obtenerGenero( id: string ){
-      let url = this.URL_SERVICIOS + '/genders/' + id;
-      return this.http.get( url, {headers: this.headers} )
+      let url = this.URL_SERVICIOS + '/gender/' + id;
+      return this.http.get( url, {withCredentials: true} )
       .pipe(
-          map( (resp: any ) => resp ));
+          map( (resp: any ) => {
+            return resp;
+           }));
     }
 }

@@ -21,21 +21,21 @@ export class StateService {
 public headers = new HttpHeaders();
   constructor( public http: HttpClient,
                public _usuarioService: AuthService ) {
-                 
-                this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
+
+                //this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
                }
 
     cargarDepartamentos(){
-      let url = this.URL_SERVICIOS + '/states';
-      return this.http.get( url, {headers: this.headers} )
+      let url = this.URL_SERVICIOS + '/state';
+      return this.http.get( url, {withCredentials: true} )
       .pipe(
            map( (resp: any) => {
             return resp;
           }));
     }
     obtenerDepartamento( id: string ){
-      let url = this.URL_SERVICIOS + '/states/' + id;
-      return this.http.get( url, {headers: this.headers} )
+      let url = this.URL_SERVICIOS + '/state/' + id;
+      return this.http.get( url, {withCredentials: true} )
       .pipe(
           map( (resp: any ) => resp ));
     }

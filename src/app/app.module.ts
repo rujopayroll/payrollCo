@@ -22,7 +22,8 @@ import { PrimeNGModule } from './prime-ng/prime-ng.module';
 import { CompanyServiceModule } from './companies/services/companyService.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
-
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './auth/services/Interceptor/Interceptor';
 
 
 registerLocaleData(localeES, 'es');
@@ -38,9 +39,9 @@ registerLocaleData(localeES, 'es');
   declarations: [
  AppComponent,
  ModalUploadComponent,
- 
 
-    
+
+
   ],
   imports: [
     BrowserModule,
@@ -65,12 +66,13 @@ registerLocaleData(localeES, 'es');
      // or after 30 seconds (whichever comes first).
      registrationStrategy: 'registerWhenStable:30000'
    }),
-   
-   
-   
+
+
+
   ],
   providers: [
-    {provide: LOCALE_ID, useValue: 'en'}
+    {provide: LOCALE_ID, useValue: 'en'},
+   { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor , multi: true }
   ],
   bootstrap: [AppComponent]
 })

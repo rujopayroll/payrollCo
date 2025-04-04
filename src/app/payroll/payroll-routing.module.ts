@@ -15,11 +15,13 @@ const routes: Routes = [
 
       {
         path: 'novelties',
-        component: NoveltiesComponent, canActivate: [ LoginGuardsGuard, VerificaTokenGuard ]
+        component: NoveltiesComponent
+        //component: NoveltiesComponent, canActivate: [ LoginGuardsGuard, VerificaTokenGuard ]
       },
       {
         path: 'definitive',
-        component: DefinitiveComponent, canActivate: [ LoginGuardsGuard, VerificaTokenGuard ]
+        component: DefinitiveComponent
+        //component: DefinitiveComponent, canActivate: [ LoginGuardsGuard, VerificaTokenGuard ]
       },
       {
         path: '**',

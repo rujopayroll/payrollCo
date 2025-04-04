@@ -3,7 +3,7 @@
 
 
 
-<!-- <p-sidebar [(visible)]="visibleSidebar2" position="right" [baseZIndex]="20000">
+<p-sidebar [(visible)]="visibleSidebar2" position="right" [baseZIndex]="20000">
 
 
     <p>PRCOCESOS ANTES DE LA NOMINA:</p>
@@ -58,168 +58,399 @@
 
 
 </p-sidebar>
-<p-button type="button" class="p-mr-2 absolute bottom-50 right-0 align-items-center justify-content-center p-button-success"
+<!-- <p-button type="button" class="p-mr-2 absolute bottom-50 right-0 align-items-center justify-content-center"
 (click)="visibleSidebar2 = true" >Check List</p-button> -->
 
 
 
 
-<!-- <div class="grid"> -->
+
+
+<div class="grid nested-grid">
+  <div class="col-8">
+      <div class="grid">
+          <div class="col-6">
+
+            <p-card [style]="{'height': '19.00rem'}">
+              <div class="grid mt-2">
+
+                  <div class="col-12">
+
+
+                      <div routerLink="/payroll/novelties" class="align-content-center cursor-pointer border-bluegray-300 bg-teal-100 border-1" [style]="{'border-radius': '15px'}">
+
+                        <div class="text-center textLogo">
+                          <i class="pi pi-dollar" style="font-size: 2rem" ></i>
+                         </div>
+                         <div class="text-center">
+                           <span class="mb-1 text-base textMenu">Nómina Actual</span>
+                         </div>
+
+                         <div class="text-center text-sm mt-2">
+                          <span class="mb-1 text-base textLogo">Periodo:{{period.year}}-{{period.number}}</span>
+                        </div>
+
+
+                        <div class="text-center">
+                         <span class="text-600 text-sm"><small class="text-600">Del:{{period.initialDate | date: 'dd-MM-YYYY': 'GMT +12'}}</small></span>
+                         <span class="text-600 text-sm ml-2"><small class="text-600">Al:{{period.endDate | date: 'dd-MM-YYYY': 'GMT +1'}}</small></span>
+                        </div>
+                        </div>
+                      </div>
+
+                        <div class="col-6">
+                          <div class="align-content-center cursor-pointer border-bluegray-300 surface-overlay border-1" [style]="{'border-radius': '15px','height': '6.00rem'}" routerLink="/payroll/novelties" >
+                                 <div class="textLogo text-center">
+                                   <i class="pi pi-money-bill" style="font-size: 2rem" ></i>
+                                  </div>
+                                  <div class="text-center">
+                                    <span class="text-base textMenu">Nóminas Especiales</span>
+
+                                </div>
+
+                            </div>
+                          </div>
+
+
+
+                <div class="col-6">
+                      <div class="align-content-center cursor-pointer border-bluegray-300 surface-overlay border-1" [style]="{'border-radius': '15px','height': '6.00rem'}" routerLink="/payroll/novelties" >
+
+                               <div class="text-center textLogo">
+                                 <i class="pi pi-clock" style="font-size: 2rem" ></i>
+                                </div>
+                                <div class="text-center">
+                                  <span class=" text-base textMenu">Nóminas Históricas</span>
+
+                              </div>
+
+
+                        </div>
+
+                      </div>
+
+
+                      </div>
 
 
 
 
-<!-- <div class="col-12"> -->
+
+                    </p-card>
 
 
-      <div class="bg-repeat-x flex justify-content-between lg:justify-content-start flex align-items-center   sidebar" style="background-image: url('../../../../assets/images/principal2.jpeg'); height: 18rem;">
-
-<div class="w-full ml-4 p-0" style="padding: 0.0rem;">
-        <div style="padding: 0.0rem;" class="w-6 mt-8 ml-4 p-0">
-
-          <p class="text-center text-5xl text-white  align-items-end">{{texto}}...!!</p>
-         </div>
 
 
-        <div style="background-image: radial-gradient(circle at 50% -20.71%, #e6f58f 0, #e9eb7f 10%, #ecdf6e 20%, #efd25d 30%, #f1c44d 40%, #f2b53c 50%, #f3a52d 60%, #f59522 70%, #f8851d 80%, #fa741e 90%, #fc6324 100%); padding: 0.0rem;" class="w-6 mt-8 ml-4 p-0">
-
-         <p class="text-center text-2xl align-items-end">Mereces lo que Sueñas</p>
-        </div>
-
-      </div>
-    </div>
-
-    <div class="font-medium text-3xl text-900 m-4 text-blue-900">Acciones Rápidas</div>
 
 
-  <div class="grid m-4">
 
-      <div class="mr-3">
-        <div routerLink="/payroll/novelties" class="surface-card shadow-2 p-3 cursor-pointer" [style]="{'width': '11.8rem', 'border-radius': '8px', 'height': '7.08rem', 'background-color': 'red'}">
-            <div class="flex justify-content-between mb-2">
-                <div>
-                    <span class="block mb-1 text-base text-white">Nómina Actual</span>
-                    <div class="text-center text-200 text-sm">
-                      Periodo: {{period[0].year}}-{{period[0].number}}
+          </div>
+          <div class="col-6">
+
+            <p-card [style]="{'height': '19.00rem'}">
+              <div class="grid mt-2">
+
+                  <div class="col-6">
+                      <!-- <div class="text-center p-3 border-round-sm bg-primary font-bold">6</div> -->
+                      <div class="align-content-center cursor-pointer border-bluegray-300 surface-overlay border-1" [style]="{'border-radius': '15px','height': '6.00rem'}" routerLink="/payroll/novelties" >
+                        <div class="text-center textLogo">
+                          <i class="pi pi-user-plus" style="font-size: 2rem" ></i>
+                         </div>
+                         <div class="text-center">
+                           <span class="text-base textMenu">Nuevo Empleado</span>
+
+                       </div>
+
+                   </div>
+                  </div>
+                  <div class="col-6">
+                     <!--  <div class="text-center p-3 border-round-sm bg-primary font-bold">12</div> -->
+                     <div class="align-content-center cursor-pointer border-bluegray-300 surface-overlay border-1" [style]="{'border-radius': '15px','height': '6.00rem'}" routerLink="/payroll/novelties" >
+
+                      <div class="text-center textLogo">
+                        <i class="pi pi-user-minus" style="font-size: 2rem" ></i>
+                       </div>
+                       <div class="text-center">
+                         <span class=" text-base textMenu">Retirar Empleado</span>
+
+                     </div>
                     </div>
-                </div>
-                <div class="flex align-items-center justify-content-center bg-pink-100  border-round" style="width:2.5rem;height:2.5rem">
-                    <i class="pi pi-dollar text-pink-500 text-xl"></i>
-                </div>
-            </div>
-            <span class="text-500 text-sm ml-4"><small class="text-0">Del:  {{period[0].initialDate | date: 'dd-MM-YYYY': 'GMT +12'}}<br/></small></span>
-            <span class="text-500 text-sm ml-4"><small class="text-0">Al :  {{period[0].endDate | date: 'dd-MM-YYYY': 'GMT +1'}}</small></span>
-        </div>
-    </div>
+                  </div>
 
-    <div class="mr-3">
-      <div class="surface-card shadow-2 p-3  cursor-pointer" [style]="{'width': '11.8rem', 'border-radius': '8px', 'height': '7.08rem', 'background-color': 'purple'}">
-          <div class="flex justify-content-between mb-3">
-              <div>
-                  <span class="block mb-1 text-base text-white">Nóminas Especiales</span>
+                  <div class="col-12">
+
+                    <!--    <div class="text-center p-3 border-round-sm bg-primary font-bold">6</div> -->
+                    <div routerLink="/employees/list" class="align-content-center cursor-pointer border-bluegray-300 bg-teal-100 border-1" [style]="{'border-radius': '15px'}">
+
+                     <div class="text-center textLogo mt-2">
+                       <i class="pi pi-users" style="font-size: 2rem" ></i>
+                      </div>
+                      <div class="text-center mt-2">
+                        <span class="mb-1 text-base textMenu">Listado de Empleados</span>
+                      </div>
+
+                      <div class="text-center text-sm mt-2">
+                        <span class="text-600 text-sm"><small class="text-600">Activos: 100</small></span>
+                        <span class="text-600 text-sm ml-2"><small class="text-600">Retirados: 5</small></span>
+                     </div>
+
+                     </div>
+
+                   </div>
+
+
 
               </div>
-              <div class="flex align-items-center justify-content-center bg-pink-100  border-round" style="width:2.5rem;height:2.5rem">
-                  <i class="pi pi-money-bill text-pink-500 text-xl"></i>
-              </div>
+            </p-card>
+
+
+
+
+          </div>
+
+
+
+          <div class="col-12">
+
+
+            <p-card>
+
+              <div class="col-12">
+                <div routerLink="/companies/config" class="align-content-center cursor-pointer border-bluegray-300 bg-teal-100 border-1" [style]="{'border-radius': '15px'}">
+
+                  <div class="text-center textLogo mt-2">
+                    <i class="pi pi-cog" style="font-size: 2rem" ></i>
+                   </div>
+                   <div class="text-center">
+                     <span class="mb-1 text-base textMenu">Configurar Empresa</span>
+                   </div>
+
+
+
+                  </div>
+                  </div>
+                  <div class="col-12">
+                    <div routerLink="/payroll/novelties" class="align-content-center cursor-pointer border-bluegray-300 bg-teal-100 border-1" [style]="{'border-radius': '15px'}">
+
+                      <div class="text-center textLogo mt-2">
+                        <i class="pi pi-list" style="font-size: 2rem" ></i>
+                       </div>
+                       <div class="text-center">
+                         <span class="mb-1 text-base textMenu">Conceptos de Nomina</span>
+                       </div>
+
+
+
+                      </div>
+                  </div>
+
+
+            </p-card>
+
+
           </div>
 
       </div>
+
+      <p-card [style]="{ background:'#0f04fc', 'height': '9.00rem'}">
+
+
+
+          <div class="grid">
+
+
+
+            <div class="col">
+              <span class="text-100 font-medium">Saldo Vacaciones</span>
+
+              <div class="text-100 text-4xl">{{ 5000000 | currency:'COP': true:'2.0'}}</div>
+
+            </div >
+            <p-divider layout="vertical"></p-divider>
+
+            <div class="col">
+              <span class="block text-100 font-medium">Saldo Prima Legal</span>
+              <div class="text-100 font-medium text-4xl">{{ 1000000 | currency:'COP':true:'2.0' }}</div>
+
+          </div>
+          <p-divider layout="vertical"></p-divider>
+
+          <div class="col">
+            <span class="block text-100 font-medium">Saldo Cesantias</span>
+              <div class="text-100 font-medium text-4xl">{{ 2500000 | currency:'COP':true:'2.0' }}</div>
+
+        </div>
+        <p-divider layout="vertical"></p-divider>
+        <div class="col">
+          <span class="block text-100 font-medium">Saldo Int Cesantias</span>
+          <div class="text-100 font-medium text-4xl">{{ 1000000 | currency:'COP':true:'2.0'}}</div>
+      </div>
+
+          </div>
+
+
+
+      </p-card>
+
+
+
+
   </div>
 
-  <div class="mr-6">
-    <div class="surface-card shadow-2 p-3  cursor-pointer" [style]="{'width': '11.8rem', 'border-radius': '8px', 'height': '7.08rem', 'background-color': 'green'}">
-        <div class="flex justify-content-between mb-3">
-            <div>
-                <span class="block mb-1 text-base text-white">Nóminas Históricas</span>
 
-            </div>
-            <div class="flex align-items-center justify-content-center bg-green-100  border-round" style="width:2.5rem;height:2.5rem">
-                <i class="pi pi-clock text-green-500 text-xl"></i>
-            </div>
+
+
+
+
+
+
+
+
+  <div class="col-2">
+
+    <div>
+
+
+      <p-card [style]="{'height': '33.80rem'}">
+        <div class="text-center p-3 border-round-sm bg-primary font-bold">
+          <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"></button>
         </div>
 
+    </p-card>
     </div>
-</div>
 
-<div class="mr-3">
-    <div routerLink="/employees/list" class="surface-card shadow-2 p-3  cursor-pointer" [style]="{'width': '11.8rem', 'border-radius': '8px', 'height': '7.08rem', 'background-color': 'blue'}">
-        <div class="flex justify-content-between mb-2">
-            <div>
-                <span class="block mb-1 text-base text-white">Listado Empleados</span>
 
-            </div>
-            <div class="flex align-items-center justify-content-center bg-blue-100  border-round" style="width:2.5rem;height:2.5rem">
-                <i class="pi pi-users text-blue-500 text-xl"></i>
-            </div>
-        </div>
-        <span class="text-500 text-sm ml-4"><small class="text-0">Activos:  50 <br/></small></span>
-        <span class="text-500 text-sm ml-4"><small class="text-0">Retirados:  5</small></span>
-    </div>
-</div>
+<div class="mt-2">
+  <p-card [style]="{ background:'#1a9315', 'height': '9.00rem'}">
+    <div class="card flex justify-center">
 
-<div class="mr-3">
-    <div class="surface-card shadow-2 p-3  cursor-pointer" [style]="{'width': '11.8rem', 'border-radius': '8px', 'height': '7.08rem', 'background-color': 'orange'}">
-        <div class="flex justify-content-between mb-3">
-            <div>
-                <span class="block mb-1 text-base text-white">Ingresar Empleado</span>
-
-            </div>
-            <div class="flex align-items-center justify-content-center bg-orange-100  border-round" style="width:2.5rem;height:2.5rem;">
-                <i class="pi pi-user-plus text-orange-500 text-xl"></i>
-            </div>
-        </div>
-
-    </div>
-</div>
-
-<div class="mr-3">
-    <div class="surface-card shadow-2 p-3  cursor-pointer" [style]="{'width': '11.8rem', 'border-radius': '8px', 'height': '7.08rem', 'background-color': 'maroon'}">
-        <div class="flex justify-content-between mb-3">
-            <div>
-                <span class="block mb-1 text-base text-white">Retirar Empleado</span>
-
-            </div>
-            <div class="flex align-items-center justify-content-center bg-pink-100  border-round" style="width:2.5rem;height:2.5rem;">
-                <i class="pi pi-user-minus text-pink-500 text-xl"></i>
-            </div>
-        </div>
-
-    </div>
-</div>
-
-<div class="mr-3 mt-4">
-    <div routerLink="/companies/config" class="surface-card shadow-2 p-3  cursor-pointer" [style]="{'width': '11.8rem', 'border-radius': '8px', 'height': '7.08rem', 'background-color': 'olive'}">
-        <div class="flex justify-content-between mb-3">
-            <div>
-                <span class="block mb-1 text-base text-white">Configurar Empresa</span>
-
-            </div>
-            <div class="flex align-items-center justify-content-center bg-green-100  border-round" style="width:2.5rem;height:2.5rem;">
-                <i class="pi pi-cog text-green-500 text-xl"></i>
-            </div>
-        </div>
-
-    </div>
-</div>
-
-<div class="mr-3 mt-4">
-    <div class="surface-card shadow-2 p-3  cursor-pointer" [style]="{'width': '11.8rem', 'border-radius': '8px', 'height': '7.08rem', 'background-color': 'tomato'}">
-        <div class="flex justify-content-between mb-3">
-            <div>
-                <span class="block mb-1 text-base text-white">Conceptos Nómina</span>
-
-            </div>
-            <div class="flex align-items-center justify-content-center bg-pink-100  border-round" style="width:2.5rem;height:2.5rem;">
-                <i class="pi pi-list text-pink-500 text-xl"></i>
-            </div>
-        </div>
-
-    </div>
+  </div>
+  </p-card>
 </div>
 
 
-   </div>
+
+  </div>
+
+
+
+
+
+
+  <div class="col-2">
+
+    <div>
+      <p-card [style]="{'height': '33.80rem'}">
+        <p-card  [style]="{'border-top': '5px solid #f76e11', 'border-radius': '8px', 'height': '6.00rem'}">
+
+          <ng-template pTemplate="title">
+
+            <div class="custom-card-title">
+
+              Movimientos
+            </div>
+
+          </ng-template>
+
+      </p-card>
+      <p-card class="m-2" [style]="{'border-top': '5px solid #f76e11', 'border-radius': '8px' , 'height': '6.00rem'}">
+
+        <ng-template pTemplate="title">
+          <div class="custom-card-title">
+
+            Volantes de Pago
+          </div>
+
+        </ng-template>
+    </p-card>
+    <p-card class="m-2" [style]="{'border-top': '5px solid #f76e11', 'border-radius': '8px' , 'height': '6.00rem'}">
+
+      <ng-template pTemplate="title">
+
+        <div class="custom-card-title">
+
+          Provisiones
+        </div>
+
+      </ng-template>
+  </p-card>
+  <p-card [style]="{'border-top': '5px solid #f76e11', 'border-radius': '8px' , 'height': '6.00rem'}">
+
+    <ng-template pTemplate="title">
+      <div class="custom-card-title">
+
+        PILA
+      </div>
+
+    </ng-template>
+</p-card>
+  </p-card>
+    </div>
+
+
+<div class="mt-2">
+  <p-card [style]="{ background:'#f76e11', 'height': '9.00rem'}">
+
+  </p-card>
+</div>
+
+
+
+  </div>
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -267,127 +498,7 @@
 
 <!--   aca empieza otra columna -->
 
-        <div class="font-medium text-lg text-700 mb-3 m-4">Mis Reportes</div>
-        <div class="grid m-4">
 
-
-               <p-card class="mr-3 border-round align-items-stretch cursor-pointer" [style]="{'width': '11rem', 'margin-bottom': '0em', 'border-radius': '8px', 'min-height': '150px'}">
-                   <div class="justify-content-between mb-3">
-                   <div>
-                       <span class="block text-500 text-sm mb-3">Movimientos</span>
-                   </div>
-                   <div class="flex align-items-center justify-content-center bg-teal-100 border-round"
-                                style="width:2.5rem;height:2.5rem">
-                               <i class="pi pi-file-pdf text-teal-500 text-xl"></i>
-                           </div>
-                       </div>
-                       <div class="mb-2">
-                           <span></span>
-                           <span></span>
-                       </div>
-                       <div>
-                           <span></span>
-                          <span></span>
-                        </div>
-               </p-card>
-
-
-
-                <p-card class="mr-3 border-round align-items-stretch cursor-pointer" [style]="{'width': '11rem', 'margin-bottom': '0em', 'border-radius': '8px', 'min-height': '150px'}">
-                    <div class="justify-content-between mb-3">
-                    <div>
-                        <span class="block text-500 text-sm mb-3">Provisiones</span>
-                    </div>
-                    <div class="flex align-items-center justify-content-center bg-teal-100 border-round"
-                                 style="width:2.5rem;height:2.5rem">
-                                <i class="pi pi-file-pdf text-teal-500 text-xl"></i>
-                            </div>
-                        </div>
-                        <div class="mb-2">
-                            <span></span>
-                            <span></span>
-                        </div>
-                        <div>
-                            <span></span>
-                           <span></span>
-                         </div>
-                </p-card>
-
-
-
-                <p-card class="mr-3 border-round align-items-stretch cursor-pointer" [style]="{'width': '11rem', 'margin-bottom': '0em', 'border-radius': '8px', 'min-height': '150px'}">
-                    <div class="justify-content-between mb-3">
-                    <div>
-                        <span class="block text-500 text-sm mb-3">Volantes de <br/>Pago</span>
-                    </div>
-                    <div class="flex align-items-center justify-content-center bg-teal-100 border-round"
-                                 style="width:2.5rem;height:2.5rem">
-                                <i class="pi pi-file-pdf text-teal-500 text-xl"></i>
-                            </div>
-                        </div>
-                        <div class="mb-2">
-                            <span></span>
-                            <span></span>
-                        </div>
-                        <div>
-                            <span></span>
-                           <span></span>
-                         </div>
-                </p-card>
-
-
-        </div>
-
-
-        <div class="grid m-4">
-
-
-
-
-                <p-card class="mr-3 border-round align-items-stretch cursor-pointer" [style]="{'width': '11rem', 'margin-bottom': '0em', 'border-radius': '8px', 'min-height': '150px'}">
-                    <div class="justify-content-between mb-3">
-                    <div>
-                        <span class="block text-500 text-sm mb-3">Certificado de <br/>Ingresos</span>
-                    </div>
-                    <div class="flex align-items-center justify-content-center bg-teal-100 border-round"
-                                 style="width:2.5rem;height:2.5rem">
-                                <i class="pi pi-file-pdf text-teal-500 text-xl"></i>
-                            </div>
-                        </div>
-                        <div class="mb-2">
-                            <span></span>
-                            <span></span>
-                        </div>
-                        <div>
-                            <span></span>
-                           <span></span>
-                         </div>
-                </p-card>
-
-
-
-                <p-card class="mr-3 border-round align-items-stretch cursor-pointer" [style]="{'width': '11rem', 'margin-bottom': '0em', 'border-radius': '8px', 'min-height': '150px'}">
-                    <div class="justify-content-between mb-3">
-                    <div>
-                        <span class="block text-500 text-sm mb-3">Maestro de <br/>Empleados</span>
-                    </div>
-                    <div class="flex align-items-center justify-content-center bg-teal-100 border-round"
-                                 style="width:2.5rem;height:2.5rem">
-                                <i class="pi pi-file-pdf text-teal-500 text-xl"></i>
-                            </div>
-                        </div>
-                        <div class="mb-2">
-                            <span></span>
-                            <span></span>
-                        </div>
-                        <div>
-                            <span></span>
-                           <span></span>
-                         </div>
-                </p-card>
-
-
-         </div>
 
 
 

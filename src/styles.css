@@ -13,8 +13,12 @@
 /* html, body { height: 100%; }
 body { margin: 0; font-family: Georgia, Cambria, Times, "Times New Roman"; background-color: var(--surface-c); }
  */
-html, body { height: 100%; }
-body { margin: 1; font-family: "Calibri", sans-serif; background-color: var(--surface-c); }
+html, body { height: 50%; }
+/* body { margin: 1; font-family: "Calibri", sans-serif; background: url("assets/images/fondo_login.png"); background-size:100% } */
+
+body {
+  margin: 1; font-family: 'Inter', sans-serif; background: url("assets/images/fondo_login.png"); background-size:100%
+}
 
 
 .text-layout {
@@ -100,3 +104,20 @@ body { margin: 1; font-family: "Calibri", sans-serif; background-color: var(--su
 .fadeIn {
     animation-name: fadeIn;
 }
+
+.textMenu {
+  font-size:0.9em;
+  color:#53B4BA;
+}
+
+.textLogo {
+
+  color:#F39862;
+}
+
+img {
+  display: inline-block;
+}
+
+
+

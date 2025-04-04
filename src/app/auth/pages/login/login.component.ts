@@ -17,8 +17,11 @@ import { PeriodService } from 'src/app/payroll/services/payrollService.index';
 export class LoginComponent implements OnInit {
 
   email!: string;
+  usuario!: string;
+  user!: string;
   recuerdame = false;
-  empresa: Company[] = [];
+  empresa: any = {};
+  companyUser: any = {};
 
   company: any;
 
@@ -27,67 +30,136 @@ export class LoginComponent implements OnInit {
   constructor( public _router: Router,
                public _usuarioService: AuthService,
                public _periodService: PeriodService,
-               public _companyService: CompanyService) {
+               public _companyServices: CompanyService) {
 
 
 
-
+                this.user = localStorage.getItem('id')!;
 
                }
 
   ngOnInit(): void {
 
 
+    this.user  = localStorage.getItem('id')!;
 
-
-    this.email = localStorage.getItem('email') || '';
+    this.email = localStorage.getItem('usuario') || '';
     if (this.email.length > 1){
       this.recuerdame = true;
     }
   }
 
-  ingresar( forma: NgForm ){
+   ingresar( forma: NgForm ){
+
+
+    //this._router.navigate(['/dashboard']);
 
   if (forma.invalid){
     return;
   }
 
+
   let usuario = new Usuario(null!, forma.value.email, forma.value.password);
+
   this._usuarioService.login(usuario, forma.value.recuerdame)
       .subscribe(correcto => {
 
 
+        this.user = localStorage.getItem('id')!;
+        this.cargarEmpresasUsuario(this.user)
 
-        // if (this._usuarioService.empresas.length > 1) {
-          if (this._usuarioService.empresas.length > 1) {
 
-
-              this._router.navigate(['/companies/list']);
-
+          //this._router.navigate(['/dashboard']);
 
 
 
 
-        } else {
 
 
-            this._router.navigate(['/dashboard']);
 
-          }
+                //console.log('empre', this.cargarEmpresasUsuario(this.usuario))
+
+     //console.log('empresas',this.cargarEmpresasUsuario(JSON.parse(localStorage.getItem('id')!)))
+
+        /* this._usuarioService.Autologin(usuario)
+      .subscribe(resp => {
+      }) */
+
+        //this.empresa = this._companyServices.cargarCompanysUser(correcto.id)
+
+
+
+
       });
 
 
-      this._usuarioService.Autologin(usuario)
+      /* this._usuarioService.Autologin(usuario)
       .subscribe(resp => {
-      })
+      }) */
 
 let id = localStorage.getItem('id');
-this._usuarioService.obtenerMenu(id!)
+//this._usuarioService.obtenerMenu(id!)
 
 
   }
 
 
+
+
+
+  /* cargarEmpresasUsuario(iduser: any){
+    this._companyServices.cargarCompanysUser(iduser).subscribe((companyUser : any) => {
+
+      if (companyUser  && companyUser.companies) {
+
+        this.companyUser  = { companies: companyUser.companies };
+console.log('companyUser.length', this.companyUser.length)
+        if ( this.companyUser.length > 1) {
+
+          this._router.navigate(['/companies/list']);
+        }else{
+
+          this._router.navigate(['/dashboard']);
+        }
+
+
+      } else {
+
+        this.companyUser  = { companies: [] };
+      }
+    });
+    } */
+
+
+
+    cargarEmpresasUsuario(iduser: any){
+    this._companyServices.cargarCompanysUser(iduser).subscribe(
+      (resp: any) => {
+        console.log('Respuesta de la API:', resp); // Verifica qué devuelve el backend
+
+        if (resp && Array.isArray(resp.companies)) {
+          this.companyUser = resp.companies;
+
+          if ( this.companyUser.length > 1) {
+
+            this._router.navigate(['/companies/list']);
+          }else{
+
+            this._router.navigate(['/dashboard']);
+          }
+
+
+
+        } else {
+          this.companyUser = []; // Si no es un array, asigna un array vacío
+        }
+      },
+      (error) => {
+        console.error('Error al cargar empresas:', error);
+        this.companyUser = []; // Manejo de error para evitar undefined
+      }
+    );
+    }
 
 
 }

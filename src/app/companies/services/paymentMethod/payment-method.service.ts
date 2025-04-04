@@ -17,20 +17,20 @@ export class PaymentMethodService {
   constructor( public http: HttpClient,
     public _usuarioService: AuthService) {
 
-      this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
+      //this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
      }
 
   cargarMetodoPago(){
-    let url = this.URL_SERVICIOS  + '/paymentMethods';
-    return this.http.get( url, {headers: this.headers} )
+    let url = this.URL_SERVICIOS  + '/paymentMethod';
+    return this.http.get( url, {withCredentials:true} )
     .pipe(
          map( (resp: any) => {
           return resp;
         }));
   }
   obtenerMetodoPago( id: string ){
-    let url = this.URL_SERVICIOS  + '/paymentMethods/' + id;
-    return this.http.get( url, {headers: this.headers} )
+    let url = this.URL_SERVICIOS  + '/paymentMethod/' + id;
+    return this.http.get( url, {withCredentials:true})
     .pipe(
         map( (resp: any ) => resp ));
   }
