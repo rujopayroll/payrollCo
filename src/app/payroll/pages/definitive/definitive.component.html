@@ -8,8 +8,8 @@
       <input  #input (keyup)="buscarEmployees( input.value )" class="form-control" type="search" pInputText placeholder="Buscar Empleado..." style="width: 30rem;">
   </span>
 
-      <p-button label="Contabilizar" [disabled]="(!selectMovementsPayroll || !selectMovementsPayroll.length) && periodProcess" (click)="showDialog()" icon="pi pi-chart-bar" styleClass="p-button-danger" class="p-mr-2"></p-button>
-      <p-button label="Generar Propuesta de Pago" [disabled]="!periodContability"  (click)="showDialogBank()" icon="pi pi-credit-card" styleClass="p-button-warning"></p-button>
+      <button pButton label="Contabilizar" [disabled]="(!selectMovementsPayroll || !selectMovementsPayroll.length) && periodProcess" (click)="showDialog()" icon="pi pi-chart-bar"  class="p-mr-2 p-button-warning bg-orange-500"></button>
+      <button pButton label="Generar Propuesta de Pago" [disabled]="!periodContability"  (click)="showDialogBank()" icon="pi pi-credit-card" class="bg-cyan-600"></button>
 
 
 
@@ -57,14 +57,14 @@
           </td>
 
           <td>{{employeeMovementPayrolls.identification |number}}</td>
-          <td> {{employeeMovementPayrolls.firstName | titlecase }} {{employeeMovementPayrolls.surname | titlecase}}</td>
-          <td>{{employeeMovementPayrolls.daysWork}}</td>
-          <td>{{employeeMovementPayrolls.salaryValue + employeeMovementPayrolls.noSalaryValue | currency:'COP':'symbol-narrow':'1.0-4'}}</td>
-          <td>{{employeeMovementPayrolls.deductionValue | currency:'COP':'symbol-narrow':'1.0-4'}}</td>
+          <td> {{employeeMovementPayrolls.first_name | titlecase }} {{employeeMovementPayrolls.first_last_name            | titlecase}}</td>
+          <td>{{employeeMovementPayrolls.workedDays}}</td>
+          <td>{{employeeMovementPayrolls.SALARIAL + employeeMovementPayrolls.NOSALARIAL | currency:'COP':'symbol-narrow':'1.0-4'}}</td>
+          <td>{{employeeMovementPayrolls.DEDUCCION | currency:'COP':'symbol-narrow':'1.0-4'}}</td>
           <td>
               <p-tag severity="danger" [rounded]="true">
                   <span>
-                      {{employeeMovementPayrolls.salaryValue + employeeMovementPayrolls.noSalaryValue - employeeMovementPayrolls.deductionValue | currency:'COP':'symbol-narrow':'1.0-4'}}
+                      {{employeeMovementPayrolls.SALARIAL + employeeMovementPayrolls.NOSALARIAL - employeeMovementPayrolls.DEDUCCION | currency:'COP':'symbol-narrow':'1.0-4'}}
                   </span>
               </p-tag>
 

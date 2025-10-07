@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Location, DOCUMENT } from '@angular/common';
 import { AuthService } from '../../auth/services/authservice.index';
 
@@ -15,18 +15,23 @@ import Swal from 'sweetalert2';
 import { Concept } from '../../companies/models/concept.model';
 import { MenuItem } from 'primeng/api';
 import { CompanyService } from 'src/app/companies/services/company/company.service';
+import { OverlayPanel } from 'primeng/overlaypanel';
+
 //const Swal1: any = require('sweetalert2')
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styles: []
+  styleUrls: ['./header.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 
 
 
 
 export class HeaderComponent implements OnInit {
+  @ViewChild('userPanel') userPanel!: OverlayPanel;
+  @ViewChild('menuPanel') menuPanel!: OverlayPanel;
 
   starDemoDay: Date = new Date();
   demoDay = 50;
@@ -58,6 +63,7 @@ export class HeaderComponent implements OnInit {
 
 
 
+
   constructor( public _usuarioService: AuthService,
                public _companyService: CompanyService,
                public activatedRoute: ActivatedRoute,
@@ -69,55 +75,57 @@ export class HeaderComponent implements OnInit {
                 this.idUser = localStorage.getItem('id')!;
                 this.correo = localStorage.getItem('usuario')!;
 
-                this.empresaseleccionada = localStorage.getItem('empresaseleccionada');
-                //this.usuario = this._usuarioService.usuario;
 
-                // this.cargarEmpresasUsuario(this.usuario.id);
-                //this.company = this._usuarioService.empresas;
-                //this.company =  JSON.parse(localStorage.getItem('empresas')!);
+               // this.empresaseleccionada = localStorage.getItem('empresaseleccionada');
 
 
-                if (this.empresaseleccionada) {
+
+                /* if (this.empresaseleccionada) {
 
                   this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
 
 
                 } else {
-                  if(this.company.length > 1 ){
+                  if(this.company1.length > 1 ){
                     this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
 
                   } else {
-                    this.empresa =  JSON.parse(JSON.stringify(this.company[0]));
+                    this.cargarEmpresasUsuario(this.idUser);
+                    this.empresa =  JSON.parse(JSON.stringify(this.company2[0].id));
 
                   }
-                }
+                } */
 
-                this._modalUploadService.notificacion
+               /*  this._modalUploadService.notificacion
                 .subscribe( () => this.getUsers(this.idUser!));
 
                 this._modalUploadService.notificacion
-               .subscribe( () => this.cargarCompanySelect(this.empresa.id));
+
+              .subscribe( () => this.cargarEmpresasUsuario(this.empresa.id)); */
 
 
-               this.cargarEmpresasUsuario(this.idUser);
+
                }
 
   ngOnInit(): void {
+                //this.idUser = localStorage.getItem('id')!;
+                //this.correo = localStorage.getItem('usuario')!;
+                //this.cargarEmpresasUsuario(this.idUser);
 
     //this.usuario = this._usuarioService.usuario;
-    this.cargarCompanySelect(this.empresa.id);
-
-    this.getUsers(this.idUser!);
+    //this.cargarCompanySelect(this.empresa.id);
+    this.cargarEmpresasUsuario(this.idUser);
+    this.getUsers(localStorage.getItem('id')!);
 
 
     this.menu = [
       {
           items: [
-              {label: 'Inicio', routerLink: '/dashboard'},
-              {label: 'Información Empleado', routerLink: '/employees/list'},
-              {label: 'Información Empresa', routerLink: '/companies/config'},
-              {label: 'Nómina', routerLink: '/payroll/novelties'},
-              {label: 'Reportes'},
+              {label: 'Inicio', routerLink: '/dashboard', icon:'pi pi-th-large'},
+              {label: 'Información Empleado', routerLink: '/employees/list', icon:'pi pi-users'},
+              {label: 'Información Empresa', routerLink: '/companies/config', icon:'pi pi-cog'},
+              {label: 'Nómina', routerLink: '/payroll/novelties', icon:'pi pi-dollar'},
+              {label: 'Reportes', icon:'pi-file-pdf'},
           ]
       },
 
@@ -125,25 +133,17 @@ export class HeaderComponent implements OnInit {
   ];
 
 
-    this.items = [
 
 
-      {
-          items: [{
-                  label: 'Mi perfil',
-
-              },
-              {label: 'Cambiar Empresa'},
-              {label: 'Suscripción'},
-              {label: 'Logout'},
-          ]
-      },
 
 
-  ];
+
+
+
 
      this._modalUploadService.notificacion
-    .subscribe( () => this.cargarCompanySelect(this.empresa.id));
+    //.subscribe( () => this.cargarCompanySelect(this.empresa[0].id));
+    .subscribe( () => this.cargarEmpresasUsuario(this.empresa[0].id));
 
     this._modalUploadService.notificacion
     .subscribe( () => this.getUsers(this.idUser!));
@@ -167,12 +167,13 @@ export class HeaderComponent implements OnInit {
     .subscribe ( resp => this.companys1 = resp);
   } */
 
-  cargarCompanySelect(id: string){
+  /* cargarCompanySelect(id: string){
     this._companyService.cargarCompanys(id)
         .subscribe ( (resp:any) => {
+          console.log('entro cargarCompanySelect')
           this.company1 = resp;
         });
-  }
+  } */
 
 
 
@@ -192,19 +193,55 @@ export class HeaderComponent implements OnInit {
   cargarEmpresasUsuario(iduser: any) {
     this._companyService.cargarCompanysUser(iduser).subscribe(
       (resp: any) => {
-        console.log('Respuesta de la API:', resp); // 👀 Verifica qué devuelve la API
-
         if (resp && resp.companies) {
-          this.company2 = { companies: resp.companies };
+          this.company1 = { companies: resp.companies };
+          this.usuario = resp.user;
+          console.log('empresas1', this.company1)
+          console.log('empresas2', resp.companies)
+          console.log('company1', this.company1.companies.length)
+          if(this.company1.companies.length > 1 ){
+            this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
+
+            this.items = [
+
+
+              {
+                  items: [{
+                          label: 'Mi perfil', routerLink: '/auth/profile', icon: 'pi pi-user'},
+                      {label: 'Nueva Empresa', command: () => this.crearEmpresa(),
+                      icon: 'pi pi-building',},
+
+                      ...(this.company1?.companies?.length > 1 ? [{
+                        label: 'Cambiar de Empresa',
+                        icon: 'pi pi-arrow-right-arrow-left',
+                        routerLink: '/companies/list',
+
+                      }] : []),
+
+                      /* {label: 'Cambiar Empresa', routerLink: '/companies/list',
+                      disabled: !(this.company1?.companies?.length > 1) }, */
+                      {label: 'Suscripción', icon: 'pi pi-credit-card'},
+                      {label: 'Logout', command: () => this._usuarioService.logout(),
+                      icon: 'pi pi-power-off'},
+                  ]
+              },
+
+
+          ];
+
+          }else{
+            this.empresa =  this.company1.companies[0];
+          }
+
         } else {
-          this.company2 = { companies: [] }; // Evita errores si la API devuelve un valor inesperado
+          this.company1 = { companies: [] }; // Evita errores si la API devuelve un valor inesperado
         }
 
         this.usuario = resp?.user || {}; // Evita que `usuario` sea undefined
       },
       (error) => {
         console.error('Error al cargar las empresas:', error);
-        this.company2 = { companies: [] }; // En caso de error, aseguramos que no falle
+        this.company1 = { companies: [] }; // En caso de error, aseguramos que no falle
       }
     );
   }
@@ -252,7 +289,7 @@ crearEmpresa(){
                 companyName:value,
                 email:this.usuario.userName,
                 createUser:this.usuario.id,
-                updateUser:this.usuario.id,
+                /* updateUser:this.usuario.id, */
                 user_id:this.usuario.id,
                 isActive: this.isActive,
                 //user_id: this.usuario.id,
@@ -264,6 +301,8 @@ crearEmpresa(){
             this.registro =  JSON.parse(JSON.stringify(form[0]));
 
             //mirar aca
+
+            console.log('registro', this.registro )
 
             this._companyService.crearCompany( this.registro )
             .subscribe((resp:any) => {
@@ -312,6 +351,14 @@ getUsers(id: string) {
 
       });
 
+}
+
+showUserPanel(event: Event) {
+  this.userPanel.toggle(event);
+}
+
+showMenuPanel(event: Event) {
+  this.menuPanel.toggle(event);
 }
 
 

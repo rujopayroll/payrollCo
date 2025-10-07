@@ -40,7 +40,7 @@ export class EmployeeContractService  {
 
     cargarEmployeeContract( idEmployee: string){
 
-      let url = this.URL_SERVICIOS + '/employeeContract?employee_id=' + idEmployee;
+      let url = this.URL_SERVICIOS + '/employeeContract/' + idEmployee;
       return this.http.get( url, {withCredentials:true} )
       .pipe(
       map( (resp: any) => resp));
@@ -48,7 +48,7 @@ export class EmployeeContractService  {
 
     cargarEmployeeContractActive(idEmployee: string){
 
-      let url = this.URL_SERVICIOS + '/employeeContract?isActive=True&employee_id=' + idEmployee;
+      let url = this.URL_SERVICIOS + '/employeeContract/' + idEmployee +'?isActive=True';
       return this.http.get( url, {withCredentials:true} )
       .pipe(
       map( (resp: any) => resp ));
@@ -96,7 +96,8 @@ export class EmployeeContractService  {
               text: err.error.errors.message,
               icon: 'error'
             });
-            return Observable.throwError( err );
+            //return Observable.throwError( err );
+            return throwError(() => new Error('Error del servidor'));
           }));
     }
 

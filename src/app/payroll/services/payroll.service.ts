@@ -61,7 +61,7 @@ public headers = new HttpHeaders();
       }
 
       getMovementsPayrollByEmployee( id: string, period:string){
-        let url = this.URL_SERVICIOS + '/payroll/getResumePayroll?company_id=' + id + '&period_id=' + period;
+        let url = this.URL_SERVICIOS + '/payroll/get_resume_payroll?company_id=' + id + '&period_id=' + period;
         return this.http.get( url, {withCredentials:true} )
         .pipe(
 
@@ -114,7 +114,8 @@ public headers = new HttpHeaders();
 
 
       createPayroll( id: string){
-        let url = this.URL_SERVICIOS + '/payroll?company_id=' + id;
+       // let url = this.URL_SERVICIOS + '/payroll/calculate_all/?company_id=' + id;
+        let url = this.URL_SERVICIOS + '/payroll/calculate_payroll/?company_id=' + id;
         return this.http.post( url, {withCredentials:true}  )
         .pipe(
         map((resp: any) => {
@@ -123,7 +124,7 @@ public headers = new HttpHeaders();
       }
 
       saveNovelties( novelties: any){
-        let url = this.URL_SERVICIOS + '/novelty/saveNovelties';
+        let url = this.URL_SERVICIOS + '/novelties/novelties/' ;
         return this.http.post( url, novelties, {withCredentials:true}  )
         .pipe(
         map( (resp: any) => {
@@ -139,9 +140,13 @@ public headers = new HttpHeaders();
       }
 
 
-      saveNoveltiesOverTime( overTime: any){
-        let url = this.URL_SERVICIOS + '/novelty/saveNoveltiesOverTime';
-        return this.http.post( url, overTime, {withCredentials:true}  )
+      saveNoveltiesOverTime( company: any, employee: any, overTime: any){
+        let url = this.URL_SERVICIOS + '/no-recurrent-novelties/overtime?company_id=' + company + '&employee_id=' + employee;
+
+
+        // return this.http.post( url, {withCredentials:true} , overTime )
+        return this.http.post(url, overTime, {withCredentials: true})
+
         .pipe(
         map( (resp: any) => {
               Swal.fire({
@@ -153,7 +158,6 @@ public headers = new HttpHeaders();
               })
               return resp;
             }));
-
       }
 
       getNoveltiesOverTimeByEmployee( employee_id: any, company_id: any, period_id: any){

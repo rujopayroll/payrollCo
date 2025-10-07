@@ -57,7 +57,7 @@ export class EmployeeService {
 
     cargarEmployeeCompany( idcompany: string){
 
-      let url = this.URL_SERVICIOS + '/employee?company_id=' + idcompany + '&isActive=True';
+      let url = this.URL_SERVICIOS + '/employee/full_data/by_company?company_id=' + idcompany + '&isActive=True';
 
       return this.http.get( url, {withCredentials: true} )
       .pipe(
@@ -111,7 +111,8 @@ export class EmployeeService {
               text: err.error.errors.message,
               icon: 'error'
             });
-            return Observable.throwError( err );
+            //return Observable.throwError( err );
+            return throwError(() => new Error('Error del servidor'));
           }));
     }
 

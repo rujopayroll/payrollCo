@@ -5,7 +5,10 @@
 export const environment = {
   production: false,
   //URL_SERVICIOS: 'https://devapi.animorh.com/api'
-  URL_SERVICIOS: 'https://payrollback-aagydqc0ceczedak.eastus-01.azurewebsites.net/api/v1'
+  //URL_SERVICIOS: 'https://payrollback-aagydqc0ceczedak.eastus-01.azurewebsites.net/api/v1'
+  //URL_SERVICIOS: 'https://api.animorh.com/api/v1'
+  URL_SERVICIOS: 'https://apiv2.animorh.com/api/v1'
+
 };
 
 /*

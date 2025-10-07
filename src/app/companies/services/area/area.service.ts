@@ -38,15 +38,15 @@ export class AreaService {
 
     cargarArea( id: string){
 
-      let url = this.URL_SERVICIOS + '/companies/' + id;
+      let url = this.URL_SERVICIOS + '/area/get_all';
       return this.http.get( url, {withCredentials:true} )
       .pipe(
-          map( (resp: any) => resp.areas ));
+          map( (resp: any) => resp ));
     }
 
     obtenerArea( id: string){
 
-      let url = this.URL_SERVICIOS + '/areas/' + id;
+      let url = this.URL_SERVICIOS + '/area/' + id;
       return this.http.get( url, {withCredentials:true} )
       .pipe(
           map( (resp: any) => resp ));
@@ -80,7 +80,7 @@ export class AreaService {
 
 
     borrarArea( id: string ){
-      let url = this.URL_SERVICIOS + '/areas/' + id;
+      let url = this.URL_SERVICIOS + '/area/' + id;
 
       return this.http.delete( url , {withCredentials:true})
       .pipe(
@@ -93,7 +93,8 @@ export class AreaService {
       }));
     }
     crearArea( area: Area){
-      const url = this.URL_SERVICIOS + '/areas';
+      const url = this.URL_SERVICIOS + '/area';
+      console.log('area', area)
       return this.http.post( url, area, {withCredentials:true})
       .pipe(
       map( (resp: any) =>{
@@ -112,13 +113,14 @@ export class AreaService {
               text: err.error.errors.message,
               icon: 'error'
             }); */
-            return Observable.throwError( err );
+            //return Observable.throwError( err );
+            return throwError(() => new Error('Error del servidor'));
           }));
     }
 
     actualizarArea( area: Area ){
 
-      let url = this.URL_SERVICIOS + '/areas/' + area.id;
+      let url = this.URL_SERVICIOS + '/area/' + area.id;
 
       return this.http.put( url,  area, {withCredentials:true})
       .pipe(

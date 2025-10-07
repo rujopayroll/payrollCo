@@ -8,7 +8,7 @@ import { EmployeeContract } from '../../models/employeeContract.model';
 import { CompanyService } from '../../../companies/services/company/company.service';
 import { ContractType } from '../../models/contractType.model';
 import {MenuItem} from 'primeng/api';
-import { PageScrollService } from 'ngx-page-scroll-core';
+//import { PageScrollService } from 'ngx-page-scroll-core';
 import { DOCUMENT } from '@angular/common';
 import { AuthService } from '../../../auth/services/authservice.index';
 import { Inject } from '@angular/core';
@@ -17,6 +17,7 @@ import { MessageService } from 'primeng/api';
 import { IdentificationType } from '../../models/identificationType.model';
 import { registerLocaleData } from '@angular/common';
 import localeEsAr from '@angular/common/locales/es-CO';
+
 import * as moment from 'moment';
 registerLocaleData(localeEsAr);
 
@@ -55,6 +56,8 @@ export class ContractEmployeeComponent implements OnInit {
   new!: boolean;
   employeeContractDialog!: boolean;
   submitted!: boolean;
+  user!: string;
+  companyUser: any = {};
 
   employeeContractNew: EmployeeContract = new EmployeeContract('', '', true, '', '', this.date, this.date, this.date, this.date, '');
 
@@ -66,11 +69,15 @@ export class ContractEmployeeComponent implements OnInit {
               public _companyService: CompanyService,
               public _employeeContractService: EmployeeContractService,
               public _contractTypeService: ContractTypeService,
+
               public _modalUploadServices: ModalUploadService,
-              public pageScrollServ: PageScrollService,
+              //public pageScrollServ: PageScrollService,
 
               @Inject(DOCUMENT) private document: any
               ) {
+
+                this.user = localStorage.getItem('id')!;
+                this.cargarEmpresasUsuario(this.user)
 
 
                 this.activatedRoute.params.subscribe( params =>{
@@ -78,12 +85,12 @@ export class ContractEmployeeComponent implements OnInit {
                   this.getAllContractEmployeesActive( params[ 'id' ]);
               });
 
-              this.company = this._usuarioService.empresas;
-              this.empresaseleccionada = localStorage.getItem('empresaseleccionada');
+             // this.company = this._usuarioService.empresas;
+              //this.empresaseleccionada = localStorage.getItem('empresaseleccionada');
               this.usuario = JSON.parse(localStorage.getItem('usuario')!);
 
 
-              if ( this.empresaseleccionada ){
+              /* if ( this.empresaseleccionada ){
                 this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
 
 
@@ -93,7 +100,7 @@ export class ContractEmployeeComponent implements OnInit {
                 } else {
                   this.empresa =  JSON.parse(JSON.stringify(this.company[0]));
                 }
-              }
+              } */
 
 
                this.crearFormulario();
@@ -116,10 +123,10 @@ export class ContractEmployeeComponent implements OnInit {
       .subscribe( () =>  this.cargarContractEmployees( params[ 'id' ]));
     }); */
 
-    this.pageScrollServ.scroll({
+   /*  this.pageScrollServ.scroll({
       document: this.document,
       scrollTarget: '.theEnd',
-    });
+    }); */
 
   }
 
@@ -139,8 +146,12 @@ export class ContractEmployeeComponent implements OnInit {
      });
     }
 
+    onScroll(event: HTMLElement, i: any) {
+      event.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      this.active = i;
+    }
 
-  onScroll(event: HTMLElement, i:any) {
+  /* onScroll(event: HTMLElement, i:any) {
     this.pageScrollServ.scroll({
       scrollTarget: event,
       scrollOffset: 300,
@@ -148,7 +159,7 @@ export class ContractEmployeeComponent implements OnInit {
     });
 
     this.active = i;
-  }
+  } */
 
   hideDialog() {
     this.employeeContractDialog = false;
@@ -295,6 +306,38 @@ editEmployeeContract(employeeContract: EmployeeContract) {
 
   }
 
+  cargarEmpresasUsuario(iduser: any) {
+    this._companyService.cargarCompanysUser(iduser).subscribe(
+      (resp: any) => {
+        if (resp && resp.companies) {
+
+          this.companyUser = resp.companies;
+
+          this.usuario = resp.user;
+
+          if(this.companyUser.length > 1 ){
+            this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
+
+
+          }else{
+            this.empresa =  this.companyUser[0];
+
+
+
+          }
+
+        } else {
+          this.companyUser = { companies: [] }; // Evita errores si la API devuelve un valor inesperado
+        }
+
+        this.usuario = resp?.user || {}; // Evita que `usuario` sea undefined
+      },
+      (error) => {
+        console.error('Error al cargar las empresas:', error);
+        this.companyUser  = { companies: [] }; // En caso de error, aseguramos que no falle
+      }
+    );
+  }
 
 
 

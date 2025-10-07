@@ -21,7 +21,7 @@ export class SpendingAccountService {
                }
 
     cargarCuentaGastos(){
-      let url = this.URL_SERVICIOS + '/spendingAccount';
+      let url = this.URL_SERVICIOS + '/spendingAccount/get_all';
       return this.http.get( url, {withCredentials:true} )
       .pipe(
            map( (resp: any) => {

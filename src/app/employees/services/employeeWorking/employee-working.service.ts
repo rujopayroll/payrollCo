@@ -42,7 +42,7 @@ public headers = new HttpHeaders();
 
     cargarEmployeeWorking( idEmployee: string){
 
-      let url = this.URL_SERVICIOS + '/employeeWorking?id=' + idEmployee;
+      let url = this.URL_SERVICIOS + '/employeeWorking/' + idEmployee;
       return this.http.get( url, {withCredentials:true} )
       .pipe(
           map( (resp: any) => resp ));
@@ -94,7 +94,8 @@ public headers = new HttpHeaders();
               text: err.error.errors.message,
               icon: 'error'
             });
-            return Observable.throwError( err );
+            //return Observable.throwError( err );
+            return throwError(() => new Error('Error del servidor'));
           }));
     }
 

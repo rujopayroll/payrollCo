@@ -28,6 +28,8 @@ export class ModalUploadComponent implements OnInit {
   imagenSubir!: File | any;
   @Input() imagenS: any;
   imagenTemp!: string | ArrayBuffer | any;
+  user!: string;
+  companyUser: any = {};
 
   @Output() public imagenSelect: EventEmitter<any> =  new EventEmitter();
 
@@ -40,7 +42,7 @@ export class ModalUploadComponent implements OnInit {
 
                 this.imagenSelect = new EventEmitter();
 
-                this.company = this._usuarioService.empresas;
+                /* this.company = this._usuarioService.empresas;
                 this.empresaseleccionada = localStorage.getItem('empresaseleccionada');
 
 
@@ -54,17 +56,20 @@ export class ModalUploadComponent implements OnInit {
                   } else {
 
                    this.empresa =  JSON.parse(JSON.stringify(this.company));
-                    console.log('company', this.company[0])
+
 
                   }
                 }
-
-
+ */
+                this.user = localStorage.getItem('id')!;
+                this.cargarEmpresasUsuario(this.user)
                 this.displayModal = this._modalUploadService.modal
 
                }
 
   ngOnInit(): void {
+    this.user = localStorage.getItem('id')!;
+    this.cargarEmpresasUsuario(this.user)
     this.displayModal=true
   }
 
@@ -166,6 +171,38 @@ export class ModalUploadComponent implements OnInit {
 
   }
 
+  cargarEmpresasUsuario(iduser: any) {
+    this._companyService.cargarCompanysUser(iduser).subscribe(
+      (resp: any) => {
+        if (resp && resp.companies) {
+
+          this.companyUser = resp.companies;
+
+
+
+          if(this.companyUser.length > 1 ){
+            this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
+
+
+          }else{
+            this.empresa =  this.companyUser[0];
+
+
+
+          }
+
+        } else {
+          this.companyUser = { companies: [] }; // Evita errores si la API devuelve un valor inesperado
+        }
+
+
+      },
+      (error) => {
+        console.error('Error al cargar las empresas:', error);
+        this.companyUser  = { companies: [] }; // En caso de error, aseguramos que no falle
+      }
+    );
+  }
 
 
 

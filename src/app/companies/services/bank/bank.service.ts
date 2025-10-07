@@ -21,7 +21,7 @@ export class BankService {
     }
 
   cargarBancos(){
-    let url = this.URL_SERVICIOS + '/bank';
+    let url = this.URL_SERVICIOS + '/bank/get_all';
     return this.http.get( url, {withCredentials:true} )
     .pipe(
          map( (resp: any) => {

@@ -1,33 +1,29 @@
 <div class="grid">
-    <div class="col-4 text-center text-500">
+    <div class="col-3 text-center text-900">
         <div class= "row">
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
             Información Básica
         </div>
     </div>
-    <div class="col-8">
-    <p-panel header="Información Básica" class="text-600 flex align-items-start justify-content-start"
+    <div class="col-9">
+      <p-panel header="Información Basica" class="text-900">
+    <!-- <p-panel header="Información Básica" class="text-600 flex align-items-start justify-content-start"
     [style]="{'width':'800px',
     'margin-left': '.9rem',
     'fontFamily': 'Gill Sans',
     'fontSize': '16px',
     'border': '2px solid',
-    'borderRadius': '9px'}" >
+    'borderRadius': '9px'}" > -->
 
         <ng-template pTemplate="icons" >
-           <button pButton pRipple type="button"
+          <button pButton pRipple type="button"  (click)="editInfoCompany(companies)" icon="pi pi-pencil" class="p-button-rounded p-button-primary p-button-text text-left">
+          </button>
+            <!-- <button pButton pRipple type="button"
            icon="pi pi-pencil"
            class="p-button-rounded p-button-primary p-button-text text-left p-button-sm"
            (click)="editInfoCompany(companies)"
            style="float: right; margin-right: 590px;"
            >
-            </button>
+            </button>-->
 
     </ng-template>
     <form>
@@ -176,7 +172,7 @@
 
             <div class="field">
                 <label for="name">Razón Social</label>
-                <input type="text" pInputText id="name" name="name" class="form-control form-control-sm" formControlName="name" [class.is-invalid]="nameNoValido" [(ngModel)]="company.companyName" />
+                <input type="text" pInputText id="name" name="name" class="form-control form-control-sm" formControlName="name" [class.is-invalid]="nameNoValido" [(ngModel)]="company.name" />
                 <small class="p-error" *ngIf="submitted && !companies.name">Campo es requerido.</small>
             </div>
 
@@ -241,7 +237,7 @@
                     id="ciudad"
                     style="border-radius: 0.2rem; width: 28rem; height:2.5rem ; border-width: 1px; border-color:deepskyblue ;  font-family: Arial, Helvetica, sans-serif; font-size: 1rem;"
                 >
-                <option *ngFor="let city of municipios" [value]="city.id">
+                <option *ngFor="let city of cities" [value]="city.id">
                   <small>{{city.name}}</small>
                </option>
             </select>

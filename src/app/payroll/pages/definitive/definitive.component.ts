@@ -48,14 +48,14 @@ export class DefinitiveComponent implements OnInit {
   employees: any = {};
   employeesCompany: any = {};
   employeeMovements: any = [];
-  employeeMovementsPayroll: any[] = [];
+  employeeMovementsPayroll: any = {};
   filter: any[] = [];
   filter1: any[] = [];
   period: any = {};
   empleado!: string;
   absenteeEmployee: any = {};
   busqueda = '';
-  company: any;
+  company: any={};
   empresaseleccionada: any = {};
   usuario: any = {};
   empresa: any = {};
@@ -78,6 +78,7 @@ export class DefinitiveComponent implements OnInit {
   disabledPayroll: boolean =true;
   periodProcess: boolean =true;
   periodContability: boolean =true;
+  idUser: any;
   constructor(
     public _employeeService:EmployeeService,
                public router: Router,
@@ -87,17 +88,23 @@ export class DefinitiveComponent implements OnInit {
                public _movementService: PayrollService,
               public dialogService: DialogService,
               public _getEmployeeService: GetEmployeeService,
+              public _companyService: CompanyService,
               private _absenteeService: AbsenteeService,
               private fb: UntypedFormBuilder,
               private confirmationService: ConfirmationService,
               private messageService: MessageService
   ) {
 
-    this.company = this._usuarioService.empresas;
-    this.empresaseleccionada = localStorage.getItem('empresaseleccionada')!;
-    this.usuario = JSON.parse(localStorage.getItem('usuario')!);
+    //this.company = this._usuarioService.empresas;
+    //this.empresaseleccionada = localStorage.getItem('empresaseleccionada')!;
+    //this.usuario = JSON.parse(localStorage.getItem('usuario')!);
 
-    if ( this.empresaseleccionada ){
+    this.idUser = localStorage.getItem('id')!;
+               // this.empresaseleccionada = localStorage.getItem('empresaseleccionada')!;
+                this.usuario = JSON.parse(localStorage.getItem('usuario')!);
+                this.cargarEmpresasUsuario(this.idUser!)
+
+   /*  if ( this.empresaseleccionada ){
                 this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
               } else {
                 if(this.company.length > 1 ) {
@@ -105,20 +112,20 @@ export class DefinitiveComponent implements OnInit {
                 } else {
                   this.empresa =  JSON.parse(JSON.stringify(this.company[0]));
                 }
-              }
+              } */
 
 
 
               /* this.createdPayroll(this.empresa.id)
               this.getEmployeeByCompany(this.empresa.id) */
-              this.getPeriodByProcess(this.empresa.id)
+
 
               this.employeeSelect = new EventEmitter();
   }
 
   ngOnInit(): void {
 
-
+    this.cargarEmpresasUsuario(this.idUser!)
 
     this.software = [
       { label: 'No Aplica', value: 'noaplica' },
@@ -148,7 +155,7 @@ export class DefinitiveComponent implements OnInit {
     this._periodService.getPeriodByCompanyByProcess( id)
         .subscribe( (period: any={}) => {
 
-          this.period = period.data;
+          this.period = period.data[0];
 
           if (this.period) {
 
@@ -202,8 +209,9 @@ export class DefinitiveComponent implements OnInit {
   getMovementPayrollByEmployee(id: string, period: string ) {
     this._movementService.getMovementsPayrollByEmployee( id, period )
         .subscribe( employeeMovementsPayroll => {
-         this.employeeMovementsPayroll = employeeMovementsPayroll
-
+         this.employeeMovementsPayroll = Array.isArray(employeeMovementsPayroll) ? employeeMovementsPayroll : [employeeMovementsPayroll]
+console.log('payroll', this.employeeMovementsPayroll )
+console.log('payroll33', this.employeeMovementsPayroll.first_name)
          /* this.filter = employeeMovementsPayroll[0].salariales;
           console.log('filter',this.filter)
           this.filter1 = _.map(this.filter, function(o) { */
@@ -253,6 +261,41 @@ export class DefinitiveComponent implements OnInit {
       timer: 1500
     });
     this.selectMovementsPayroll = null
+  }
+
+
+  cargarEmpresasUsuario(iduser: any) {
+    this._companyService.cargarCompanysUser(iduser).subscribe(
+      (resp: any) => {
+        if (resp && resp.companies) {
+
+          this.company = resp.companies;
+
+          this.usuario = resp.user;
+
+          if(this.company .length > 1 ){
+            this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
+            this.getPeriodByProcess(this.empresa.id)
+
+
+          }else{
+            this.empresa =  this.company[0];
+            console.log('empresa', this.empresa )
+            this.getPeriodByProcess(this.empresa.id)
+
+          }
+
+        } else {
+          this.company  = { companies: [] }; // Evita errores si la API devuelve un valor inesperado
+        }
+
+        this.usuario = resp?.user || {}; // Evita que `usuario` sea undefined
+      },
+      (error) => {
+        console.error('Error al cargar las empresas:', error);
+        this.company  = { companies: [] }; // En caso de error, aseguramos que no falle
+      }
+    );
   }
 
 

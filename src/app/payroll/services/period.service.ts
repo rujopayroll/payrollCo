@@ -57,8 +57,7 @@ export class PeriodService {
         return  this.http.get ( url, {withCredentials:true} )
         .pipe(
             map( (resp: any={}) => {
-              console.log('periodo', resp)
-              console.log('periodo', resp.data[0].year)
+
               return resp;
 
             }));
@@ -92,11 +91,12 @@ export class PeriodService {
       createPeriod( id: string, year: number){
 
         let url = this.URL_SERVICIOS + '/period?company_id=' + id + '&year=' + year;
+        console.log('urlperiodo', url)
 
         return this.http.post( url,  {withCredentials:true})
         .pipe(
             map( (resp: any) => {
-console.log('periodo', resp)
+
               return resp;
 
             }));

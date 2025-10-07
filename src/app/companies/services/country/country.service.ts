@@ -23,7 +23,7 @@ export class CountryService {
     }
 
     cargarPaises(){
-      let url = this.URL_SERVICIOS + '/country';
+      let url = this.URL_SERVICIOS + '/country/get_all';
       return this.http.get( url, {withCredentials: true} )
       .pipe(
            map( (resp: any) => {

@@ -10,7 +10,7 @@ import { GetEmployeeService } from '../../services/get-employee.service';
 import { PayrollService } from '../../services/payroll.service';
 import { PeriodService } from '../../services/period.service';
 import { Period} from '../../models/period.model'
-
+import { CompanyService } from '../../../companies/services/company/company.service';
 @Component({
   selector: 'app-save-extra-hours',
   templateUrl: './save-extra-hours.component.html',
@@ -28,9 +28,9 @@ export class SaveExtraHoursComponent implements OnInit {
   visibleSidebarE: any;
   register: any = {};
   extras: any = {};
-
+  idUser: any;
   var: any
-  period: any;
+  period: any = {}
   employeeSelect: any;
   employee: any = {};
   employees: any = {};
@@ -71,10 +71,11 @@ export class SaveExtraHoursComponent implements OnInit {
                public _periodService: PeriodService,
                public _movementService: PayrollService,
                public _conceptService: ConceptService,
+               public _companyService: CompanyService,
                public _getEmployeeService: GetEmployeeService,) {
 
 
-    this.company = this._usuarioService.empresas;
+    /* this.company = this._usuarioService.empresas;
     this.empresaseleccionada = localStorage.getItem('empresaseleccionada')!;
     this.usuario = JSON.parse(localStorage.getItem('usuario')!);
 
@@ -86,43 +87,42 @@ export class SaveExtraHoursComponent implements OnInit {
                 } else {
                   this.empresa =  JSON.parse(JSON.stringify(this.company[0]));
                 }
-              }
+              } */
+
+              this.idUser = localStorage.getItem('id')!;
+              this.usuario = JSON.parse(localStorage.getItem('usuario')!);
+
 
               this._getEmployeeService.recibirGroup.subscribe(group =>{
 
 
              })
 
-             this.getPeriodByProcess(this.empresa.id)
+
 
                  }
 
   ngOnInit(): void {
-
+    this.cargarEmpresasUsuario(this.idUser )
 
 
   }
 
    getPeriodByProcess( id: string ) {
 
-
-
     this._periodService.getPeriodByCompanyByProcess( id)
-        .subscribe( (period: Period) => {
-          this.period = period;
+        .subscribe( period => {
+          this.period = period.data[0];
 
           if (this.period) {
 
           this._getEmployeeService.recibir.subscribe(dato =>{
             this.employeeSelect = dato
-            this.getOverTimeByEmployee(this.employeeSelect, this.empresa.id, this.period[0].id)
+            console.log('888', this.employeeSelect)
+            console.log('888rrr', dato)
+            this.getOverTimeByEmployee(this.employeeSelect, this.empresa.id,this.period.id)
          })
-
-
-
            }
-
-
         });
 
   }
@@ -147,40 +147,47 @@ function replacer(key: any, value: any) {
     const formExtras= [
 
       {
-        code:"M009",
-        quantity: this.formaOverTime.value.hedo,
-        codeConst: "HEDO"
+        code_concept:"M009",
+        code_constant: "HEDO",
+        value: this.formaOverTime.value.hedo,
+
       },
       {
-        code:"M010",
-        quantity: this.formaOverTime.value.heno,
-        codeConst: "HENO"
+        code_concept:"M010",
+        code_constant: "HENO",
+        value: this.formaOverTime.value.heno,
+
       },
       {
-        code:"M011",
-        quantity: this.formaOverTime.value.reco,
-        codeConst: "RECO"
+        code_concept:"M011",
+        code_constant: "RECO",
+        value: this.formaOverTime.value.reco,
+
       },
       {
-        code:"M012",
-        quantity: this.formaOverTime.value.hedd,
-        codeConst: "HEDD"
+        code_concept:"M012",
+        code_constant: "HEDD",
+        value: this.formaOverTime.value.hedd,
+
       },
 
       {
-        code:"M013",
-        quantity: this.formaOverTime.value.hend,
-        codeConst: "HEND"
+        code_concept:"M013",
+        code_constant: "HEND",
+        value: this.formaOverTime.value.hend,
+
       },
       {
-        code:"M014",
-        quantity: this.formaOverTime.value.recd,
-        codeConst: "RECD"
+        code_concept:"M014",
+        code_constant: "RECD",
+        value: this.formaOverTime.value.recd,
+
       },
       {
-        code:"M015",
-        quantity: this.formaOverTime.value.hond,
-        codeConst: "HOND"
+        code_concept:"M015",
+        code_constant: "HOND",
+        value: this.formaOverTime.value.hond,
+
       }
 
     ]
@@ -190,25 +197,31 @@ function replacer(key: any, value: any) {
 
 
      var extrasDef = this.extras.filter(function (overTime: any) {
-       return overTime != null;
+
+
+       return overTime.value != 0;
      });
 
 
     const form = [
       {
-        employee_id: this.employeeSelect,
-        company_id: this.empresa.id,
-        noveltiesOverTime: extrasDef
+        /* employee_id: this.employeeSelect,
+
+        company_id: this.empresa.id, */
+        novelties: extrasDef
+
       }
     ]
 
     this.register =  JSON.parse(JSON.stringify(form[0]));
 
-    this._movementService.saveNoveltiesOverTime(this.register)
-        .subscribe( (resp: any) => {
 
+    this._movementService.saveNoveltiesOverTime(this.empresa.id, this.employeeSelect, this.register)
+        .subscribe( (resp: any) => {
+          console.log('antes del filte', this.extras)
+          console.log('filtro', form[0])
             this.ref.close();
-            console.log('res', resp)
+
         });
 
   }
@@ -253,5 +266,43 @@ function replacer(key: any, value: any) {
       });
 
   }
+
+
+  cargarEmpresasUsuario(iduser: any) {
+    this._companyService.cargarCompanysUser(iduser).subscribe(
+      (resp: any) => {
+        if (resp && resp.companies) {
+
+          this.company = resp.companies;
+
+          this.usuario = resp.user;
+
+          if(this.company .length > 1 ){
+            this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
+
+            this.getPeriodByProcess(this.empresa.id)
+
+
+
+          }else{
+            this.empresa =  this.company[0];
+
+            this.getPeriodByProcess(this.empresa.id)
+
+          }
+
+        } else {
+          this.company  = { companies: [] }; // Evita errores si la API devuelve un valor inesperado
+        }
+
+        this.usuario = resp?.user || {}; // Evita que `usuario` sea undefined
+      },
+      (error) => {
+        console.error('Error al cargar las empresas:', error);
+        this.company  = { companies: [] }; // En caso de error, aseguramos que no falle
+      }
+    );
+  }
+
 
 }

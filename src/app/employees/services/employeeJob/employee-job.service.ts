@@ -15,6 +15,7 @@ import { getLocaleDateFormat } from '@angular/common';
 import { environment } from 'src/environments/environment';
 
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -43,7 +44,7 @@ public headers = new HttpHeaders();
 
     cargarEmployeeJob( idEmployee: string){
 
-      let url = this.URL_SERVICIOS + '/employeeJob?id=' + idEmployee;
+      let url = this.URL_SERVICIOS + '/employeeJob/' + idEmployee;
       return this.http.get( url, {withCredentials:true} )
       .pipe(
           map( (resp: any) => resp ));
@@ -90,7 +91,8 @@ public headers = new HttpHeaders();
               text: err.error.errors.message,
               icon: 'error'
             });
-            return Observable.throwError( err );
+            //return Observable.throwError( err );
+            return throwError(() => new Error('Error del servidor'));
           }));
     }
 

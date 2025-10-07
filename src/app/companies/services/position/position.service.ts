@@ -37,10 +37,10 @@ export class PositionService {
 
     cargarPosition( id: string){
 
-      let url = this.URL_SERVICIOS + '/companies/' + id;
+      let url = this.URL_SERVICIOS + '/position';
       return this.http.get( url, {withCredentials:true})
       .pipe(
-          map( (resp: any) => resp.positions ));
+          map( (resp: any) => resp ));
     }
 
     obtenerPosition( id: string){
@@ -101,7 +101,12 @@ export class PositionService {
                 text: 'Cargo Creado',
                 icon: 'success'
               });
-            return resp.area;
+            return resp;
+
+
+
+
+
           }))
           .pipe(
           catchError( err =>{
@@ -112,14 +117,16 @@ export class PositionService {
               text: err.error.errors.message,
               icon: 'error'
             });
-            return Observable.throwError( err );
+            //return Observable.throwError( err );
+            return throwError(() => new Error('Error del servidor'));
           }));
     }
 
     actualizarPosition( position: Position ){
 
       let url = this.URL_SERVICIOS + '/position/' + position.id;
-      url += '?token=' + this._usuarioService.token;
+      console.log('cargo', position)
+      //url += '?token=' + this._usuarioService.token;
       return this.http.put( url, position, {withCredentials:true})
       .pipe(
           map( (resp: any) =>{

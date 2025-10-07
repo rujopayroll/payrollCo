@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
@@ -11,8 +11,8 @@ import { PeriodService } from 'src/app/payroll/services/payrollService.index';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styles: [
-  ]
+  styleUrls: ['./login.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class LoginComponent implements OnInit {
 
@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
 
   company: any;
 
-
+  today = new Date();
 
   constructor( public _router: Router,
                public _usuarioService: AuthService,
@@ -62,6 +62,7 @@ export class LoginComponent implements OnInit {
   let usuario = new Usuario(null!, forma.value.email, forma.value.password);
 
   this._usuarioService.login(usuario, forma.value.recuerdame)
+
       .subscribe(correcto => {
 
 
@@ -133,9 +134,10 @@ console.log('companyUser.length', this.companyUser.length)
 
 
     cargarEmpresasUsuario(iduser: any){
+
     this._companyServices.cargarCompanysUser(iduser).subscribe(
       (resp: any) => {
-        console.log('Respuesta de la API:', resp); // Verifica qué devuelve el backend
+
 
         if (resp && Array.isArray(resp.companies)) {
           this.companyUser = resp.companies;

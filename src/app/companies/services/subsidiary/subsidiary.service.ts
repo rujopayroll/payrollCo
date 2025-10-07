@@ -36,11 +36,13 @@ export class SubsidiaryService {
 
     cargarSubsidiary( id: string){
 
-      let url = this.URL_SERVICIOS + '/companies/' + id;
+      let url = this.URL_SERVICIOS + '/subsidiary';
       return this.http.get( url, {withCredentials:true} )
       .pipe(
-          map( (resp: any) => resp.subsidiaries ));
+          map( (resp: any) => resp ));
     }
+
+
 
     obtenerSubsidiary( id: string){
 
@@ -92,6 +94,7 @@ export class SubsidiaryService {
     }
     crearSubsidiary( subsidiary: Subsidiary){
       const url = this.URL_SERVICIOS + '/subsidiary';
+      console.log('sucursal', subsidiary)
       return this.http.post( url, subsidiary, {withCredentials:true})
       .pipe(
           map( (resp: any) =>{
@@ -113,7 +116,8 @@ export class SubsidiaryService {
               text: err.error.errors.message,
               icon: 'error'
             });
-            return Observable.throwError( err );
+            //return Observable.throwError( err );
+            return throwError(() => new Error('Error del servidor'));
           }));
     }
 

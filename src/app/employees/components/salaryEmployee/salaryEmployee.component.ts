@@ -15,7 +15,7 @@ import { ModalUploadService } from '../../../companies/components/modal-upload/m
 import Swal from 'sweetalert2';
 import { DOCUMENT } from '@angular/common';
 import { Inject } from '@angular/core';
-import { PageScrollService } from 'ngx-page-scroll-core';
+//import { PageScrollService } from 'ngx-page-scroll-core';
 
 declare var $:any;
 declare var jQuery:any;
@@ -64,6 +64,8 @@ registerLocaleData(localeEsAr);
       salaryType: SalaryType[] = [];
       salaryTypes: any = {};
       new!: boolean;
+      user!: string;
+      companyUser: any = {};
 
 
       employeeSalaryNew: EmployeeSalary = new EmployeeSalary('', '', true, '', '', this.date, this.date,0,'',this.date,this.date);
@@ -79,21 +81,24 @@ registerLocaleData(localeEsAr);
        private messageService: MessageService,
        public _modalUploadServices: ModalUploadService,
        private confirmationService: ConfirmationService,
-       public pageScrollServ: PageScrollService,
+       //public pageScrollServ: PageScrollService,
                 @Inject(DOCUMENT) private document: any
     ) {
+
+      this.user = localStorage.getItem('id')!;
+      this.cargarEmpresasUsuario(this.user)
 
       this.activatedRoute.params.subscribe( params =>{
           this.getEmployeesSalary( params[ 'id' ]);
           this.getEmployeesSalaryIsActive( params[ 'id' ]);
       });
 
-      this.company = this._usuarioService.empresas;
-      this.empresaseleccionada = localStorage.getItem('empresaseleccionada');
+      //this.company = this._usuarioService.empresas;
+      //this.empresaseleccionada = localStorage.getItem('empresaseleccionada');
       this.usuario = JSON.parse(localStorage.getItem('usuario')!);
 
 
-      if ( this.empresaseleccionada ){
+      /* if ( this.empresaseleccionada ){
         this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
 
 
@@ -103,7 +108,7 @@ registerLocaleData(localeEsAr);
         } else {
           this.empresa =  JSON.parse(JSON.stringify(this.company[0]));
         }
-      }
+      } */
 
 
        this.crearFormulario();
@@ -124,10 +129,10 @@ registerLocaleData(localeEsAr);
         this.getSalaryType();
         this.getAllSalaryType();
 
-        this.pageScrollServ.scroll({
+       /*  this.pageScrollServ.scroll({
           document: this.document,
           scrollTarget: '.theEnd',
-        });
+        }); */
        /*  this.activatedRoute.params.subscribe( params =>{
           this._modalUploadServices.notificacion
           .subscribe( () => this.getEmployeesSalary( params[ 'id' ]));
@@ -156,7 +161,7 @@ registerLocaleData(localeEsAr);
 
 
 
-    onScroll(event: HTMLElement, i:any) {
+   /*  onScroll(event: HTMLElement, i:any) {
       this.pageScrollServ.scroll({
         scrollTarget: event,
         scrollOffset: 300,
@@ -164,7 +169,7 @@ registerLocaleData(localeEsAr);
       });
 
       this.active = i
-    }
+    } */
 
     getEmployeesSalary( id: string ) {
       this._employeeSalaryService.cargarEmployeeSalary( id )
@@ -323,6 +328,40 @@ registerLocaleData(localeEsAr);
               //this.messageService.add({severity:'success', summary: 'Successful', detail: 'Centro de costo Eliminado', life: 3000});
           }
       });
+  }
+
+
+  cargarEmpresasUsuario(iduser: any) {
+    this._companyService.cargarCompanysUser(iduser).subscribe(
+      (resp: any) => {
+        if (resp && resp.companies) {
+
+          this.companyUser = resp.companies;
+
+          this.usuario = resp.user;
+
+          if(this.companyUser.length > 1 ){
+            this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
+
+
+          }else{
+            this.empresa =  this.companyUser[0];
+
+
+
+          }
+
+        } else {
+          this.companyUser = { companies: [] }; // Evita errores si la API devuelve un valor inesperado
+        }
+
+        this.usuario = resp?.user || {}; // Evita que `usuario` sea undefined
+      },
+      (error) => {
+        console.error('Error al cargar las empresas:', error);
+        this.companyUser  = { companies: [] }; // En caso de error, aseguramos que no falle
+      }
+    );
   }
 
 

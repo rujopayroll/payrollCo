@@ -21,7 +21,7 @@ export class PaymentFrequencyService {
     }
 
   cargarFrecuenciaPago(){
-    let url = this.URL_SERVICIOS  + '/paymentFrequency';
+    let url = this.URL_SERVICIOS  + '/paymentFrequency/get_all';
     return this.http.get( url, {withCredentials:true} )
     .pipe(
          map( (resp: any) => {

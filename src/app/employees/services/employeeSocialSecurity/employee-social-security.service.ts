@@ -39,7 +39,7 @@ export class EmployeeSocialSecurityService  {
 
     cargarEmployeeSocialSecurity( idEmployee: string){
 
-      let url = this.URL_SERVICIOS + '/employeeSocialSecurity?id=' + idEmployee;
+      let url = this.URL_SERVICIOS + '/employeeSocialSecurity/' + idEmployee;
       return this.http.get( url, {withCredentials:true} )
       .pipe(
           map( (resp: any) => resp ));
@@ -86,7 +86,8 @@ export class EmployeeSocialSecurityService  {
               text: err.error.errors.message,
               icon: 'error'
             });
-            return Observable.throwError( err );
+            //return Observable.throwError( err );
+            return throwError(() => new Error('Error del servidor'));
           }));
     }
 

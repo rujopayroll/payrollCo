@@ -25,7 +25,7 @@ export class CityService {
                }
 
     cargarMunicipios(){
-      let url = this.URL_SERVICIOS + '/city';
+      let url = this.URL_SERVICIOS + '/City/get_all';
       return this.http.get( url, {withCredentials: true} )
       .pipe(
            map( (resp: any) => {
@@ -33,13 +33,19 @@ export class CityService {
           }));
     }
     obtenerMunicipio( id: string ){
-      let url = this.URL_SERVICIOS + '/city/' + id;
+      let url = this.URL_SERVICIOS + '/City/' + id;
       return this.http.get( url, {withCredentials: true} )
       .pipe(
       map( (resp: any ) => resp ));
     }
+    /* obtenerMunicipioDepto( id: string ){
+      let url = this.URL_SERVICIOS + '/state/' + id;
+      return this.http.get( url, {withCredentials:true} )
+      .pipe(
+          map( (resp: any ) => resp.cities ));
+    } */
     obtenerMunicipioDepto( id: string ){
-      let url = this.URL_SERVICIOS + '/states/' + id;
+      let url = this.URL_SERVICIOS + '/City/get_all?estate_id=' + id;
       return this.http.get( url, {withCredentials:true} )
       .pipe(
           map( (resp: any ) => resp.cities ));

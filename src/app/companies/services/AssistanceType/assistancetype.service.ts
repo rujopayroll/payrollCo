@@ -21,7 +21,7 @@ public headers = new HttpHeaders();
     }
 
   cargarTipoAuxilio(){
-    let url = this.URL_SERVICIOS  + '/assistance-type';
+    let url = this.URL_SERVICIOS  + '/assistanceType/get_all';
     return this.http.get( url, {withCredentials:true} )
     .pipe(
          map( (resp: any) => {
@@ -29,7 +29,7 @@ public headers = new HttpHeaders();
         }));
   }
   obtenerTipoAuxilio( id: string ){
-    let url = this.URL_SERVICIOS  + '/assistance-types/' + id;
+    let url = this.URL_SERVICIOS  + '/assistanceType/' + id;
     return this.http.get( url, {withCredentials:true} )
     .pipe(
         map( (resp: any ) => resp ));

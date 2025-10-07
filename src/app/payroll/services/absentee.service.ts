@@ -42,7 +42,7 @@ public headers = new HttpHeaders();
 
 
      getAbsenteeType(){
-      let url = this.URL_SERVICIOS + '/absenteeType';
+      let url = this.URL_SERVICIOS + '/absentee-type';
 
       return  this.http.get( url, {withCredentials:true} )
       .pipe(
@@ -53,7 +53,7 @@ public headers = new HttpHeaders();
     }
 
     getAbsenteeTypeById(id: string){
-      let url = this.URL_SERVICIOS + '/absenteeType?id=' + id;
+      let url = this.URL_SERVICIOS + '/absentee-type?id=' + id;
 
       return  this.http.get( url, {withCredentials:true} )
       .pipe(
@@ -64,8 +64,8 @@ public headers = new HttpHeaders();
     }
 
     getAbsenteeByEmployeeByPeriod(employee_id: string, iniPeriod:Date, endPeriod:Date){
-      let url = this.URL_SERVICIOS + '/absentee-history/absenteePeriodByEmployee?employee_id=' + employee_id + '&iniPeriod=' + iniPeriod + '&endPeriod=' + endPeriod;
-
+      console.log('entro al servicio')
+    let url = this.URL_SERVICIOS + '/absentee-history/periods/employees?employee_id=' + employee_id + '&iniDatePeriod=' + iniPeriod + '&endDatePeriod=' + endPeriod;
       return  this.http.get( url, {withCredentials:true} )
       .pipe(
           map( (resp: any) => {
@@ -76,7 +76,8 @@ public headers = new HttpHeaders();
     }
 
     saveAbsenteeByEmployee(absentee: any){
-      let url = this.URL_SERVICIOS + '/absentee-history/';
+      let url = this.URL_SERVICIOS + '/absentee-history';
+      console.log(absentee)
       return this.http.post( url, absentee, {withCredentials:true} )
       .pipe(
           map( (resp: any) => {

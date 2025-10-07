@@ -21,7 +21,7 @@ public headers = new HttpHeaders();
     }
 
   cargarTipoCuentas(){
-    let url = this.URL_SERVICIOS  + '/account-types';
+    let url = this.URL_SERVICIOS  + '/AccountType/get_all';
     return this.http.get( url, {withCredentials:true} )
     .pipe(
          map( (resp: any) => {
@@ -29,7 +29,7 @@ public headers = new HttpHeaders();
         }));
   }
   obtenerTipoCuenta( id: string ){
-    let url = this.URL_SERVICIOS  + '/account-types/' + id;
+    let url = this.URL_SERVICIOS  + '/AccountType/' + id;
     return this.http.get( url, {withCredentials:true} )
     .pipe(
         map( (resp: any ) => resp ));

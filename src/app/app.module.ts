@@ -16,7 +16,7 @@ import { registerLocaleData, CommonModule, } from '@angular/common';
 import { DashboardRoutingModule } from './dashboard/dashboard-routing.module';
 //import { Ng2PageScrollModule } from 'ng2-page-scroll';
 //import { NgxPageScrollModule } from 'ngx-page-scroll';
-import { NgxPageScrollCoreModule } from 'ngx-page-scroll-core'
+
 import { ModalUploadComponent } from './companies/components/modal-upload/modal-upload.component';
 import { PrimeNGModule } from './prime-ng/prime-ng.module';
 import { CompanyServiceModule } from './companies/services/companyService.module';
@@ -56,7 +56,7 @@ registerLocaleData(localeES, 'es');
     DashboardRoutingModule,
    //Ng2PageScrollModule,
    //NgxPageScrollModule,
-    NgxPageScrollCoreModule,
+
     FormsModule,
    ReactiveFormsModule,
    PrimeNGModule,

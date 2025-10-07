@@ -1,21 +1,36 @@
-.custom-card-title {
-  font-size: 20px;           /* Tamaño del texto */
-  color: #d3d3d3;            /* Color azul */
+/* .custom-card-title {
+  font-size: 20px;
+  color: #d3d3d3;
   display: flex;
   align-items: center;
-  justify-content: center;   /* Centra horizontalmente */
+  justify-content: center;
   font-weight: bold;
   gap: 8px;
 }
 
 .icon-title {
   font-size: 20px;
-  color: #ff9900;            /* Color del ícono */
+  color: #ff9900;
 }
 
 .card-header {
   height: 5px;
-  background-color: #28a745; /* Color verde */
+  background-color: #28a745;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
 }
+
+
+
+:host ::ng-deep .card-hover .p-card {
+  transition: all 0.3s ease;
+}
+
+:host ::ng-deep .card-hover .p-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: scale(1.01);
+  background-color: #ffb247ea
+}
+ */
+
+

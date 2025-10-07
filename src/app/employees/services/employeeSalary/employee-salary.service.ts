@@ -41,7 +41,7 @@ export class EmployeeSalaryService  {
 
     cargarEmployeeSalary( idEmployee: string){
 
-      let url = this.URL_SERVICIOS + '/employeeSalary?employee_id=' + idEmployee;
+      let url = this.URL_SERVICIOS + '/employeeSalary/' + idEmployee;
       return this.http.get( url, {withCredentials:true} )
       .pipe(
       map( (resp: any) => resp ));
@@ -51,7 +51,7 @@ export class EmployeeSalaryService  {
 
     cargarEmployeeSalaryIsActive( idEmployee: string){
 
-      let url = this.URL_SERVICIOS + '/employeeSalary?employee_id=' + idEmployee+ '&isActive=true';
+      let url = this.URL_SERVICIOS + '/employeeSalary/' + idEmployee+ '?isActive=true';
       return this.http.get( url, {withCredentials:true} )
       .pipe(
       map( (resp: any) => resp ));
@@ -100,7 +100,8 @@ export class EmployeeSalaryService  {
               text: err.error.errors.message,
               icon: 'error'
             });
-            return Observable.throwError( err );
+            //return Observable.throwError( err );
+            return throwError(() => new Error('Error del servidor'));
           }));
 
     }

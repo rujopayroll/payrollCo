@@ -11,7 +11,7 @@ import { map, catchError, tap } from 'rxjs/operators';
 //import 'rxjs/add/Operator/tap';
 //import 'rxjs/add/Operator/map';
 //import 'rxjs/add/Operator/catch';
-import 'rxjs/add/observable/throw';
+//import 'rxjs/add/observable/throw';
 import { throwError } from 'rxjs';
 
 import { ModalUploadService } from '../../companies/components/modal-upload/modal-upload.service';
@@ -174,6 +174,7 @@ export class AuthService {
     //let url = URL_SERVICIOS + '/login';
     let url = this.URL_SERVICIOS + '/auth/login';
 
+
     //let url = 'https://payrollback-aagydqc0ceczedak.eastus-01.azurewebsites.net/api/v1/auth/signup';
     return this.http.post( url, usuario, {withCredentials:true})
 
@@ -186,7 +187,7 @@ export class AuthService {
 
                 // this.guardarStorage( resp.user.id, resp.token, resp.user, resp.user.menu.menus, resp.user.companies );
                 this.guardarStorage(resp.id, resp.userName);
-               // this.empresas = this._companyServices.cargarCompanysUser(resp.id)
+                //this.empresas = this._companyServices.cargarCompanysUser(resp.id)
                 //this.guardarSessionStorage( resp.id, resp.user.id, resp.user, resp.user.companies, resp.refreshToken );
 
                 return true;
@@ -196,14 +197,15 @@ export class AuthService {
             // })
             .pipe(
             catchError( err =>{
-              console.log('error', err)
+
                 // tslint:disable-next-line: deprecation
                 Swal.fire({
                   title: 'Error en el login',
                   text: 'error al autenticar',
                   icon: 'error'
                 });
-                return Observable.throwError( err );
+                //return Observable.throwError( err );
+                return throwError(() => new Error('Error del servidor'));
               })
             );
 
@@ -282,8 +284,9 @@ crearUsuario( usuario: any){
           text: 'El correo ya esta en uso',
           icon: 'warning'
         });
-        console.log('error', err)
-        return Observable.throwError( err );
+
+        //return Observable.throwError( err );
+        return throwError(() => new Error('Error del servidor'));
       }));
 
 }

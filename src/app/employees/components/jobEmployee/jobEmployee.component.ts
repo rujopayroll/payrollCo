@@ -13,8 +13,9 @@ import { CostCenter } from '../../../companies/models/costCenter.model';
 import { Area } from '../../../companies/models/area.model';
 import { Position } from '../../../companies/models/position.model';
 import { Subsidiary } from '../../../companies/models/subsidiary.model';
+import { CompanyService } from '../../../companies/services/company/company.service';
 import {MenuItem} from 'primeng/api';
-import { PageScrollService } from 'ngx-page-scroll-core';
+//import { PageScrollService } from 'ngx-page-scroll-core';
 import { DOCUMENT } from '@angular/common';
 import { Inject } from '@angular/core';
 import { ConfirmationService } from 'primeng/api';
@@ -59,6 +60,8 @@ export class JobEmployeeComponent implements OnInit {
   areas: Area[]=[];
   positions: Position[]=[];
   subsidiarys: Subsidiary[]=[];
+  user!: string;
+  companyUser: any = {};
   employeeJob: EmployeeJob = new EmployeeJob('', '', true, '', '', '', '', this.date, this.date, '');
 
 
@@ -73,13 +76,15 @@ export class JobEmployeeComponent implements OnInit {
               public _areaService: AreaService,
               public _positionService: PositionService,
               public _subsidiaryService: SubsidiaryService,
-              public pageScrollServ: PageScrollService,
+              public _companyService: CompanyService,
+              //public pageScrollServ: PageScrollService,
               @Inject(DOCUMENT) private document: any
               ) {
-
-                this.company = this._usuarioService.empresas;
-                this.empresaseleccionada = localStorage.getItem('empresaseleccionada');
-                if ( this.empresaseleccionada ){
+                this.user = localStorage.getItem('id')!;
+                this.cargarEmpresasUsuario(this.user)
+                //this.company = this._usuarioService.empresas;
+                //this.empresaseleccionada = localStorage.getItem('empresaseleccionada');
+                /* if ( this.empresaseleccionada ){
                   this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
                   } else {
                     if(this.company.length > 1 ) {
@@ -87,7 +92,7 @@ export class JobEmployeeComponent implements OnInit {
                   } else {
                    this.empresa =  JSON.parse(JSON.stringify(this.company[0]));
                   }
-                   }
+                   } */
 
                  this.usuario = JSON.parse(localStorage.getItem('usuario')!);
 
@@ -111,10 +116,10 @@ export class JobEmployeeComponent implements OnInit {
       .subscribe( () =>  this.cargarEmployeesJob( params[ 'id' ]));
     });
 
-    this.pageScrollServ.scroll({
+   /*  this.pageScrollServ.scroll({
       document: this.document,
       scrollTarget: '.theEnd',
-    });
+    }); */
 
 
 
@@ -190,7 +195,7 @@ export class JobEmployeeComponent implements OnInit {
     })
     }
 
-  onScroll(event: HTMLElement, i:any) {
+  /* onScroll(event: HTMLElement, i:any) {
     this.pageScrollServ.scroll({
       scrollTarget: event,
       scrollOffset: 300,
@@ -198,7 +203,7 @@ export class JobEmployeeComponent implements OnInit {
     });
 
     this.active = i;
-  }
+  } */
 
   hideDialog() {
     this.jobEmployeeDialog = false;
@@ -214,7 +219,7 @@ editJobEmployee(jobEmployee: EmployeeJob) {
   cargarEmployeesJob( id: string ) {
     this._employeeJobService.cargarEmployeeJob( id )
         .subscribe( employeeJob => {
-        this.employeeJ = employeeJob.data[0];
+        this.employeeJ = employeeJob;
         if (this.employeeJ) {
           this.getCostCenter( this.employeeJ.costCenter_id );
           this.getArea( this.employeeJ.area_id );
@@ -280,6 +285,39 @@ editJobEmployee(jobEmployee: EmployeeJob) {
         .subscribe( subsidiary => {
           this.subsidiarys = subsidiary;
   });
+  }
+
+  cargarEmpresasUsuario(iduser: any) {
+    this._companyService.cargarCompanysUser(iduser).subscribe(
+      (resp: any) => {
+        if (resp && resp.companies) {
+
+          this.companyUser = resp.companies;
+
+          this.usuario = resp.user;
+
+          if(this.companyUser.length > 1 ){
+            this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
+
+
+          }else{
+            this.empresa =  this.companyUser[0];
+
+
+
+          }
+
+        } else {
+          this.companyUser = { companies: [] }; // Evita errores si la API devuelve un valor inesperado
+        }
+
+        this.usuario = resp?.user || {}; // Evita que `usuario` sea undefined
+      },
+      (error) => {
+        console.error('Error al cargar las empresas:', error);
+        this.companyUser  = { companies: [] }; // En caso de error, aseguramos que no falle
+      }
+    );
   }
 
 

@@ -131,7 +131,7 @@ export class ConceptService {
 
     getConceptSalaryCompany( idcompany: string){
 
-      let url = this.URL_SERVICIOS + '/concept?' + 'company_id=' + idcompany + '&conceptGroup=SALARIAL' ;
+      let url = this.URL_SERVICIOS + '/concept/get_all?' + 'company_id=' + idcompany + '&conceptGroup=SALARIAL' ;
 
       return this.http.get( url, {withCredentials:true})
       .pipe(
@@ -141,7 +141,7 @@ export class ConceptService {
 
     getConceptNoSalaryCompany( idcompany: string){
 
-      let url = this.URL_SERVICIOS + '/concept?' + 'company_id=' + idcompany + '&conceptGroup=NOSALARIAL' ;
+      let url = this.URL_SERVICIOS + '/concept/get_all?' + 'company_id=' + idcompany + '&conceptGroup=NOSALARIAL' ;
 
       return this.http.get( url, {withCredentials:true} )
       .pipe(
@@ -151,7 +151,7 @@ export class ConceptService {
 
     getConceptDeductionCompany( idcompany: string){
 
-      let url = this.URL_SERVICIOS + '/concept?' + 'company_id=' + idcompany + '&conceptGroup=DEDUCCION' ;
+      let url = this.URL_SERVICIOS + '/concept/get_all?' + 'company_id=' + idcompany + '&conceptGroup=DEDUCCION' ;
 
       return this.http.get( url,{withCredentials:true})
       .pipe(
@@ -161,7 +161,7 @@ export class ConceptService {
 
     getConceptSocialBenefitCompany( idcompany: string){
 
-      let url = this.URL_SERVICIOS + '/concept?' + 'company_id=' + idcompany + '&conceptGroup=PRESTACIONESSOCIALES' ;
+      let url = this.URL_SERVICIOS + '/concept/get_all?' + 'company_id=' + idcompany + '&conceptGroup=PRESTACIONESSOCIALES' ;
 
       return this.http.get( url, {withCredentials:true} )
       .pipe(
@@ -171,7 +171,7 @@ export class ConceptService {
 
     getConceptCustomerCompany( idcompany: string){
 
-      let url = this.URL_SERVICIOS + '/concept?' + 'company_id=' + idcompany + '&isCustomer=True' ;
+      let url = this.URL_SERVICIOS + '/concept/gel_all?' + 'company_id=' + idcompany + '&isCustomer=True' ;
 
       return this.http.get( url, {withCredentials:true} )
       .pipe(
@@ -283,7 +283,8 @@ export class ConceptService {
               text: err.error.errors.message,
               icon: 'error'
             });
-            return Observable.throwError( err );
+            //return Observable.throwError( err );
+            return throwError(() => new Error('Error del servidor'));
           }));
     }
 

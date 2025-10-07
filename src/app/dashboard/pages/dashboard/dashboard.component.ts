@@ -10,6 +10,11 @@ import { CompanyService } from '../../../companies/services/company/company.serv
 import { Usuario } from '../../../auth/models/usuario.model';
 import { NgModule } from '@angular/core';
 import { TableModule } from 'primeng/table';
+import { isPlatformBrowser } from '@angular/common';
+
+// import { AppConfigService } from '@/service/appconfigservice';
+import { ChartModule } from 'primeng/chart';
+
 
 
 
@@ -30,8 +35,22 @@ export class DashboardComponent implements OnInit {
   Date = new Date();
   texto = "";
   ahora = new Date();
-  companyUser: any[]=[]
+  companyUser: any = {};
   usuario!: Usuario;
+  user!: string;
+  //grafica
+  data: any;
+
+  options: any;
+
+  platformId = inject(PLATFORM_ID);
+
+  //configService = inject(AppConfigService);
+
+  //designerService = inject(DesignerService);
+
+
+  //fin grafica
 
 
 
@@ -41,34 +60,62 @@ export class DashboardComponent implements OnInit {
   constructor( public _periodService: PeriodService,
                public _usuarioService: AuthService,
                public _companyService: CompanyService,
-               public router: Router) {
+               public router: Router, private cd: ChangeDetectorRef) {
 
 
 //SOLO SE COMENTO PARA EDITAR EL DASHBOARD.....
-    //this.company = this._usuarioService.empresas;
+/* this.user = localStorage.getItem('id')!;
+this.cargarEmpresasUsuario(this.user) */
+
+    this.greeting();
+   /*  this.company = this.companyUser
+    console.log('company', this.company )
     this.empresaseleccionada = localStorage.getItem('empresaseleccionada')!;
-    //this.usuario = JSON.parse(localStorage.getItem('usuario')!);
+
 
     if ( this.empresaseleccionada ){
       this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
     } else {
-      if(this.company.length > 1 ) {
+      if(this.companyUser.length > 1 ) {
         this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
       } else {
-        this.empresa =  JSON.parse(JSON.stringify(this.company[0]));
+        this.user = localStorage.getItem('id')!;
+        this.cargarEmpresasUsuario(this.user)
+
+
       }
-    }
-
-
-
-
-
-
-
-
+    } */
   }
 
+ /*  themeEffect = effect(() => {
+    if (this.configService.transitionComplete()) {
+        if (this.designerService.preset()) {
+            this.initChart();
+        }
+    }
+}); */
 
+chartBarData = {
+  labels: ['Web', 'Email', 'Portal', 'Otros'],
+  datasets: [{ data: [10, 7, 4, 2], backgroundColor: '#F39862' }]
+};
+chartBarOpts = {
+  plugins: { legend: { display: false } },
+  scales: { x: { grid: { display:false } }, y: { grid: { color:'#F3F4F6' } } }
+};
+
+chartDonutData = {
+  labels: ['Salud', 'Provisiones'],
+  datasets: [{ data:[25,75], backgroundColor: ['#53B4BA', '#16a34a'] }]
+};
+chartDonutOpts = { plugins: { legend: { position:'right' } } };
+
+chartTinyData = {
+  labels: ['Activos', 'Retirados'],
+  datasets: [{ data:[50,10], backgroundColor: '#53B4BA'}],
+
+};
+chartTinyOpts = { plugins: { legend:{display:false} } };
 
   greeting (): void{
     var hours = this.ahora.getHours();
@@ -90,14 +137,90 @@ export class DashboardComponent implements OnInit {
 
 
   ngOnInit(): void {
-
-    this.getPeriodByProcess( this.empresa.id );
+    this.user = localStorage.getItem('id')!;
+    this.cargarEmpresasUsuario(this.user)
     this.greeting();
 
     /* this.getPeriodByProcess( this.empresa.id ) */
 
-
+    //this.initChart();
   }
+
+//grafica
+
+/* initChart() {
+  if (isPlatformBrowser(this.platformId)) {
+      const documentStyle = getComputedStyle(document.documentElement);
+      const textColor = documentStyle.getPropertyValue('--p-text-color');
+      const textColorSecondary = documentStyle.getPropertyValue('--p-text-muted-color');
+      const surfaceBorder = documentStyle.getPropertyValue('--p-content-border-color');
+
+      this.data = {
+          labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+          datasets: [
+              {
+                  label: 'My First dataset',
+                  backgroundColor: documentStyle.getPropertyValue('--p-cyan-500'),
+                  borderColor: documentStyle.getPropertyValue('--p-cyan-500'),
+                  data: [65, 59, 80, 81, 56, 55, 40]
+              },
+              {
+                  label: 'My Second dataset',
+                  backgroundColor: documentStyle.getPropertyValue('--p-gray-500'),
+                  borderColor: documentStyle.getPropertyValue('--p-gray-500'),
+                  data: [28, 48, 40, 19, 86, 27, 90]
+              }
+          ]
+      };
+
+
+      this.options = {
+        indexAxis: 'y',
+        maintainAspectRatio: false,
+        aspectRatio: 0.8,
+        plugins: {
+            legend: {
+                labels: {
+                    color: textColor
+                }
+            }
+        },
+        scales: {
+            x: {
+                ticks: {
+                    color: textColorSecondary,
+                    font: {
+                        weight: 500
+                    }
+                },
+                grid: {
+                    color: surfaceBorder,
+                    drawBorder: false
+                }
+            },
+            y: {
+                ticks: {
+                    color: textColorSecondary
+                },
+                grid: {
+                    color: surfaceBorder,
+                    drawBorder: false
+                }
+            }
+        }
+    };
+    this.cd.markForCheck()
+}
+
+} */
+
+
+
+//fin grafica
+
+
+
+
 
 
    getPeriodByProcess( id: string ) {
@@ -105,12 +228,17 @@ export class DashboardComponent implements OnInit {
      this._periodService.getPeriodByCompanyByProcess( id )
         .subscribe ( (period: any) => {
 
-          if (period && Array.isArray(period.data)) {
-            console.log('periodo',period)
+          if (period.data && Array.isArray(period.data)) {
+
             this.period = period.data[0];
-            console.log('periodo2', this.period)
+            console.log('periodo333',period)
+            console.log('periodoarray',Array.isArray(period.data))
+
           }else{
             this.createdPeriod(this.empresa.id, this.yearPeriod = new Date().getFullYear())
+            console.log('else periodo')
+            console.log('periodo333',period)
+            console.log('periodoarray',Array.isArray(period.data))
           }
         },
         (error) => {
@@ -125,18 +253,57 @@ export class DashboardComponent implements OnInit {
     this._periodService.createPeriod(id, year)
 
         .subscribe((periodCreated: any) => {
-          console.log('entro a crear el periodo', periodCreated)
+
         })
 
   }
 
 
-  cargarEmpresasUsuario(iduser: string){
+  /* cargarEmpresasUsuario(iduser: string){
     this._companyService.cargarCompanysUser(iduser)
     .subscribe ( companyUser => {
-      this.companyUser = companyUser.companies
+      c
+      this.companyUser = companyUser.companies[0]
+
       this.usuario = companyUser.user
+      this.empresa =  this.companyUser;
+      console.log('empresaasss', this.empresa )
+      this.getPeriodByProcess( this.empresa.id );
     });
+  } */
+
+  cargarEmpresasUsuario(iduser: any) {
+    this._companyService.cargarCompanysUser(iduser).subscribe(
+      (resp: any) => {
+        if (resp && resp.companies) {
+
+          this.companyUser = resp.companies;
+
+          this.usuario = resp.user;
+
+          if(this.companyUser.length > 1 ){
+            this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
+            console.log('selecc',JSON.parse(localStorage.getItem('empresaseleccionada')!))
+            this.getPeriodByProcess( this.empresa.id );
+
+          }else{
+            this.empresa =  this.companyUser[0];
+
+            this.getPeriodByProcess( this.empresa.id );
+
+          }
+
+        } else {
+          this.companyUser = { companies: [] }; // Evita errores si la API devuelve un valor inesperado
+        }
+
+        this.usuario = resp?.user || {}; // Evita que `usuario` sea undefined
+      },
+      (error) => {
+        console.error('Error al cargar las empresas:', error);
+        this.companyUser  = { companies: [] }; // En caso de error, aseguramos que no falle
+      }
+    );
   }
 
 

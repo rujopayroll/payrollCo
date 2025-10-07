@@ -88,13 +88,14 @@ private URL_SERVICIOS: string = environment.URL_SERVICIOS;
               text: err.error.errors.message,
               icon: 'error'
             });
-            return Observable.throwError( err );
+            //return Observable.throwError( err );
+            return throwError(() => new Error('Error del servidor'));
           }));
     }
 
-    actualizarCompanyPayment( companyPayment: any ){
+    actualizarCompanyPayment( companyPayment: any, id: string ){
 
-      let url = this.URL_SERVICIOS + '/companyPayment/' + companyPayment.id;
+      let url = this.URL_SERVICIOS + '/companyPayment/' + id;
 
       return this.http.put( url, companyPayment, {withCredentials:true})
       .pipe(

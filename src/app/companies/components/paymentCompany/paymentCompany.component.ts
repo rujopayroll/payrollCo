@@ -15,7 +15,7 @@ import { ModalUploadService } from '../modal-upload/modal-upload.service';
 import Swal from 'sweetalert2';
 import { DOCUMENT } from '@angular/common';
 import { Inject } from '@angular/core';
-import { PageScrollService } from 'ngx-page-scroll-core';
+
 declare var $:any;
 declare var jQuery:any;
 import { ConfirmationService } from 'primeng/api';
@@ -63,17 +63,19 @@ export class PaymentCompanyComponent implements OnInit {
   bank: any = {};
   accountType: any = {};
   public costCenter: any= {};
-
+  empresa_id!: string;
   cuentagasto: any= {};
   registro: any = {};
   selectedPaymentCompany: any = [];
   paymentCompanyDialog!: boolean;
   submitted!: boolean;
   new!: boolean;
+  user!: string;
+  companyUser: any = {};
 
-  companyPayment: CompanyPayment = new CompanyPayment('', '', '', true, 0, '', '', '', '', this.date, this.date);
+  //companyPayment: CompanyPayment = new CompanyPayment('', '', '', true, 0, '', '', '', '', this.date, this.date,'');
 
-
+  companyPayment: any = {};
 
 
 
@@ -93,7 +95,7 @@ export class PaymentCompanyComponent implements OnInit {
      public _activatedRoute: ActivatedRoute,
      public _modalUploadService: ModalUploadService,
      public _subirArchivoService: SubirArchivoService,
-     public pageScrollServ: PageScrollService,
+     //public pageScrollServ: PageScrollService,
      private messageService: MessageService,
      private confirmationService: ConfirmationService,
 
@@ -101,7 +103,7 @@ export class PaymentCompanyComponent implements OnInit {
 
   ) {
 
-    this.company = this._usuarioService.empresas;
+   /*  this.company = this._usuarioService.empresas;
     this.empresaseleccionada = localStorage.getItem('empresaseleccionada');
 
 
@@ -115,10 +117,11 @@ export class PaymentCompanyComponent implements OnInit {
       } else {
         this.empresa =  JSON.parse(JSON.stringify(this.company[0]));
       }
-    }
-
+    } */
+    this.user = localStorage.getItem('id')!;
+    this.cargarEmpresasUsuario(this.user)
     this.usuario = JSON.parse(localStorage.getItem('usuario')!);
-    this.cargarCompanyPayment(this.empresa.id);
+
     this.crearFormulario();
 
 
@@ -142,11 +145,11 @@ export class PaymentCompanyComponent implements OnInit {
 
 
 
-  this.pageScrollServ.scroll({
+ /*  this.pageScrollServ.scroll({
     document: this.document,
     scrollTarget: '.theEnd',
   });
-
+ */
 
   }
 
@@ -164,7 +167,7 @@ export class PaymentCompanyComponent implements OnInit {
 
 
 
-    onScroll(event: HTMLElement, i:any) {
+  /*   onScroll(event: HTMLElement, i:any) {
     this.pageScrollServ.scroll({
       scrollTarget: event,
       scrollOffset: 300,
@@ -172,7 +175,7 @@ export class PaymentCompanyComponent implements OnInit {
     });
 
     this.active = i;
-  }
+  } */
 
 
   hideDialog() {
@@ -214,8 +217,7 @@ editPaymentCompany(companyPayment: CompanyPayment) {
   let form = [
     {
 
-      id: this.empresa.id,
-      updateUser: this.usuario.id,
+
       accountNumber: this.forma.value.numerocuenta,
       paymentFrequency_id: this.forma.value.frecuenciapago,
       paymentMethod_id: this.forma.value.metodopago,
@@ -229,9 +231,9 @@ editPaymentCompany(companyPayment: CompanyPayment) {
 
   this.registro =  JSON.parse(JSON.stringify(form[0]));
 
-console.log(this.registro)
-    this._companyPaymentService.actualizarCompanyPayment( this.registro )
-            .subscribe( () => this.cargarCompanyPayment(this.empresa.id));
+console.log('regi',this.registro)
+    this._companyPaymentService.actualizarCompanyPayment( this.registro, this.empresa_id )
+            .subscribe( () => this.cargarCompanyPayment(this.empresa_id));
             this.paymentCompanyDialog = false;
 
 
@@ -248,8 +250,8 @@ console.log(this.registro)
     this._companyPaymentService.cargarCompanyPayment( id )
         .subscribe( company => {
           this.companyPayment = company;
-
-          if (this.companyPayment.paymentFrequency_id) {this.obtenerPaymentFrequency( this.companyPayment.paymentFrequency_id )};
+          console.log('frecuencia', this.companyPayment)
+          if (this.companyPayment.paymentFrequency.id) {this.obtenerPaymentFrequency( this.companyPayment.paymentFrequency.id )};
            if (this.companyPayment.paymentMethod_id) {this.obtenerPaymentMetod( this.companyPayment.paymentMethod_id )};
           if (this.companyPayment.bank_id) {this.obtenerBank( this.companyPayment.bank_id )};
           if (this.companyPayment.accountType_id) {this.obtenerAccountType( this.companyPayment.accountType_id)};
@@ -269,12 +271,18 @@ console.log(this.registro)
 
 obtenerPaymentFrequency( id: string ) {
   this._paymentFrequencyService.obtenerFrecuenciaPago( id )
-  .subscribe( resp => this.paymentFrequency = resp.data);
+  .subscribe( resp => {
+    this.paymentFrequency = resp
+    console.log('re1', this.paymentFrequency)
+  })
 }
 
 gelAllPaymentFrequency() {
     this._paymentFrequencyService.cargarFrecuenciaPago()
-    .subscribe( resp => this.paymentFrequencys = resp.data);
+    .subscribe( resp => {
+      this.paymentFrequencys = resp.data
+      console.log('respss', this.paymentFrequencys)
+  })
   }
 
 
@@ -285,7 +293,11 @@ obtenerPaymentMetod( id: string ) {
 
 gelAllPaymentMetod() {
     this._paymentMethodService.cargarMetodoPago()
-    .subscribe( resp => this.paymentMethods = resp);
+    .subscribe( resp => {
+      this.paymentMethods = resp.data;
+      console.log('respssM', this.paymentMethods)
+    })
+
   }
 
 
@@ -299,7 +311,7 @@ obtenerBank( id: string) {
 
 gelAllBank() {
     this._bankService.cargarBancos()
-    .subscribe( resp => this.banks = resp);
+    .subscribe( resp => this.banks = resp.data);
 
   }
 
@@ -313,7 +325,7 @@ obtenerAccountType( id: string ) {
 
 gelAllAccountType() {
     this._accounttypeService.cargarTipoCuentas()
-    .subscribe( resp => this.accountTypes = resp);
+    .subscribe( resp => this.accountTypes = resp.data);
 
   }
 
@@ -326,9 +338,43 @@ cargarCuentaGasto() {
 
 obtenerCuentaGasto( id: string) {
   this._spendingAccountService.obtenerCuentaGastos( id )
-  .subscribe( resp => this.cuentagasto = resp);
+  .subscribe( resp => this.cuentagasto = resp.data);
   console.log('gasto',this.cuentagasto)
 }
 
+cargarEmpresasUsuario(iduser: any) {
+  this._companyService.cargarCompanysUser(iduser).subscribe(
+    (resp: any) => {
+      if (resp && resp.companies) {
+
+        this.companyUser = resp.companies;
+
+        this.usuario = resp.user;
+
+        if(this.companyUser.length > 1 ){
+          this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
+          this.empresa_id = this.empresa
+          this.cargarCompanyPayment(this.empresa.id);
+
+        }else{
+          this.empresa =  this.companyUser[0];
+          this.empresa_id = this.empresa.id
+          this.cargarCompanyPayment(this.empresa.id);
+
+
+        }
+
+      } else {
+        this.companyUser = { companies: [] }; // Evita errores si la API devuelve un valor inesperado
+      }
+
+      this.usuario = resp?.user || {}; // Evita que `usuario` sea undefined
+    },
+    (error) => {
+      console.error('Error al cargar las empresas:', error);
+      this.companyUser  = { companies: [] }; // En caso de error, aseguramos que no falle
+    }
+  );
+}
 
 }

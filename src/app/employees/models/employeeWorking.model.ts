@@ -12,6 +12,7 @@ public transportAssistance?: boolean,
 public variableSalary?: boolean,
 public createdAt?: Date,
 public updatedAt?: Date,
+public vacationHistory?: number,
 public id?: string,
    ){}
 }

@@ -21,7 +21,7 @@ export class PaymentMethodService {
      }
 
   cargarMetodoPago(){
-    let url = this.URL_SERVICIOS  + '/paymentMethod';
+    let url = this.URL_SERVICIOS  + '/paymentMethod/get_all';
     return this.http.get( url, {withCredentials:true} )
     .pipe(
          map( (resp: any) => {

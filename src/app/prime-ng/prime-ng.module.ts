@@ -43,6 +43,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { StyleClassModule } from 'primeng/styleclass';
 import { AutoFocusModule } from 'primeng/autofocus';
 import { ChartModule } from 'primeng/chart';
+import { SkeletonModule } from 'primeng/skeleton';
+
+
+
 
 
 
@@ -98,6 +102,9 @@ import { ChartModule } from 'primeng/chart';
     StyleClassModule,
     AutoFocusModule,
     ChartModule,
+    SkeletonModule
+
+
 
   ],
 

@@ -38,10 +38,10 @@ export class CostCenterService {
 
     cargarCostCenter( id: string){
 
-      let url = this.URL_SERVICIOS + '/companies/' + id;
+      let url = this.URL_SERVICIOS + '/costCenter?company_id=' + id;
       return this.http.get( url, {headers: this.headers})
       .pipe(
-          map( (resp: any) => resp.costCenters ));
+          map( (resp: any) => resp ));
     }
 
     obtenerCostCenter( id: string){
@@ -96,6 +96,7 @@ export class CostCenterService {
     }
     crearCostCenter( costCenter: CostCenter){
       const url = this.URL_SERVICIOS + '/costCenter';
+      console.log('servi', costCenter)
       return this.http.post( url, costCenter, {withCredentials: true})
       .pipe(
       map( (resp: any) =>{
@@ -117,7 +118,8 @@ export class CostCenterService {
               text: err.error.errors.message,
               icon: 'error'
             });
-            return Observable.throwError( err );
+            //return Observable.throwError( err );
+            return throwError(() => new Error('Error del servidor'));
           }));
     }
 

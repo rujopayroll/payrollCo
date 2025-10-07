@@ -6,12 +6,12 @@
 
 
 
-<div class="mb-5">
+<!-- <div class="mb-5">
 <div class="text-900 text-center text-3xl font-medium mb-2">Bienvenido!!</div>
 <span class="text-600 text-center font-medium line-height-3">Aun no tienes una cuenta?</span>
 <a routerLink="/auth/register" class="font-medium no-underline ml-2 text-orange-500 cursor-pointer">Creala Gratis!</a>
 </div>
-<!-- <form ngNativeValidate #f="ngForm" (ngSubmit)="ingresar( f )"> -->
+
   <form ngNativeValidate #f="ngForm" (ngSubmit)="ingresar(f)">
     <div>
         <label for="email" class="block text-900 font-medium mb-2">Email</label>
@@ -30,6 +30,57 @@
 
         <button pButton type="submit" label="Ingresar"  icon="pi pi-user" class="w-full bg-cyan-600"></button>
     </div>
-</form>
+</form> -->
+
+<div class="login-bg">
 
 
+  <p-card class="card_login" [style]="{'border-radius': '14px'}">
+    <div class="brand_login">
+      <img src="assets/images/LOGOTIPO_ANIMO.png"  alt="animo" />
+
+    </div>
+
+
+    <h1 class="title">Inicia sesión</h1>
+
+    <form ngNativeValidate class="form" #f="ngForm" (ngSubmit)="ingresar(f)">
+      <div class="field">
+        <label for="email">Email</label>
+        <span class="p-input-icon-left w-full">
+          <i class="pi pi-envelope"></i>
+          <input pInputText id="email" type="email" [style]="{width:'100%'}" placeholder="correo@empresa.com"
+                 [ngModel] name="email" required />
+        </span>
+      </div>
+
+      <div class="field">
+        <label for="password">Contraseña</label>
+        <p-password id="password" [ngModel] name="password"
+                    [toggleMask]="true" [feedback]="false"
+                    [inputStyle]="{width:'100%'}" [style]="{width:'100%'}"
+                    placeholder="Tu contraseña">
+        </p-password>
+      </div>
+
+      <div class="row">
+        <label for="remember">
+          <p-checkbox [(ngModel)]="recuerdame" name="remember" id="remember"></p-checkbox>
+          <span>Recordarme</span>
+        </label>
+        <a class="link" routerLink="/recuperar">¿Olvidaste tu contraseña?</a>
+      </div>
+
+      <button pButton type="submit" label="Ingresar" icon="pi pi-sign-in"
+              class="login-btn p-button-sm" ></button>
+    </form>
+
+    <div class="subrow">
+      <span>¿No tienes cuenta?</span>
+      <a class="link" routerLink="/auth/register">Créala gratis</a>
+    </div>
+    <div class="login-footer">© {{ today | date:'yyyy' }} animo</div>
+  </p-card>
+
+
+</div>

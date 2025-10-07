@@ -20,8 +20,12 @@ import {DialogService, DynamicDialogRef} from 'primeng/dynamicdialog';
 import { UntypedFormGroup, FormControl, Validators, UntypedFormBuilder } from '@angular/forms';
 import { GetEmployeeService } from '../../services/get-employee.service';
 import { ConfirmationService, MessageService, ConfirmEventType } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmDialog } from 'primeng/confirmdialog';
+
 
 //import { stringify } from '@angular/compiler/src/util';
+import { Concept } from '../../../companies/models/concept.model';
 
 declare var $: any;
 
@@ -30,6 +34,7 @@ declare var $: any;
   selector: 'app-novelties',
   templateUrl: './novelties.component.html',
   styleUrls: ['./novelties.component.scss'],
+
   providers: [DialogService, ConfirmationService, MessageService],
 
 })
@@ -51,14 +56,14 @@ export class NoveltiesComponent implements OnInit {
   employees: any = {};
   employeesCompany: any = {};
   employeeMovements: any = [];
-  employeeMovementsPayroll: any[] = [];
+  employeeMovementsPayroll: any = {};
   filter: any[] = [];
   filter1: any[] = [];
   period: any = {};
   empleado!: string;
   absenteeEmployee: any = {};
   busqueda = '';
-  company: any;
+  company: any = {};
   empresaseleccionada: any = {};
   usuario: any = {};
   empresa: any = {};
@@ -74,6 +79,9 @@ export class NoveltiesComponent implements OnInit {
   selectBank!: any [];
   visible: boolean = false;
   visibleBank: boolean = false;
+  idUser: any;
+  activeIndex: number = 0;
+  lastConfirmedIndex: number = 0;
 
   forma: UntypedFormGroup = this.fb.group({
 
@@ -88,19 +96,22 @@ export class NoveltiesComponent implements OnInit {
                public _movementService: PayrollService,
               public dialogService: DialogService,
               public _getEmployeeService: GetEmployeeService,
+              public _companyService: CompanyService,
               private _absenteeService: AbsenteeService,
               private fb: UntypedFormBuilder,
               private confirmationService: ConfirmationService,
               private messageService: MessageService
 
                 ) {
+                  this.employeeSelect = new EventEmitter();
 
-
-                this.company = this._usuarioService.empresas;
-                this.empresaseleccionada = localStorage.getItem('empresaseleccionada')!;
+                //this.company = this._usuarioService.empresas;
+                this.idUser = localStorage.getItem('id')!;
+               // this.empresaseleccionada = localStorage.getItem('empresaseleccionada')!;
                 this.usuario = JSON.parse(localStorage.getItem('usuario')!);
+                this.cargarEmpresasUsuario(this.idUser!)
 
-                if ( this.empresaseleccionada ){
+                /* if ( this.empresaseleccionada ){
                             this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
                           } else {
                             if(this.company.length > 1 ) {
@@ -109,14 +120,13 @@ export class NoveltiesComponent implements OnInit {
                               this.empresa =  JSON.parse(JSON.stringify(this.company[0]));
                             }
                           }
+ */
 
 
 
-                          this.createdPayroll(this.empresa.id)
-                          this.getEmployeeByCompany(this.empresa.id)
-                          this.getPeriodByProcess(this.empresa.id)
 
-                          this.employeeSelect = new EventEmitter();
+
+
 
 
 
@@ -126,6 +136,7 @@ export class NoveltiesComponent implements OnInit {
 
   ngOnInit(){
 
+    this.cargarEmpresasUsuario(this.idUser!)
     this.software = [
       { label: 'No Aplica', value: 'noaplica' },
       { label: 'Alegra', value: 'alegra' },
@@ -143,7 +154,7 @@ export class NoveltiesComponent implements OnInit {
 
 ];
 
-    this.getPeriodByProcess(this.empresa.id)
+    //this.getPeriodByProcess(this.empresa.id)
 
     this.items = [{
     label:'Novedades',
@@ -155,7 +166,6 @@ export class NoveltiesComponent implements OnInit {
       },
       {
           label: 'Horas Extras',
-
            command: () => {
             this.showOverTime(this.activeItem);
         }
@@ -207,9 +217,9 @@ getPeriodByProcess( id: string ) {
   this._periodService.getPeriodByCompanyByProcess( id )
      .subscribe ( (period: any) => {
       this.period = period.data[0];
+      //this.cargarEmpresasUsuario(this.idUser!)
        if (period && Array.isArray(period.data)) {
-console.log('period_nove',this.period)
-console.log('period_id',this.period.id)
+
         this.getMovementByPeriod( this.period.id );
         this.getMovementPayrollByEmployee( this.empresa.id, this.period.id );
       }
@@ -234,11 +244,11 @@ console.log('period_id',this.period.id)
     this._movementService.getMovementsByPeriod(id)
         .subscribe( (movement:Movements) => {
           this.movements = movement
-          console.log(movement,'MovementByperiod')
+
           if (this.movements) {
 
 
-            this.getMovementByConcept( this.movements[40].concept_id, this.movements[40].period_id)
+            this.getMovementByConcept( this.movements.data[0].concept_id, this.movements.data[0].period_id)
 
           }
         });
@@ -263,12 +273,11 @@ console.log('period_id',this.period.id)
   getMovementPayrollByEmployee(id: string, period: string ) {
     this._movementService.getMovementsPayrollByEmployee( id, period )
         .subscribe( employeeMovementsPayroll => {
-         this.employeeMovementsPayroll = employeeMovementsPayroll
-
+         this.employeeMovementsPayroll =  Array.isArray(employeeMovementsPayroll) ? employeeMovementsPayroll : [employeeMovementsPayroll]
 
             if (this.employeeMovementsPayroll) {
 
-              this.getEmployeeById( this.employeeMovementsPayroll[0].employee_id );
+              this.getEmployeeById( this.employeeMovementsPayroll[0].id );
             }
         });
   }
@@ -316,6 +325,7 @@ console.log('period_id',this.period.id)
   }
 
     show(employeeCard: string, group: string) {
+
     this.ref = this.dialogService.open(CreateNoveltiesComponent,{
         header: 'Ingreso de Novedades' +' ' + group,
         width: '70%',
@@ -325,6 +335,7 @@ console.log('period_id',this.period.id)
     });
 
     this._getEmployeeService.enviar(employeeCard);
+
     this._getEmployeeService.enviarGroup(group);
 
     this.ref.onClose.subscribe(() => {
@@ -340,7 +351,7 @@ console.log('period_id',this.period.id)
 
 
   showOverTime(employeeCard: string) {
-
+console.log('showOverTime', employeeCard)
     this.ref= this.dialogService.open(SaveExtraHoursComponent,{
         header: 'Ingreso Horas Extras y Recargos',
         width: '50%',
@@ -359,6 +370,7 @@ console.log('period_id',this.period.id)
   }
 
   showAbsentee(employeeCard: string) {
+    console.log('showAbsentee', employeeCard)
     this.ref= this.dialogService.open(SaveAbsenteeHistoryComponent,{
         header: 'Ingreso de Ausentismos',
         width: '90%',
@@ -373,6 +385,7 @@ console.log('period_id',this.period.id)
 
     this.ref.onClose.subscribe(() => {
       this.getMovementPayrollByEmployee( this.empresa.id, this.period.id );
+      this.ref.destroy();
   });
   }
 
@@ -413,6 +426,79 @@ hideDialog() {
   /* this.infoEmployeeDialog = false;
   this.submitted = false; */
 }
+
+
+cargarEmpresasUsuario(iduser: any) {
+  this._companyService.cargarCompanysUser(iduser).subscribe(
+    (resp: any) => {
+      if (resp && resp.companies) {
+
+        this.company = resp.companies;
+
+        this.usuario = resp.user;
+
+        if(this.company.length > 1 ){
+          this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
+          this.createdPayroll(this.empresa.id)
+          this.getEmployeeByCompany(this.empresa.id)
+          this.getPeriodByProcess(this.empresa.id)
+
+
+        }else{
+          this.empresa =  this.company[0];
+          this.createdPayroll(this.empresa.id)
+          this.getEmployeeByCompany(this.empresa.id)
+          this.getPeriodByProcess(this.empresa.id)
+
+        }
+
+      } else {
+        this.company  = { companies: [] }; // Evita errores si la API devuelve un valor inesperado
+      }
+
+      this.usuario = resp?.user || {}; // Evita que `usuario` sea undefined
+    },
+    (error) => {
+      console.error('Error al cargar las empresas:', error);
+      this.company  = { companies: [] }; // En caso de error, aseguramos que no falle
+    }
+  );
+}
+
+onTabChange(event: any) {
+  const attemptedIndex = event.index;
+
+  // Caso: solo confirmamos si se va del Tab 1 al Tab 2
+  if (this.lastConfirmedIndex === 0 && attemptedIndex === 1) {
+    // Cancelar visualmente el cambio de pestaña
+    setTimeout(() => {
+      this.activeIndex = this.lastConfirmedIndex;
+    }, 0);
+
+    // Mostrar diálogo de confirmación
+    this.confirmationService.confirm({
+      message: '¿Estas Seguro que la nomina ya esta correcta?',
+      header: 'Confirmación',
+      icon: 'pi pi-question-circle',
+      accept: () => {
+        this.lastConfirmedIndex = attemptedIndex;
+        this.activeIndex = attemptedIndex;
+      },
+      reject: () => {
+        // Volver (o mantener) al tab 1 si rechaza
+        this.activeIndex = 0;
+        this.lastConfirmedIndex = 0;
+      }
+    });
+  } else {
+    // Cambios normales sin confirmación
+    this.lastConfirmedIndex = attemptedIndex;
+    this.activeIndex = attemptedIndex;
+  }
+}
+
+
+
 
 }
 

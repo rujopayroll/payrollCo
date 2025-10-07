@@ -15,7 +15,7 @@ import { ModalUploadService } from '../../../companies/components/modal-upload/m
 import Swal from 'sweetalert2';
 import { DOCUMENT } from '@angular/common';
 import { Inject } from '@angular/core';
-import { PageScrollService } from 'ngx-page-scroll-core';
+//import { PageScrollService } from 'ngx-page-scroll-core';
 
 declare var $:any;
 declare var jQuery:any;
@@ -64,6 +64,8 @@ export class RecurrentPaymentEmployeeComponent implements OnInit {
     submitted!: boolean;
     concepts: any = [];
     new!: boolean;
+    user!: string;
+    companyUser: any = {};
 
     recurrentPaymentNew: EmployeeRecurrentPayment = new EmployeeRecurrentPayment('', '', true, '', '', 0, this.date, this.date, '' );
 
@@ -78,7 +80,7 @@ export class RecurrentPaymentEmployeeComponent implements OnInit {
      private messageService: MessageService,
      public _modalUploadServices: ModalUploadService,
      private confirmationService: ConfirmationService,
-     public pageScrollServ: PageScrollService,
+     //public pageScrollServ: PageScrollService,
               @Inject(DOCUMENT) private document: any
   ) {
 
@@ -87,12 +89,14 @@ export class RecurrentPaymentEmployeeComponent implements OnInit {
         this.getRecurrentPayment( params[ 'id' ]);
     });
 
-    this.company = this._usuarioService.empresas;
-    this.empresaseleccionada = localStorage.getItem('empresaseleccionada');
+    //this.company = this._usuarioService.empresas;
+    //this.empresaseleccionada = localStorage.getItem('empresaseleccionada');
+    this.user = localStorage.getItem('id')!;
+    this.cargarEmpresasUsuario(this.user)
     this.usuario = JSON.parse(localStorage.getItem('usuario')!);
 
 
-    if ( this.empresaseleccionada ){
+    /* if ( this.empresaseleccionada ){
       this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
 
 
@@ -104,7 +108,7 @@ export class RecurrentPaymentEmployeeComponent implements OnInit {
         this.empresa =  JSON.parse(JSON.stringify(this.company[0]));
 
       }
-    }
+    } */
 
 
      this.crearFormulario();
@@ -125,10 +129,10 @@ export class RecurrentPaymentEmployeeComponent implements OnInit {
 
       this.getConcept(this.empresa.id)
 
-      this.pageScrollServ.scroll({
+      /* this.pageScrollServ.scroll({
         document: this.document,
         scrollTarget: '.theEnd',
-      });
+      }); */
 
   }
 
@@ -146,7 +150,7 @@ export class RecurrentPaymentEmployeeComponent implements OnInit {
 
   }
 
-  onScroll(event: HTMLElement, i:any) {
+  /* onScroll(event: HTMLElement, i:any) {
     this.pageScrollServ.scroll({
       scrollTarget: event,
       scrollOffset: 300,
@@ -154,7 +158,7 @@ export class RecurrentPaymentEmployeeComponent implements OnInit {
     });
 
     this.active = i
-  }
+  } */
 
   getEmployeesRecurrentPayment( id: string ) {
     this._employeeRecurrentPaymentService.getEmployeeRecurrentPayment( id )
@@ -311,6 +315,39 @@ editEmployeeRecurrentPayment(recurrentPayment: EmployeeRecurrentPayment) {
             //this.messageService.add({severity:'success', summary: 'Successful', detail: 'Centro de costo Eliminado', life: 3000});
         }
     });
+}
+
+cargarEmpresasUsuario(iduser: any) {
+  this._companyService.cargarCompanysUser(iduser).subscribe(
+    (resp: any) => {
+      if (resp && resp.companies) {
+
+        this.companyUser = resp.companies;
+
+        this.usuario = resp.user;
+
+        if(this.companyUser.length > 1 ){
+          this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
+
+
+        }else{
+          this.empresa =  this.companyUser[0];
+
+
+
+        }
+
+      } else {
+        this.companyUser = { companies: [] }; // Evita errores si la API devuelve un valor inesperado
+      }
+
+      this.usuario = resp?.user || {}; // Evita que `usuario` sea undefined
+    },
+    (error) => {
+      console.error('Error al cargar las empresas:', error);
+      this.companyUser  = { companies: [] }; // En caso de error, aseguramos que no falle
+    }
+  );
 }
 
 

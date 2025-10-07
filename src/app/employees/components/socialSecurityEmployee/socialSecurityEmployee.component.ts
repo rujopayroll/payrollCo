@@ -8,9 +8,10 @@ import { ContributorType } from '../../models/contributorType.model';
 import { ContributorSubType } from '../../models/contributorSubType.model';
 import { SocialSecurityEntity } from '../../models/socialSecurityEntity.model';
 import { EmployeeSocialSecurity } from '../../models/employeeSocialSecurity.model';
+import { CompanyService } from '../../../companies/services/company/company.service';
 import { AuthService } from '../../../auth/services/authservice.index';
 import {MenuItem} from 'primeng/api';
-import { PageScrollService } from 'ngx-page-scroll-core';
+//import { PageScrollService } from 'ngx-page-scroll-core';
 import { DOCUMENT } from '@angular/common';
 import { Inject } from '@angular/core';
 import { ConfirmationService } from 'primeng/api';
@@ -57,6 +58,8 @@ export class SocialSecurityEmployeeComponent implements OnInit  {
   contributorSubTypes:  ContributorSubType[] = [];
   contributorType: any = {};
   contributorTypes: ContributorType[] = [];
+  user!: string;
+  companyUser: any = {};
 
 
   employeeSocialSecurity: EmployeeSocialSecurity = new EmployeeSocialSecurity('', '', true, '', '', '', '', '', this.date, this.date, '');
@@ -71,12 +74,15 @@ export class SocialSecurityEmployeeComponent implements OnInit  {
               public _socialSecurityEntityService: SocialSecurityEntityService,
               public _contributorSubTypeService: ContributorSubTypeService,
               public _contributorTypeService: ContributorTypeService,
-              public pageScrollServ: PageScrollService,
+              public _companyService: CompanyService,
+              //public pageScrollServ: PageScrollService,
               public _modalUploadServices: ModalUploadService,
               @Inject(DOCUMENT) private document: any
               ) {
 
-                this.company = this._usuarioService.empresas;
+                this.user = localStorage.getItem('id')!;
+                this.cargarEmpresasUsuario(this.user)
+                /* this.company = this._usuarioService.empresas;
                 this.empresaseleccionada = localStorage.getItem('empresaseleccionada');
                 if ( this.empresaseleccionada ){
                   this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
@@ -86,7 +92,7 @@ export class SocialSecurityEmployeeComponent implements OnInit  {
                   } else {
                    this.empresa =  JSON.parse(JSON.stringify(this.company[0]));
                   }
-                   }
+                   } */
 
                  this.usuario = JSON.parse(localStorage.getItem('usuario')!);
 
@@ -113,10 +119,10 @@ export class SocialSecurityEmployeeComponent implements OnInit  {
       .subscribe( () =>  this.cargarEmployeesSocialSecurity( params[ 'id' ]));
     });
 
-    this.pageScrollServ.scroll({
+    /* this.pageScrollServ.scroll({
       document: this.document,
       scrollTarget: '.theEnd',
-    });
+    }); */
   }
 
   get contributorTypeNoValido(){return this.forma.get('contributorType')!.invalid && this.forma.get('contributorType')!.touched}
@@ -191,7 +197,7 @@ export class SocialSecurityEmployeeComponent implements OnInit  {
     })
     }
 
-  onScroll(event: HTMLElement, i:any) {
+ /*  onScroll(event: HTMLElement, i:any) {
     this.pageScrollServ.scroll({
       scrollTarget: event,
       scrollOffset: 300,
@@ -200,7 +206,7 @@ export class SocialSecurityEmployeeComponent implements OnInit  {
 
     this.active = i;
   }
-
+ */
   hideDialog() {
     this.ssEmployeeDialog = false;
     this.submitted = false;
@@ -215,11 +221,11 @@ editSSEmployee(socialSecurityEmployee: EmployeeSocialSecurity) {
   cargarEmployeesSocialSecurity( id: string ) {
     this._employeeSocialSecurityService.cargarEmployeeSocialSecurity( id )
         .subscribe( employeeSocialSecurity => {
-          this.employeeSS = employeeSocialSecurity.data[0];
+          this.employeeSS = Array.isArray(employeeSocialSecurity) ? employeeSocialSecurity : [employeeSocialSecurity];
 
           if (this.employeeSS){
-
-            this.getSocialSecurityEntityHealth( this.employeeSS.entityHealth_id );
+            console.log('ss',this.employeeSS)
+            this.getSocialSecurityEntityHealth( this.employeeSS.entityHealth_id);
             this.getSocialSecurityEntityPension( this.employeeSS.entityPension_id );
             this.getSocialSecurityEntitySeverance( this.employeeSS.entitySeverance_id);
             this.getContributorType( this.employeeSS.contributorType_id);
@@ -236,6 +242,7 @@ editSSEmployee(socialSecurityEmployee: EmployeeSocialSecurity) {
         .subscribe( socialSecurityEntityHealth => {
 
           this.socialSecurityEntityHealth = socialSecurityEntityHealth;
+          console.log('salud', this.socialSecurityEntityHealth )
   });
   }
 
@@ -243,7 +250,7 @@ editSSEmployee(socialSecurityEmployee: EmployeeSocialSecurity) {
     this._socialSecurityEntityService.obtenerEntidadSSPorTipo('EPS')
         .subscribe( socialSecurityEntityHealth => {
 
-          this.socialSecurityEntityHealths = socialSecurityEntityHealth;
+          this.socialSecurityEntityHealths = socialSecurityEntityHealth.data;
   });
   }
 
@@ -257,7 +264,7 @@ editSSEmployee(socialSecurityEmployee: EmployeeSocialSecurity) {
   getAllSocialSecurityEntityPension()  {
     this._socialSecurityEntityService.obtenerEntidadSSPorTipo('AFP')
         .subscribe( socialSecurityEntityPension => {
-          this.socialSecurityEntityPensions = socialSecurityEntityPension;
+          this.socialSecurityEntityPensions = socialSecurityEntityPension.data;
   });
   }
 
@@ -271,7 +278,7 @@ editSSEmployee(socialSecurityEmployee: EmployeeSocialSecurity) {
   getAllSocialSecurityEntitySeverance()  {
     this._socialSecurityEntityService.obtenerEntidadSSPorTipo('CES')
         .subscribe( socialSecurityEntitySeverance => {
-          this.socialSecurityEntitySeverances = socialSecurityEntitySeverance;
+          this.socialSecurityEntitySeverances = socialSecurityEntitySeverance.data;
   });
   }
 
@@ -285,7 +292,7 @@ editSSEmployee(socialSecurityEmployee: EmployeeSocialSecurity) {
   getAllContributorSubType()  {
     this._contributorSubTypeService.cargarSubTipoCotizante()
         .subscribe( contributorSubType => {
-          this.contributorSubTypes = contributorSubType;
+          this.contributorSubTypes = contributorSubType.data;
   });
   }
 
@@ -299,9 +306,41 @@ editSSEmployee(socialSecurityEmployee: EmployeeSocialSecurity) {
   getAllContributorType()  {
     this._contributorTypeService.cargarTipoCotizante()
         .subscribe( contributorType => {
-          this.contributorTypes = contributorType;
+          this.contributorTypes = contributorType.data;
   });
   }
 
+  cargarEmpresasUsuario(iduser: any) {
+    this._companyService.cargarCompanysUser(iduser).subscribe(
+      (resp: any) => {
+        if (resp && resp.companies) {
+
+          this.companyUser = resp.companies;
+
+          this.usuario = resp.user;
+
+          if(this.companyUser.length > 1 ){
+            this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
+
+
+          }else{
+            this.empresa =  this.companyUser[0];
+
+
+
+          }
+
+        } else {
+          this.companyUser = { companies: [] }; // Evita errores si la API devuelve un valor inesperado
+        }
+
+        this.usuario = resp?.user || {}; // Evita que `usuario` sea undefined
+      },
+      (error) => {
+        console.error('Error al cargar las empresas:', error);
+        this.companyUser  = { companies: [] }; // En caso de error, aseguramos que no falle
+      }
+    );
+  }
 
 }

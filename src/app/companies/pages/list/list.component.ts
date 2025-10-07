@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewEncapsulation,ViewChild  } from '@angular/core';
 import { AuthService } from '../../../auth/services/authservice.index';
 import { CompanyService } from '../../../companies/services/company/company.service';
 import { ConceptService } from '../../../companies/services/concept/concept.service';
@@ -12,6 +12,9 @@ import { Router } from '@angular/router';
 
 import { ModalUploadService } from '../../../companies/components/modal-upload/modal-upload.service';
 import Swal from 'sweetalert2';
+import { MenuItem } from 'primeng/api';
+
+import { OverlayPanel } from 'primeng/overlaypanel';
 
 
 
@@ -20,9 +23,12 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
-  styleUrls: ['./list.component.scss']
+  styleUrls: ['./list.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ListComponent implements OnInit {
+  @ViewChild('menuPanel') menuPanel!: OverlayPanel;
+  @ViewChild('userPanel') userPanel!: OverlayPanel;
 
   starDemoDay: Date = new Date();
   demoDay = 50;
@@ -40,6 +46,7 @@ export class ListComponent implements OnInit {
   companys: Company [] = [];
   companyUser: any[]=[]
   usuario!: Usuario;
+  items!: MenuItem[];
 
   constructor( public _usuarioService: AuthService,
                public _companyService: CompanyService,
@@ -68,12 +75,15 @@ export class ListComponent implements OnInit {
   //this.usuario = this._usuarioService.usuario;
 
   //this.cargarEmpresasUsuario(this.usuario.id!);
-  this.cargarEmpresasUsuario(this.idUser!)
+
 
 
                 }
 
   ngOnInit(): void {
+    this.idUser = localStorage.getItem('id')!;
+    this.correo = localStorage.getItem('usuario')!;
+    this.cargarEmpresasUsuario(this.idUser!)
 
   }
 
@@ -82,10 +92,10 @@ export class ListComponent implements OnInit {
 
 
 
-  cargarEmpresas(){
+ /*  cargarEmpresas(){
     this.companys = this._usuarioService.empresas;
   }
-
+ */
   vercompany( idx: any ){
     this.router.navigate( ['/dashboard'] );
   }
@@ -101,7 +111,29 @@ export class ListComponent implements OnInit {
       this._companyService.cargarCompanysUser(iduser)
       .subscribe ( companyUser => {
         this.companyUser = companyUser.companies
+        console.log('companyUser', companyUser.companies)
+        console.log('usuariocompany', this.companyUser)
         this.usuario = companyUser.user
+
+
+        this.items = [
+
+
+          {
+              items: [{
+                      label: 'Mi perfil', routerLink: '/auth/profile', icon: 'pi pi-user'},
+                  {label: 'Nueva Empresa', command: () => this.crearEmpresa(),
+                  icon: 'pi pi-building',},
+                  {label: 'Suscripción', icon: 'pi pi-credit-card'},
+                  {label: 'Logout', command: () => this._usuarioService.logout(),
+                  icon: 'pi pi-power-off'},
+              ]
+          },
+
+
+      ];
+
+
       });
     }
 
@@ -156,6 +188,10 @@ export class ListComponent implements OnInit {
 profile(){
 
   this.router.navigate(['/profile']);
+}
+
+showUserPanel(event: Event) {
+  this.userPanel.toggle(event);
 }
 
 }

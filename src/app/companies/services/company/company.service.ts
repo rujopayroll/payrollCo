@@ -46,7 +46,7 @@ export class CompanyService {
      cargarCompanys( id: string){
 
 
-      let url = this.URL_SERVICIOS + '/companies/' + id;
+      let url = this.URL_SERVICIOS + '/company/' + id;
 
       return this.http.get( url, {withCredentials:true} )
       .pipe(
@@ -58,7 +58,7 @@ export class CompanyService {
 
      cargarCompanysUser( iduser: string){
       //this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
-console.log('user servicio', iduser)
+
       let url = this.URL_SERVICIOS + '/users/' + iduser + '/companies';
 
      return this.http.get( url, {withCredentials: true})
@@ -97,7 +97,7 @@ borrarCompanys( id: string ){
   }));
 }
 crearCompany( company: any){
-  const url = this.URL_SERVICIOS  + '/companies';
+  const url = this.URL_SERVICIOS  + '/company';
 
   return this.http.post( url, company, {withCredentials:true})
   .pipe(
@@ -119,19 +119,25 @@ crearCompany( company: any){
           icon: 'error'
         });
 
-        return Observable.throwError( err );
+        //return Observable.throwError( err );
+        return throwError(() => new Error('Error del servidor'));
 
       }));
 }
 
-actualizarCompany( company: any ){
+actualizarCompany( company: any, id:string ){
+  console.log('entro actualizar',company)
 
-  let url = this.URL_SERVICIOS  + '/companies/' + company.id;
+  let url = this.URL_SERVICIOS  + '/company/' + id;
 
-
+console.log('url', url)
+console.log('comps', company)
   return this.http.put( url, company, {withCredentials:true})
   .pipe(
+
       map( (resp: any) =>{
+        console.log('res', resp)
+        console.log('entro al pipe')
         Swal.fire({
           text: 'Informacion básica Actualizada',
           icon: 'success'
@@ -173,7 +179,8 @@ cambiarImagen(archivo: File, company: string ){
           text: err.error.errors.message,
           icon: 'error'
         });
-        return Observable.throwError( err );
+        //return Observable.throwError( err );
+        return throwError(() => new Error('Error del servidor'));
       }));
 }
 

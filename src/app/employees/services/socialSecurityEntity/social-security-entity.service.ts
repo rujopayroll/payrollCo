@@ -36,28 +36,31 @@ export class SocialSecurityEntityService {
 
 
     obtenerEntidadSS( id: string ){
-      let url = this.URL_SERVICIOS + '/socialsecurityentity/' + id;
+      let url = this.URL_SERVICIOS + '/socialSecurityEntity/' + id;
       return this.http.get( url, {withCredentials:true} )
       .pipe(
       map( (resp: any ) => resp ));
     }
 
     obtenerEntidadSSPorTipo( type: string ){
-      let url = this.URL_SERVICIOS + '/socialsecurityentity/' +'ByType/' + type ;
+      let url = this.URL_SERVICIOS + '/socialSecurityEntity?relationFilters={"socialSecurityEntityType":{"code":"'+ type +'","isActive":true}}' ;
+
+
+      console.log('url777', url)
       return this.http.get( url, {withCredentials:true} )
       .pipe(
           map( (resp: any ) => resp ));
     }
 
      obtenerCajasCompensacion(){
-      let url = this.URL_SERVICIOS + '/socialSecurityEntity/caja';
+      let url = this.URL_SERVICIOS + '/socialSecurityEntity?relationFilters={"socialSecurityEntityType":{"code":"CCF","isActive":true}}';
       return this.http.get( url )
       .pipe(
           map( (resp: any ) => resp.socialSecurityEntity ));
     }
 
     obtenerEntidadesRiesgo(){
-      let url = this.URL_SERVICIOS + '/socialSecurityEntity/riesgo';
+      let url = this.URL_SERVICIOS + '/socialSecurityEntity?relationFilters={"socialSecurityEntityType":{"code":"ARL","isActive":true}}';
       console.log(url);
       return this.http.get( url )
       .pipe(
@@ -65,7 +68,7 @@ export class SocialSecurityEntityService {
     }
 
     obtenerEntidadesSalud(){
-      let url = this.URL_SERVICIOS + '/socialSecurityEntity/salud';
+      let url = this.URL_SERVICIOS + '/socialSecurityEntity?relationFilters={"socialSecurityEntityType":{"code":"EPS","isActive":true}}';
       console.log(url);
       return this.http.get( url )
       .pipe(
@@ -73,7 +76,7 @@ export class SocialSecurityEntityService {
     }
 
     obtenerEntidadesPension(){
-      let url = this.URL_SERVICIOS + '/socialSecurityEntity/pension';
+      let url = this.URL_SERVICIOS + '/socialSecurityEntity?relationFilters={"socialSecurityEntityType":{"code":"AFP","isActive":true}}';
       console.log(url);
       return this.http.get( url )
       .pipe(
@@ -81,7 +84,7 @@ export class SocialSecurityEntityService {
     }
 
     obtenerEntidadesCesantia(){
-      let url = this.URL_SERVICIOS + '/socialSecurityEntity/cesantia';
+      let url = this.URL_SERVICIOS + '/socialSecurityEntity?relationFilters={"socialSecurityEntityType":{"code":"CES","isActive":true}}';
       console.log(url);
       return this.http.get( url )
       .pipe(

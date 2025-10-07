@@ -21,7 +21,7 @@ export class IdentificationTypeService {
   }
 
   cargarTiposDocumentos(){
-    let url = this.URL_SERVICIOS + '/identificationType';
+    let url = this.URL_SERVICIOS + '/identificationType/get_all';
     return this.http.get( url, {withCredentials:true})
     .pipe(
          map( (resp: any) => {

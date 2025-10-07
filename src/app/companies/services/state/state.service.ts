@@ -26,7 +26,7 @@ public headers = new HttpHeaders();
                }
 
     cargarDepartamentos(){
-      let url = this.URL_SERVICIOS + '/state';
+      let url = this.URL_SERVICIOS + '/state/get_all';
       return this.http.get( url, {withCredentials: true} )
       .pipe(
            map( (resp: any) => {
