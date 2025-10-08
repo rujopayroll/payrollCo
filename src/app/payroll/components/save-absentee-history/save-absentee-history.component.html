@@ -5,8 +5,8 @@
 <div class="card">
     <p-toolbar styleClass="p-mb-4">
         <ng-template pTemplate="left">
-            <button pButton pRipple label="Nuevo Ausentismo" icon="pi pi-plus" class="p-button-success p-mr-2" (click)="openAbsentee('top')"></button>
-            <button pButton pRipple label="Cerrar" icon="pi pi-times" class="p-button-danger p-mr-2" (click)="close()"></button>
+            <button pButton pRipple label="Nuevo Ausentismo" icon="pi pi-plus" class="p-mr-2" (click)="openAbsentee('top')" style="background:#f76e11; border-color:#f76e11;"></button>
+            <button pButton pRipple label="Cerrar" icon="pi pi-times" class="p-button-danger p-mr-2" (click)="close()" style="background: #53B4BA; border-color: #53B4BA;"></button>
         </ng-template>
 
     </p-toolbar>
@@ -14,7 +14,7 @@
 
 
 
-    
+
     <p-table [value]="absenteeEmployee" responsiveLayout="scroll" [rows]="5" [paginator]="true">
         <ng-template pTemplate="header">
             <tr>
@@ -30,13 +30,13 @@
             <tr>
                 <td>{{absentee.absenteeType.code}}</td>
                 <td>
-                   
+
                     <select  [(ngModel)]="absentee.absenteeType_id"  class="form-control form-control-lg" disabled = "false" name="salaryType" style="width: 15rem; border-width: 0px; font-size:15px; appearance:none">
                         <option *ngFor="let absenteeTypes of absenteeType" [value]="absenteeTypes.id">
-                          <span>{{absenteeTypes.description}}</span> 
+                          <span>{{absenteeTypes.description}}</span>
                        </option>
-                    </select> 
-                
+                    </select>
+
                 </td>
                 <td>{{absentee.initialAbsencesDate}}</td>
                 <td>{{absentee.endAbsencesDate}}</td>
@@ -48,19 +48,19 @@
         </ng-template>
     </p-table>
 
-   
 
-</div> 
+
+</div>
 
 
 
 
 <p-dialog header="Ausentismos" [(visible)]="absenteeDialog" [modal]="true" [style]="{width: '100vw'}"
     [draggable]="false" [resizable]="false" [position]="position">
-   
+
 
     <form autocomplete="off" [formGroup]="forma" (ngSubmit)="saveAbsenteeHistory()" id="AbsenteeHistoryform">
-    
+
         <div class="field grid">
             <label for="absenteeType" class="col-12 mb-2 md:col-2 md:mb-0">Tipos de Ausentismo:</label>
             <div class="col-8 md:col-4">
@@ -71,23 +71,23 @@
             </div>
             <label for="baseAbsences" class="col-12 mb-2 md:col-2 md:mb-0">Base pago:</label>
             <div class="col-4 md:col-4">
-                
+
                 <!-- <input type="text" pInputText class="block mt-3">
                 <button pButton label="Toggle" pStyleClass="@prev" toggleClass="p-disabled"></button> -->
-    
+
                 <p-inputNumber inputId="integeronly" class="col-12 mb-10 md:col-6 md:mb-0"  [(ngModel)]="absenteeEmployee.baseAbsences" formControlName="baseAbsences"
                 name= "baseAbsences" id="baseAbsences" [style]="{'width':'100%'}" >
                 </p-inputNumber>
                 <button pButton icon="pi pi-pencil" pStyleClass="@prev" toggleClass="p-disabled" class="md:col-6 md:mb-0"></button>
             </div>
         </div>
-    
+
         <div class="field grid">
             <label for="initialDate"  class="col-12 mb-2 md:col-2 md:mb-0">Fecha Inicial:</label>
             <div class="col-12 md:col-4">
                 <p-calendar inputId="initialDate" id="initialDate"  dateFormat="dd-mm-yy"
                 [locale]="es" [showIcon]="true" [(ngModel)]="absenteeEmployee.initialAbsencesDate" [style]="{'width':'100%'}"
-                formControlName="initialDate" name="initialDate" 
+                formControlName="initialDate" name="initialDate"
                 ></p-calendar>
             </div>
             <label for="endDate"  class="col-12 mb-2 md:col-2 md:mb-0">Fecha Final:</label>
@@ -98,18 +98,18 @@
                 ></p-calendar>
             </div>
         </div>
-    
+
         <div class="field grid">
             <label for="day" class="col-12 mb-2 md:col-2 md:mb-0">Dias Solicitados</label>
             <div class="col-12 md:col-4">
                <!--  <input formControlName="day" [(ngModel)]="absenteeEmployee.day"
                 name= "day" id="day" type="number" pInputNumber class="w-full"> -->
-    
+
                 <p-inputNumber inputId="integeronly" class="w-full" [disabled]="true" [(ngModel)]="quantity" formControlName="day"
                 name= "day" id="day" [style]="{'width':'100%'}">
                 </p-inputNumber>
             </div>
-    
+
             <label for="returnDate" class="col-12 mb-2 md:col-2 md:mb-0">Fecha Regreso</label>
             <div class="col-12 md:col-4">
                 <p-calendar inputId="returnDate" id="returnDate"  [disabled]="true" dateFormat="dd-mm-yy"
@@ -117,20 +117,20 @@
             formControlName="returnDate"  name= "returnDate"
             ></p-calendar>
             </div>
-    
-           
+
+
         </div>
-    
+
         <span *ngIf="hideFields"><div class="field grid">
             <label for="diagnosis" class="col-12 mb-2 md:col-2 md:mb-0">Diagnostico:</label>
             <div class="col-12 md:col-10">
                     <p-dropdown inputId="diagnosis" [(ngModel)]="absenteeEmployee.diag"
-                    class="form-control" formControlName="diagnosis"  name= "diagnosis" id="diagnosis" 
+                    class="form-control" formControlName="diagnosis"  name= "diagnosis" id="diagnosis"
                     [options]="diagnosis" optionLabel="description" optionValue="id" [style]="{'width':'100%'}"></p-dropdown>
                 </div>
             </div></span>
-    
-    
+
+
             <span *ngIf="hideFields"> <div class="field grid">
                 <label for="referenceNumber" class="col-12 mb-2 md:col-2 md:mb-0" visible="false">Numero Referencia:</label>
                 <div class="col-12 md:col-10">
@@ -138,9 +138,9 @@
                 name= "referenceNumber" id="referenceNumber" type="text" pInputText class="w-full">
             </div>
             </div></span>
-    
-    
-    
+
+
+
             <span *ngIf="hideFields"><div class="field grid">
                 <label for="doctorName" class="col-12 mb-2 md:col-2 md:mb-0">Nombre Medico</label>
                 <div class="col-12 md:col-10">
@@ -148,7 +148,7 @@
                 name= "doctorName" id="doctorName" type="text" pInputText class="w-full">
             </div>
             </div></span>
-    
+
             <span *ngIf="hideFields"><div class="field grid">
                 <label for="doctorIdentification" class="col-12 mb-2 md:col-2 md:mb-0">Identificacion Medico</label>
                 <div class="col-12 md:col-10">
@@ -156,33 +156,33 @@
                 name= "doctorIdentification" id="doctorIdentification" type="text" pInputText class="w-full">
             </div>
             </div></span>
-     
+
             <div class="p-grid flex justify-content-end">
                 <div class="p-col-xs-12 mr-2" primary-box>
                             <button pRipple pButton type="submit"
-                                    label="Guardar" 
+                                    label="Guardar"
                                     icon="pi pi-save">
                                 </button>
                 </div>
-        
+
                 <div class="p-col-xs-12" primary-box>
                             <button pRipple pButton
-                                    label="Cancelar" 
+                                    label="Cancelar"
                                     (click)="cancelar()"
                                     class="p-button-danger"
-                                    icon="pi pi-times-circle" 
+                                    icon="pi pi-times-circle"
                                     ></button>
                 </div>
-        
+
             </div>
-       
-               
+
+
     </form>
 
-  
-        
-        
-      
+
+
+
+
 </p-dialog>
 
 

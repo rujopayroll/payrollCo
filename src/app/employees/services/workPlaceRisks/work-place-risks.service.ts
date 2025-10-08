@@ -15,12 +15,12 @@ export class WorkPlaceRisksService {
   constructor( public http: HttpClient,
     public _usuarioService: AuthService) {
 
-      this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
+      //this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
      }
 
   cargarCentroTrabajo(){
     let url = this.URL_SERVICIOS + '/workPlaceRisks';
-    return this.http.get( url, {headers: this.headers} )
+    return this.http.get( url, {withCredentials:true} )
     .pipe(
          map( (resp: any) => {
           return resp;
@@ -28,7 +28,7 @@ export class WorkPlaceRisksService {
   }
   obtenerCentroTrabajo( id: string ){
     let url = this.URL_SERVICIOS + '/workPlaceRisks/' + id;
-    return this.http.get( url, {headers: this.headers} )
+    return this.http.get( url, {withCredentials:true} )
     .pipe(
         map( (resp: any ) => resp ));
   }

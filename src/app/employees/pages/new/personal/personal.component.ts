@@ -7,10 +7,10 @@ import { Gender } from '../../../models/gender.model';
 import { Country } from '../../../../companies/models/country.model';
 import { State } from '../../../../companies/models/state.model';
 import { City } from '../../../../companies/models/city.model';
-import { EmployeeService, IdentificationTypeService, GenderService, CountryService, StateService, 
+import { EmployeeService, IdentificationTypeService, GenderService, CountryService, StateService,
     CityService } from '../../../services/employeeService.index';
 import { AuthService } from '../../../../auth/services/authservice.index';
-import { PageScrollService } from 'ngx-page-scroll-core';
+//import { PageScrollService } from 'ngx-page-scroll-core';
 import { DOCUMENT } from '@angular/common';
 import { Inject } from '@angular/core';
 
@@ -18,7 +18,7 @@ import { Inject } from '@angular/core';
     selector: 'app-personal',
     templateUrl: './personal.component.html',
     //styleUrls: ['./personal.component.scss'],
-    
+
   })
 export class PersonalComponent implements OnInit, AfterViewInit {
   @ViewChild('scroller1') scroller!: ElementRef;
@@ -43,7 +43,7 @@ export class PersonalComponent implements OnInit, AfterViewInit {
     es: any;
     constructor(
                 private fb: UntypedFormBuilder,
-                public _employeeNewService : EmployeeNewService, 
+                public _employeeNewService : EmployeeNewService,
                 private router: Router,
                 public _identificationTypeService: IdentificationTypeService,
                 public _genderService: GenderService,
@@ -51,21 +51,21 @@ export class PersonalComponent implements OnInit, AfterViewInit {
                 public _stateService: StateService,
                 public _cityService: CityService,
                 private changeDetector: ChangeDetectorRef,
-                public pageScrollServ: PageScrollService,
+                //public pageScrollServ: PageScrollService,
                 @Inject(DOCUMENT) private document: any
-                ) { 
-                  
+                ) {
+
                 }
 
 
-               
 
-    ngOnInit() { 
 
-      this.pageScrollServ.scroll({
+    ngOnInit() {
+
+     /*  this.pageScrollServ.scroll({
         document: this.document,
         scrollTarget: '.theEnd',
-      }); 
+      });  */
 
       this.getAllIdentificationType();
       this. getAllGender();
@@ -74,8 +74,8 @@ export class PersonalComponent implements OnInit, AfterViewInit {
       this.getAllCity();
 
         this.personalInformation = this._employeeNewService.getEmployeeInformation().personalInformation;
-       
-     
+
+
 
         this.es = {
             firstDayOfWeek: 1,
@@ -113,7 +113,7 @@ export class PersonalComponent implements OnInit, AfterViewInit {
 
 
     ngAfterViewInit(){
-                    
+
     }
 
     ngAfterContentChecked(): void {
@@ -131,27 +131,27 @@ export class PersonalComponent implements OnInit, AfterViewInit {
         this.submitted = true;
     }
 
-    onScroll(event: HTMLElement, i:any) {
+    /* onScroll(event: HTMLElement, i:any) {
       this.pageScrollServ.scroll({
         scrollTarget: event,
         scrollOffset: 50,
         document: this.document
       });
-    
-    }
+
+    } */
 
 
     getAllIdentificationType()  {
         this._identificationTypeService.cargarTiposDocumentos()
             .subscribe( identificationType => {
-              this.identificationTypes = identificationType;    
+              this.identificationTypes = identificationType;
       });
       }
 
       getAllGender()  {
         this._genderService.cargarGeneros()
             .subscribe( genders => {
-              this.genders = genders;    
+              this.genders = genders;
       });
       }
       getAllCountry()  {
@@ -159,7 +159,7 @@ export class PersonalComponent implements OnInit, AfterViewInit {
             .subscribe( countries => {
               this.countries = countries;
               console.log(this.countries)
-              
+
       });
       }
 
@@ -184,13 +184,13 @@ export class PersonalComponent implements OnInit, AfterViewInit {
                 console.log('muni', this.municipios)
             });
       }
-    
+
       onSelect(id: string): void {
         this.cargarMunicipiosDeptos(id);
       }
 
-    
-    
+
+
 
 
 }

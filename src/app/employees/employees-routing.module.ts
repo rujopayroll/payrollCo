@@ -6,11 +6,13 @@ import { LoginComponent } from '../auth/pages/login/login.component';
 import { EmployeeComponent } from './pages/employee/employee.component';
 import { PersonalComponent } from './pages/new/personal/personal.component';
 import { NewEmployeeRoutingModule } from './pages/new/new-routing.module';
+import { LoginGuardsGuard } from '../auth/services/guards/login-guards.guard';
+import { VerificaTokenGuard } from '../auth/services/guards/verifica-token.guard';
 
 const routes: Routes = [
   {
     path: '',
-    
+
     children: [
       {
         path: 'list',
@@ -22,11 +24,11 @@ const routes: Routes = [
       },
       {
         path: 'new:working',
-        component: NewComponent
+        component: NewComponent,
       },
 
       /* {
-      path: 'personal', 
+      path: 'personal',
       component: PersonalComponent
       }, */
 
@@ -40,12 +42,13 @@ const routes: Routes = [
       }
     ]
   }
+
 ]
 
 
 
 @NgModule({
-  
+
   imports: [
     RouterModule.forChild( routes )
   ],

@@ -15,22 +15,22 @@ export class PaymentFrequencyService {
 
   public headers = new HttpHeaders();
   constructor( public http: HttpClient,
-    public _usuarioService: AuthService) { 
+    public _usuarioService: AuthService) {
 
-      this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
+     // this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
     }
 
   cargarFrecuenciaPago(){
-    let url = this.URL_SERVICIOS  + '/paymentFrequencies';
-    return this.http.get( url, {headers: this.headers} )
+    let url = this.URL_SERVICIOS  + '/paymentFrequency/get_all';
+    return this.http.get( url, {withCredentials:true} )
     .pipe(
          map( (resp: any) => {
           return resp;
         }));
   }
   obtenerFrecuenciaPago( id: string ){
-    let url = this.URL_SERVICIOS  + '/paymentFrequencies/' + id;
-    return this.http.get( url, {headers: this.headers} )
+    let url = this.URL_SERVICIOS  + '/paymentFrequency/' + id;
+    return this.http.get( url, {withCredentials:true} )
     .pipe(
         map( (resp: any ) => resp ));
   }

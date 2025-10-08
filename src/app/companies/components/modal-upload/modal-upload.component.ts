@@ -28,43 +28,48 @@ export class ModalUploadComponent implements OnInit {
   imagenSubir!: File | any;
   @Input() imagenS: any;
   imagenTemp!: string | ArrayBuffer | any;
+  user!: string;
+  companyUser: any = {};
 
   @Output() public imagenSelect: EventEmitter<any> =  new EventEmitter();
-  
+
 
 
   constructor( public _subirArchivoService: SubirArchivoService,
                public _modalUploadService: ModalUploadService,
                public _companyService: CompanyService,
-               public _usuarioService: AuthService,) { 
+               public _usuarioService: AuthService,) {
 
                 this.imagenSelect = new EventEmitter();
 
-                this.company = this._usuarioService.empresas;
+                /* this.company = this._usuarioService.empresas;
                 this.empresaseleccionada = localStorage.getItem('empresaseleccionada');
-                
-            
+
+
                 if ( this.empresaseleccionada ){
                   this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
-                 
-                  
+
+
                 } else {
                   if(this.company.length > 1 ) {
                     this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
                   } else {
 
                    this.empresa =  JSON.parse(JSON.stringify(this.company));
-                    console.log('company', this.company[0])
-                    
+
+
                   }
                 }
-
-               
+ */
+                this.user = localStorage.getItem('id')!;
+                this.cargarEmpresasUsuario(this.user)
                 this.displayModal = this._modalUploadService.modal
 
                }
 
   ngOnInit(): void {
+    this.user = localStorage.getItem('id')!;
+    this.cargarEmpresasUsuario(this.user)
     this.displayModal=true
   }
 
@@ -73,13 +78,13 @@ export class ModalUploadComponent implements OnInit {
     // this.router.navigate( ['/employee',this.index] );
    this.imagenSelect.emit({imagenS: this.imagenSubir});
   }
- 
+
   cerrarModal(){
     this.imagenTemp = null;
     this.imagenSubir = null;
-    this.file.name.slice;
+    //this.file.name.slice!;
     this._modalUploadService.ocultarModal();
-    
+
   }
 
   seleccionImagen( archivo: File ): void{
@@ -109,11 +114,11 @@ export class ModalUploadComponent implements OnInit {
   }
 
   onUpload(event: any) {
-  
+
     this.file = event.files[0];
     this.imagenSubir = this.file;
   }
-  
+
 
   subirImagen(){
     console.log('entro a subir imagen')
@@ -121,39 +126,88 @@ export class ModalUploadComponent implements OnInit {
 
       this._subirArchivoService.subirArchivoEmployee( this.imagenSubir, this._modalUploadService.tipo, this._modalUploadService.id)
       .then( resp => {
-      
+
         this._modalUploadService.notificacion.emit( resp );
         this.cerrarModal();
-        
-      
+
+
       })
       .catch(resp => {
-      
+
         console.log('Error en la carga')
       });
-    
-    }else {
+
+    } else if (this._modalUploadService.tipo === 'user') {
+
+      this._subirArchivoService.subirArchivoUser( this.imagenSubir, this._modalUploadService.tipo, this._modalUploadService.id)
+      .then( resp => {
+
+        this._modalUploadService.notificacion.emit( resp );
+
+
+        this.cerrarModal();
+
+
+      })
+      .catch(resp => {
+
+        console.log('Error en la carga')
+      });
+
+    } else {
         this._subirArchivoService.subirArchivo( this.imagenSubir, this._modalUploadService.tipo, this.empresa.id)
         .then( resp => {
-      
+
           this._modalUploadService.notificacion.emit( resp );
           this.cerrarModal();
-        
+
         })
         .catch(resp => {
-        
+
           console.log('Error en la carga')
         });
       }
-    
-  
+
+
   }
 
- 
+  cargarEmpresasUsuario(iduser: any) {
+    this._companyService.cargarCompanysUser(iduser).subscribe(
+      (resp: any) => {
+        if (resp && resp.companies) {
+
+          this.companyUser = resp.companies;
+
+
+
+          if(this.companyUser.length > 1 ){
+            this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
+
+
+          }else{
+            this.empresa =  this.companyUser[0];
+
+
+
+          }
+
+        } else {
+          this.companyUser = { companies: [] }; // Evita errores si la API devuelve un valor inesperado
+        }
+
+
+      },
+      (error) => {
+        console.error('Error al cargar las empresas:', error);
+        this.companyUser  = { companies: [] }; // En caso de error, aseguramos que no falle
+      }
+    );
+  }
+
 
 
 
 
 }
- 
+
 

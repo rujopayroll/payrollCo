@@ -1,87 +1,238 @@
 
 <app-header></app-header>
-<div class="card1">
-  
+<!--  <div class="card1">
+
 
     <p-tabView>
         <p-tabPanel header="Activos">
-            <p-dataView #dv [value]="employees" [paginator]="true" [rows]="9" filterBy="name"
+            <p-dataView #dv [value]="employees" [paginator]="true" [rows]="5" [totalRecords]=totalRegistros filterBy="name"
             layout="grid">
                 <ng-template pTemplate="header">
                     <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
-                   
+
                         <span class="p-input-icon-left p-mb-2 p-mb-md-0" >
                             <i class="pi pi-search"></i>
-                            
+
                             <input #input (keyup)="buscarEmployees( input.value )" class="form-control" type="search" pInputText placeholder="Buscar Empleado..." style="width: 25rem;">
-                        </span> 
-                        <div class="card flex justify-content-end flex-wrap">
-                            <button pButton  routerLink="/employees/new/personal" styleClass="p-button-sm" class="mr-7 p-button-warning" label="Nuevo Empleado" icon="pi pi-user-plus"></button>
-                            <button pButton class="mr-2" icon="pi pi-upload" styleClass="p-button-sm" label="Importar Empleado"></button>
-                            <button pButton  icon="pi pi-download" styleClass="p-button-sm" label="Descargar Listado Empleado"></button>
-                       
+                        </span>
+                        <div class="card_e flex justify-content-end flex-wrap ">
+                            <button pButton  routerLink="/employees/new/personal" styleClass="p-button-sm" class="mr-7 bg-orange-500" label="Nuevo Empleado" icon="pi pi-user-plus"></button>
+                            <button pButton class="mr-2 bg-cyan-600" icon="pi pi-upload" styleClass="p-button-sm" label="Importar Empleado"></button>
+                            <button pButton  class="bg-cyan-600" icon="pi pi-download" styleClass="p-button-sm" label="Descargar Listado Empleado"></button>
+
                         </div>
-                        
-                        
-                     <!--    <p-dataViewLayoutOptions></p-dataViewLayoutOptions> -->
+
+
+
                     </div>
+
+
+
+
                 </ng-template>
-                <!-- <ng-template let-employee pTemplate="listItem">
-                    <div class="p-col-12">
-                        <div class="product-list-item">
-                            <div class="product-list-detail">
-                                <div> 
-                                    <img class="border-circle w-6rem h-6rem m-2 bg-yellow-500 flex align-items-center justify-content-center" [src]="employee.img" alt="empleado">
-                                </div>
-                                <div class="product-name">{{employee.firstName}} {{employee.surname}}</div>
-                                <div class="product-description">{{employee.identification}}</div>
-                                <i class="pi pi-tag product-category-icon"></i><span class="product-category">{{employee.email}}</span>
-                            </div>
-                            <div class="product-list-action">
-                                <span class="product-price">{{employee.phone}}</span>
-                            </div>
-                        </div>
-                    </div>
-                </ng-template> -->
+
                 <ng-template let-employee pTemplate="gridItem">
-                    
-                     <div>
-                         <div class="product-grid-item cardEmployee cursor-pointer surface-0" 
-                                (click)="veremployee(employee.id)" style="width: 25rem;">
-                            <!-- <div class="product-grid-item-top">
-                                <div>
-                                    <i class="pi pi-tag product-category-icon"></i>
-                                    
-                                    <span class="product-category"></span>
-                                    <div class="product-description"></div>
-                                </div>
-                               
-                            </div> -->
-                            
-                            <div>
-                                <div class="flex align-items-center justify-content-center"> 
-                                    <span *ngIf="employee.img"><img class="border-circle w-6rem h-6rem" [src]="employee.img" alt="empleado"></span>
-                                    <span *ngIf="!employee.img"><img src="assets/images/no-image.png" class="border-circle w-6rem h-6rem" alt="empleado"></span>
-                                              
-                                 </div>
-                               
-                                <div class="product-name flex align-items-center justify-content-center">{{employee.firstName}} {{employee.surname}}</div>
-                                <div class="product-description flex align-items-center justify-content-center">{{employee.identification}}</div>
-                                <div class="product-description flex align-items-center justify-content-center">{{employee.cellPhone}}</div>
-                                <div class="product-description flex align-items-center justify-content-center mb-2">{{employee.email}}</div>
-                                
-                            </div>
-                            
-                        </div>
+
+
+
+
+                     <div class="profile-card_e cursor-pointer mb-4 m-2 mt-6" (click)="veremployee(employee.id)">
+                      <div class="card-header_e">
+
+                      </div>
+                      <div class="card-body_e">
+
+                        <span *ngIf="employee.img"><img class="border-circle w-6rem h-6rem avatar" [src]="employee.img" alt="empleado"></span>
+                        <span *ngIf="!employee.img"><img src="assets/images/no-image.png" class="border-circle w-6rem h-6rem avatar" alt="empleado"></span>
+                        <h2 class="name">{{employee.firstName}} {{employee.surname}}</h2>
+                        <p class="role">SAP HCM | Payroll | EC SuccessFactors</p>
+                        <p class="location">{{employee.identification}}</p>
+                      </div>
+                      <div class="card-footer_e">
+                        <span class="tag">ánimo, lista la nómina</span>
+                      </div>
                     </div>
+
+
+
+
                 </ng-template>
+
+
+
+
+
+
             </p-dataView>
         </p-tabPanel>
         <p-tabPanel header="Retirados">
-            Content 2
+
         </p-tabPanel>
-        
-    </p-tabView>  
 
-</div>
+    </p-tabView>
 
+
+
+
+</div> -->
+
+
+
+<p-dataView
+  [value]="employees"
+  [layout]="layout"
+  [paginator]="true"
+  [rows]="9"
+  [rowsPerPageOptions]="[10,20,30]"
+  emptyMessage="No se encontraron empleados"
+>
+
+
+
+  <!-- HEADER -->
+  <ng-template pTemplate="header">
+    <div class="dv-header">
+      <div class="left">
+        <span class="p-input-icon-left">
+          <i class="pi pi-search"></i>
+          <input pInputText [(ngModel)]="query" placeholder="Buscar por nombre, documento o rol" style="width: 35rem;"/>
+        </span>
+      </div>
+
+      <div class="right">
+        <!-- <p-dropdown
+          [options]="[
+            {label:'Nombre', value:'nombre'},
+            {label:'Rol', value:'rol'},
+            {label:'Documento', value:'documento'}
+          ]"
+          [(ngModel)]="sortField"
+          placeholder="Ordenar por"
+          class="mr-2"
+        ></p-dropdown> -->
+
+       <!--  <div class="btn-group">
+          <button pButton type="button" icon="pi pi-sort-alpha-down"
+                  [class.active]="sortOrder === 1"
+                  class="p-button-rounded p-button-text"
+                  (click)="sortOrder = 1"></button>
+          <button pButton type="button" icon="pi pi-sort-alpha-up"
+                  [class.active]="sortOrder === -1"
+                  class="p-button-rounded p-button-text"
+                  (click)="sortOrder = -1"></button>
+        </div> -->
+
+        <div class="btn-group ml-2">
+          <button pButton  routerLink="/employees/new/personal" styleClass="p-button-sm" class="mr-7 bg-orange-500" label="Nuevo Empleado" icon="pi pi-user-plus"></button>
+          <button pButton class="mr-2 bg-cyan-600" icon="pi pi-upload" styleClass="p-button-sm" label="Importar Empleado"></button>
+          <button pButton  class="bg-cyan-600" icon="pi pi-download" styleClass="p-button-sm" label="Descargar Listado Empleado"></button>
+          <button pButton type="button" icon="pi pi-bars"
+                  [class.active]="layout==='list'"
+                  class="p-button-rounded p-button-text"
+                  (click)="toggleLayout('list')"></button>
+          <button pButton type="button" icon="pi pi-th-large"
+                  [class.active]="layout==='grid'"
+                  class="p-button-rounded p-button-text"
+                  (click)="toggleLayout('grid')"></button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <!-- LIST ITEM -->
+
+
+  <ng-template let-e pTemplate="listItem">
+    <div class="list-item p-card">
+      <div class="info">
+        <p-avatar [label]="e.firstName[0]" shape="circle" size="large" class="mr-3"></p-avatar>
+        <div>
+          <div class="name">{{e.firstName}} {{e.surname}}</div>
+          <div class="meta">{{ e.rol }} · {{e.identification}}</div>
+        </div>
+      </div>
+      <p-tag [severity]="e.estado === 'ACTIVO' ? 'success' : 'secondary'"
+             [value]="e.working.contractRegime.description" ></p-tag>
+    </div>
+  </ng-template>
+
+  <!-- GRID ITEM -->
+
+
+
+
+
+  <ng-template let-e pTemplate="gridItem">
+
+
+    <!-- <article class="grid-item">
+      <div class="strip"></div>
+
+      <div class="avatar">
+        <p-avatar [label]="e.firstName[0]" shape="circle" size="xlarge"></p-avatar>
+      </div>
+      <div class="body">
+
+        <div class="name">{{e.firstName}} {{e.surname}}</div>
+        <div class="meta">{{ e.rol }}</div>
+        <div class="doc">{{e.identification}}</div>
+        <div class="quick-actions">
+          <button pButton icon="pi pi-user-minus" class="p-button-rounded p-button-sm remove" (click)="retirar(e)"></button>
+          <button pButton icon="pi pi-eye" class="p-button-rounded p-button-sm view" (click)="veremployee(e.id)"></button>
+          <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-sm edit" (click)="veremployee(e.id)"></button>
+        </div>
+      </div>
+      <div class="footer">
+        <p-tag [severity]="e.working.isActive === 'true' ? 'success' : 'secondary'"
+               [value]="e.working.contractRegime.description"></p-tag>
+
+
+      </div>
+
+    </article> -->
+
+
+
+
+
+
+
+    <article class="employee-card business" cursor-pointer (click)="veremployee(e.id)">
+      <div class="avatar">
+        <!-- p-avatar opcional -->
+         <!--<p-avatar label="P" shape="circle"></p-avatar>-->
+         <p-avatar [label]="e.firstName[0]" shape="circle"></p-avatar>
+        <!-- o imagen -->
+        <!-- <img src="..." alt="Foto de Pedro"> -->
+      </div>
+
+      <div class="content">
+        <h3 class="name">{{e.firstName}} {{e.surname}}</h3>
+        <p class="role">SAP HCM | Payroll | EC SuccessFactors</p>
+
+        <div class="info">
+          <div class="row"><i class="pi pi-id-card"></i><span class="text">{{e.identification}}</span></div>
+          <div class="row"><i class="pi pi-envelope"></i><span class="text">correo@empresa.com</span></div>
+          <div class="row"><i class="pi pi-phone"></i><span class="text">+57 333 444 5555</span></div>
+        </div>
+      </div>
+    </article>
+
+
+
+  </ng-template>
+
+
+
+</p-dataView>
+
+
+
+
+<ng-template #estado>
+  <div class="state">
+    <p-skeleton height="220px" width="100%" styleClass="sk"></p-skeleton>
+    <p-skeleton height="220px" width="100%" styleClass="sk"></p-skeleton>
+    <p-skeleton height="220px" width="100%" styleClass="sk"></p-skeleton>
+  </div>
+</ng-template>

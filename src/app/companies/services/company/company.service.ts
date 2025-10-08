@@ -25,54 +25,55 @@ export class CompanyService {
   company!: Company;
   companyUser: any={};
   token!: string;
-  
 
-  constructor( public http: HttpClient, 
+
+  constructor( public http: HttpClient,
                public _usuarioService: AuthService,
     // public _subirArhivoService: SubirArhivoService,
     ) {
 
-    
-    
+
+
      }
 
      ngOnInit(): void {
-       this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
-       
+       //this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
+
       }
 
-     
+
 
      cargarCompanys( id: string){
 
-    
-      let url = this.URL_SERVICIOS + '/companies/' + id;
-      
-      return this.http.get( url, {headers: this.headers} )
+
+      let url = this.URL_SERVICIOS + '/company/' + id;
+
+      return this.http.get( url, {withCredentials:true} )
       .pipe(
           map( (resp: any) => {
             return resp
           }));
-          
-    } 
-    
+
+    }
+
      cargarCompanysUser( iduser: string){
-      this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
-     
-      let url = this.URL_SERVICIOS + '/users/' + iduser;
-     
-      return this.http.get( url, {headers: this.headers})
-      
+      //this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
+
+      let url = this.URL_SERVICIOS + '/users/' + iduser + '/companies';
+
+     return this.http.get( url, {withCredentials: true})
+
+
 .pipe(
-  
+
           map( (resp: any) => {
-          
+
             return resp
           }));
-          
-        
-          
-          
+
+
+
+
 }
 
 
@@ -96,9 +97,9 @@ borrarCompanys( id: string ){
   }));
 }
 crearCompany( company: any){
-  const url = this.URL_SERVICIOS  + '/companies';
-  
-  return this.http.post( url, company, {headers: this.headers})
+  const url = this.URL_SERVICIOS  + '/company';
+
+  return this.http.post( url, company, {withCredentials:true})
   .pipe(
       map( (resp: any) =>{
 
@@ -117,20 +118,26 @@ crearCompany( company: any){
           text: err.error.errors.message,
           icon: 'error'
         });
-       
-        return Observable.throwError( err );
-        
+
+        //return Observable.throwError( err );
+        return throwError(() => new Error('Error del servidor'));
+
       }));
 }
 
-actualizarCompany( company: any ){
+actualizarCompany( company: any, id:string ){
+  console.log('entro actualizar',company)
 
-  let url = this.URL_SERVICIOS  + '/companies/' + company.id;
- 
+  let url = this.URL_SERVICIOS  + '/company/' + id;
 
-  return this.http.put( url, company, {headers: this.headers})
+console.log('url', url)
+console.log('comps', company)
+  return this.http.put( url, company, {withCredentials:true})
   .pipe(
+
       map( (resp: any) =>{
+        console.log('res', resp)
+        console.log('entro al pipe')
         Swal.fire({
           text: 'Informacion básica Actualizada',
           icon: 'success'
@@ -152,8 +159,8 @@ actualizarCompany( company: any ){
 cambiarImagen(archivo: File, company: string ){
 
   const url = this.URL_SERVICIOS  + '/uploadImage/Company/' + company;
-  
-  return this.http.post( url, archivo, {headers: this.headers})
+
+  return this.http.post( url, archivo, {withCredentials:true})
   .pipe(
       map( (resp: any) =>{
 
@@ -172,7 +179,8 @@ cambiarImagen(archivo: File, company: string ){
           text: err.error.errors.message,
           icon: 'error'
         });
-        return Observable.throwError( err );
+        //return Observable.throwError( err );
+        return throwError(() => new Error('Error del servidor'));
       }));
 }
 

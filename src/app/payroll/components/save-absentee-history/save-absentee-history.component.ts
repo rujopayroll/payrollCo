@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output,EventEmitter } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { FormBuilder, FormGroup, UntypedFormGroup} from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { DynamicDialogRef, DialogService } from 'primeng/dynamicdialog';
@@ -11,6 +12,7 @@ import { PayrollService } from '../../services/payroll.service';
 import { PeriodService } from '../../services/period.service';
 import { AbsenteeService } from '../../services/absentee.service';
 import { DiagnosisService } from '../../services/diagnosis.service';
+import { CompanyService } from '../../../companies/services/company/company.service';
 import { Period} from '../../models/period.model'
 import * as moment from 'moment';
 import 'moment/locale/es';
@@ -32,15 +34,15 @@ interface City {
         :host ::ng-deep .p-dialog {
              width: 50vw;
             margin: 0 auto 20rem auto;
-             display: block; 
+             display: block;
         }
     `],
-    providers: [MessageService,ConfirmationService]
+    providers: [MessageService,ConfirmationService,DatePipe]
 })
 export class SaveAbsenteeHistoryComponent implements OnInit {
 
 
-  
+
 
   forma!: FormGroup
   absenteeDialog!: boolean;
@@ -68,7 +70,7 @@ export class SaveAbsenteeHistoryComponent implements OnInit {
   returnDatei!: any;
   endDatei!: any;
   rangeDates!: Date[];
-
+  idUser: any;
     minDate!: Date;
 
     maxDate!: Date;
@@ -77,26 +79,30 @@ export class SaveAbsenteeHistoryComponent implements OnInit {
     displayPosition!: boolean;
 
     position!: string;
-  
+
 
 
   constructor(private fb: FormBuilder,
-              private messageService: MessageService, 
+              private messageService: MessageService,
               private confirmationService: ConfirmationService,
               public ref: DynamicDialogRef,
               private _absenteeService: AbsenteeService,
               private _diagnosisService: DiagnosisService,
               private _periodService: PeriodService,
+              public _companyService: CompanyService,
               public _usuarioService: AuthService,
-              public _getEmployeeService: GetEmployeeService, 
-              ) { 
+              private datePipe: DatePipe,
+              public _getEmployeeService: GetEmployeeService,
+              ) {
 
                 moment.locale('es');
+                this.idUser = localStorage.getItem('id')!;
+              this.usuario = JSON.parse(localStorage.getItem('usuario')!);
 
-                this.company = this._usuarioService.empresas;
+               /*  this.company = this._usuarioService.empresas;
                 this.empresaseleccionada = localStorage.getItem('empresaseleccionada')!;
                 this.usuario = JSON.parse(localStorage.getItem('usuario')!);
-          
+
                 if ( this.empresaseleccionada ){
                             this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
                           } else {
@@ -105,24 +111,24 @@ export class SaveAbsenteeHistoryComponent implements OnInit {
                             } else {
                               this.empresa =  JSON.parse(JSON.stringify(this.company[0]));
                             }
-                          }
+                          } */
 
                 this.getAbsenteeType();
                 this.getDiagnosis();
-                this.getPeriodByProcess(this.empresa.id)
-this.crearFormulario()
-                
-                
 
-                
+this.crearFormulario()
+
+
+
+
   }
   get absenteeTypeNoValido(){return this.forma.get('absenteeType')!.invalid && this.forma.get('absenteeType')!.touched}
-  
+
 
 
   ngOnInit(): void {
-
-    this.getAbsenteeType()
+    this.cargarEmpresasUsuario(this.idUser )
+    this.hideFields = false;
 
     this.es = {
       firstDayOfWeek: 1,
@@ -179,16 +185,17 @@ this.quantity = 0
 getAbsenteeType(){
   this._absenteeService.getAbsenteeType()
         .subscribe( (absenteeType: any) => {
-          this.absenteeType = absenteeType;
-          
+
+          this.absenteeType = absenteeType.data;
+
         });
 }
 
 getAbsenteeTypeById(id:string){
   this._absenteeService.getAbsenteeTypeById(id)
         .subscribe( (absenteeType: any) => {
-          this.absenteeTypeId = absenteeType;
-         console.log('tipo', this.absenteeTypeId)
+          this.absenteeTypeId = absenteeType.data;
+console.log('this.absenteeTypeId', this.absenteeTypeId)
           switch (this.absenteeTypeId[0].code) {
             case 'A200':
               this.hideFields = true;
@@ -229,66 +236,72 @@ getAbsenteeTypeById(id:string){
 getDiagnosis(){
   this._diagnosisService.getDiagnosis()
         .subscribe( (diagnosis: any) => {
-          this.diagnosis = diagnosis;
+          this.diagnosis = diagnosis.data;
         });
 }
 
-getAbsenteeByEmployeeByPeriod(employee_id: string, ini_period: Date, end_period: Date){
+  getAbsenteeByEmployeeByPeriod(employee_id: string, ini_period: Date, end_period: Date){
   this._absenteeService.getAbsenteeByEmployeeByPeriod(employee_id, ini_period, end_period)
+
         .subscribe( (absentees: any) => {
-          this.absenteeEmployee = absentees;
-          if (this.absenteeEmployee) {
+
+          this.absenteeEmployee = Array.isArray(absentees.data) ? absentees.data : [absentees.data];
+console.log('this.absenteeEmployee', this.absenteeEmployee)
+          if (this.absenteeEmployee != 0) {
             this.getAbsenteeTypeById(this.absenteeEmployee[0].absenteeType_id)
           }
-          console.log('ausentismos', this.absenteeEmployee)
-          
+
+
         });
 }
 
 
 getPeriodByProcess( id: string ) {
-    
+
   this._periodService.getPeriodByCompanyByProcess( id)
-      .subscribe( (period: any) => {
-        this.period[0] = period[0];
-        console.log(period,this.period.number,this.period[0].number,'periodo33')
+      .subscribe( period => {
+
+        this.period = period.data[0];
+
          if (this.period) {
 
-
+console.log('periodo', this.period)
          this._getEmployeeService.recibir.subscribe(dato =>{
             this.employeeSelect = dato
-            this.getAbsenteeByEmployeeByPeriod(this.employeeSelect,this.period[0].initialDate, this.period[0].endDate)
+
+            this.getAbsenteeByEmployeeByPeriod(this.employeeSelect,this.period.initialDate, this.period.endDate)
+
          })
-          
+
           /* this.getMovementByPeriod( this.period[0].id );
           this.getMovementPayrollByEmployee( this.empresa.id, this.period[0].id );  */
-        } 
+        }
       });
 
-} 
+}
 
 
   saveAbsenteeHistory(){
 
-    
+
     if (this.forma.invalid){
-  
+
       return Object.values (this.forma.controls).forEach( control =>{
-  
+
         if (control instanceof FormGroup) {
           Object.values (control.controls).forEach( control => control.markAsTouched());
-  
+
         } else{
           control.markAsTouched();
         }
       });
-    } 
-  
-  
+    }
+
+
     const form = [
       {
         employee_id: this.employeeSelect,
-        company_id: this.empresa.id,
+      //  company_id: this.empresa.id,
         absenteeType_id: this.forma.value.absenteeType,
         initialAbsencesDate: this.forma.value.initialDate,
         endAbsencesDate: this.forma.value.endDate,
@@ -296,33 +309,34 @@ getPeriodByProcess( id: string ) {
         baseAbsences: this.forma.value.baseAbsences,
         value:0,
         isActive: true,
-        returnDate: this.forma.value.returnDate,
+        returnDate: this.datePipe.transform(this.forma.value.returnDate, 'yyyy-MM-dd'),
+        //returnDate: this.forma.value.returnDate,
         diagnosis_id: this.forma.value.diagnosis,
         referenceNumber:this.forma.value.referenceNumber,
         doctorName:this.forma.value.doctorName,
-        doctorIdentification:this.forma.value.doctorIdentification,
-        referenceInhability:this.forma.value.referenceInhability
+        doctorIdentification:this.forma.value.doctorIdentification
+        //referenceInhability:this.forma.value.referenceInhability
       }
     ]
-  
-   
-    
+
+
+
     this.registro =  JSON.parse(JSON.stringify(form[0]));
-    
+
     console.log('registro', this.registro)
      /* this._movementService.saveNovelties(this.novelties)
           .subscribe( () => this.getMovementPayrollByEmployee( this.empresa.id, this.period[0].id ));  */
-  
-  
+
+
           this._absenteeService.saveAbsenteeByEmployee(this.registro)
           .subscribe( (resp: any) => {
-           
+
             this.submitted = false;
             this.absenteeDialog = false;
             this.getPeriodByProcess(this.empresa.id)
-           
-         
-          }); 
+            this.hideFields = false
+
+          });
 
 
   }
@@ -333,8 +347,9 @@ getPeriodByProcess( id: string ) {
     this.absenteeDialog = true;
     this.position = position;
     this.displayPosition = true;
+    this.hideFields = false;
 
-    
+
     //this._getEmployeeService.enviar(employeeCard);
   }
 
@@ -369,29 +384,30 @@ getPeriodByProcess( id: string ) {
   cancelar(){
     this.submitted = false;
     this.absenteeDialog = false;
+    this.hideFields = false;
   }
 
   onSelect(id: string): void {
-    
+
     this.getAbsenteeTypeById(id)
-  
+
   }
 
   dateSelect(date: string): void {
-    
+
     if (date) {
       this.day()
     }
-    
+
   }
 
   dateiSelect(datei: string): void {
-    
+
     if (datei) {
-     
+
       this.day()
     }
-    
+
   }
 
   day(){
@@ -400,15 +416,53 @@ getPeriodByProcess( id: string ) {
 
     this.quantity  = moment(this.forma.value.endDate).diff(moment(this.forma.value.initialDate), 'days') + 1;
     this.forma.value.day = this.quantity
-    
+
     //this.endDatei = moment(this.formaAbsenteeHistory.value.initialDate).format('DD-MM-YYYY')
     //this.formaAbsenteeHistory.value.endDate = this.endDatei
 
     this.returnDatei = moment(this.forma.value.initialDate).add(this.quantity , 'days').format('DD-MM-YYYY')
     this.forma.value.returnDate = this.returnDatei
-    
 
-    
+
+
   }
+
+  cargarEmpresasUsuario(iduser: any) {
+    this._companyService.cargarCompanysUser(iduser).subscribe(
+      (resp: any) => {
+        if (resp && resp.companies) {
+
+          this.company = resp.companies;
+
+          this.usuario = resp.user;
+
+          if(this.company .length > 1 ){
+            this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
+
+            this.getPeriodByProcess(this.empresa.id)
+
+
+
+          }else{
+            this.empresa =  this.company[0];
+
+            this.getPeriodByProcess(this.empresa.id)
+
+          }
+
+        } else {
+          this.company  = { companies: [] }; // Evita errores si la API devuelve un valor inesperado
+        }
+
+        this.usuario = resp?.user || {}; // Evita que `usuario` sea undefined
+      },
+      (error) => {
+        console.error('Error al cargar las empresas:', error);
+        this.company  = { companies: [] }; // En caso de error, aseguramos que no falle
+      }
+    );
+  }
+
+
 
 }

@@ -1,0 +1,64 @@
+def VERSION = "${env.BUILD_NUMBER}"
+def DIST_ARCHIVE = "dist.${env.BUILD_NUMBER}"
+def S3_BUCKET = 'test-payroll-web'
+
+pipeline 
+{
+    agent any
+    tools {nodejs "14.20.1"}
+   
+    environment 
+    {
+        AWS_ACCOUNT_ID=746662389335
+        AWS_DEFAULT_REGION="us-east-1"
+        bucket = "test-payroll-web"
+    }
+
+   stages {
+        stage('NPM Install') {
+            steps {
+              sh 'npm install --no-audit'
+         }
+      }
+        // stage('Test') {
+        //     steps {
+        //         sh 'npm run test'
+        //     }
+        // }
+        stage('Build') {
+            steps {
+                script {
+                     nodejs(nodeJSInstallationName: 'v16.20.0') {
+                        sh 'npm run build'
+                     }
+               }
+
+            }
+        }
+        stage('Deploy') {
+            steps {
+                withCredentials([[
+                            $class: 'AmazonWebServicesCredentialsBinding',
+                            credentialsId: "aws_credentials",
+                            accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                            secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) 
+                            {
+                                sh "cd dist"
+                                sh "aws s3 cp dist/  s3://${S3_BUCKET} --recursive"
+                            }
+            }
+        }
+    }
+    post {
+            success {
+                script {
+                    slackSend (channel: "payroll", message: "Se realizo el deploy correctamente")
+                      }
+                   }
+         failure {
+            script {
+                    slackSend (channel: "payroll", message: "Ocurrio un error realizando el deploy, consulte el log en jenkis")
+                   }
+           }
+    }
+}

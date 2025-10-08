@@ -1,0 +1,102 @@
+<app-header></app-header>
+<br>
+
+
+
+<div class="grid">
+
+  <div class="col">
+
+    <div class="card flex flex-column gap-2 p-3 border-round-sm bg-white mr-2">
+      <div class="card-body">
+        <h4 class="card-title">Perfil del Usuario</h4>
+
+        <form ngNativeValidate #f="ngForm" (ngSubmit)="guardar( f.value )" class="form p-t-20">
+
+          <!-- <div class="form-group">
+              <label for="exampleInputuname">Nombre de Usuario</label>
+              <div class="input-group">
+                  <div class="input-group-addon"><i class="ti-user"></i></div>
+                  <input [ngModel]="usuario.name" name="name" type="text" class="form-control" placeholder="Nombre de Usuario" required>
+              </div>
+          </div> -->
+
+
+          <div class="flex flex-column gap-2 p-3 border-round-sm bg-white">
+            <label for="exampleInputuname">Nombre de Usuario</label>
+            <div class="p-inputgroup">
+                <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
+                <input [ngModel]="user.name" name="name" type="text" pInputText class="form-control">
+            </div>
+        </div>
+
+
+
+          <div class="flex flex-column gap-2 p-3 border-round-sm bg-white">
+            <label for="exampleInputuname">Correo Electronico</label>
+            <div class="p-inputgroup">
+                <span class="p-inputgroup-addon"><i class="pi pi-envelope"></i></span>
+                <input [ngModel]="user.userName" name="email" type="text" pInputText class="form-control" >
+            </div>
+        </div>
+
+
+  <button pButton pRipple label="Actualizar" icon="pi pi-save" type="submit" class=" bg-cyan-600"></button>
+
+
+
+      </form>
+      </div>
+    </div>
+
+
+  </div>
+
+
+
+  <div class="col">
+
+    <div class="card flex flex-column gap-2 p-3 border-round-sm bg-white flex align-content-center">
+      <div class="card-body" style="text-align: center;">
+        <h4 class="card-title">Fotografia del Usuario</h4>
+
+        <form ngNativeValidate #f="ngForm" (ngSubmit)="guardar( f.value )" class="form p-t-20">
+
+
+          <div style="text-align: center;">
+            <div class="flex align-items-center justify-content-center" style="text-align: center;">
+
+                <span *ngIf="user.img"><img class="border-circle w-10rem h-10rem m-2" [src]="user.img" alt="usuario"></span>
+                <span *ngIf="!user.img"><img src="assets/images/no-image.png" class="border-circle w-10rem h-10rem m-2 flex align-items-center justify-content-center" alt="usuario"></span>
+
+            </div>
+            <!-- <div class="flex align-items-center justify-content-center">
+                <button pButton (click)="actualizarImagen( usuario )" pRipple type="button" label="Editar foto" class="p-button-rounded p-button-warning text-xs" styleClass="p-button-sm"></button>
+            </div> -->
+
+              <button pButton pRipple label="Subir Imagen" icon="pi pi-upload" (click)="actualizarImagen( usuario )" class="bg-cyan-600"></button>
+
+
+        </div>
+
+
+
+
+
+
+      </form>
+      </div>
+    </div>
+
+
+  </div>
+
+
+</div>
+
+
+
+
+
+
+

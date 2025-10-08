@@ -30,25 +30,25 @@ export class EmployeePaymentService  {
 
   public headers = new HttpHeaders();
   employeePayment!: EmployeePayment;
-  
-  
 
-  constructor( public http: HttpClient, 
+
+
+  constructor( public http: HttpClient,
                public _usuarioService: AuthService,
-               public _companyService: CompanyService) { 
+               public _companyService: CompanyService) {
 
-                this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
+                //this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
                }
 
 
-    
- 
+
+
 
     cargarEmployeePayment( idEmployee: string){
 
-      let url = this.URL_SERVICIOS + '/employeePayments?id=' + idEmployee;
-      return this.http.get( url, {headers: this.headers} )
-      .pipe(    
+      let url = this.URL_SERVICIOS + '/employeePayment/' + idEmployee;
+      return this.http.get( url, {withCredentials:true} )
+      .pipe(
       map( (resp: any) => resp ));
     }
     buscarEmployeePayment( termino: string ) {
@@ -61,7 +61,7 @@ export class EmployeePaymentService  {
       let url = this.URL_SERVICIOS + '/employeePayment/' + id;
       url += '?token=' + this._usuarioService.token;
       return this.http.delete( url )
-      .pipe(    
+      .pipe(
       map( (resp: any) => {
               Swal.fire({
               text: 'informacion de pago empleado Eliminado',
@@ -71,16 +71,16 @@ export class EmployeePaymentService  {
       }));
     }
     crearEmployeePayment( employeePayment: any){
-      let url = this.URL_SERVICIOS + '/employeePayments';
-      
-      return this.http.post( url, employeePayment, {headers: this.headers})
+      let url = this.URL_SERVICIOS + '/employeePayment';
+
+      return this.http.post( url, employeePayment, {withCredentials:true})
       .pipe(
           map( (resp: any) =>{
 
             Swal.fire({
               text: 'datos de pago guardada',
               icon: 'success'
-            }); 
+            });
 
             return resp;
           }))
@@ -92,16 +92,17 @@ export class EmployeePaymentService  {
               text: err.error.errors.message,
               icon: 'error'
             });
-            return Observable.throwError( err );
+            //return Observable.throwError( err );
+            return throwError(() => new Error('Error del servidor'));
           }));
     }
 
     actualizarEmployeePayment( employeePayment: EmployeePayment ){
 
-      let url = this.URL_SERVICIOS + '/employeePayments/' + employeePayment.id;
-      
-      return this.http.put( url, employeePayment, {headers: this.headers})
-      .pipe(    
+      let url = this.URL_SERVICIOS + '/employeePayment/' + employeePayment.id;
+
+      return this.http.put( url, employeePayment, {withCredentials:true})
+      .pipe(
       map( (resp: any) =>{
             Swal.fire({
               text: 'Informacion de Pago Actualizado',

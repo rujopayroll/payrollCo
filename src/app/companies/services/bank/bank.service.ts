@@ -15,22 +15,22 @@ export class BankService {
 
   public headers = new HttpHeaders();
   constructor( public http: HttpClient,
-    public _usuarioService: AuthService) { 
+    public _usuarioService: AuthService) {
 
-      this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
+      //this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
     }
 
   cargarBancos(){
-    let url = this.URL_SERVICIOS + '/banks';
-    return this.http.get( url, {headers: this.headers} )
+    let url = this.URL_SERVICIOS + '/bank/get_all';
+    return this.http.get( url, {withCredentials:true} )
     .pipe(
          map( (resp: any) => {
           return resp;
         }));
   }
   obtenerBanco( id: string ){
-    let url = this.URL_SERVICIOS + '/banks/' + id;
-    return this.http.get( url, {headers: this.headers} )
+    let url = this.URL_SERVICIOS + '/bank/' + id;
+    return this.http.get( url, {withCredentials:true} )
     .pipe(
         map( (resp: any ) => resp ));
   }

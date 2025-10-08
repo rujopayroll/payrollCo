@@ -41,6 +41,10 @@ import { StepsModule } from 'primeng/steps';
 import { FileUploadModule } from 'primeng/fileupload';
 import { HttpClientModule } from '@angular/common/http';
 import { StyleClassModule } from 'primeng/styleclass';
+import { AutoFocusModule } from 'primeng/autofocus';
+import { ChartModule } from 'primeng/chart';
+import { SkeletonModule } from 'primeng/skeleton';
+
 
 
 
@@ -53,8 +57,9 @@ import { StyleClassModule } from 'primeng/styleclass';
 @NgModule({
 
   exports: [
+
+
     ButtonModule,
-  
     InputTextModule,
     CheckboxModule,
     PasswordModule,
@@ -94,8 +99,14 @@ import { StyleClassModule } from 'primeng/styleclass';
     CardModule,
     FileUploadModule,
     HttpClientModule,
-    StyleClassModule
+    StyleClassModule,
+    AutoFocusModule,
+    ChartModule,
+    SkeletonModule
 
-  ]
+
+
+  ],
+
 })
 export class PrimeNGModule { }

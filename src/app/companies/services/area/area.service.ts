@@ -27,27 +27,27 @@ export class AreaService {
   public headers = new HttpHeaders();
   area!: Area;
   company!: Company;
-  
 
-  constructor( public http: HttpClient, 
+
+  constructor( public http: HttpClient,
                public _usuarioService: AuthService,
-               public _companyService: CompanyService) { 
+               public _companyService: CompanyService) {
 
-                this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
+                //this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
                }
 
     cargarArea( id: string){
 
-      let url = this.URL_SERVICIOS + '/companies/' + id;
-      return this.http.get( url, {headers: this.headers} )
+      let url = this.URL_SERVICIOS + '/area/get_all';
+      return this.http.get( url, {withCredentials:true} )
       .pipe(
-          map( (resp: any) => resp.areas ));
+          map( (resp: any) => resp ));
     }
 
     obtenerArea( id: string){
 
-      let url = this.URL_SERVICIOS + '/areas/' + id;
-      return this.http.get( url, {headers: this.headers} )
+      let url = this.URL_SERVICIOS + '/area/' + id;
+      return this.http.get( url, {withCredentials:true} )
       .pipe(
           map( (resp: any) => resp ));
     }
@@ -55,7 +55,7 @@ export class AreaService {
     cargarAreaCompany( idcompany: string){
 
       let url = this.URL_SERVICIOS + '/companies/' + idcompany;
-     
+
       return this.http.get( url )
       .pipe(
           map( (resp: any) => resp ));
@@ -64,8 +64,8 @@ export class AreaService {
     cargarAreaCompanyActive( idcompany: string){
 
       let url = this.URL_SERVICIOS + '/areas?isActive=True' + '&' + 'company_id=' + idcompany ;
-     
-      return this.http.get( url, {headers: this.headers} )
+
+      return this.http.get( url, {withCredentials:true} )
       .pipe(
           map( (resp: any) => resp ));
     }
@@ -80,9 +80,9 @@ export class AreaService {
 
 
     borrarArea( id: string ){
-      let url = this.URL_SERVICIOS + '/areas/' + id;
-      url += '?token=' + this._usuarioService.token;
-      return this.http.delete( url , {headers: this.headers})
+      let url = this.URL_SERVICIOS + '/area/' + id;
+
+      return this.http.delete( url , {withCredentials:true})
       .pipe(
           map( (resp: any) => {
               Swal.fire({
@@ -93,8 +93,9 @@ export class AreaService {
       }));
     }
     crearArea( area: Area){
-      const url = this.URL_SERVICIOS + '/areas';
-      return this.http.post( url, area, {headers: this.headers})
+      const url = this.URL_SERVICIOS + '/area';
+      console.log('area', area)
+      return this.http.post( url, area, {withCredentials:true})
       .pipe(
       map( (resp: any) =>{
         Swal.fire({
@@ -112,16 +113,16 @@ export class AreaService {
               text: err.error.errors.message,
               icon: 'error'
             }); */
-            return Observable.throwError( err );
+            //return Observable.throwError( err );
+            return throwError(() => new Error('Error del servidor'));
           }));
     }
 
     actualizarArea( area: Area ){
 
-      let url = this.URL_SERVICIOS + '/areas/' + area.id;
-      url += '?token=' + this._usuarioService.token;
-      console.log('servicio',area.id)
-      return this.http.put( url,  area, {headers: this.headers})
+      let url = this.URL_SERVICIOS + '/area/' + area.id;
+
+      return this.http.put( url,  area, {withCredentials:true})
       .pipe(
           map( (resp: any) =>{
             Swal.fire({
@@ -131,8 +132,4 @@ export class AreaService {
             return resp.area;
           }));
     }
-
-
-  
-
   }

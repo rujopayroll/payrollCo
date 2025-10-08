@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewEncapsulation,ViewChild  } from '@angular/core';
 import { AuthService } from '../../../auth/services/authservice.index';
 import { CompanyService } from '../../../companies/services/company/company.service';
 import { ConceptService } from '../../../companies/services/concept/concept.service';
@@ -12,6 +12,9 @@ import { Router } from '@angular/router';
 
 import { ModalUploadService } from '../../../companies/components/modal-upload/modal-upload.service';
 import Swal from 'sweetalert2';
+import { MenuItem } from 'primeng/api';
+
+import { OverlayPanel } from 'primeng/overlaypanel';
 
 
 
@@ -20,9 +23,12 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
-  styleUrls: ['./list.component.scss']
+  styleUrls: ['./list.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ListComponent implements OnInit {
+  @ViewChild('menuPanel') menuPanel!: OverlayPanel;
+  @ViewChild('userPanel') userPanel!: OverlayPanel;
 
   starDemoDay: Date = new Date();
   demoDay = 50;
@@ -36,10 +42,11 @@ export class ListComponent implements OnInit {
   registro: any = {};
   //idRol = '37188fd7-f43b-4874-bd1a-54c5cce8afee';
 
- 
+
   companys: Company [] = [];
   companyUser: any[]=[]
-  usuario: Usuario;
+  usuario!: Usuario;
+  items!: MenuItem[];
 
   constructor( public _usuarioService: AuthService,
                public _companyService: CompanyService,
@@ -50,7 +57,8 @@ export class ListComponent implements OnInit {
 
                 //this.company = this._usuarioService.empresas;
     //this.empresaseleccionada = localStorage.getItem('empresaseleccionada')!;
-    this.usuario = JSON.parse(localStorage.getItem('usuario')!);
+    this.idUser = localStorage.getItem('id')!;
+    this.correo = localStorage.getItem('usuario')!;
 
    /*  if ( this.empresaseleccionada ){
       this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
@@ -65,64 +73,77 @@ export class ListComponent implements OnInit {
 
   //this.cargarEmpresas();
   //this.usuario = this._usuarioService.usuario;
- 
+
   //this.cargarEmpresasUsuario(this.usuario.id!);
 
- 
+
 
                 }
 
   ngOnInit(): void {
-  //  this.cargarEmpresas();
-  
-    //this.usuario = this._usuarioService.usuario;
-   // debugger
-   
-    this.cargarEmpresasUsuario(this.usuario.id!)
-    
-
-   
-    
- 
-  
-
+    this.idUser = localStorage.getItem('id')!;
+    this.correo = localStorage.getItem('usuario')!;
+    this.cargarEmpresasUsuario(this.idUser!)
 
   }
 
-  
-
-  
 
 
-  cargarEmpresas(){
+
+
+
+ /*  cargarEmpresas(){
     this.companys = this._usuarioService.empresas;
   }
-
+ */
   vercompany( idx: any ){
     this.router.navigate( ['/dashboard'] );
   }
 
   actualizarImagen( company: Company ){
-  
+
     this._modalUploadService.mostrarModal('companys', company.id );
-  
+
   }
 
-  
+
     cargarEmpresasUsuario(iduser: string){
       this._companyService.cargarCompanysUser(iduser)
       .subscribe ( companyUser => {
         this.companyUser = companyUser.companies
+        console.log('companyUser', companyUser.companies)
+        console.log('usuariocompany', this.companyUser)
+        this.usuario = companyUser.user
+
+
+        this.items = [
+
+
+          {
+              items: [{
+                      label: 'Mi perfil', routerLink: '/auth/profile', icon: 'pi pi-user'},
+                  {label: 'Nueva Empresa', command: () => this.crearEmpresa(),
+                  icon: 'pi pi-building',},
+                  {label: 'Suscripción', icon: 'pi pi-credit-card'},
+                  {label: 'Logout', command: () => this._usuarioService.logout(),
+                  icon: 'pi pi-power-off'},
+              ]
+          },
+
+
+      ];
+
+
       });
     }
-    
-   
 
-  
 
-  
 
- 
+
+
+
+
+
 
 
   crearEmpresa(){
@@ -134,33 +155,43 @@ export class ListComponent implements OnInit {
         if ( !value || value.length === 0) {
           return 'No ha ingresado ningun dato';
         }
-        
+
 
         const form = [
           {
-    
+
             companyName:value,
-            email:this.usuario.userName,
-            createUser:this.usuario.id,
+            email:this.correo,
+            createUser:this.idUser,
             isActive: this.isActive,
-            user_id: this.usuario.id,
-            
-            
+            user_id: this.idUser,
+
+
           }
         ]
-    
+
         this.registro =  JSON.parse(JSON.stringify(form[0]));
 
         //mirar aca
-        
+
         this._companyService.crearCompany( this.registro )
         .subscribe(respc => {
-          this.cargarEmpresasUsuario(this.usuario.id!);
-         
-       
+          this.cargarEmpresasUsuario(this.idUser!);
+
+
         });
 }
-  
+
 });
 }
+
+profile(){
+
+  this.router.navigate(['/profile']);
+}
+
+showUserPanel(event: Event) {
+  this.userPanel.toggle(event);
+}
+
 }

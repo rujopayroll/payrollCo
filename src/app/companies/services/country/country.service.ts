@@ -17,23 +17,23 @@ export class CountryService {
 
   public headers = new HttpHeaders();
   constructor( public http: HttpClient,
-    public _usuarioService: AuthService ) { 
+    public _usuarioService: AuthService ) {
 
-      this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
+      //this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
     }
 
     cargarPaises(){
-      let url = this.URL_SERVICIOS + '/countries';
-      return this.http.get( url, {headers: this.headers} )
+      let url = this.URL_SERVICIOS + '/country/get_all';
+      return this.http.get( url, {withCredentials: true} )
       .pipe(
            map( (resp: any) => {
             return resp;
           }));
     }
-    
+
     obtenerPaises( id: string ){
-      let url = this.URL_SERVICIOS + '/countries/' + id;
-      return this.http.get( url, {headers: this.headers} )
+      let url = this.URL_SERVICIOS + '/country/' + id;
+      return this.http.get( url, {withCredentials: true} )
       .pipe(
           map( (resp: any ) => resp ));
     }

@@ -25,27 +25,29 @@ export class SubsidiaryService {
   public headers = new HttpHeaders();
   subsidiary!: Subsidiary;
   company!: Company;
-  
 
-  constructor( public http: HttpClient, 
+
+  constructor( public http: HttpClient,
                public _usuarioService: AuthService,
                public _companyService: CompanyService) {
 
-                this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
+                //this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
                 }
 
     cargarSubsidiary( id: string){
 
-      let url = this.URL_SERVICIOS + '/companies/' + id;
-      return this.http.get( url, {headers: this.headers} )
+      let url = this.URL_SERVICIOS + '/subsidiary';
+      return this.http.get( url, {withCredentials:true} )
       .pipe(
-          map( (resp: any) => resp.subsidiaries ));
+          map( (resp: any) => resp ));
     }
+
+
 
     obtenerSubsidiary( id: string){
 
-      let url = this.URL_SERVICIOS + '/subsidiaries/' + id;
-      return this.http.get( url, {headers: this.headers} )
+      let url = this.URL_SERVICIOS + '/subsidiary/' + id;
+      return this.http.get( url, {withCredentials:true} )
       .pipe(
           map( (resp: any) => resp ));
     }
@@ -53,8 +55,8 @@ export class SubsidiaryService {
     cargarSubsidiaryCompany( idcompany: string){
 
       let url = this.URL_SERVICIOS + '/companies/' + idcompany;
-     
-      return this.http.get( url, {headers: this.headers} )
+
+      return this.http.get( url, {withCredentials:true} )
       .pipe(
           map( (resp: any) => resp.subsidiaries ));
     }
@@ -62,25 +64,25 @@ export class SubsidiaryService {
     cargarSubsidiaryCompanyActive( idcompany: string){
 
 //let url = URL_SERVICIOS_HEROKU + '/costCenters?isActive=True' + '&' + 'company_id=' + idcompany;
-      let url = this.URL_SERVICIOS + '/subsidiaries?isActive=True' + '&' + 'company_id=' + idcompany;
-     
-      return this.http.get( url, {headers: this.headers})
+      let url = this.URL_SERVICIOS + '/subsidiary?isActive=True' + '&' + 'company_id=' + idcompany;
+
+      return this.http.get( url, {withCredentials:true})
       .pipe(
           map( (resp: any) => resp ));
     }
 
     buscarSubsidiary( termino: string ) {
       let url = this.URL_SERVICIOS + '/busqueda/coleccion/companys/' + termino;
-      return this.http.get( url, {headers: this.headers})
+      return this.http.get( url, {withCredentials:true})
       .pipe(
           map(( resp: any ) => resp.subsidiary));
     }
 
-    
+
     borrarSubsidiary( id: string ){
-      let url = this.URL_SERVICIOS + '/subsidiaries/' + id;
-      url += '?token=' + this._usuarioService.token;
-      return this.http.delete( url, {headers: this.headers} )
+      let url = this.URL_SERVICIOS + '/subsidiary/' + id;
+
+      return this.http.delete( url, {withCredentials:true} )
       .pipe(
           map( (resp: any) => {
               Swal.fire({
@@ -91,17 +93,18 @@ export class SubsidiaryService {
       }));
     }
     crearSubsidiary( subsidiary: Subsidiary){
-      const url = this.URL_SERVICIOS + '/subsidiaries';
-      return this.http.post( url, subsidiary, {headers: this.headers})
+      const url = this.URL_SERVICIOS + '/subsidiary';
+      console.log('sucursal', subsidiary)
+      return this.http.post( url, subsidiary, {withCredentials:true})
       .pipe(
           map( (resp: any) =>{
             Swal.fire({
                 text: 'Sucursal Creada',
                 icon: 'success'
               });
-            
-            
-            
+
+
+
             return resp.subsidiaries;
           }))
           .pipe(
@@ -113,15 +116,16 @@ export class SubsidiaryService {
               text: err.error.errors.message,
               icon: 'error'
             });
-            return Observable.throwError( err );
+            //return Observable.throwError( err );
+            return throwError(() => new Error('Error del servidor'));
           }));
     }
 
     actualizarSubsidiary( subsidiary: Subsidiary ){
 
-      let url = this.URL_SERVICIOS + '/subsidiaries/' + subsidiary.id;
-      url += '?token=' + this._usuarioService.token;
-      return this.http.put( url, subsidiary, {headers: this.headers})
+      let url = this.URL_SERVICIOS + '/subsidiary/' + subsidiary.id;
+
+      return this.http.put( url, subsidiary, {withCredentials:true})
       .pipe(
           map( (resp: any) =>{
             Swal.fire({

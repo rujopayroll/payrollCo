@@ -1,0 +1,69 @@
+# Docker
+# Build a Docker image
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+trigger:
+- develop
+
+resources:
+- repo: self
+
+variables:
+  - group: dev_payroll_group
+  - name: DOCKER_REPOSITORY
+    value: $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/$(DOCKER_REPOSITORY_NAME)
+
+stages:
+- stage: Docker
+  displayName: Build & Push Docker image to AWS ECR
+  jobs:
+  - job: Build_and_push
+    displayName: Build & Push Docker image
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    - task: Docker@2
+      displayName: Build an image
+      inputs:
+        command: build
+        dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
+        buildContext: '$(Build.SourcesDirectory)'
+        repository: $(DOCKER_REPOSITORY_NAME)
+    - task: ECRPushImage@1  
+      inputs:
+        awsCredentials: 'AWS_connection'
+        regionName: $(AWS_REGION)
+        imageSource: 'imagename'
+        sourceImageName: $(DOCKER_REPOSITORY_NAME)
+        sourceImageTag: $(Build.BuildId)
+        pushTag: latest
+        repositoryName: $(DOCKER_REPOSITORY_NAME)
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: |
+          # Write your commands here
+          export AWS_SECRET_ACCESS_KEY=$(AWS_SECRET_ACCESS_KEY)
+          export AWS_ACCESS_KEY_ID=$(AWS_ACCESS_KEY_ID)
+          
+          echo "start process to update service app"
+          
+          aws ecs update-service --cluster PayrollCluster --service AppPayrollService --desired-count 2 --task-definition app --force-new-deployment --region us-east-1
+
+#  - task: Docker@2
+#       displayName: Build an image
+#       inputs:
+#         command: build
+#         dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
+#         buildContext: '$(Build.SourcesDirectory)'
+#         repository: $(DOCKER_REPOSITORY_NAME)
+    
+#     - task: ECRPushImage@1  
+#       inputs:
+#         awsCredentials: 'AWS_connection'
+#         regionName: $(AWS_REGION)
+#         imageSource: 'imagename'
+#         sourceImageName: $(DOCKER_REPOSITORY_NAME)
+#         sourceImageTag: $(Build.BuildId)
+#         pushTag: latest
+#         repositoryName: $(DOCKER_REPOSITORY_NAME)

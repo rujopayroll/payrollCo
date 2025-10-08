@@ -4,14 +4,17 @@
 <p-scrollTop></p-scrollTop>
 
 <section class="fijo" style="z-index: 5;">
-<app-header></app-header> 
+<app-header></app-header>
 
 
- <div class="row bg-blue-600 text-gray-100 p-2 flex justify-content-between lg:justify-content-start align-items-start flex-wrap sidebar">
-    
+<!--  <div class="row bg-blue-600 text-gray-100 p-2 flex justify-content-between lg:justify-content-start align-items-start flex-wrap sidebar"> -->
+
+  <div class="bg-repeat-x flex justify-content-between lg:justify-content-start align-items-start flex-wrap sidebar" style="background-image: url('../../../../assets/images/banner2.png')">
+
+
    <div>
     <div class="col-12">
-       
+
         <span *ngIf="employee.img"><img class="border-circle w-10rem h-10rem m-2 flex align-items-center justify-content-center" [src]="employee.img" alt="empleado"></span>
         <span *ngIf="!employee.img"><img src="assets/images/no-image.png" class="border-circle w-10rem h-10rem m-2 flex align-items-center justify-content-center" alt="empleado"></span>
 
@@ -19,45 +22,80 @@
     <div class="flex align-items-center justify-content-center">
         <button pButton (click)="actualizarImagen( employee )" pRipple type="button" label="Editar foto" class="p-button-rounded p-button-warning text-xs" styleClass="p-button-sm"></button>
     </div>
-    
+
 
 </div>
 
-    
 
 
-   
-    
+
+
+
     <div class="grid">
         <div class="col-12 mt-6">
-            
-            <div class="employee-name flex align-items-start justify-content-start">{{employee.gender_id === 'db84c105-4100-49a1-afae-25b69b0756b8' ? "Sr." : "Sra."}} {{employee.firstName}} {{employee.secondName}} {{employee.surname}} {{employee.secondSurName}}</div>
-            <div class="employee-description flex align-items-start justify-content-start">{{employee.identification}}</div>
-            <div class="employee-description flex align-items-start justify-content-start">{{employee.cellPhone}}</div>
-            <div class="employee-description flex align-items-start justify-content-start mb-2">{{employee.email}}</div>
+
+            <div class="employee-name flex align-items-start justify-content-start text-white">{{employee.gender_id === 'db84c105-4100-49a1-afae-25b69b0756b8' ? "Sr." : "Sra."}} {{employee.firstName}} {{employee.secondName}} {{employee.surname}} {{employee.secondSurName}}</div>
+            <div class="employee-description flex align-items-start justify-content-start text-white">{{employee.identification}}</div>
+            <div class="employee-description flex align-items-start justify-content-start text-white">{{employee.cellPhone}}</div>
+            <div class="employee-description flex align-items-start justify-content-start mb-2 text-white">{{employee.email}}</div>
     </div>
 
     </div>
 
 
-    
-
-</div> 
 
 
+</div>
 
-    <div class="flex justify-content-start flex-wrap card-container blue-container" style="background-color:white;">
 
-        <button [ngClass]="{'active': active === 1}" pageScroll  (click)="onScroll(panel1, 1)" pButton pRipple type="button" label="INFORMACIÓN PERSONAL" class="flex align-items-center justify-content-center p-button-link font-bold"></button>
-        <button [ngClass]="{'active': active === 2}" pageScroll  (click)="onScroll(panel2, 2)" pButton pRipple type="button" label="INFORMACIÓN LABORAL" class="flex align-items-center justify-content-center p-button-link font-bold"></button>
-        <button [ngClass]="{'active': active === 3}" pageScroll  (click)="onScroll(panel3, 3)" pButton pRipple type="button" label="CONTRATO" class="flex align-items-center justify-content-center p-button-link font-bold"></button>
-        <button [ngClass]="{'active': active === 4}" pageScroll  (click)="onScroll(panel4, 4)" pButton pRipple type="button" label="SALARIO" class="flex align-items-center justify-content-center p-button-link font-bold"></button>
-        <button [ngClass]="{'active': active === 5}" pageScroll  (click)="onScroll(panel5, 5)" pButton pRipple type="button" label="INFORMACIÓN DEL PUESTO" class="flex align-items-center justify-content-center p-button-link font-bold"></button>
-        <button [ngClass]="{'active': active === 6}" pageScroll  (click)="onScroll(panel6, 6)" pButton pRipple type="button" label="FORMA DE PAGO" class="flex align-items-center justify-content-center p-button-link font-bold"></button>
-        <button [ngClass]="{'active': active === 7}" pageScroll  (click)="onScroll(panel7, 7)" pButton pRipple type="button" label="SEG. SOCIAL" class="flex align-items-center justify-content-center p-button-link font-bold"></button>
-        <button [ngClass]="{'active': active === 8}" pageScroll  (click)="onScroll(panel8, 8)" pButton pRipple type="button" label="RECURRENTES" class="flex align-items-center justify-content-center p-button-link font-bold"></button>
-        
-    </div>
+
+    <div class="flex flex-wrap gap-3 p-3 bg-white rounded-xl shadow-sm">
+
+        <!-- <button [ngClass]="{'active': active === 1}" (click)="onScroll(panel1, 1)" pButton pRipple type="button" label="INFORMACIÓN PERSONAL" class="flex align-items-center justify-content-center p-button-link font-bold"></button> -->
+
+        <button [ngClass]="{'active': active === 1, 'border-b-2 border-orange-600 shadow-sm bg-orange-400': active === 1,
+        'text-cyan-600 border-b-2 border-cyan-600 bg-cyan-50 hover:bg-orange-50': active !== 1}" (click)="onScroll(panel1, 1)" pButton pRipple type="button" label="INF. PERSONAL" pTooltip="Información Personal" tooltipPosition="top" class="relative px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-200"></button>
+        <!-- <button [ngClass]="{'active': active === 2}" (click)="onScroll(panel2, 2)" pButton pRipple type="button" label="INFORMACIÓN LABORAL" class="flex align-items-center justify-content-center p-button-link font-bold"></button> -->
+
+        <button [ngClass]="{'active': active === 2, 'border-b-2 border-orange-600 shadow-sm bg-orange-400': active === 2,
+        'text-cyan-600 border-b-2 border-cyan-600 bg-cyan-50 hover:bg-orange-50': active !== 2}" (click)="onScroll(panel2, 2)" pButton pRipple type="button" label="INF. LABORAL" class="relative px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-200"></button>
+
+        <!-- <button [ngClass]="{'active': active === 3}" (click)="onScroll(panel3, 3)" pButton pRipple type="button" label="CONTRATO" class="flex align-items-center justify-content-center p-button-link font-bold"></button> -->
+        <button [ngClass]="{'active': active === 3, 'border-b-2 border-orange-600 shadow-sm bg-orange-400': active === 3,
+        'text-cyan-600 border-b-2 border-cyan-600 bg-cyan-50 hover:bg-orange-50': active !== 3}" (click)="onScroll(panel3, 3)" pButton pRipple type="button" label="CONTRATO" class="relative px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-200"></button>
+
+        <!-- <button [ngClass]="{'active': active === 4}" (click)="onScroll(panel4, 4)" pButton pRipple type="button" label="SALARIO" class="flex align-items-center justify-content-center p-button-link font-bold"></button> -->
+        <button [ngClass]="{'active': active === 4, 'border-b-2 border-orange-600 shadow-sm bg-orange-400': active === 4,
+        'text-cyan-600 border-b-2 border-cyan-600 bg-cyan-50 hover:bg-orange-50': active !== 4}" (click)="onScroll(panel4, 4)" pButton pRipple type="button" label="SALARIO" class="relative px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-200"></button>
+
+        <!-- <button [ngClass]="{'active': active === 5}" (click)="onScroll(panel5, 5)" pButton pRipple type="button" label="INFORMACIÓN DEL PUESTO" class="flex align-items-center justify-content-center p-button-link font-bold"></button> -->
+        <button [ngClass]="{'active': active === 5, 'border-b-2 border-orange-600 shadow-sm bg-orange-400': active === 5,
+        'text-cyan-600 border-b-2 border-cyan-600 bg-cyan-50 hover:bg-orange-50': active !== 5}" (click)="onScroll(panel5, 5)" pButton pRipple type="button" label="INF. PUESTO" class="relative px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-200"></button>
+
+        <!-- <button [ngClass]="{'active': active === 6}" (click)="onScroll(panel6, 6)" pButton pRipple type="button" label="FORMA DE PAGO" class="flex align-items-center justify-content-center p-button-link font-bold"></button> -->
+        <button [ngClass]="{'active': active === 6, 'border-b-2 border-orange-600 shadow-sm bg-orange-400': active === 6,
+        'text-cyan-600 border-b-2 border-cyan-600 bg-cyan-50 hover:bg-orange-50': active !== 6}" (click)="onScroll(panel6, 6)" pButton pRipple type="button" label="FORMA DE PAGO" class="relative px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-200"></button>
+
+        <!-- <button [ngClass]="{'active': active === 7}" (click)="onScroll(panel7, 7)" pButton pRipple type="button" label="SEG. SOCIAL" class="flex align-items-center justify-content-center p-button-link font-bold"></button> -->
+        <button [ngClass]="{'active': active === 7, 'border-b-2 border-orange-600 shadow-sm bg-orange-400': active === 7,
+        'text-cyan-600 border-b-2 border-cyan-600 bg-cyan-50 hover:bg-orange-50': active !== 7}" (click)="onScroll(panel7, 7)" pButton pRipple type="button" label="SEG. SOCIAL" class="relative px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-200"></button>
+
+        <!-- <button [ngClass]="{'active': active === 8}" (click)="onScroll(panel8, 8)" pButton pRipple type="button" label="RECURRENTES" class="flex align-items-center justify-content-center p-button-link font-bold"></button> -->
+        <button [ngClass]="{'active': active === 8, 'border-b-2 border-orange-600 shadow-sm bg-orange-400': active === 8,
+        'text-cyan-600 border-b-2 border-cyan-600 bg-cyan-50 hover:bg-orange-50': active !== 8}" (click)="onScroll(panel8, 8)" pButton pRipple type="button" label="RECURRENTES" class="relative px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-200"></button>
+
+        <!-- <button [ngClass]="{'active': active === 9}" (click)="onScroll(panel9, 9)" pButton pRipple type="button" label="RETIRO CESANTIAS" class="flex align-items-center justify-content-center p-button-link font-bold"></button> -->
+        <button [ngClass]="{'active': active === 9, 'border-b-2 border-orange-600 shadow-sm bg-orange-400': active === 9,
+        'text-cyan-600 border-b-2 border-cyan-600 bg-cyan-50 hover:bg-orange-50': active !== 9}" (click)="onScroll(panel9, 9)" pButton pRipple type="button" label="RETIRO CESANTIAS" class="relative px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-200"></button>
+
+        <!-- <button [ngClass]="{'active': active === 10}"(click)="onScroll(panel10, 10)" pButton pRipple type="button" label="LIQUIDACION CONTRATO" class="flex align-items-center justify-content-center p-button-link font-bold"></button> -->
+        <button [ngClass]="{'active': active === 10, 'border-b-2 border-orange-600 shadow-sm bg-orange-400': active === 10,
+        'text-cyan-600 border-b-2 border-cyan-600 bg-cyan-50 hover:bg-orange-50': active !== 10}" (click)="onScroll(panel10, 10)" pButton pRipple type="button" label="LIQ CONTRATO" class="relative px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-200"></button>
+
+
+
+
+      </div>
 
 </section >
 
@@ -68,23 +106,23 @@
 
 
 
-    <div #panel1 style="margin-top: 340px;">
-      
+    <div #panel1 style="margin-top: 425px;">
+
            <app-infoEmployee></app-infoEmployee>
-    
+
        <hr>
     </div>
     <div #panel2>
-        
+
          <app-workingEmployee></app-workingEmployee>
 
         <hr>
     </div>
-        
-    
+
+
     <div #panel3 >
       <app-contractEmployee></app-contractEmployee>
-      
+
        <hr>
     </div>
 
@@ -94,32 +132,42 @@
     </div>
 
     <div #panel5 >
-      
-      <app-jobEmployee></app-jobEmployee>  
+
+      <app-jobEmployee></app-jobEmployee>
         <hr>
-          
+
     </div>
 
     <div #panel6 >
-       
+
         <app-paymentEmployee></app-paymentEmployee>
-       
-        <hr>  
-        
+
+        <hr>
+
     </div>
 
     <div #panel7 >
-      
+
         <app-socialSecurityEmployee></app-socialSecurityEmployee>
-        <hr> 
-        
+        <hr>
+
     </div>
-   
+
     <div #panel8>
      <app-recurrentPaymentEmployee></app-recurrentPaymentEmployee>
-      <hr> 
+      <hr>
     </div>
-          
+
+    <div #panel9>
+
+       <hr>
+     </div>
+
+     <div #panel10>
+
+       <hr>
+     </div>
+
 </div>
 
     <p-scrollTop
@@ -130,6 +178,6 @@
     color="primary"
     ></p-scrollTop>
 
-  
+
 
 

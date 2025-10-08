@@ -24,14 +24,14 @@ declare var $: any;
 
 export class SubsidiaryComponent implements OnInit {
 
-  
+
   public date: Date = new Date();
   forma!: UntypedFormGroup;
   company: any;
   empresaseleccionada: any = {};
   usuario: any = {};
   empresa: any = {};
-  
+
   isActive = true;
   subsidiary: Company[] = [];
   subsidiaries: any= {};
@@ -39,25 +39,31 @@ export class SubsidiaryComponent implements OnInit {
   subsidiaryDialog!: boolean;
   submitted!: boolean;
   new!: boolean;
-  
- 
+  user!: string;
+  companyUser: any = {};
+  empresa_id: string = '';
+  registro: any = {};
+
+
 
   constructor(private fb: UntypedFormBuilder,
-    
+
               public _subsidiaryService: SubsidiaryService  ,
               public _companyService: CompanyService,
               public _router: Router,
               public _activatedRoute: ActivatedRoute,
               public _usuarioService: AuthService,
-              private messageService: MessageService, 
+              private messageService: MessageService,
               private confirmationService: ConfirmationService
-              ) { 
+              ) {
 
-      this.company = this._usuarioService.empresas;
-      this.empresaseleccionada = localStorage.getItem('empresaseleccionada');
+      //this.company = this._usuarioService.empresas;
+      //this.empresaseleccionada = localStorage.getItem('empresaseleccionada');
+      this.user = localStorage.getItem('id')!;
+      this.cargarEmpresasUsuario(this.user)
       this.usuario = JSON.parse(localStorage.getItem('usuario')!);
 
-      if ( this.empresaseleccionada ){
+      /* if ( this.empresaseleccionada ){
                   this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
                 } else {
                   if(this.company.length > 1 ) {
@@ -65,22 +71,23 @@ export class SubsidiaryComponent implements OnInit {
                   } else {
                     this.empresa =  JSON.parse(JSON.stringify(this.company[0]));
                   }
-                }
+                } */
 
 
-      this.cargarSubsidiary( this.empresa.id );
-      this.cargarCompanySelect( this.empresa.id );
 
-      this.crearFormulario();
      }
 
-    
+
     get descripcionNoValido(){return this.forma.get('descripcion')!.invalid && this.forma.get('descripcion')!.touched}
     get estadoNoValido(){return this.forma.get('estado')!.invalid && this.forma.get('estado')!.touched}
-    
+
 
   ngOnInit(): void {
-    
+
+    this.user = localStorage.getItem('id')!;
+    this.cargarEmpresasUsuario(this.user)
+      this.crearFormulario();
+
   }
 
 
@@ -101,7 +108,7 @@ export class SubsidiaryComponent implements OnInit {
 
 openNewSubsidiary() {
     this.subsidiaries! = {};
-    this.subsidiaries.isActive="true"
+    this.subsidiaries.isActive=true
     this.submitted = false;
     this.subsidiaryDialog = true;
     this.new= true;
@@ -109,28 +116,39 @@ openNewSubsidiary() {
 
 
 editSubsidiary(subsidiary: Subsidiary) {
-    this.subsidiaries = {...subsidiary};
+  this.subsidiaries = {
+    id: subsidiary.id,
+    description: subsidiary.description,
+    company_id: subsidiary.company_id,
+    isActive: subsidiary.isActive,
+    updateUser: this.user
+  }
+
     this.subsidiaryDialog = true;
     this.new= false;
 }
 
 
+
+
+
+
   guardar(){
-   
+
     if (this.forma.invalid){
-  
-      
-  
+
+
+
       return Object.values (this.forma.controls).forEach( control =>{
-  
+
         if (control instanceof UntypedFormGroup) {
           Object.values (control.controls).forEach( control => control.markAsTouched());
-  
+
         } else{
           control.markAsTouched();
         }
-        
-  
+
+
       });
     }
 
@@ -138,27 +156,41 @@ editSubsidiary(subsidiary: Subsidiary) {
         const id = params['id'];
         if ( this.new !== true) {
             this._subsidiaryService.actualizarSubsidiary( this.subsidiaries )
-          .subscribe( () => this.cargarSubsidiary(this.empresa.id));
+          .subscribe( () => this.cargarSubsidiary(this.empresa_id));
           this.new = false;
           this.subsidiaryDialog = false;
-         
-        } else {
-  
-    const subsidiary = new Subsidiary(
-     
-      this.forma.value.descripcion,
-      this.empresa.id,
-      this.usuario.id,
-      this.usuario.id,
-      this.forma.value.estado,
-  );
 
-    this._subsidiaryService.crearSubsidiary( subsidiary )
+        } else {
+
+  /*   const subsidiary = new Subsidiary(
+
+
+      this.forma.value.descripcion,
+      this.empresa_id,
+      this.forma.value.estado,
+      this.user
+  ); */
+
+
+  let form = [
+    {
+
+      description:this.forma.value.descripcion,
+      company_id:this.empresa_id,
+      isActive:this.forma.value.estado,
+      createdUser:this.user
+
+    }
+  ]
+
+  this.registro =  JSON.parse(JSON.stringify(form[0]));
+
+    this._subsidiaryService.crearSubsidiary( this.registro )
   .subscribe( resp => {
     this.subsidiaryDialog = false
     this.new = false;
-    this.cargarSubsidiary( this.empresa.id );
-    
+    this.cargarSubsidiary( this.empresa_id );
+
   });
 
     this.forma.reset();
@@ -173,7 +205,7 @@ editSubsidiary(subsidiary: Subsidiary) {
   cargarSubsidiary( id: string ) {
     this._subsidiaryService.cargarSubsidiary( id )
         .subscribe( subsidiary => {
-          this.subsidiary = subsidiary;
+          this.subsidiary = Array.isArray(subsidiary.data) ? subsidiary.data : [subsidiary.data];
         });
 
   }
@@ -201,10 +233,10 @@ editSubsidiary(subsidiary: Subsidiary) {
   guardarSubsidiary( subsidiary: Subsidiary){
 
     this._subsidiaryService.actualizarSubsidiary( subsidiary )
-    
-          .subscribe( () => this.cargarSubsidiary(this.empresa.id));
+
+          .subscribe( () => this.cargarSubsidiary(this.empresa_id));
   }
-  
+
   deleteSubsidiary( subsidiary: Subsidiary ){
 
 
@@ -215,17 +247,54 @@ editSubsidiary(subsidiary: Subsidiary) {
       acceptLabel:"Si",
       rejectLabel:"No",
       accept: () => {
-          
+
         this._subsidiaryService.borrarSubsidiary( subsidiary.id! )
-        .subscribe ( () => this.cargarSubsidiary(this.empresa.id));
-          
+        .subscribe ( () => this.cargarSubsidiary(this.empresa_id));
+
           //this.messageService.add({severity:'success', summary: 'Successful', detail: 'Centro de costo Eliminado', life: 3000});
       }
   });
-  
-   
-  
+
+
+
   }
-  
+
+  cargarEmpresasUsuario(iduser: any) {
+    this._companyService.cargarCompanysUser(iduser).subscribe(
+      (resp: any) => {
+        if (resp && resp.companies) {
+
+          this.companyUser = resp.companies;
+
+          this.usuario = resp.user;
+
+          if(this.companyUser.length > 1 ){
+            this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
+            this.empresa_id = this.empresa.id
+            this.cargarSubsidiary( this.empresa.id );
+            this.cargarCompanySelect( this.empresa.id );
+
+          }else{
+            this.empresa =  this.companyUser[0];
+            this.empresa_id = this.empresa.id
+            this.cargarSubsidiary( this.empresa.id );
+            this.cargarCompanySelect( this.empresa.id );
+
+
+          }
+
+        } else {
+          this.companyUser = { companies: [] }; // Evita errores si la API devuelve un valor inesperado
+        }
+
+        this.usuario = resp?.user || {}; // Evita que `usuario` sea undefined
+      },
+      (error) => {
+        console.error('Error al cargar las empresas:', error);
+        this.companyUser  = { companies: [] }; // En caso de error, aseguramos que no falle
+      }
+    );
+  }
+
 
 }

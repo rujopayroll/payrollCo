@@ -21,43 +21,43 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class CompanyPayrollService {
- 
+
 private URL_SERVICIOS: string = environment.URL_SERVICIOS;
 
   public headers = new HttpHeaders();
   companyPayroll: any = {};
   company!: Company;
-  
 
-  constructor( public http: HttpClient, 
+
+  constructor( public http: HttpClient,
     public _usuarioService: AuthService,
-    public _companyService: CompanyService) { 
+    public _companyService: CompanyService) {
 
 
-      this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
+      //this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
     }
 
 
-    
- 
+
+
 
     cargarCompanyPayroll( id: string){
 
-      let url = this.URL_SERVICIOS + '/companyPayrolls/' + id;
-      return this.http.get( url, {headers: this.headers})
+      let url = this.URL_SERVICIOS + '/companyPayroll/' + id;
+      return this.http.get( url, {withCredentials:true})
       .pipe(
           map( (resp: any) => resp ));
     }
     buscarCompanyPayroll( termino: string ) {
       let url = this.URL_SERVICIOS + '/busqueda/coleccion/companys/' + termino;
-      return this.http.get( url, {headers: this.headers} )
+      return this.http.get( url, {withCredentials:true} )
       .pipe(
           map(( resp: any ) => resp.companyPayroll));
     }
     borrarCompanyPayroll( id: string ){
-      let url = this.URL_SERVICIOS + '/companyPayrolls/' + id;
+      let url = this.URL_SERVICIOS + '/companyPayroll/' + id;
       url += '?token=' + this._usuarioService.token;
-      return this.http.delete( url, {headers: this.headers} )
+      return this.http.delete( url, {withCredentials:true} )
       .pipe(
           map( (resp: any) => {
               Swal.fire({
@@ -68,8 +68,8 @@ private URL_SERVICIOS: string = environment.URL_SERVICIOS;
       }));
     }
     crearCompanyPayroll( companyPayroll: CompanyPayroll){
-      const url = this.URL_SERVICIOS + '/companyPayrolls';
-      return this.http.post( url, companyPayroll, {headers: this.headers})
+      const url = this.URL_SERVICIOS + '/companyPayroll';
+      return this.http.post( url, companyPayroll, {withCredentials:true})
       .pipe(
           map( (resp: any) =>{
 
@@ -88,15 +88,16 @@ private URL_SERVICIOS: string = environment.URL_SERVICIOS;
               text: err.error.errors.message,
               icon: 'error'
             });
-            return Observable.throwError( err );
+            //return Observable.throwError( err );
+            return throwError(() => new Error('Error del servidor'));
           }));
     }
 
-    actualizarCompanyPayroll( companyPayroll: any ){
+    actualizarCompanyPayroll( companyPayroll: any, id:string ){
 
-      let url = this.URL_SERVICIOS + '/companyPayrolls/' + companyPayroll.id;
-      
-      return this.http.put( url, companyPayroll, {headers: this.headers})
+      let url = this.URL_SERVICIOS + '/companyPayroll/' + id;
+
+      return this.http.put( url, companyPayroll, {withCredentials:true})
       .pipe(
           map( (resp: any) =>{
             console.log('servicio', companyPayroll )

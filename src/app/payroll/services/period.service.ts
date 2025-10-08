@@ -22,30 +22,31 @@ export class PeriodService {
     private URL_SERVICIOS: string = environment.URL_SERVICIOS;
 
  public headers = new HttpHeaders();
- 
-  
 
-  constructor( public http: HttpClient, 
+
+
+  constructor( public http: HttpClient,
     public _usuarioService: AuthService,
-    public _companyService: CompanyService) { 
+    public _companyService: CompanyService) {
 
       this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
+
     }
 
 
-    
- 
+
+
 
     getPeriodByCompany( id: string){
 
       let url = this.URL_SERVICIOS + '/period?company_id=' + id;
-      return this.http.get( url, {headers: this.headers} )
+      return this.http.get( url, {withCredentials:true} )
       .pipe(
           map( (resp: any) => {
             return resp;
-            
+
           }));
-           
+
     }
 
 
@@ -53,49 +54,53 @@ export class PeriodService {
      getPeriodByCompanyByProcess( id: string){
 
         let url = this.URL_SERVICIOS + '/period?company_id=' + id + '&description=Proceso';
-        return  this.http.get ( url, {headers: this.headers} )
+        return  this.http.get ( url, {withCredentials:true} )
         .pipe(
             map( (resp: any={}) => {
+
               return resp;
-              
+
             }));
-             
+
       }
 
       getPeriodByCompanyByPaid( id: string){
 
         let url = this.URL_SERVICIOS + '/period?company_id=' + id + '&description=Pagado';
-        return this.http.get( url, {headers: this.headers} )
+        return this.http.get( url, {withCredentials:true} )
         .pipe(
             map( (resp: any) => {
               return resp;
-              
+
             }));
-             
+
       }
 
       getPeriodByCompanyByAccounted( id: string){
 
         let url = this.URL_SERVICIOS + '/period?company_id=' + id + '&description=Contabilizado';
-        return this.http.get( url, {headers: this.headers} )
+        return this.http.get( url, {withCredentials:true} )
         .pipe(
             map( (resp: any) => {
               return resp;
-              
+
             }));
-             
+
       }
 
       createPeriod( id: string, year: number){
 
         let url = this.URL_SERVICIOS + '/period?company_id=' + id + '&year=' + year;
-        return this.http.post( url, {headers: this.headers} )
+        console.log('urlperiodo', url)
+
+        return this.http.post( url,  {withCredentials:true})
         .pipe(
             map( (resp: any) => {
+
               return resp;
-              
+
             }));
-             
+
       }
 
 }

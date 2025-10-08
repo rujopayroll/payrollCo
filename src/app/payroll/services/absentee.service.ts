@@ -26,25 +26,25 @@ export class AbsenteeService {
 
 private URL_SERVICIOS: string = environment.URL_SERVICIOS;
 public headers = new HttpHeaders();
- 
-  
 
-  constructor( public http: HttpClient, 
+
+
+  constructor( public http: HttpClient,
     public _usuarioService: AuthService,
     public _companyService: CompanyService,
-    public _periodService: PeriodService) { 
+    public _periodService: PeriodService) {
 
-    this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
+    //this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
     }
 
 
-    
- 
+
+
 
      getAbsenteeType(){
-      let url = this.URL_SERVICIOS + '/absenteeTypes';
-      
-      return  this.http.get( url, {headers: this.headers} )
+      let url = this.URL_SERVICIOS + '/absentee-type';
+
+      return  this.http.get( url, {withCredentials:true} )
       .pipe(
           map( (resp: any) => {
             console.log('servicio tipos', resp)
@@ -53,9 +53,9 @@ public headers = new HttpHeaders();
     }
 
     getAbsenteeTypeById(id: string){
-      let url = this.URL_SERVICIOS + '/absenteeTypes?id=' + id;
-      
-      return  this.http.get( url, {headers: this.headers} )
+      let url = this.URL_SERVICIOS + '/absentee-type?id=' + id;
+
+      return  this.http.get( url, {withCredentials:true} )
       .pipe(
           map( (resp: any) => {
             console.log('servicio tipos', resp)
@@ -64,20 +64,21 @@ public headers = new HttpHeaders();
     }
 
     getAbsenteeByEmployeeByPeriod(employee_id: string, iniPeriod:Date, endPeriod:Date){
-      let url = this.URL_SERVICIOS + '/absenteeHistories/absenteePeriodByEmployee?employee_id=' + employee_id + '&iniPeriod=' + iniPeriod + '&endPeriod=' + endPeriod;
-      console.log(url)
-      return  this.http.get( url, {headers: this.headers} )
+      console.log('entro al servicio')
+    let url = this.URL_SERVICIOS + '/absentee-history/periods/employees?employee_id=' + employee_id + '&iniDatePeriod=' + iniPeriod + '&endDatePeriod=' + endPeriod;
+      return  this.http.get( url, {withCredentials:true} )
       .pipe(
           map( (resp: any) => {
             console.log('servicio',resp)
             return resp;
-            
+
           }));
     }
 
     saveAbsenteeByEmployee(absentee: any){
-      let url = this.URL_SERVICIOS + '/absenteeHistories/';
-      return this.http.post( url, absentee, {headers: this.headers} )
+      let url = this.URL_SERVICIOS + '/absentee-history';
+      console.log(absentee)
+      return this.http.post( url, absentee, {withCredentials:true} )
       .pipe(
           map( (resp: any) => {
             Swal.fire({
@@ -88,7 +89,7 @@ public headers = new HttpHeaders();
               timer: 2000
             })
             return resp;
-          }));     
+          }));
     }
 
 

@@ -2,22 +2,25 @@ import { Injectable } from '@angular/core';
 //import { HttpClient } from '@angular/common/http';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import 'rxjs/Rx';
-import { map, catchError } from 'rxjs/operators';
+import { Observable, BehaviorSubject } from 'rxjs';
+//import 'rxjs/Rx';
+
+import { map, catchError, tap } from 'rxjs/operators';
 //import { catch } from 'rxjs/operators';
 
 //import 'rxjs/add/Operator/tap';
 //import 'rxjs/add/Operator/map';
 //import 'rxjs/add/Operator/catch';
-import 'rxjs/add/observable/throw';
+//import 'rxjs/add/observable/throw';
 import { throwError } from 'rxjs';
 
+import { ModalUploadService } from '../../companies/components/modal-upload/modal-upload.service';
 
 import Swal from 'sweetalert2';
 // import { SubirArhivoService } from '../subirArchivo/subir-arhivo.service';
 import { environment } from 'src/environments/environment';
 import { Usuario } from '../models/usuario.model';
+import { CompanyService } from '../../companies/services/company/company.service';
 
 
 
@@ -31,35 +34,52 @@ export class AuthService {
 
   usuario!: Usuario;
   token!: string;
+  refreshToken!: string;
   menu: any = {};
   submenu: any = {};
   empresas: any = {};
+
   public headers = new HttpHeaders();
+
+  private user = new BehaviorSubject< Usuario | null > (null);
+  user$ = this.user.asObservable();
 
   get _usuario(): Usuario{
     return {...this._usuario!}
   }
 
   constructor( public http: HttpClient,
-               public _router: Router
-              //  public _subirArchivoService: SubirArhivoService
+               public _router: Router,
+               public _modalUploadServices: ModalUploadService,
+               //public _companyServices: CompanyService
+               //public _subirArchivoService: SubirArhivoService
                ) {
-                this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
-                 this.cargarStorage();
-   
-   
+                this.cargarStorage();
+
+                //this.headers = this.headers.set('Authorization', 'Bearer '+ this.token);
+
+
+
   }
 
-  renuevaToken(){
-    let url = this.URL_SERVICIOS + 'login/renuevatoken';
-    url += '?token=' + this.token;
+  renuevaToken(): Observable<any> {
 
-    return this.http.get( url )
-    .pipe(    
+    let url = this.URL_SERVICIOS + '/auth/refresh';
+      return this.http.post(url, {});
+    }
+
+
+    /* let url = this.URL_SERVICIOS + '/auth_tok/getToken';
+
+
+    return this.http.post( url, usuario, {headers: this.headers})
+    .pipe(
     map( (resp: any) =>{
 
-          this.token = resp.token;
-          localStorage.setItem( 'token', this.token! );
+          this.token = resp.data.token;
+          this.refreshToken = resp.data.refreshToken
+          localStorage.setItem( 'token', this.token );
+          localStorage.setItem( 'refreshToken', this.refreshToken);
 
           return true;
 
@@ -67,8 +87,8 @@ export class AuthService {
     )
     .pipe(
     catchError( err => {
-          this._router.navigate(['/login']);
-          // tslint:disable-next-line: deprecation
+      console.log('error', err)
+          this._router.navigate(['/auth/login']);
           Swal.fire({
             title: 'No se pudo renovar el token',
             text: 'No fue posible renovar el token',
@@ -76,27 +96,51 @@ export class AuthService {
           });
           return Observable.throwError( err );
         }));
-  }
+  } */
 
 
-  //guardarStorage(id: string, token: string, usuario: Usuario, menu: any, empresas:any){
-     guardarStorage(token: string,id: string,  usuario: Usuario, empresas:any){
-    
-      localStorage.setItem('token', token);
+
+     guardarStorage(id: string,  userName: string){
+
+      //localStorage.setItem('token', token);
+      //localStorage.setItem('refreshToken', refreshToken);
       localStorage.setItem('id', id);
-   
-    localStorage.setItem('usuario', JSON.stringify(usuario));
-    localStorage.setItem('empresas', JSON.stringify(empresas));
 
-    this.usuario = usuario;
-    this.token = token;
-    this.empresas = empresas;
+    localStorage.setItem('usuario', JSON.stringify(userName));
+
+
+ //   this.usuario = usuario;
+    //this.token = token;
+    //this.refreshToken = refreshToken;
+   // this.empresas = empresas;
 
   }
 
-  
+  //guardarSessionStorage(token: string,id: string,  usuario: Usuario, empresas:any, refreshToken: string){
 
-  
+  //guardarSessionStorage(id: string){
+
+
+    //sessionStorage.setItem('refreshToken', refreshToken);
+    //sessionStorage.setItem('id', id);
+
+ // sessionStorage.setItem('Id', id);
+  //sessionStorage.setItem('userName', JSON.stringify(usuario.name));
+  //sessionStorage.setItem('userEmail', JSON.stringify(usuario.userName));
+  //sessionStorage.setItem('userToken', token);
+  //sessionStorage.setItem('empresas', JSON.stringify(empresas));
+
+
+  //this.usuario = usuario;
+  //this.token = token;
+  //this.refreshToken = refreshToken;
+  //this.empresas = empresas;
+
+//}
+
+
+
+
 
 
   estaLogueado(){
@@ -106,6 +150,7 @@ export class AuthService {
   cargarStorage(){
     if ( localStorage.getItem('token')){
           this.token = localStorage.getItem('token')!;
+          this.refreshToken = localStorage.getItem('refreshToken')!;
           this.usuario =  JSON.parse(localStorage.getItem('usuario')!);
           this.menu =  JSON.parse(localStorage.getItem('menu')!);
           this.empresas =  JSON.parse(localStorage.getItem('empresas')!);
@@ -125,53 +170,94 @@ export class AuthService {
     } else {
       localStorage.removeItem('email');
     }
-  
+
     //let url = URL_SERVICIOS + '/login';
-    let url = this.URL_SERVICIOS + '/auth_log/login';
-    return this.http.post( url, usuario )
-    .pipe(          
+    let url = this.URL_SERVICIOS + '/auth/login';
+
+
+    //let url = 'https://payrollback-aagydqc0ceczedak.eastus-01.azurewebsites.net/api/v1/auth/signup';
+    return this.http.post( url, usuario, {withCredentials:true})
+
+    .pipe(
+
     map( (resp: any) =>{
-
                // this.guardarStorage( resp.id, resp.token, resp.usuario, resp.menu, resp.empresas );
-              
-               
-                // this.guardarStorage( resp.user.id, resp.token, resp.user, resp.user.menu.menus, resp.user.companies );
-                this.guardarStorage( resp.token, resp.user.id, resp.user, resp.user.companies );
 
+
+
+                // this.guardarStorage( resp.user.id, resp.token, resp.user, resp.user.menu.menus, resp.user.companies );
+                this.guardarStorage(resp.id, resp.userName);
+                //this.empresas = this._companyServices.cargarCompanysUser(resp.id)
+                //this.guardarSessionStorage( resp.id, resp.user.id, resp.user, resp.user.companies, resp.refreshToken );
 
                 return true;
               })
     )
-              
+
             // })
             .pipe(
             catchError( err =>{
+
                 // tslint:disable-next-line: deprecation
                 Swal.fire({
                   title: 'Error en el login',
                   text: 'error al autenticar',
                   icon: 'error'
-                }); 
-                return Observable.throwError( err );
+                });
+                //return Observable.throwError( err );
+                return throwError(() => new Error('Error del servidor'));
               })
             );
 
-              
+
 
 
   }
 
+
+
+
+  /*  Autologin( usuario: Usuario) {
+
+    let url = 'https://app-backanimo.atc-onlinead.com/autologin';
+    return this.http.post( url, usuario )
+    .pipe(
+
+    map( (resp: any) =>{
+
+
+                this.guardarSessionStorage(resp.id);
+
+
+                return true;
+              })
+    )
+  } */
+
+
+
+
+
+
+
+
+
   logout(){
 
     this.token = '';
+    this.refreshToken = '';
     this.usuario = null!;
 
-    localStorage.removeItem('token');
+
     localStorage.removeItem('usuario');
-    localStorage.removeItem('menus');
-    localStorage.removeItem('empresas');
-    localStorage.removeItem('empresaseleccionada');
+
     localStorage.removeItem('id');
+    localStorage.removeItem('email');
+    localStorage.removeItem('empresaseleccionada');
+
+    document.cookie = 'Authentication=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+    document.cookie = 'Refresh=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+
     this._router.navigate(['/auth/login']);
 
   }
@@ -180,7 +266,7 @@ export class AuthService {
 crearUsuario( usuario: any){
   const url = this.URL_SERVICIOS  + '/auth_log/register';
   return this.http.post( url, usuario,  {headers: this.headers})
-  .pipe(    
+  .pipe(
   map( (resp: any) =>{
 
         Swal.fire({
@@ -198,46 +284,43 @@ crearUsuario( usuario: any){
           text: 'El correo ya esta en uso',
           icon: 'warning'
         });
-        console.log('error', err)
-        return Observable.throwError( err );
+
+        //return Observable.throwError( err );
+        return throwError(() => new Error('Error del servidor'));
       }));
 
 }
 
 actualizarUsuario( usuario: Usuario ){
 
-  let url = this.URL_SERVICIOS + '/usuario/' + usuario.id;
+  let url = this.URL_SERVICIOS + '/users/' + this.usuario.id;
   url += '?token=' + this.token;
 
-  return this.http.put( url, usuario)
+  return this.http.put( url, usuario, {headers: this.headers})
 
   .pipe(
       map( (resp: any) =>{
 
         if ( usuario.id === this.usuario.id) {
-          const usuarioDB: Usuario = resp.usuario;
+
+          /* const usuarioDB: Usuario = resp.usuario;
+          console.log('pass33', usuarioDB) */
            //this.guardarStorage( usuarioDB.id, this.token, usuarioDB,  this.menu, this.empresas);
-          this.guardarStorage( usuarioDB.id!, this.token, usuarioDB, this.empresas);
+         // this.guardarStorage( usuario.id!);
         }
         Swal.fire({
           text: 'Usuario Actualizado',
           icon: 'success'
         });
-
+        this._modalUploadServices.notificacion.emit( resp );
         return true
 
-      }))
-      .pipe(
-      catchError( err =>{
-        Swal.fire({
-          title: err.error.mensaje,
-          text: err.error.errors.message,
-          icon: 'error'
-        });
-        return Observable.throwError( err );
       }));
 
+
 }
+
+
 
 /* cambiarImagen( archivo: File, id: string ){
 
@@ -264,8 +347,29 @@ cargarUsuarios( desde: number = 0){
 
   let url = this.URL_SERVICIOS + '/usuario?desde=' + desde;
   return this.http.get( url );
-  
 
+
+}
+
+getAllUsers(){
+  let url = this.URL_SERVICIOS + '/users';
+  return this.http.get( url, {headers: this.headers} )
+  .pipe(
+       map( (resp: any) => {
+        return resp;
+      }));
+}
+
+getUsers( id: string ){
+  let url = this.URL_SERVICIOS + '/users/' + id;
+
+  this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
+  return this.http.get( url, {headers: this.headers} )
+  .pipe(
+      map( (resp: any ) => {
+
+        return resp
+      }));
 }
 
 buscarUsuarios( termino: string ) {
@@ -287,29 +391,29 @@ borrarUsuario( id: string ){
 
 obtenerMenu( id: string ){
 
-  let url = this.URL_SERVICIOS + '/menu/menuByUser/' + id;       
-    
+  let url = this.URL_SERVICIOS + '/menu/menuByUser/' + id;
+
     return this.http.get(url)
           .subscribe( (respm: any) => {
-            
+
             this.menu = respm.menus;
             localStorage.setItem( 'menus', JSON.stringify(this.menu ));
-            
-           
+
+
 
             return true;
           });
-          
+
           /* console.log('ruta',this.http.get( url ))*/
-         
-        
-         
+
+
+
           //return respm;
         }
 
 
   registro(){
 
-  }      
+  }
 
 }

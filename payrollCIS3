@@ -1,0 +1,50 @@
+# Docker
+# Build a Docker image
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+trigger:
+- develop
+
+resources:
+- repo: self
+
+variables:
+  - group: dev_payroll_group
+  - name: DOCKER_REPOSITORY
+    value: $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/$(DOCKER_REPOSITORY_NAME)
+
+stages:
+- stage: Docker
+  displayName: Build & Push Docker image to AWS ECR
+  jobs:
+  - job: Build_and_push
+    displayName: Build & Push Docker image
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    - task: NodeTool@0
+      inputs:
+        versionSource: 'spec'
+        versionSpec: '18.x'
+      displayName: 'install node js'
+    - task: CmdLine@2
+      inputs:
+        script: |
+          cd '$(System.DefaultWorkingDirectory)'
+          npm install -g @angular/cli
+          npm install
+          ng build
+      displayName:  'nmp install and build'
+    - task: CopyFiles@2
+      inputs:
+        SourceFolder: '$(System.DefaultWorkingDirectory)/dist/payrollCO'
+        Contents: '**'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)/payrollCO'
+        OverWrite: true
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'drop'
+        publishLocation: 'Container'
+   
+

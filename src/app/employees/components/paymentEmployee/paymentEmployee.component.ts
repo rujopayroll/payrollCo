@@ -8,10 +8,10 @@ import { AccounttypeService } from '../../../companies/services/AccountType/acco
 import { EmployeePayment } from '../../models/employeesPayment.model';
 import { Bank } from '../../../companies/models/bank.model';
 import { AccountType } from '../../../companies/models/accountType.model';
-
+import { CompanyService } from '../../../companies/services/company/company.service';
 import { AuthService } from '../../../auth/services/authservice.index';
 import {MenuItem} from 'primeng/api';
-import { PageScrollService } from 'ngx-page-scroll-core';
+//import { PageScrollService } from 'ngx-page-scroll-core';
 import { DOCUMENT } from '@angular/common';
 import { Inject } from '@angular/core';
 import { ConfirmationService } from 'primeng/api';
@@ -51,8 +51,10 @@ export class PaymentEmployeeComponent implements OnInit {
   new!: boolean;
   paymentEmployeeDialog!: boolean;
   employeesPayments: any= {};
-  
- 
+  employeeId: string = ''
+  user!: string;
+  companyUser: any = {};
+
   employeePayment: EmployeePayment = new EmployeePayment('', '', true, '', '',  0, '', this.date, this.date);
 
 
@@ -65,11 +67,13 @@ export class PaymentEmployeeComponent implements OnInit {
               public _bankService: BankService,
               public _accountTypeService: AccounttypeService,
               public _modalUploadServices: ModalUploadService,
-              public pageScrollServ: PageScrollService,
+              public _companyService: CompanyService,
+              //public pageScrollServ: PageScrollService,
               @Inject(DOCUMENT) private document: any
-              ) { 
-
-                this.company = this._usuarioService.empresas;
+              ) {
+                this.user = localStorage.getItem('id')!;
+                this.cargarEmpresasUsuario(this.user)
+                /* this.company = this._usuarioService.empresas;
                 this.empresaseleccionada = localStorage.getItem('empresaseleccionada');
                 if ( this.empresaseleccionada ){
                   this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
@@ -79,13 +83,13 @@ export class PaymentEmployeeComponent implements OnInit {
                   } else {
                    this.empresa =  JSON.parse(JSON.stringify(this.company[0]));
                   }
-                   }
+                   } */
 
                  this.usuario = JSON.parse(localStorage.getItem('usuario')!);
-
-                 this.activatedRoute.params.subscribe( params =>{
-                  this.cargarEmployeesPayment( params[ 'id' ]);
-              }); 
+                this.activatedRoute.params.subscribe( params =>{
+                this._modalUploadServices.notificacion
+      this.cargarEmployeesPayment( params[ 'id' ]);
+ });
 
               this.crearFormulario();
 
@@ -93,28 +97,31 @@ export class PaymentEmployeeComponent implements OnInit {
 
   ngOnInit(): void {
 
+
+
     this.getAllAccountType();
     this.getAllBank();
 
-    this.activatedRoute.params.subscribe( params =>{
+   /*  this.activatedRoute.params.subscribe( params =>{
       this._modalUploadServices.notificacion
-      .subscribe( () =>  this.cargarEmployeesPayment( params[ 'id' ]));
-    });
 
-    this.pageScrollServ.scroll({
+      .subscribe( () =>  this.cargarEmployeesPayment( params[ 'id' ]));
+    }); */
+
+   /*  this.pageScrollServ.scroll({
       document: this.document,
       scrollTarget: '.theEnd',
-    });
+    }); */
 
-   
-    
+
+
   }
 
   get bankNoValido(){return this.forma.get('bank')!.invalid && this.forma.get('bank')!.touched}
   get accountTypeNoValido(){return this.forma.get('accountType')!.invalid && this.forma.get('accountType')!.touched}
   get accountNumberNoValido(){return this.forma.get('accountNumber')!.invalid && this.forma.get('accountNumber')!.touched}
-  
-  
+
+
   crearFormulario(){
     this.forma = this.fb.group({
       bank           : ['', Validators.required],
@@ -127,56 +134,56 @@ export class PaymentEmployeeComponent implements OnInit {
   guardar(paymentEmployee: EmployeePayment){
 
     if (this.forma.invalid){
-  
+
       console.log('invalido')
-  
+
       return Object.values (this.forma.controls).forEach( control =>{
-  
+
         if (control instanceof UntypedFormGroup) {
           Object.values (control.controls).forEach( control => control.markAsTouched());
-  
+
         } else{
           control.markAsTouched();
         }
-        
-  
+
+
       });
     }
 
-  
+
     this.activatedRoute.params.subscribe( params => {
       const id = params[ 'id' ];
-  
+
 
     let form = [
       {
-  
+
         updateUser: this.usuario,
             isActive: this.isActive,
             bank_id: this.forma.value.bank,
             accountType_id: this.forma.value.accountType,
             id:id,
             accountNumber: this.forma.value.accountNumber
-       
+
 
       }
     ]
- 
-  
+
+
     this.registro =  JSON.parse(JSON.stringify(form[0]));
-    
+
 
     this._employeepaymentService.actualizarEmployeePayment( this.employeesPayments)
             .subscribe( () => this.cargarEmployeesPayment(this.employeePay.id));
             this.paymentEmployeeDialog = false;
-    
-    
-  
+
+
+
     // this.forma.reset();
-  }) 
+  })
   }
 
-  onScroll(event: HTMLElement, i:any) {
+  /* onScroll(event: HTMLElement, i:any) {
     this.pageScrollServ.scroll({
       scrollTarget: event,
       scrollOffset: 300,
@@ -184,8 +191,8 @@ export class PaymentEmployeeComponent implements OnInit {
     });
 
     this.active = i;
-  } 
-
+  }
+ */
   hideDialog() {
     this.paymentEmployeeDialog = false;
     this.submitted = false;
@@ -200,12 +207,12 @@ editPaymentEmployee(paymentEmployee: EmployeePayment) {
   cargarEmployeesPayment( id: string ) {
     this._employeepaymentService.cargarEmployeePayment( id )
         .subscribe( employeePayment => {
-        this.employeePay = employeePayment[0];
-        
+        this.employeePay = employeePayment;
+
         if(this.employeePay){
           this.getBank( this.employeePay.bank_id );
           this.getAccountType( this.employeePay.accountType_id );
-        } 
+        }
 
         });
 
@@ -224,7 +231,7 @@ editPaymentEmployee(paymentEmployee: EmployeePayment) {
           this.banks = bank;
   });
   }
-  
+
   getAccountType( id: string)  {
     this._accountTypeService.obtenerTipoCuenta( id )
         .subscribe( accountType => {
@@ -237,6 +244,39 @@ editPaymentEmployee(paymentEmployee: EmployeePayment) {
         .subscribe( accountType => {
           this.accountTypes = accountType;
   });
+  }
+
+  cargarEmpresasUsuario(iduser: any) {
+    this._companyService.cargarCompanysUser(iduser).subscribe(
+      (resp: any) => {
+        if (resp && resp.companies) {
+
+          this.companyUser = resp.companies;
+
+          this.usuario = resp.user;
+
+          if(this.companyUser.length > 1 ){
+            this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
+
+
+          }else{
+            this.empresa =  this.companyUser[0];
+
+
+
+          }
+
+        } else {
+          this.companyUser = { companies: [] }; // Evita errores si la API devuelve un valor inesperado
+        }
+
+        this.usuario = resp?.user || {}; // Evita que `usuario` sea undefined
+      },
+      (error) => {
+        console.error('Error al cargar las empresas:', error);
+        this.companyUser  = { companies: [] }; // En caso de error, aseguramos que no falle
+      }
+    );
   }
 
 }

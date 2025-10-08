@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+/* import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { Product } from '../../interfaces/producinterface';
@@ -9,12 +9,12 @@ export class ProductService {
     status: string[] = ['OUTOFSTOCK', 'INSTOCK', 'LOWSTOCK'];
 
     productNames: string[] = [
-        "Bamboo Watch", 
-        "Black Watch", 
-        "Blue Band", 
-        "Blue T-Shirt", 
-        "Bracelet", 
-        "Brown Purse", 
+        "Bamboo Watch",
+        "Black Watch",
+        "Blue Band",
+        "Blue T-Shirt",
+        "Bracelet",
+        "Brown Purse",
         "Chakra Bracelet",
         "Galaxy Earrings",
         "Game Controller",
@@ -83,11 +83,11 @@ export class ProductService {
     generateId() {
         let text = "";
         let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        
+
         for (var i = 0; i < 5; i++) {
             text += possible.charAt(Math.floor(Math.random() * possible.length));
         }
-        
+
         return text;
     }
 
@@ -110,4 +110,4 @@ export class ProductService {
     generateRating() {
         return Math.floor(Math.random() * Math.floor(5)+1);
     }
-}
+} */
