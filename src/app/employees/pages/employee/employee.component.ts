@@ -4,7 +4,7 @@ import { ModalUploadService } from '../../../companies/components/modal-upload/m
 import { EmployeeService } from '../../services/employeeService.index';
 import { Employee } from '../../models/employee.model';
 import {MenuItem} from 'primeng/api';
-import { PageScrollService } from 'ngx-page-scroll-core';
+//import { PageScrollService } from 'ngx-page-scroll-core';
 import { DOCUMENT } from '@angular/common';
 import { Inject } from '@angular/core';
 import { ModalUploadComponent } from '../../../companies/components/modal-upload/modal-upload.component';
@@ -20,7 +20,7 @@ import { ModalUploadComponent } from '../../../companies/components/modal-upload
 export class EmployeeComponent implements OnInit {
 
   @ViewChild('scroller1') scroller!: ElementRef;
-  active = 1;
+
   items!: MenuItem[];
   activeItem!: MenuItem;
   scrollableItems!: MenuItem[];
@@ -30,12 +30,24 @@ export class EmployeeComponent implements OnInit {
 
   employee: any = {};
 
+  active = 1;
+
+  @ViewChild('panel1') panel1!: HTMLElement;
+  @ViewChild('panel2') panel2!: HTMLElement;
+  @ViewChild('panel3') panel3!: HTMLElement;
+  @ViewChild('panel4') panel4!: HTMLElement;
+  @ViewChild('panel5') panel5!: HTMLElement;
+  @ViewChild('panel6') panel6!: HTMLElement;
+  @ViewChild('panel7') panel7!: HTMLElement;
+  @ViewChild('panel8') panel8!: HTMLElement;
+  @ViewChild('panel7') panel9!: HTMLElement;
+  @ViewChild('panel8') panel10!: HTMLElement;
 
 
   constructor(private activatedRoute: ActivatedRoute,
               private _employeeService: EmployeeService,
               public _modalUploadServices: ModalUploadService,
-              public pageScrollServ: PageScrollService,
+              //public pageScrollServ: PageScrollService,
               @Inject(DOCUMENT) private document: any
               ) {
 
@@ -52,24 +64,53 @@ export class EmployeeComponent implements OnInit {
       .subscribe( () =>  this.cargarEmployees( params[ 'id' ]));
     });
 
-    this.pageScrollServ.scroll({
+    /* this.pageScrollServ.scroll({
       document: this.document,
       scrollTarget: '.theEnd',
-    });
+    }); */
+
+    window.scrollTo({ top: 40, behavior: 'smooth' });
 
 
 
   }
 
-  onScroll(event: HTMLElement, i:any) {
+  /* onScroll(panel: HTMLElement, index: number): void {
+    this.active = index;
+    panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const yOffset = -360; // Cambia este valor según la altura de tu header
+    const y = panel.getBoundingClientRect().top + window.scrollY + yOffset;
+
+  window.scrollTo({ top: y, behavior: 'smooth' });
+  } */
+
+
+  onScroll(panel: HTMLElement, index: number): void {
+    this.active = index;
+    panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const yOffset = -380; // Cambia este valor según la altura de tu header
+    const y = panel.getBoundingClientRect().top + window.scrollY + yOffset;
+
+  window.scrollTo({ top: y, behavior: 'smooth' });
+  }
+
+
+  /* onScroll(target: HTMLElement, i: number) {
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    this.active = i;
+    console.log('panel1',this.panel1.nativeElement);
+    console.log('panel2',this.panel2.nativeElement);
+  } */
+
+  /* onScroll(event: HTMLElement, i:any) {
     this.pageScrollServ.scroll({
       scrollTarget: event,
-      scrollOffset: 350,
+      scrollOffset: 390,
       document: this.document
     });
 
     this.active = i;
-  }
+  }*/
 
   cargarEmployees( id: string ) {
     this._employeeService.cargarEmployees( id )

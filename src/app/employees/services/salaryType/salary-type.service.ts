@@ -13,22 +13,22 @@ export class SalaryTypeService {
     private URL_SERVICIOS: string = environment.URL_SERVICIOS;
   public headers = new HttpHeaders();
   constructor( public http: HttpClient,
-               public _usuarioService: AuthService) { 
+               public _usuarioService: AuthService) {
 
-                this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
+               // this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
                }
 
   cargarTipoSalario(){
-    let url = this.URL_SERVICIOS + '/salaryTypes';
-    return this.http.get( url, {headers: this.headers} )
+    let url = this.URL_SERVICIOS + '/salaryType';
+    return this.http.get( url, {withCredentials:true} )
     .pipe(
          map( (resp: any) => {
           return resp;
         }));
   }
   obtenerTipoSalario( id: string ){
-    let url = this.URL_SERVICIOS + '/salaryTypes/' + id;
-    return this.http.get( url, {headers: this.headers} )
+    let url = this.URL_SERVICIOS + '/salaryType/' + id;
+    return this.http.get( url, {withCredentials:true} )
     .pipe(
         map( (resp: any ) => resp ));
   }

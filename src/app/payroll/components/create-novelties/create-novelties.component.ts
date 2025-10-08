@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, Input, ElementRef  } from '@angular/core'
 import { SelectItem, MessageService } from 'primeng/api';
 import { Company } from '../../../companies/models/company.model';
 import { Concept } from '../../../companies/models/concept.model';
+import { CompanyService } from '../../../companies/services/company/company.service';
 import { EmployeeService } from '../../../employees/services/employeeService.index';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/services/authservice.index';
@@ -58,7 +59,7 @@ export class CreateNoveltiesComponent implements OnInit {
   employeeSelect: any;
   employee: any = {};
   employees: any = {};
-  company: any;
+  company: any = {};
   employeeMovementsPayroll: any = {};
   empresaseleccionada: any = {};
   usuario: any = {};
@@ -68,6 +69,7 @@ export class CreateNoveltiesComponent implements OnInit {
   noveltiesS: any = [];
   group: string = '';
   valor : number = 0;
+  idUser: any;
 
 
 
@@ -91,17 +93,23 @@ export class CreateNoveltiesComponent implements OnInit {
                public _conceptService: ConceptService,
                public _getEmployeeService: GetEmployeeService,
                public dialogService: DialogService,
+               public _companyService: CompanyService,
                public ref: DynamicDialogRef,
                public _router: Router,
                private messageService: MessageService,
                private fb: UntypedFormBuilder
   ) {
 
-    this.company = this._usuarioService.empresas;
+   /*  this.company = this._usuarioService.empresas;
     this.empresaseleccionada = localStorage.getItem('empresaseleccionada')!;
+    this.usuario = JSON.parse(localStorage.getItem('usuario')!); */
+
+    this.idUser = localStorage.getItem('id')!;
     this.usuario = JSON.parse(localStorage.getItem('usuario')!);
 
-    if ( this.empresaseleccionada ){
+
+
+    /* if ( this.empresaseleccionada ){
                 this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
               } else {
                 if(this.company.length > 1 ) {
@@ -109,7 +117,7 @@ export class CreateNoveltiesComponent implements OnInit {
                 } else {
                   this.empresa =  JSON.parse(JSON.stringify(this.company[0]));
                 }
-              }
+              } */
 
               this._getEmployeeService.recibirGroup.subscribe(group =>{
                 this.group = group
@@ -121,8 +129,8 @@ export class CreateNoveltiesComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    this.getConceptNovelty(this.empresa.id)
-    this.getPeriodByProcess(this.empresa.id)
+    this.cargarEmpresasUsuario(this.idUser )
+
 
 
     interface Concept2 {
@@ -182,7 +190,7 @@ getConceptNovelty(id: string) {
 
     })
    }else if (this.group == 'DEDUCCION'){
-    console.log(this.group)
+
     this._movementService.getMovementsNoveltyDeduction(idEmployee, idCompany, idPeriod )
     .subscribe((noveltyDeduction: any) => {
 
@@ -321,6 +329,42 @@ deleteNovelty(index: number){
 campoEsValido( campo: string){
   return this.formaNovelty.controls[campo].errors
       && this.formaNovelty.controls[campo].touched
+}
+
+
+cargarEmpresasUsuario(iduser: any) {
+  this._companyService.cargarCompanysUser(iduser).subscribe(
+    (resp: any) => {
+      if (resp && resp.companies) {
+
+        this.company = resp.companies;
+
+        this.usuario = resp.user;
+
+        if(this.company .length > 1 ){
+          this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
+          this.getConceptNovelty(this.empresa.id)
+          this.getPeriodByProcess(this.empresa.id)
+
+
+        }else{
+          this.empresa =  this.company[0];
+          this.getConceptNovelty(this.empresa.id)
+          this.getPeriodByProcess(this.empresa.id)
+
+        }
+
+      } else {
+        this.company  = { companies: [] }; // Evita errores si la API devuelve un valor inesperado
+      }
+
+      this.usuario = resp?.user || {}; // Evita que `usuario` sea undefined
+    },
+    (error) => {
+      console.error('Error al cargar las empresas:', error);
+      this.company  = { companies: [] }; // En caso de error, aseguramos que no falle
+    }
+  );
 }
 
 

@@ -18,21 +18,21 @@
         </p-scrollPanel>
     </div>
 </p-sidebar>
-<p-button type="button" class="p-mr-2 absolute bottom-50 right-0 align-items-center justify-content-center p-button-success"
-(click)="visibleSidebarE = true" icon="pi pi-cog"></p-button>
+<p-button type="button" class="p-mr-2 absolute bottom-50 right-0 align-items-center justify-content-center"
+(click)="visibleSidebarE = true" icon="pi pi-cog" style="background:#f76e11"></p-button>
 
 <form autocomplete="off" [formGroup]="formaOverTime" (ngSubmit)="saveOverTime()" id="overTimeform">
-    
+
     <div class="field grid mb-3 ml-6">
-        
+
             <label for="hedo" class="col-fixed" style="width:350px">Horas Extras Diurnas: </label>
             <div  class="col">
-            <input                     
-                    formControlName="hedo" 
+            <input
+                    formControlName="hedo"
                      [(ngModel)]= "hedo"
                     name= "hedo" id="hedo" style="width:100px" type="number" pInputText class="inputfield"/>
-                   
-                    <small id="hedo" 
+
+                    <small id="hedo"
                     class="p-error"
                     *ngIf="campoEsValido('hedo')">Campo Obligatorio.</small>
                     <label for="recd" class="col-fixed" style="width:50px"><small class="text-500">horas.</small></label>
@@ -40,15 +40,15 @@
     </div>
 
     <div class="field grid mb-3 ml-6">
-        
+
         <label for="heno" class="col-fixed" style="width:350px">Horas Extras Nocturnas: </label>
         <div class="col">
-        <input 
-                
-                formControlName="heno" 
+        <input
+
+                formControlName="heno"
                 [(ngModel)]= "heno"
                 name= "heno" id="heno" style="width:100px" type="number" pInputText class="inputfield"/>
-                <small id="heno" 
+                <small id="heno"
                 class="p-error"
                 *ngIf="campoEsValido('heno')">Campo Obligatorio.</small>
                 <label for="recd" class="col-fixed" style="width:50px"><small class="text-500">horas.</small></label>
@@ -56,15 +56,15 @@
 </div>
 
 <div class="field grid mb-3 ml-6">
-        
+
     <label for="reco" class="col-fixed" style="width:350px">Recargo Noctrno: </label>
     <div class="col">
-    <input 
-            
-            formControlName="reco" 
+    <input
+
+            formControlName="reco"
             [(ngModel)]= "reco"
             name= "reco" id="reco" style="width:100px" type="number" pInputText class="inputfield"/>
-            <small id="reco" 
+            <small id="reco"
             class="p-error"
             *ngIf="campoEsValido('reco')">Campo Obligatorio.</small>
             <label for="recd" class="col-fixed" style="width:50px"><small class="text-500">horas.</small></label>
@@ -72,15 +72,15 @@
 </div>
 
 <div class="field grid mb-3 ml-6">
-        
+
     <label for="hedd" class="col-fixed" style="width:350px">Horas Extras Diurnas Dominical/Festivo: </label>
     <div class="col">
-    <input 
-            
-            formControlName="hedd" 
+    <input
+
+            formControlName="hedd"
             [(ngModel)]= "hedd"
             name= "hedd" id="hedd" style="width:100px" type="number" pInputText class="inputfield"/>
-            <small id="hedd" 
+            <small id="hedd"
             class="p-error"
             *ngIf="campoEsValido('hedd')">Campo Obligatorio.</small>
             <label for="recd" class="col-fixed" style="width:50px"><small class="text-500">horas.</small></label>
@@ -88,15 +88,15 @@
 </div>
 
 <div class="field grid mb-3 ml-6">
-        
+
     <label for="hend" class="col-fixed" style="width:350px">Horas Extras Nocturnas Dominical/Festivo: </label>
     <div class="col">
-    <input 
-            
-            formControlName="hend" 
+    <input
+
+            formControlName="hend"
             [(ngModel)]= "hend"
             name= "hend" id="hend" style="width:100px" type="number" pInputText class="inputfield"/>
-            <small id="hend" 
+            <small id="hend"
             class="p-error"
             *ngIf="campoEsValido('hend')">Campo Obligatorio.</small>
             <label for="recd" class="col-fixed" style="width:50px"><small class="text-500">horas.</small></label>
@@ -104,15 +104,15 @@
 </div>
 
 <div class="field grid mb-3 ml-6">
-        
+
     <label for="hond" class="col-fixed" style="width:350px">Horas Nocturnas Dominical/Festivo: </label>
     <div class="col">
-    <input 
-            
-            formControlName="hond" 
+    <input
+
+            formControlName="hond"
             [(ngModel)]= "hond"
             name= "hond" id="hend" style="width:100px" type="number" pInputText class="inputfield"/>
-            <small id="hond" 
+            <small id="hond"
             class="p-error"
             *ngIf="campoEsValido('hond')">Campo Obligatorio.</small>
             <label for="recd" class="col-fixed" style="width:50px"><small class="text-500">horas.</small></label>
@@ -121,15 +121,15 @@
 
 
 <div class="field grid mb-3 ml-6">
-        
+
     <label for="recd" class="col-fixed" style="width:350px">Recargo Dominical/Festivo: </label>
     <div class="col">
-    <input 
-            
-            formControlName="recd" 
+    <input
+
+            formControlName="recd"
             [(ngModel)]= "recd"
-            name= "recd" id="recd" style="width:100px" type="number" pInputText class="inputfield"/> 
-            <small id="recd" 
+            name= "recd" id="recd" style="width:100px" type="number" pInputText class="inputfield"/>
+            <small id="recd"
             class="p-error"
             *ngIf="campoEsValido('recd')">Campo Obligatorio.</small>
             <label for="recd" class="col-fixed" style="width:50px"><small class="text-500">horas.</small></label>
@@ -141,31 +141,33 @@
     <div class="p-grid flex justify-content-end mt-4">
 
 
-      
+
 
         <div class="p-col-xs-12 mr-2" primary-box>
 
 
                     <button pRipple pButton type="submit"
-                            label="Guardar" 
-                            icon="pi pi-save">
+                            label="Guardar"
+                            icon="pi pi-save"
+                            style="background:#f76e11; border-color:#f76e11;">
                         </button>
         </div>
 
         <div class="p-col-xs-12" primary-box>
-    
-    
+
+
                     <button pRipple pButton
-                            label="Cancelar" 
+                            label="Cancelar"
                             (click)="cancelar()"
                             class="p-button-danger"
-                            icon="pi pi-times-circle" 
-                            [disabled]="formaOverTime.invalid"></button>
+                            icon="pi pi-times-circle"
+                            [disabled]="formaOverTime.invalid"
+                            style="background: #53B4BA; border-color: #53B4BA;"></button>
         </div>
 
     </div>
 
-    
-    
+
+
 </form>
 

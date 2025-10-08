@@ -13,7 +13,7 @@ import { ModalUploadService } from '../modal-upload/modal-upload.service';
 import Swal from 'sweetalert2';
 import { DOCUMENT } from '@angular/common';
 import { Inject } from '@angular/core';
-import { PageScrollService } from 'ngx-page-scroll-core';
+//import { PageScrollService } from 'ngx-page-scroll-core';
 declare var $:any;
 declare var jQuery:any;
 import { ConfirmationService } from 'primeng/api';
@@ -24,7 +24,7 @@ import { Concept } from '../../models/concept.model';
 @Component({
   selector: 'app-concept',
   templateUrl: './concept.component.html',
-  styleUrls: ['./concept.component.css']
+  styleUrls: ['./concept.component.scss']
 })
 export class ConceptComponent implements OnInit {
 
@@ -47,6 +47,8 @@ export class ConceptComponent implements OnInit {
   forma!: FormGroup;
   concept: any= {};
   cGroup: string = ""
+  user!: string;
+    companyUser: any = {};
 
   constructor(
     private fb: FormBuilder,
@@ -56,17 +58,19 @@ export class ConceptComponent implements OnInit {
      public _router: Router,
      public activatedRoute: ActivatedRoute,
      private messageService: MessageService,
-     public pageScrollServ: PageScrollService,
+     //public pageScrollServ: PageScrollService,
      private confirmationService: ConfirmationService,
      @Inject(DOCUMENT) private document: any
   ) {
 
-    this.company = this._usuarioService.empresas;
-    this.empresaseleccionada = localStorage.getItem('empresaseleccionada');
+    //this.company = this._usuarioService.empresas;
+    //this.empresaseleccionada = localStorage.getItem('empresaseleccionada');
+    this.user = localStorage.getItem('id')!;
+    this.cargarEmpresasUsuario(this.user)
     this.usuario = JSON.parse(localStorage.getItem('usuario')!);
 
 
-    if ( this.empresaseleccionada ){
+    /* if ( this.empresaseleccionada ){
       this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
 
 
@@ -76,7 +80,7 @@ export class ConceptComponent implements OnInit {
       } else {
         this.empresa =  JSON.parse(JSON.stringify(this.company[0]));
       }
-    }
+    } */
 
 
 
@@ -104,22 +108,21 @@ export class ConceptComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.user = localStorage.getItem('id')!;
+    this.cargarEmpresasUsuario(this.user)
     this.crearFormulario();
-    this.getConceptSalary(this.empresa.id)
-    this.getConceptNoSalary(this.empresa.id)
-    this.getConceptDeduction(this.empresa.id)
-    this.getConceptSocialBenefit(this.empresa.id)
+
     var x = Math.floor(Math.random()*100);
-      console.log('x', x)
+
     //this.crearFormulario();
 
-    this.pageScrollServ.scroll({
+   /*  this.pageScrollServ.scroll({
       document: this.document,
       scrollTarget: '.theEnd',
-    });
+    }); */
   }
 
-  onScroll(event: HTMLElement, i:any) {
+ /*  onScroll(event: HTMLElement, i:any) {
     this.pageScrollServ.scroll({
       scrollTarget: event,
       scrollOffset: 100,
@@ -128,12 +131,12 @@ export class ConceptComponent implements OnInit {
 
     this.active = i;
   }
-
+ */
 
 
   openNewConcept(conceptGroup: string) {
     this.cGroup = conceptGroup
-    console.log('grupo', this.cGroup)
+
     this.getConceptCustomer(this.empresa.id)
 
 
@@ -150,8 +153,8 @@ editConcept(concept: Concept, conceptGroup: string) {
   getConceptSalary( id: string ) {
     this._conceptService.getConceptSalaryCompany( id )
         .subscribe( conceptSalary => {
-          this.conceptSalary = conceptSalary;
-          console.log('conceptos', this.conceptSalary)
+          this.conceptSalary = Array.isArray(conceptSalary.data) ? conceptSalary.data : [conceptSalary.data]
+
         });
 
   }
@@ -159,8 +162,8 @@ editConcept(concept: Concept, conceptGroup: string) {
   getConceptNoSalary( id: string ) {
     this._conceptService.getConceptNoSalaryCompany( id )
         .subscribe( conceptNoSalary => {
-          this.conceptNoSalary = conceptNoSalary;
-          console.log('conceptos', this.conceptSalary)
+          this.conceptNoSalary = Array.isArray(conceptNoSalary.data) ? conceptNoSalary.data : [conceptNoSalary.data]
+
         });
 
   }
@@ -168,8 +171,8 @@ editConcept(concept: Concept, conceptGroup: string) {
   getConceptDeduction( id: string ) {
     this._conceptService.getConceptDeductionCompany( id )
         .subscribe( conceptDeduction => {
-          this.conceptDeduction = conceptDeduction;
-          console.log('conceptos', this.conceptSalary)
+          this.conceptDeduction = Array.isArray(conceptDeduction.data) ? conceptDeduction.data : [conceptDeduction.data]
+
         });
 
   }
@@ -177,8 +180,8 @@ editConcept(concept: Concept, conceptGroup: string) {
   getConceptSocialBenefit( id: string ) {
     this._conceptService.getConceptSocialBenefitCompany( id )
         .subscribe( conceptSocialBenefit => {
-          this.conceptSocialBenefit = conceptSocialBenefit;
-          console.log('conceptos', this.conceptSalary)
+          this.conceptSocialBenefit = Array.isArray(conceptSocialBenefit.data) ? conceptSocialBenefit.data : [conceptSocialBenefit.data];
+
         });
 
   }
@@ -277,17 +280,17 @@ guardar(){
     this.usuario.id,
     this.usuario.id,
     this.forma.value.estado,
-    "SI",
-    "SI",
-    "SI",
-    "SI",
-    "SI",
+    true,
+    true,
+    true,
+    true,
+    true,
     this.notActive,
-    "SI",
+    true,
     this.isActive,
     this.notActive,
     "null",
-    "SI",
+    true,
     this.isActive
 );
 console.log('conceptsave', concept)
@@ -314,6 +317,44 @@ console.log('conceptsave', concept)
 });
 }
 
+cargarEmpresasUsuario(iduser: any) {
+  this._companyService.cargarCompanysUser(iduser).subscribe(
+    (resp: any) => {
+      if (resp && resp.companies) {
+
+        this.companyUser = resp.companies;
+
+        this.usuario = resp.user;
+
+        if(this.companyUser.length > 1 ){
+          this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
+          this.getConceptSalary(this.empresa.id)
+          this.getConceptNoSalary(this.empresa.id)
+          this.getConceptDeduction(this.empresa.id)
+          this.getConceptSocialBenefit(this.empresa.id)
+
+        }else{
+          this.empresa =  this.companyUser[0];
+          this.getConceptSalary(this.empresa.id)
+          this.getConceptNoSalary(this.empresa.id)
+          this.getConceptDeduction(this.empresa.id)
+          this.getConceptSocialBenefit(this.empresa.id)
+
+
+        }
+
+      } else {
+        this.companyUser = { companies: [] }; // Evita errores si la API devuelve un valor inesperado
+      }
+
+      this.usuario = resp?.user || {}; // Evita que `usuario` sea undefined
+    },
+    (error) => {
+      console.error('Error al cargar las empresas:', error);
+      this.companyUser  = { companies: [] }; // En caso de error, aseguramos que no falle
+    }
+  );
+}
 
 
 }

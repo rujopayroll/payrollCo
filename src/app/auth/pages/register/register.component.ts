@@ -1,5 +1,5 @@
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation  } from '@angular/core';
 import { UntypedFormGroup, FormControl, Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Concept } from '../../../companies/models/concept.model';
@@ -18,8 +18,8 @@ import { CompanyPayrollService } from '../../../companies/services/companyServic
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styles: [
-  ]
+  styleUrls: ['./register.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class RegisterComponent implements OnInit {
 
@@ -37,8 +37,8 @@ export class RegisterComponent implements OnInit {
   //formaRegister: FormGroup;
 
   formaRegister!: FormGroup;
-  
-  
+
+
 
   constructor( public _usuarioService: AuthService,
     public _conceptService: ConceptService,
@@ -53,7 +53,7 @@ export class RegisterComponent implements OnInit {
     }
 
     ngOnInit(): void {
-    
+
     }
 
     get nombreNoValido(){return this.formaRegister.get('name')!.invalid && this.formaRegister.get('name')!.touched }
@@ -61,8 +61,8 @@ export class RegisterComponent implements OnInit {
     get correoNoValido(){return this.formaRegister.get('email')!.invalid && this.formaRegister.get('email')!.touched }
     get telefonoNoValido(){return this.formaRegister.get('cellPhone')!.invalid && this.formaRegister.get('cellPhone')!.touched }
     get passwordNoValido(){return this.formaRegister.get('password')!.invalid && this.formaRegister.get('password')!.touched }
-    
-  
+
+
     crearFormulario(){
 
      this.formaRegister = this.fb.group({
@@ -72,21 +72,21 @@ export class RegisterComponent implements OnInit {
       cellPhone     : ['', [Validators.required]],
       password   : ['', Validators.required],
       condiciones  : ['']
-    }); 
+    });
     }
- 
 
- 
+
+
 
   registrarUsuario() {
-    
+
     if (this.formaRegister.invalid){
 
       return Object.values (this.formaRegister.controls).forEach( control =>{
-  
+
         if (control instanceof UntypedFormGroup) {
           Object.values (control.controls).forEach( control => control.markAsTouched());
-  
+
         } else{
           control.markAsTouched();
         }
@@ -113,15 +113,15 @@ export class RegisterComponent implements OnInit {
         isActive: this.isActive,
         cellPhone: this.formaRegister.value.cellPhone,
         companyName: this.formaRegister.value.company
-        
+
       }
     ]
 
     this.registro =  JSON.parse(JSON.stringify(form[0]));
     this._usuarioService.crearUsuario( this.registro )
-    
+
           .subscribe( respu => {
-           
+
             this._router.navigate(['/auth/login']);
 
             /*  const company = new Company(
@@ -131,13 +131,13 @@ export class RegisterComponent implements OnInit {
                   this.updateUser = respu.id,
                   this.idUser = respu.id,
                   this.isActive,
-                  
-                  
-                  
+
+
+
               );
               console.log('register', company)
               this._companyService.crearCompany( company )
-                .subscribe( respc1 => { 
+                .subscribe( respc1 => {
                   console.log('company register', company) */
 
 
@@ -146,7 +146,7 @@ export class RegisterComponent implements OnInit {
                 this.createUser = respu.id,
                 this.updateUser = respu.id,
                 this.isActive,
-                
+
               );
             console.log('companypayment', companyPayment)
             const companyPayroll = new CompanyPayroll(
@@ -154,9 +154,9 @@ export class RegisterComponent implements OnInit {
                 this.createUser = respu.id,
                 this.updateUser = respu.id,
                 this.isActive,
-                
+
               );
-          
+
 
               this._companyPaymentService.crearCompanyPayment( companyPayment )
               .subscribe( respcp => {
@@ -167,18 +167,18 @@ export class RegisterComponent implements OnInit {
                     .subscribe( respcp => {
                     }); */
 
-                    
+
                     // **aca va el json que guarda los conceptos a cada empresa**
 
                     /* this._conceptService.crearConceptStandard(respu.company_id)
                     .subscribe( respc => {
-                     
+
                     }); */
 
 
                  /*  });  */
 
-                 
+
           });
   }
 
@@ -191,7 +191,7 @@ export class RegisterComponent implements OnInit {
   }
 
   campoEsValido( campo: string){
-    return this.formaRegister.controls[campo].errors 
+    return this.formaRegister.controls[campo].errors
         && this.formaRegister.controls[campo].touched
   }
 

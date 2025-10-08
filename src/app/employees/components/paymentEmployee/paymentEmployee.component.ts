@@ -8,10 +8,10 @@ import { AccounttypeService } from '../../../companies/services/AccountType/acco
 import { EmployeePayment } from '../../models/employeesPayment.model';
 import { Bank } from '../../../companies/models/bank.model';
 import { AccountType } from '../../../companies/models/accountType.model';
-
+import { CompanyService } from '../../../companies/services/company/company.service';
 import { AuthService } from '../../../auth/services/authservice.index';
 import {MenuItem} from 'primeng/api';
-import { PageScrollService } from 'ngx-page-scroll-core';
+//import { PageScrollService } from 'ngx-page-scroll-core';
 import { DOCUMENT } from '@angular/common';
 import { Inject } from '@angular/core';
 import { ConfirmationService } from 'primeng/api';
@@ -52,7 +52,8 @@ export class PaymentEmployeeComponent implements OnInit {
   paymentEmployeeDialog!: boolean;
   employeesPayments: any= {};
   employeeId: string = ''
-
+  user!: string;
+  companyUser: any = {};
 
   employeePayment: EmployeePayment = new EmployeePayment('', '', true, '', '',  0, '', this.date, this.date);
 
@@ -66,11 +67,13 @@ export class PaymentEmployeeComponent implements OnInit {
               public _bankService: BankService,
               public _accountTypeService: AccounttypeService,
               public _modalUploadServices: ModalUploadService,
-              public pageScrollServ: PageScrollService,
+              public _companyService: CompanyService,
+              //public pageScrollServ: PageScrollService,
               @Inject(DOCUMENT) private document: any
               ) {
-
-                this.company = this._usuarioService.empresas;
+                this.user = localStorage.getItem('id')!;
+                this.cargarEmpresasUsuario(this.user)
+                /* this.company = this._usuarioService.empresas;
                 this.empresaseleccionada = localStorage.getItem('empresaseleccionada');
                 if ( this.empresaseleccionada ){
                   this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
@@ -80,7 +83,7 @@ export class PaymentEmployeeComponent implements OnInit {
                   } else {
                    this.empresa =  JSON.parse(JSON.stringify(this.company[0]));
                   }
-                   }
+                   } */
 
                  this.usuario = JSON.parse(localStorage.getItem('usuario')!);
                 this.activatedRoute.params.subscribe( params =>{
@@ -105,10 +108,10 @@ export class PaymentEmployeeComponent implements OnInit {
       .subscribe( () =>  this.cargarEmployeesPayment( params[ 'id' ]));
     }); */
 
-    this.pageScrollServ.scroll({
+   /*  this.pageScrollServ.scroll({
       document: this.document,
       scrollTarget: '.theEnd',
-    });
+    }); */
 
 
 
@@ -180,7 +183,7 @@ export class PaymentEmployeeComponent implements OnInit {
   })
   }
 
-  onScroll(event: HTMLElement, i:any) {
+  /* onScroll(event: HTMLElement, i:any) {
     this.pageScrollServ.scroll({
       scrollTarget: event,
       scrollOffset: 300,
@@ -189,7 +192,7 @@ export class PaymentEmployeeComponent implements OnInit {
 
     this.active = i;
   }
-
+ */
   hideDialog() {
     this.paymentEmployeeDialog = false;
     this.submitted = false;
@@ -204,7 +207,7 @@ editPaymentEmployee(paymentEmployee: EmployeePayment) {
   cargarEmployeesPayment( id: string ) {
     this._employeepaymentService.cargarEmployeePayment( id )
         .subscribe( employeePayment => {
-        this.employeePay = employeePayment[0];
+        this.employeePay = employeePayment;
 
         if(this.employeePay){
           this.getBank( this.employeePay.bank_id );
@@ -241,6 +244,39 @@ editPaymentEmployee(paymentEmployee: EmployeePayment) {
         .subscribe( accountType => {
           this.accountTypes = accountType;
   });
+  }
+
+  cargarEmpresasUsuario(iduser: any) {
+    this._companyService.cargarCompanysUser(iduser).subscribe(
+      (resp: any) => {
+        if (resp && resp.companies) {
+
+          this.companyUser = resp.companies;
+
+          this.usuario = resp.user;
+
+          if(this.companyUser.length > 1 ){
+            this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
+
+
+          }else{
+            this.empresa =  this.companyUser[0];
+
+
+
+          }
+
+        } else {
+          this.companyUser = { companies: [] }; // Evita errores si la API devuelve un valor inesperado
+        }
+
+        this.usuario = resp?.user || {}; // Evita que `usuario` sea undefined
+      },
+      (error) => {
+        console.error('Error al cargar las empresas:', error);
+        this.companyUser  = { companies: [] }; // En caso de error, aseguramos que no falle
+      }
+    );
   }
 
 }

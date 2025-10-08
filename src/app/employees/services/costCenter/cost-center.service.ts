@@ -29,28 +29,28 @@ export class CostCenterService {
   public headers = new HttpHeaders();
   costCenter!: CostCenter;
   company!: Company;
-  
 
-  constructor( public http: HttpClient, 
+
+  constructor( public http: HttpClient,
     public _usuarioService: AuthService,
     public _companyService: CompanyService) {
 
-      this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
+      // this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
 
      }
 
     cargarCostCenter( id: string){
-      
+
       let url = this.URL_SERVICIOS  + '/companies/' + id;
-      return this.http.get( url, {headers: this.headers})
+      return this.http.get( url, {withCredentials:true})
       .pipe(
           map( (resp: any) => resp.costCenters ));
     }
 
     obtenerCostCenter( id: string){
-    
-      let url = this.URL_SERVICIOS  + '/costCenters/' + id;
-      return this.http.get( url, {headers: this.headers})
+
+      let url = this.URL_SERVICIOS  + '/costCenter/' + id;
+      return this.http.get( url, {withCredentials:true})
       .pipe(
           map( (resp: any) => resp ));
     }
@@ -59,8 +59,8 @@ export class CostCenterService {
 
 
       let url = this.URL_SERVICIOS  + '/companies/' + idcompany;
-     
-      return this.http.get( url, {headers: this.headers})
+
+      return this.http.get( url, {withCredentials:true})
       .pipe(
           map( (resp: any) => resp ));
     }
@@ -68,9 +68,9 @@ export class CostCenterService {
     cargarCostCenterCompanyActive( idcompany: string){
 
 
-      let url = this.URL_SERVICIOS + '/costCenters?isActive=True' + '&' + 'company_id=' + idcompany;
-     
-      return this.http.get( url, {headers: this.headers} )
+      let url = this.URL_SERVICIOS + '/costCenter?isActive=True' + '&' + 'company_id=' + idcompany;
+
+      return this.http.get( url, {withCredentials:true} )
       .pipe(
           map( (resp: any) => resp ));
     }
@@ -83,9 +83,9 @@ export class CostCenterService {
           map(( resp: any ) => resp.companyPayroll));
     }
     borrarCostCenter( id: string ){
-      let url = this.URL_SERVICIOS + '/costCenters/' + id;
-      url += '?token=' + this._usuarioService.token;
-      return this.http.delete( url, {headers: this.headers} )
+      let url = this.URL_SERVICIOS + '/costCenter/' + id;
+
+      return this.http.delete( url, {withCredentials:true} )
       .pipe(
           map( (resp: any) => {
               Swal.fire({
@@ -96,8 +96,8 @@ export class CostCenterService {
       }));
     }
     crearCostCenter( costCenter: CostCenter){
-      const url = this.URL_SERVICIOS + '/costCenters';
-      return this.http.post( url, costCenter, {headers: this.headers})
+      const url = this.URL_SERVICIOS + '/costCenter';
+      return this.http.post( url, costCenter, {withCredentials:true})
       .pipe(
           map( (resp: any) =>{
              Swal.fire({
@@ -106,18 +106,18 @@ export class CostCenterService {
               title: 'Centro de Costo Creado',
               showConfirmButton: false,
               timer: 1500
-            }) 
-            
+            })
+
             return resp.costCenter;
           }));
-          
+
     }
 
     actualizarCostCenter( costCenter: CostCenter ){
 
-      let url = this.URL_SERVICIOS + '/costCenters/' + costCenter.id;
-      url += '?token=' + this._usuarioService.token;
-      return this.http.put( url, costCenter, {headers: this.headers})
+      let url = this.URL_SERVICIOS + '/costCenter/' + costCenter.id;
+
+      return this.http.put( url, costCenter, {withCredentials:true})
       .pipe(
           map( (resp: any) =>{
             Swal.fire({

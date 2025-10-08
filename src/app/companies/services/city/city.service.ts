@@ -19,28 +19,34 @@ export class CityService {
 
   public headers = new HttpHeaders();
   constructor( public http: HttpClient,
-               public _usuarioService: AuthService ) { 
+               public _usuarioService: AuthService ) {
 
-                this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
+                //this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
                }
 
     cargarMunicipios(){
-      let url = this.URL_SERVICIOS + '/cities';
-      return this.http.get( url, {headers: this.headers} )
+      let url = this.URL_SERVICIOS + '/City/get_all';
+      return this.http.get( url, {withCredentials: true} )
       .pipe(
            map( (resp: any) => {
             return resp;
           }));
     }
     obtenerMunicipio( id: string ){
-      let url = this.URL_SERVICIOS + '/cities/' + id;
-      return this.http.get( url, {headers: this.headers} )
-      .pipe(    
+      let url = this.URL_SERVICIOS + '/City/' + id;
+      return this.http.get( url, {withCredentials: true} )
+      .pipe(
       map( (resp: any ) => resp ));
     }
+    /* obtenerMunicipioDepto( id: string ){
+      let url = this.URL_SERVICIOS + '/state/' + id;
+      return this.http.get( url, {withCredentials:true} )
+      .pipe(
+          map( (resp: any ) => resp.cities ));
+    } */
     obtenerMunicipioDepto( id: string ){
-      let url = this.URL_SERVICIOS + '/states/' + id;
-      return this.http.get( url, {headers: this.headers} )
+      let url = this.URL_SERVICIOS + '/City/get_all?estate_id=' + id;
+      return this.http.get( url, {withCredentials:true} )
       .pipe(
           map( (resp: any ) => resp.cities ));
     }

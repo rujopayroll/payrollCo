@@ -30,40 +30,40 @@ export class EmployeeRecurrentPaymentService  {
 
   public headers = new HttpHeaders();
   employeeRecurrentPayment!: EmployeeRecurrentPayment;
-  
-  
 
-  constructor( public http: HttpClient, 
+
+
+  constructor( public http: HttpClient,
                public _usuarioService: AuthService,
-               public _companyService: CompanyService) { 
+               public _companyService: CompanyService) {
 
-                this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
-                
+                //this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
+
                }
 
 
-    
- 
+
+
 
     cargarEmployeeRecurrentPayment( idEmployee: string){
 
-      let url = this.URL_SERVICIOS + '/recurrentPayments?employee_id=' + idEmployee;
-      return this.http.get( url, {headers: this.headers} )
-      .pipe(    
-      map( (resp: any) => resp.reverse()));
+      let url = this.URL_SERVICIOS + '/recurrentPayment/' + idEmployee;
+      return this.http.get( url, {withCredentials:true} )
+      .pipe(
+      map( (resp: any) => resp));
     }
 
     buscarEmployeeRecurrentPayment( termino: string ) {
       let url = this.URL_SERVICIOS + '/busqueda/coleccion/companys/' + termino;
       return this.http.get( url )
-      .pipe(    
+      .pipe(
       map(( resp: any ) => resp.employeePayment));
     }
     borrarEmployeeRecurrentPayment( id: string ){
-      let url = this.URL_SERVICIOS + '/recurrentPayments/' + id;
-      url += '?token=' + this._usuarioService.token;
-      return this.http.delete( url )
-      .pipe(    
+      let url = this.URL_SERVICIOS + '/recurrentPayment/' + id;
+
+      return this.http.delete( url,{withCredentials:true} )
+      .pipe(
       map( (resp: any) => {
               Swal.fire({
               text: 'informacion de pagos recurrentes Eliminado',
@@ -73,16 +73,16 @@ export class EmployeeRecurrentPaymentService  {
       }));
     }
     crearEmployeeRecurrentPayment( employeeRecurrentPayment: any){
-      let url = this.URL_SERVICIOS + '/recurrentPayments';
-      
-      return this.http.post( url, employeeRecurrentPayment, {headers: this.headers})
+      let url = this.URL_SERVICIOS + '/recurrentPayment';
+
+      return this.http.post( url, employeeRecurrentPayment, {withCredentials:true})
       .pipe(
           map( (resp: any) =>{
 
             Swal.fire({
               text: 'datos de pagos recurrentes guardada',
               icon: 'success'
-            }); 
+            });
 
             return resp;
           }))
@@ -94,18 +94,18 @@ export class EmployeeRecurrentPaymentService  {
               text: err.error.errors.message,
               icon: 'error'
             });
-            return Observable.throwError( err );
+            //return Observable.throwError( err );
+            return throwError(() => new Error('Error del servidor'));
           }));
     }
 
     actualizarEmployeeRecurrentPayment( employeeRecurrentPayment: EmployeeRecurrentPayment ){
-console.log('servicio', employeeRecurrentPayment)
-      let url = this.URL_SERVICIOS + '/recurrentPayments/' + employeeRecurrentPayment.id;
-      url += '?token=' + this._usuarioService.token;
-      console.log(url)
-      return this.http.put( url, employeeRecurrentPayment, {headers: this.headers})
-      
-      .pipe(    
+
+      let url = this.URL_SERVICIOS + '/recurrentPayment/' + employeeRecurrentPayment.id;
+
+      return this.http.put( url, employeeRecurrentPayment, {withCredentials:true})
+
+      .pipe(
       map( (resp: any) =>{
             console.log('entroalservicio', resp)
             Swal.fire({
@@ -113,16 +113,19 @@ console.log('servicio', employeeRecurrentPayment)
               icon: 'success'
             });
             return resp.employeeRecurrentPayment;
-            
+
           }));
     }
 
     getEmployeeRecurrentPayment( idEmployee: string){
 
-      let url = this.URL_SERVICIOS + '/recurrentPayments/byEmployee/' + idEmployee;
-      return this.http.get( url, {headers: this.headers}, )
-      .pipe(    
-      map( (resp: any) => resp.reverse() ));
-    }
+      let url = this.URL_SERVICIOS + '/recurrentPayment?employee_id=' + idEmployee;
+      return this.http.get( url, {withCredentials:true}, )
+      .pipe(
+      map( (resp: any) => {
+        console.log('recuser', resp)
+        return resp
 
-  }
+  }));
+}
+}

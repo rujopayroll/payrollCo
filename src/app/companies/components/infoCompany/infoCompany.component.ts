@@ -17,7 +17,7 @@ import { ModalUploadService } from '../modal-upload/modal-upload.service';
 import Swal from 'sweetalert2';
 import { DOCUMENT } from '@angular/common';
 import { Inject } from '@angular/core';
-import { PageScrollService } from 'ngx-page-scroll-core';
+//import { PageScrollService } from 'ngx-page-scroll-core';
 declare var $:any;
 declare var jQuery:any;
 import { ConfirmationService } from 'primeng/api';
@@ -51,6 +51,7 @@ export class InfoCompanyComponent implements OnInit {
   //public companyInfo: any = {};
   empresaseleccionada: any = {};
   empresa: any = {};
+  empresa_id!: string;
   country: any  = {};
   state: any = {};
   city: any = {};
@@ -70,6 +71,8 @@ export class InfoCompanyComponent implements OnInit {
   socialss: SocialSecurityEntity[] = [];
   cajas: SocialSecurityEntity[] = [];
   riesgos: SocialSecurityEntity[] = [];
+  user!: string;
+  companyUser: any = {};
 
   companyInfo: Company = new Company('', '', '', '','', true, '', '', '', '','', '', this.date, '', '', '', this.date, this.date, '', '', '', '','');
 
@@ -90,7 +93,7 @@ export class InfoCompanyComponent implements OnInit {
      public _activatedRoute: ActivatedRoute,
      public _modalUploadService: ModalUploadService,
      public _subirArchivoService: SubirArchivoService,
-     public pageScrollServ: PageScrollService,
+     //public pageScrollServ: PageScrollService,
      private messageService: MessageService,
      private confirmationService: ConfirmationService,
 
@@ -107,7 +110,7 @@ export class InfoCompanyComponent implements OnInit {
      public _accounttypeService: AccounttypeService */
   ) {
 
-    this.company = this._usuarioService.empresas;
+   /*  this.company = this._usuarioService.empresas;
     this.empresaseleccionada = localStorage.getItem('empresaseleccionada');
 
 
@@ -121,11 +124,15 @@ export class InfoCompanyComponent implements OnInit {
       } else {
         this.empresa =  JSON.parse(JSON.stringify(this.company[0]));
       }
-    }
+    } */
+
+    this.user = localStorage.getItem('id')!;
+    console.log('this.userconstr',this.user)
+    this.cargarEmpresasUsuario(this.user)
 
     this.usuario = JSON.parse(localStorage.getItem('usuario')!);
 
-    this.cargarCompanyInfo( this.empresa.id );
+
 
     this.crearFormulario();
 
@@ -152,23 +159,24 @@ export class InfoCompanyComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.user = localStorage.getItem('id')!;
+    console.log('this.userinit',this.user)
+    this.cargarEmpresasUsuario(this.user)
 
-    this._modalUploadService.notificacion
-    .subscribe( () => this.cargarCompanyInfo(this.empresa.id));
 
     this.cargarTiposd();
     this.getAllCountry();
     this.getAllState();
     this.getAllCity();
-    this.cargarCompanyInfo( this.empresa.id );
+
     this.cargarEntidadesRiegos();
     this.cargarCajasCompensacion();
 
 
-  this.pageScrollServ.scroll({
+ /*  this.pageScrollServ.scroll({
     document: this.document,
     scrollTarget: '.theEnd',
-  });
+  }); */
 
 
   }
@@ -198,7 +206,7 @@ export class InfoCompanyComponent implements OnInit {
 
 
 
-   onScroll(event: HTMLElement, i:any) {
+  /*  onScroll(event: HTMLElement, i:any) {
     this.pageScrollServ.scroll({
       scrollTarget: event,
       scrollOffset: 300,
@@ -206,7 +214,7 @@ export class InfoCompanyComponent implements OnInit {
     });
 
     this.active = i;
-  }
+  } */
 
 
   guardar(company: Company){
@@ -234,40 +242,33 @@ export class InfoCompanyComponent implements OnInit {
     let form = [
       {
 
-        id: this.empresa.id,
         name: this.forma.value.name,
-        updateUser: this.usuario.id,
         identification: this.forma.value.nit,
         verificationNumber: this.forma.value.digitov,
-        city_id: this.forma.value.ciudad,
         address: this.forma.value.direccion,
         phone: this.forma.value.telefono,
-        cellphone: this.forma.value.celular,
         email: this.forma.value.email,
         legalRepresentant: this.forma.value.rlegal,
         fundationDate: this.forma.value.ffundacion,
-        entityRisks_id: this.forma.value.riesgoe,
-        compensationFund_id: this.forma.value.caja,
+        isActive:true,
+        cellphone: this.forma.value.celular,
+        city_id: this.forma.value.ciudad,
         state_id: this.forma.value.depto,
         country_id: this.forma.value.pais,
-        identificationType_id: this.forma.value.tidentificacion,
-
-
+        entityRisks_id: this.forma.value.riesgoe,
+        compensationFund_id: this.forma.value.caja,
+        identificationType_id: this.forma.value.tidentificacion
       }
     ]
 
     this.registro =  JSON.parse(JSON.stringify(form[0]));
 
 
-    this._companyService.actualizarCompany( this.registro )
-            .subscribe( () => this.cargarCompanyInfo(this.empresa.id));
+    this._companyService.actualizarCompany(this.registro, this.empresa_id)
+            .subscribe( () => this.cargarCompanyInfo(this.empresa_id));
             this.infoCompanyDialog = false;
-
-
-
-    // this.forma.reset();
-
   }
+
 
 
 
@@ -290,8 +291,8 @@ editInfoCompany(company: Company) {
 
 cargarTiposd() {
     this._identificationTypeService.cargarTiposDocumentos()
-    .subscribe( resp => this.tiposd = resp);
-    console.log(this.tiposd);
+    .subscribe( resp => this.tiposd = resp.data);
+
   }
 
 
@@ -300,6 +301,7 @@ cargarTiposd() {
     this._companyService.cargarCompanys( id )
         .subscribe( company => {
           this.company = company;
+
 
            if (this.company.country_id) {this.obtenerCountry( this.company.country_id )};
           if (this.company.state_id) {this.obtenerState(this.company.state_id)};
@@ -332,8 +334,8 @@ cargarTiposd() {
 getAllCountry()  {
     this._countryService.cargarPaises()
         .subscribe( countries => {
-          this.countries = countries;
-          console.log(this.countries)
+          this.countries = countries.data;
+
 
   });
 }
@@ -351,7 +353,7 @@ obtenerState( id: string)  {
 getAllState()  {
     this._stateService.cargarDepartamentos( )
         .subscribe( states => {
-          this.states = states;
+          this.states = states.data;
   });
   }
 
@@ -365,7 +367,7 @@ obtenerCity( id: string)  {
 getAllCity()  {
     this._cityService.cargarMunicipios( )
         .subscribe( cities => {
-          this.cities = cities;
+          this.cities = cities.data;
   });
   }
 
@@ -386,7 +388,7 @@ obtenerEntidadRiesgos(id: string)  {
 
 cargarMunicipiosDeptos(id: string) {
     this._cityService.obtenerMunicipioDepto(id)
-    .subscribe( resp => this.municipios = resp);
+    .subscribe( resp => this.municipios = resp.data);
   }
 
 onSelect(id: string): void {
@@ -395,17 +397,59 @@ onSelect(id: string): void {
 
   cargarCajasCompensacion() {
     this._socialSecurityEntityService.obtenerEntidadSSPorTipo('CCF')
-    .subscribe( resp => this.cajas = resp);
+    .subscribe( resp => this.cajas = resp.data);
 
   }
 
   cargarEntidadesRiegos() {
     this._socialSecurityEntityService.obtenerEntidadSSPorTipo('ARL')
-    .subscribe( resp => this.riesgos = resp);
+    .subscribe( resp => this.riesgos = resp.data);
 
   }
 
+  cargarEmpresasUsuario(iduser: any) {
+    console.log('cargarEmpresasUsuario', iduser)
+    this._companyService.cargarCompanysUser(iduser).subscribe(
+      (resp: any) => {
 
+        if (resp && resp.companies) {
+
+
+          this.companyUser = resp.companies;
+
+          this.usuario = resp.user.id;
+
+          if(this.companyUser.length > 1 ){
+            this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
+            this.empresa_id=this.empresa
+
+            this.cargarCompanyInfo( this.empresa.id );
+            this._modalUploadService.notificacion
+            .subscribe( () => this.cargarCompanyInfo(this.empresa.id));
+
+          }else{
+            this.empresa =  this.companyUser[0];
+            this.empresa_id=this.empresa.id;
+
+            this.cargarCompanyInfo( this.empresa.id );
+            this._modalUploadService.notificacion
+            .subscribe( () => this.cargarCompanyInfo(this.empresa.id));
+
+
+          }
+
+        } else {
+          this.companyUser = { companies: [] }; // Evita errores si la API devuelve un valor inesperado
+        }
+
+        this.usuario = resp?.user || {}; // Evita que `usuario` sea undefined
+      },
+      (error) => {
+        console.error('Error al cargar las empresas:', error);
+        this.companyUser  = { companies: [] }; // En caso de error, aseguramos que no falle
+      }
+    );
+  }
 
 
 }

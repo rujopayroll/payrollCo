@@ -14,7 +14,7 @@ import { ModalUploadService } from '../modal-upload/modal-upload.service';
 import Swal from 'sweetalert2';
 import { DOCUMENT } from '@angular/common';
 import { Inject } from '@angular/core';
-import { PageScrollService } from 'ngx-page-scroll-core';
+//import { PageScrollService } from 'ngx-page-scroll-core';
 declare var $:any;
 declare var jQuery:any;
 import { ConfirmationService } from 'primeng/api';
@@ -57,10 +57,13 @@ export class PayrollCompanyComponent implements OnInit {
   payrollCompanyDialog!: boolean;
   submitted!: boolean;
   new!: boolean;
+  user!: string;
+  companyUser: any = {};
+  empresa_id: string = ''
 
   companyPayroll: CompanyPayroll = new CompanyPayroll('', '', '', true, true, true, true, '', this.date, this.date);
-  
-  
+
+
 
 
 
@@ -75,32 +78,33 @@ export class PayrollCompanyComponent implements OnInit {
      public _activatedRoute: ActivatedRoute,
      public _modalUploadService: ModalUploadService,
      public _subirArchivoService: SubirArchivoService,
-     public pageScrollServ: PageScrollService,
-     private messageService: MessageService, 
+     //public pageScrollServ: PageScrollService,
+     private messageService: MessageService,
      private confirmationService: ConfirmationService,
-     
-     @Inject(DOCUMENT) private document: any
-     
-  ) { 
 
-    this.company = this._usuarioService.empresas;
+     @Inject(DOCUMENT) private document: any
+
+  ) {
+
+    /* this.company = this._usuarioService.empresas;
     this.empresaseleccionada = localStorage.getItem('empresaseleccionada');
-    
+
 
     if ( this.empresaseleccionada ){
       this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
-     
-      
+
+
     } else {
       if(this.company.length > 1 ) {
         this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
       } else {
         this.empresa =  JSON.parse(JSON.stringify(this.company[0]));
       }
-    }
-
+    } */
+    this.user = localStorage.getItem('id')!;
+    this.cargarEmpresasUsuario(this.user)
     this.usuario = JSON.parse(localStorage.getItem('usuario')!);
-    this.cargarCompanyPayroll(this.empresa.id);
+
     this.crearFormulario();
 
 
@@ -111,20 +115,20 @@ export class PayrollCompanyComponent implements OnInit {
   get affectAbsenteeLBNoValido(){return this.forma.get('affectAbsenteeLB')!.invalid && this.forma.get('affectAbsenteeLB')!.touched}
   get payday31vacationNoValido(){return this.forma.get('payday31vacation')!.invalid && this.forma.get('payday31vacation')!.touched}
   get assistanceTypeNoValido(){return this.forma.get('assistanceType')!.invalid && this.forma.get('assistanceType')!.touched}
-  
+
 
 
   ngOnInit(): void {
-    
+
     this.gelAllAssistanceType();
 
- 
 
 
-  this.pageScrollServ.scroll({
+
+ /*  this.pageScrollServ.scroll({
     document: this.document,
     scrollTarget: '.theEnd',
-  });
+  }); */
 
 
   }
@@ -141,9 +145,9 @@ export class PayrollCompanyComponent implements OnInit {
   }
 
 
-  
 
-   onScroll(event: HTMLElement, i:any) {
+
+   /* onScroll(event: HTMLElement, i:any) {
     this.pageScrollServ.scroll({
       scrollTarget: event,
       scrollOffset: 300,
@@ -151,7 +155,7 @@ export class PayrollCompanyComponent implements OnInit {
     });
 
     this.active = i;
-  } 
+  }  */
 
 
   hideDialog() {
@@ -172,72 +176,71 @@ editPayrollCompany(companyPayroll: CompanyPayroll) {
   guardar(companyPayroll: CompanyPayroll){
 
     if (this.forma.invalid){
-  
-      
-  
+
+
+
       return Object.values (this.forma.controls).forEach( control =>{
-  
+
         if (control instanceof UntypedFormGroup) {
           Object.values (control.controls).forEach( control => control.markAsTouched());
-  
+
         } else{
           control.markAsTouched();
         }
-        
-  
+
+
       });
     }
-  
+
 
 
   let form = [
     {
 
-      id: this.empresa.id,
-      updateUser: this.usuario.id,
+
       law1393: this.forma.value.law1393,
       exoneratedCREE : this.forma.value.exoneratedCREE ,
       affectAbsenteeLB: this.forma.value.affectAbsenteeLB,
       payday31vacation:this.forma.value.payday31vacation,
-      assistanceType : this.forma.value.assistanceType 
+      assistanceType : this.forma.value.assistanceType
 
     }
   ]
 
   this.registro =  JSON.parse(JSON.stringify(form[0]));
 
-console.log(this.registro)
-    this._companyPayrollService.actualizarCompanyPayroll( this.registro )
-            .subscribe( () => this.cargarCompanyPayroll(this.empresa.id));
+
+    this._companyPayrollService.actualizarCompanyPayroll( this.registro, this.empresa_id )
+            .subscribe( () => this.cargarCompanyPayroll(this.empresa_id));
             this.payrollCompanyDialog = false;
-    
-  
+
+
     // this.forma.reset();
-  
+
   }
 
 
-  
 
-  
+
+
 
   cargarCompanyPayroll( id: string ) {
     this._companyPayrollService.cargarCompanyPayroll( id )
         .subscribe( company => {
           this.companyPayroll = company;
-         console.log('payroll', this.companyPayroll)
-         
+
+
           this.obtenerAssistanceType(this.companyPayroll.assistanceType!);
-          
+
         });
 
   }
 
   actualizarImagen( company: Company){
-  
+
     this._modalUploadService.mostrarModal('companys', company.id! );
-    
-    
+
+
   }
 
 
@@ -251,11 +254,44 @@ obtenerAssistanceType( id: string ) {
 
 gelAllAssistanceType() {
     this._assistancetypeService.cargarTipoAuxilio()
-    .subscribe( resp => this.assistanceTypes = resp);
-  
+    .subscribe( resp => this.assistanceTypes = resp.data);
+
   }
 
+  cargarEmpresasUsuario(iduser: any) {
+    this._companyService.cargarCompanysUser(iduser).subscribe(
+      (resp: any) => {
+        if (resp && resp.companies) {
 
+          this.companyUser = resp.companies;
+
+          this.usuario = resp.user;
+
+          if(this.companyUser.length > 1 ){
+            this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
+            this.empresa_id = this.empresa
+            this.cargarCompanyPayroll(this.empresa.id);
+
+          }else{
+            this.empresa =  this.companyUser[0];
+            this.empresa_id = this.empresa.id
+            this.cargarCompanyPayroll(this.empresa.id);
+
+
+          }
+
+        } else {
+          this.companyUser = { companies: [] }; // Evita errores si la API devuelve un valor inesperado
+        }
+
+        this.usuario = resp?.user || {}; // Evita que `usuario` sea undefined
+      },
+      (error) => {
+        console.error('Error al cargar las empresas:', error);
+        this.companyUser  = { companies: [] }; // En caso de error, aseguramos que no falle
+      }
+    );
+  }
 
 
 }

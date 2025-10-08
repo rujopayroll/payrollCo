@@ -1,22 +1,16 @@
 <div class="grid">
-    <div class="col-4 text-center text-500">
+    <div class="col-3 text-center text-500">
         <div class= "row font-italic">
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
+
             Información Personal
         </div>
     </div>
-    <div class="col-8">
+    <div class="col-9">
 
 
      <!-- <p-panel header="Información Personal" class="font-italic text-xs"> -->
        <p-panel header="Información Personal" [style]="{
-        width: '937px',
+        width: '943px',
         fontFamily: 'arial',
         fontSize: '13px',
         border: '2px solid grey',
@@ -44,7 +38,7 @@
                 <span class="text-500 font-medium">Tipo Documento:</span></div>
             </div>
             <div class="col-8">
-                <span class="text-400 align-items-start justify-content-start">{{identificationType.description}}</span>
+                <span class="text-400 align-items-start justify-content-start">{{employee.identificationType?.description}}</span>
             </div>
 
         </div>
@@ -55,7 +49,7 @@
             <span class="text-500 font-medium">Documento Identidad:</span></div>
         </div>
         <div class="col-8">
-            <span class="text-400 align-items-start justify-content-start">{{employee.identification}}</span>
+            <span class="text-400 align-items-start justify-content-start">{{employee?.identification}}</span>
         </div>
 
     </div>
@@ -99,7 +93,7 @@
             <span class="text-500 font-medium">Genero:</span></div>
         </div>
         <div class="col-8">
-            <span class="text-400 align-items-start justify-content-start">{{gender.description}}</span>
+            <span class="text-400 align-items-start justify-content-start">{{employee.gender?.description}}</span>
         </div>
 
     </div>
@@ -110,7 +104,7 @@
             <span class="text-500 font-medium">Pais Residencia:</span></div>
         </div>
         <div class="col-8">
-            <span class="text-400 align-items-start justify-content-start">{{country.name}}</span>
+            <span class="text-400 align-items-start justify-content-start">{{employee.country?.name}}</span>
         </div>
 
     </div>
@@ -121,7 +115,7 @@
             <span class="text-500 font-medium">Departamento Residencia:</span></div>
         </div>
         <div class="col-8">
-            <span class="text-400 align-items-start justify-content-start">{{state.name}}</span>
+            <span class="text-400 align-items-start justify-content-start">{{employee.state?.name}}</span>
         </div>
 
     </div>
@@ -132,7 +126,7 @@
             <span class="text-500 font-medium">Municipio Residencia:</span></div>
         </div>
         <div class="col-8">
-            <span class="text-400 align-items-start justify-content-start">{{city.name}}</span>
+            <span class="text-400 align-items-start justify-content-start">{{employee.city?.name}}</span>
         </div>
 
     </div>
@@ -308,7 +302,7 @@
 
             <div class="field">
                 <label for="paisr">Pais Residencia</label>
-                <p-dropdown inputId="paisr" [(ngModel)]="employee.country_id"
+                <p-dropdown inputId="paisr" [(ngModel)]="employee.country.id"
                 class="form-control form-control-xl" formControlName="paisr" [class.is-invalid]="paisrNoValido"
                 [options]="countries" optionLabel="name" optionValue="id"></p-dropdown>
             </div>
@@ -350,7 +344,7 @@
 
             <div class="field">
                 <label for="ciudadr">Ciudad Residencia</label>
-                <p-dropdown inputId="ciudadr" [(ngModel)]="employee.city_id" [options]="municipios"
+                <p-dropdown inputId="ciudadr" [(ngModel)]="employee.city.id" [options]="cities"
                 class="form-control form-control-xl" formControlName="ciudadr" [class.is-invalid]="ciudadrNoValido"
                 optionLabel="name"  optionValue="id"  ></p-dropdown>
             </div>

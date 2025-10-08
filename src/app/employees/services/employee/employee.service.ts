@@ -25,55 +25,59 @@ export class EmployeeService {
  public headers = new HttpHeaders();
   employee!: Employee;
   company!: Company;
-  
 
-  constructor( public http: HttpClient, 
+
+  constructor( public http: HttpClient,
     public _usuarioService: AuthService,
     public _subirArhivoService: SubirArchivoService,
-    public _companyService: CompanyService) { 
+    public _companyService: CompanyService) {
 
       this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
     }
 
 
-    
- 
+
+
 
     cargarEmployees( id: string){
 
-      let url = this.URL_SERVICIOS + '/employees/' + id;
-      return this.http.get( url, {headers: this.headers} )
-      .pipe(   
+      let url = this.URL_SERVICIOS + '/employee/' + id;
+      return this.http.get( url, {withCredentials: true} )
+      .pipe(
       map( (resp: any) => {
+
             return resp;
-            
+
           }));
-           
+
     }
+
+
 
 
     cargarEmployeeCompany( idcompany: string){
 
-      let url = this.URL_SERVICIOS + '/employees?company_id=' + idcompany;
-     
-      return this.http.get( url, {headers: this.headers} )
-      .pipe(     
+      let url = this.URL_SERVICIOS + '/employee/full_data/by_company?company_id=' + idcompany + '&isActive=True';
+
+      return this.http.get( url, {withCredentials: true} )
+      .pipe(
       map( (resp: any) => resp ));
     }
 
     buscarEmployees( termino: string ) {
-      let url = this.URL_SERVICIOS + '/employees/search/' + termino;
-      return this.http.get( url, {headers: this.headers} )
-      .pipe(    
+      let url = this.URL_SERVICIOS + '/employee?search=' + termino;
+      console.log('urlbusqueda', url)
+      return this.http.get( url, {withCredentials:true} )
+      .pipe(
       map(( resp: any ) => resp));
 
 
     }
     borrarEmployees( id: string ){
       let url = this.URL_SERVICIOS + '/employee/' + id;
-      url += '?token=' + this._usuarioService.token;
-      return this.http.delete( url )
-      .pipe(    
+
+      return this.http.delete( url, {withCredentials:true})
+      .pipe(
       map( (resp: any) => {
               Swal.fire({
               text: 'Empleado Eliminado',
@@ -84,10 +88,10 @@ export class EmployeeService {
     }
 
     crearEmployee( employee: any){
-      console.log('entro');
-      const url = this.URL_SERVICIOS + '/employees';
-      console.log('servicio', url)
-      return this.http.post( url, employee, {headers: this.headers})
+
+      const url = this.URL_SERVICIOS + '/employee';
+
+      return this.http.post( url, employee, {withCredentials:true})
       .pipe(
           map( (resp: any) =>{
 
@@ -96,7 +100,7 @@ export class EmployeeService {
               icon: 'success'
             });
             return resp;
-             
+
           }))
 
           .pipe(
@@ -107,16 +111,17 @@ export class EmployeeService {
               text: err.error.errors.message,
               icon: 'error'
             });
-            return Observable.throwError( err );
+            //return Observable.throwError( err );
+            return throwError(() => new Error('Error del servidor'));
           }));
     }
 
     actualizarEmployee( employee: any ){
 
-      let url = this.URL_SERVICIOS + '/employees/' + employee.id;
-      
-      return this.http.put( url, employee, {headers: this.headers})
-      .pipe(    
+      let url = this.URL_SERVICIOS + '/employee/' + employee.id;
+
+      return this.http.put( url, employee, {withCredentials:true})
+      .pipe(
       map( (resp: any) =>{
             Swal.fire({
               text: 'Empleado Actualizado' + ' ' +  employee.firstName,
@@ -129,19 +134,19 @@ export class EmployeeService {
 
     cambiarImagen( archivo: File, id: string ){
       this._subirArhivoService.subirArchivo( archivo, 'employee', id )
-    
+
         .then( (resp: any) =>{
           this.employee.img = resp.employee.img;
           Swal.fire({
             text: 'Imagen Actualizada',
             icon: 'success'
           });
-         
-    
-    
+
+
+
         })
         .catch( (resp:any) =>{
-    
+
         });
     }
 }

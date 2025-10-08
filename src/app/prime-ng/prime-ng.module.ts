@@ -42,6 +42,11 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { HttpClientModule } from '@angular/common/http';
 import { StyleClassModule } from 'primeng/styleclass';
 import { AutoFocusModule } from 'primeng/autofocus';
+import { ChartModule } from 'primeng/chart';
+import { SkeletonModule } from 'primeng/skeleton';
+
+
+
 
 
 
@@ -52,6 +57,7 @@ import { AutoFocusModule } from 'primeng/autofocus';
 @NgModule({
 
   exports: [
+
 
     ButtonModule,
     InputTextModule,
@@ -94,8 +100,13 @@ import { AutoFocusModule } from 'primeng/autofocus';
     FileUploadModule,
     HttpClientModule,
     StyleClassModule,
-    AutoFocusModule
+    AutoFocusModule,
+    ChartModule,
+    SkeletonModule
 
-  ]
+
+
+  ],
+
 })
 export class PrimeNGModule { }

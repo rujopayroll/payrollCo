@@ -17,20 +17,24 @@
 </div>
  -->
 
-<div class="mr-3">
-  <div (click)="ingresar()" class="surface-card shadow-2 p-3  cursor-pointer" [style]="{'width': '11.8rem', 'border-radius': '8px', 'height': '7.08rem'}" style="background-image: linear-gradient(180deg, #b2eaff 0, #5389f2 50%, #003265 100%);">
-      <div class="flex justify-content-between mb-3">
-          <div>
-              <!-- <span class="block mb-1 text-base text-white">Nóminas Especiales</span> -->
-              <span class="block mb-1 text-base text-white">{{company.name}}</span>
+<div class="mr-2 mb-4" >
+  <!-- <div (click)="ingresar()" class="surface-card shadow-2 p-3  cursor-pointer" [style]="{'width': '11.8rem', 'border-radius': '8px', 'height': '7.08rem'}" style="background-image: linear-gradient(0deg, rgba(83,180,186,1) 0%, rgba(243,152,98,1) 100%);"> -->
+    <div (click)="ingresar()" class="cardC surface-card shadow-2 p-3  cursor-pointer" [style]="{'width': '11.8rem', 'border-top': '5px solid #f76e11', 'border-radius': '8px' , 'height': '6.00rem'}">
 
-          </div>
-          <div class="flex align-items-center justify-content-center bg-white-100  border-round" style="width:3rem;height:3rem">
+      <div class="flex justify-content-between mb-3">
+        <div>
+          <!-- <span class="block mb-1 text-base text-white">Nóminas Especiales</span> -->
+           <span class="block mb-1 text-base text-cyan-600">{{company.name}}</span>
+      </div>
+          <div class="flex align-items-center justify-content-center text-cyan-600  border-round" style="width:3rem;height:3rem">
             <!--   <i class="pi pi-dollar text-pink-500 text-xl"></i> -->
             <div>   <span *ngIf="company.img"> <img (click)="ingresar()" [src]="company.img" class="img-rounded img-fluid" alt="company" style="width:100%"></span></div>
             <div>   <span *ngIf="!company.img"> <img (click)="ingresar()" src="assets/images/no-image.png" class="img-rounded img-fluid    border-circle" alt="company" style="width:100%"></span></div>
           </div>
+
       </div>
 
   </div>
 </div>
+
+

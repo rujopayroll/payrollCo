@@ -12,9 +12,11 @@ export class GetEmployeeService {
 
   private employeeSelect = new ReplaySubject<string>(1)
   private groupSelect = new ReplaySubject<string>(1)
-  
+
   public get recibir() {
+
     return this.employeeSelect.asObservable()
+
   }
 
   public get recibirGroup() {
@@ -29,7 +31,7 @@ export class GetEmployeeService {
     this.groupSelect.next(group);
   }
 
-  
 
-  
+
+
 }

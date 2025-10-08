@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { EmployeesRoutingModule } from './employees-routing.module';
 
 import { PrimeNGModule } from '../prime-ng/prime-ng.module';
-import { Ng2PageScrollModule } from 'ng2-page-scroll';
+
 
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -40,9 +40,9 @@ import { PersonalComponent } from './pages/new/personal/personal.component';
    RecurrentPaymentEmployeeComponent,
    ContractEmployeeComponent,
    SalaryEmployeeComponent,
-   //ModalUploadComponent 
-   
-  
+   //ModalUploadComponent
+
+
   ],
   imports: [
     CommonModule,
@@ -52,8 +52,8 @@ import { PersonalComponent } from './pages/new/personal/personal.component';
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
-    Ng2PageScrollModule
-    
+
+
   ]
 })
 export class EmployeesModule { }

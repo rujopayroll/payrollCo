@@ -15,22 +15,22 @@ export class AssistancetypeService {
 
 public headers = new HttpHeaders();
   constructor( public http: HttpClient,
-    public _usuarioService: AuthService) { 
+    public _usuarioService: AuthService) {
 
-      this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
+      //this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
     }
 
   cargarTipoAuxilio(){
-    let url = this.URL_SERVICIOS  + '/assistanceTypes';
-    return this.http.get( url, {headers: this.headers} )
+    let url = this.URL_SERVICIOS  + '/assistanceType/get_all';
+    return this.http.get( url, {withCredentials:true} )
     .pipe(
          map( (resp: any) => {
           return resp;
         }));
   }
   obtenerTipoAuxilio( id: string ){
-    let url = this.URL_SERVICIOS  + '/assistanceTypes/' + id;
-    return this.http.get( url, {headers: this.headers} )
+    let url = this.URL_SERVICIOS  + '/assistanceType/' + id;
+    return this.http.get( url, {withCredentials:true} )
     .pipe(
         map( (resp: any ) => resp ));
   }

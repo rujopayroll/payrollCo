@@ -15,14 +15,14 @@ export class IdentificationTypeService {
 
   public headers = new HttpHeaders();
   constructor( public http: HttpClient,
-               public _usuarioService: AuthService ) { 
+               public _usuarioService: AuthService ) {
 
     this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
   }
 
   cargarTiposDocumentos(){
-    let url = this.URL_SERVICIOS + '/identificationTypes';
-    return this.http.get( url, {headers: this.headers})
+    let url = this.URL_SERVICIOS + '/identificationType';
+    return this.http.get( url, {withCredentials:true})
     .pipe(
          map( (resp: any) => {
           return resp;
@@ -30,9 +30,9 @@ export class IdentificationTypeService {
   }
 
   obtenerTipoDocumentos( id: string ){
-    let url = this.URL_SERVICIOS + '/identificationTypes/' + id;
-    return this.http.get( url, {headers: this.headers} )
-    .pipe(    
+    let url = this.URL_SERVICIOS + '/identificationType/' + id;
+    return this.http.get( url, {withCredentials:true} )
+    .pipe(
     map( (resp: any ) => resp ));
   }
 

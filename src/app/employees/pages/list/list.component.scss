@@ -1,72 +1,66 @@
- :host ::ng-deep {
+ /* :host ::ng-deep {
     .p-dropdown {
         width: 14rem;
         font-weight: normal;
     }
-     
+
     .product-name {
         font-size: 1.5rem;
         font-weight: 700;
     }
-    
+
     .product-description {
         margin: 0 0 0rem 0;
     }
-    
+
     .product-category-icon {
         vertical-align: middle;
         margin-right: .5rem;
     }
-    
+
     .product-category {
         font-weight: 600;
         vertical-align: middle;
     }
-    
+
     .product-list-item {
         display: flex;
         align-items: center;
         padding: 1rem;
         width: 100%;
-    
-    
-       /*  img {
-            width: 60px;
-            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-            margin-right: 2rem;
-            border-radius: 50rem;
-            
-        }  */
-    
+
+
+
+
         .product-list-detail {
             flex: 1 1 0;
         }
-    
+
         .p-rating {
             margin: 0 0 .5rem 0;
         }
-    
+
         .product-price {
             font-size: 1.5rem;
             font-weight: 600;
             margin-bottom: .5rem;
             align-self: flex-end;
         }
-    
+
         .product-list-action {
             display: flex;
             flex-direction: column;
         }
-    
+
         .p-button {
             margin-bottom: .5rem;
         }
     }
-    
+
     .product-grid-item {
         margin: 1em;
         border: 1px solid #074685;
-    
+
         .product-grid-item-top,
         .product-grid-item-bottom {
             display: flex;
@@ -74,15 +68,15 @@
             justify-content: space-between;
 
 
-            
+
         }
-    
+
         img {
             width: 75%;
             box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
             margin: 1rem 0;
         }
-    
+
         .product-grid-item-content {
             text-align: center;
 
@@ -91,10 +85,10 @@
                 box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
                 margin-right: 2rem;
                 border-radius: 50rem;
-                
+
             }
         }
-    
+
         .product-price {
             font-size: 1rem;
             font-weight: 600;
@@ -107,7 +101,7 @@
     box-shadow: 0 5 px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
     border-radius: 4px;
     margin-bottom: 0rem;
-    
+
 }
 
 @media screen and (max-width: 576px) {
@@ -142,3 +136,151 @@
         }
     }
 }
+
+
+
+
+
+.carnet-card {
+  width: 270px;
+  height: 170px;
+  border: 2px solid  #ff9900;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  font-family: Arial, sans-serif;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+.carnet-header {
+  background: #ff9900;
+  color: white;
+  text-align: center;
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.carnet-header .logo {
+  width: 30px;
+  margin-bottom: 2px;
+}
+
+.carnet-header h2 {
+  font-size: 12px;
+  margin: 0;
+}
+
+.carnet-body {
+  display: flex;
+  padding: 6px;
+  gap: 6px;
+  align-items: center;
+  flex: 1;
+  min-height: 0;
+}
+
+.carnet-body .photo {
+  width: 70px;
+  height: 90px;
+  object-fit: cover;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.carnet-body .info {
+  flex: 1;
+  font-size: 10px;
+  color: #333;
+}
+
+.carnet-body .info h3 {
+  margin: 0 0 4px 0;
+  font-size: 11px;
+  color:  #ff9900;
+}
+
+.carnet-footer {
+  text-align: center;
+  font-size: 10px;
+  background: #f8f9fa;
+  padding: 3px;
+  border-top: 1px solid #ddd;
+}
+
+
+ .profile-card_e {
+  width: 250px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  font-family: Arial, sans-serif;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card-header_e {
+  background: #3ccac2;
+  width: 100%;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo {
+  max-height: 40px;
+}
+
+.card-body_e {
+  text-align: center;
+  padding: 16px;
+  margin-top: -40px;
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 4px solid #fff;
+  object-fit: cover;
+}
+
+.name {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 10px 0 4px;
+}
+
+.role {
+  font-size: 14px;
+  color: #555;
+  margin: 0;
+}
+
+.location {
+  font-size: 13px;
+  color: #888;
+}
+
+.card-footer_e {
+  width: 100%;
+  padding: 10px;
+  border-top: 1px solid #eee;
+  text-align: center;
+}
+
+.tag {
+  display: inline-block;
+  background: #f3f3f3;
+  color: #444;
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 8px;
+}
+ */

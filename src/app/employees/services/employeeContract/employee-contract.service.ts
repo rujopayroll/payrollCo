@@ -23,49 +23,49 @@ export class EmployeeContractService  {
 
   public headers = new HttpHeaders();
   employeeContract!: EmployeeContract;
-  
-  
 
-  constructor( public http: HttpClient, 
+
+
+  constructor( public http: HttpClient,
     public _usuarioService: AuthService,
     public _subirArhivoService: SubirArchivoService,
-    public _companyService: CompanyService) { 
+    public _companyService: CompanyService) {
 
-      this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
+      //this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
     }
 
 
-    
- 
+
+
 
     cargarEmployeeContract( idEmployee: string){
 
-      let url = this.URL_SERVICIOS + '/employeeContracts?employee_id=' + idEmployee;
-      return this.http.get( url, {headers: this.headers} )
-      .pipe( 
-      map( (resp: any) => resp.reverse()));
+      let url = this.URL_SERVICIOS + '/employeeContract/' + idEmployee;
+      return this.http.get( url, {withCredentials:true} )
+      .pipe(
+      map( (resp: any) => resp));
     }
 
     cargarEmployeeContractActive(idEmployee: string){
 
-      let url = this.URL_SERVICIOS + '/employeeContracts?isActive=True&employee_id=' + idEmployee;
-      return this.http.get( url, {headers: this.headers} )
-      .pipe( 
+      let url = this.URL_SERVICIOS + '/employeeContract/' + idEmployee +'?isActive=True';
+      return this.http.get( url, {withCredentials:true} )
+      .pipe(
       map( (resp: any) => resp ));
-      
+
     }
 
     buscarEmployeeContract( termino: string ) {
       let url = this.URL_SERVICIOS + '/busqueda/coleccion/companys/' + termino;
       return this.http.get( url )
-      .pipe(    
+      .pipe(
       map(( resp: any ) => resp.employeeContract));
     }
     borrarEmployeeContract( id: string ){
       let url = this.URL_SERVICIOS + '/employeeContract/' + id;
-      
+
       return this.http.delete( url )
-      .pipe(    
+      .pipe(
       map( (resp: any) => {
               Swal.fire({
               text: 'informacion de contrato empleado Eliminado',
@@ -75,16 +75,16 @@ export class EmployeeContractService  {
       }));
     }
     crearEmployeeContract( employeeContract: EmployeeContract){
-      let url = this.URL_SERVICIOS + '/employeeContracts';
-  
-      return this.http.post( url, employeeContract, {headers: this.headers})
-      .pipe(    
+      let url = this.URL_SERVICIOS + '/employeeContract';
+
+      return this.http.post( url, employeeContract, {withCredentials:true})
+      .pipe(
       map( (resp: any) =>{
 
             Swal.fire({
               text: 'contrato guardada',
               icon: 'success'
-            }); 
+            });
 
             return resp;
           }))
@@ -96,16 +96,17 @@ export class EmployeeContractService  {
               text: err.error.errors.message,
               icon: 'error'
             });
-            return Observable.throwError( err );
+            //return Observable.throwError( err );
+            return throwError(() => new Error('Error del servidor'));
           }));
     }
 
     actualizarEmployeeContract( employeeContract: EmployeeContract ){
 
-      let url = this.URL_SERVICIOS + '/employeeContracts/' + employeeContract.id;
+      let url = this.URL_SERVICIOS + '/employeeContract/' + employeeContract.id;
       console.log('contratoservicio', employeeContract)
-      return this.http.put( url, employeeContract, {headers: this.headers})
-      .pipe(    
+      return this.http.put( url, employeeContract, {withCredentials:true})
+      .pipe(
       map( (resp: any) =>{
             Swal.fire({
               text: 'Informacion de Contrato Actualizado',

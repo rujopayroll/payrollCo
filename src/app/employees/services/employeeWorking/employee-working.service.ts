@@ -26,30 +26,30 @@ private URL_SERVICIOS: string = environment.URL_SERVICIOS;
 
 public headers = new HttpHeaders();
   employeeWorking!: EmployeeWorking;
-  
-  
 
-  constructor( public http: HttpClient, 
+
+
+  constructor( public http: HttpClient,
     public _usuarioService: AuthService,
-    public _companyService: CompanyService) { 
+    public _companyService: CompanyService) {
 
-      this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
+      // this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
     }
 
 
-    
- 
+
+
 
     cargarEmployeeWorking( idEmployee: string){
 
-      let url = this.URL_SERVICIOS + '/employeeWorkings?id=' + idEmployee;
-      return this.http.get( url, {headers: this.headers} )
+      let url = this.URL_SERVICIOS + '/employeeWorking/' + idEmployee;
+      return this.http.get( url, {withCredentials:true} )
       .pipe(
           map( (resp: any) => resp ));
     }
 
 
-    
+
 
     buscarEmployeeWorking( termino: string ) {
       let url = this.URL_SERVICIOS + '/busqueda/coleccion/companys/' + termino;
@@ -71,18 +71,18 @@ public headers = new HttpHeaders();
       }));
     }
     crearEmployeeWorking( employeeWorking: any){
-      let url = this.URL_SERVICIOS + '/employeeWorkings';
+      let url = this.URL_SERVICIOS + '/employeeWorking';
      console.log('url', url)
      console.log('servicio', employeeWorking)
 
-      return this.http.post( url, employeeWorking, {headers: this.headers})
+      return this.http.post( url, employeeWorking, {withCredentials:true})
       .pipe(
           map( (resp: any) =>{
 
             Swal.fire({
               text: 'Información laboral guardada',
               icon: 'success'
-            }); 
+            });
 
             return resp;
           }))
@@ -94,15 +94,16 @@ public headers = new HttpHeaders();
               text: err.error.errors.message,
               icon: 'error'
             });
-            return Observable.throwError( err );
+            //return Observable.throwError( err );
+            return throwError(() => new Error('Error del servidor'));
           }));
     }
 
     actualizarEmployeeWorking( employeeWorking: any ){
 
-      let url = this.URL_SERVICIOS + '/employeeWorkings/' + employeeWorking.id;
+      let url = this.URL_SERVICIOS + '/employeeWorking/' + employeeWorking.id;
     console.log('servicio',employeeWorking)
-      return this.http.put( url, employeeWorking, {headers: this.headers})
+      return this.http.put( url, employeeWorking, {withCredentials:true})
       .pipe(
           map( (resp: any) =>{
             Swal.fire({

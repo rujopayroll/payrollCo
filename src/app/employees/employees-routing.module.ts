@@ -16,15 +16,15 @@ const routes: Routes = [
     children: [
       {
         path: 'list',
-        component: ListComponent, canActivate: [ LoginGuardsGuard, VerificaTokenGuard ]
+        component: ListComponent
       },
       {
         path: 'new:personal',
-        component: NewComponent, canActivate: [ LoginGuardsGuard, VerificaTokenGuard ]
+        component: NewComponent
       },
       {
         path: 'new:working',
-        component: NewComponent, canActivate: [ LoginGuardsGuard, VerificaTokenGuard ]
+        component: NewComponent,
       },
 
       /* {
@@ -34,7 +34,7 @@ const routes: Routes = [
 
       {
         path: ':id',
-        component: EmployeeComponent, canActivate: [ LoginGuardsGuard ]
+        component: EmployeeComponent
       },
       {
         path: '**',

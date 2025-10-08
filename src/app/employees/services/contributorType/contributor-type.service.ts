@@ -16,22 +16,22 @@ export class ContributorTypeService {
   public headers = new HttpHeaders();
 
   constructor( public http: HttpClient,
-    public _usuarioService: AuthService) { 
+    public _usuarioService: AuthService) {
 
-      this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
+      // this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
     }
 
   cargarTipoCotizante(){
-    let url = this.URL_SERVICIOS + '/contributorTypes';
-    return this.http.get( url, {headers: this.headers}  )
+    let url = this.URL_SERVICIOS + '/contributorType';
+    return this.http.get( url, {withCredentials:true}  )
     .pipe(
          map( (resp: any) => {
           return resp;
         }));
   }
   obtenerTipoCotizante( id: string ){
-    let url = this.URL_SERVICIOS + '/contributorTypes/' + id;
-    return this.http.get( url, {headers: this.headers}  )
+    let url = this.URL_SERVICIOS + '/contributorType/' + id;
+    return this.http.get( url, {withCredentials:true}  )
     .pipe(
         map( (resp: any ) => resp ));
   }

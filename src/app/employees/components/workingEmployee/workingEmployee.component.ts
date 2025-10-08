@@ -11,7 +11,8 @@ import { WorkPlaceRisks } from '../../models/workPlaceRisks.model';
 import { WorkingHour } from '../../models/workingHour.model';
 import { AuthService } from '../../../auth/services/authservice.index';
 import {MenuItem} from 'primeng/api';
-import { PageScrollService } from 'ngx-page-scroll-core';
+import { CompanyService } from '../../../companies/services/company/company.service';
+//import { PageScrollService } from 'ngx-page-scroll-core';
 import { DOCUMENT } from '@angular/common';
 import { Inject } from '@angular/core';
 import { ConfirmationService } from 'primeng/api';
@@ -58,8 +59,10 @@ export class WorkingEmployeeComponent implements OnInit {
   workingHours: WorkingHour[]= [];
   workPlaceRisks: WorkPlaceRisks[] = [];
   Id: any;
-  
-  employeeWorking: EmployeeWorking = new EmployeeWorking('', '', true, '', '', '', '', true, true, this.date, this.date);
+  user!: string;
+  companyUser: any = {};
+
+  employeeWorking: EmployeeWorking = new EmployeeWorking('', '', true, '', '', '', '', true, true, this.date, this.date,0);
 
   constructor(private fb: UntypedFormBuilder,
               public _router: Router,
@@ -70,14 +73,17 @@ export class WorkingEmployeeComponent implements OnInit {
               public _contractRegimeService: ContractRegimeService,
               public _workingHourService: WorkingHourService,
               public _workPlaceRisksService: WorkPlaceRisksService,
+              public _companyService: CompanyService,
               public _modalUploadServices: ModalUploadService,
-              public pageScrollServ: PageScrollService,
+              //public pageScrollServ: PageScrollService,
               @Inject(DOCUMENT) private document: any
-              ) { 
+              ) {
 
-                this.company = this._usuarioService.empresas;
-                this.empresaseleccionada = localStorage.getItem('empresaseleccionada');
-                if ( this.empresaseleccionada ){
+                this.user = localStorage.getItem('id')!;
+                this.cargarEmpresasUsuario(this.user)
+                //this.company = this._usuarioService.empresas;
+                //this.empresaseleccionada = localStorage.getItem('empresaseleccionada');
+                /* if ( this.empresaseleccionada ){
                   this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
                   } else {
                     if(this.company.length > 1 ) {
@@ -85,14 +91,14 @@ export class WorkingEmployeeComponent implements OnInit {
                   } else {
                    this.empresa =  JSON.parse(JSON.stringify(this.company[0]));
                   }
-                   }
+                   } */
 
                  this.usuario = JSON.parse(localStorage.getItem('usuario')!);
 
                  this.activatedRoute.params.subscribe( params =>{
                   this.Id = params[ 'id' ]
                   this.cargarEmployeesWorking( params[ 'id' ]);
-              }); 
+              });
 
               this.crearFormulario();
 
@@ -112,15 +118,15 @@ export class WorkingEmployeeComponent implements OnInit {
     });
 
 
-    
 
-    this.pageScrollServ.scroll({
+
+    /* this.pageScrollServ.scroll({
       document: this.document,
       scrollTarget: '.theEnd',
-    });
+    }); */
 
-   
-    
+
+
   }
 
   get contractRegimeNoValido(){return this.forma.get('contractRegime')!.invalid && this.forma.get('contractRegime')!.touched}
@@ -129,6 +135,7 @@ export class WorkingEmployeeComponent implements OnInit {
   get workingHourNoValido(){return this.forma.get('workingHour')!.invalid && this.forma.get('workingHour')!.touched}
   get transportAssistanceNoValido(){return this.forma.get('transportAssistance')!.invalid && this.forma.get('transportAssistance')!.touched}
   get variableSalaryNoValido(){return this.forma.get('variableSalary')!.invalid && this.forma.get('variableSalary')!.touched}
+  get vacationHistoryNoValido(){return this.forma.get('vacationHistory')!.invalid && this.forma.get('vacationHistory')!.touched}
 
 
 
@@ -140,7 +147,8 @@ export class WorkingEmployeeComponent implements OnInit {
       workPlaceRisks     : ['', Validators.required],
       workingHour     : ['', Validators.required],
       transportAssistance   : ['', Validators.required],
-      variableSalary   : ['', Validators.required]
+      variableSalary   : ['', Validators.required],
+      vacationHistory: ['']
      });
     }
 
@@ -148,30 +156,30 @@ export class WorkingEmployeeComponent implements OnInit {
     guardar(workingEmployee: EmployeeWorking){
 
       if (this.forma.invalid){
-    
+
         console.log('invalido')
-    
+
         return Object.values (this.forma.controls).forEach( control =>{
-    
+
           if (control instanceof UntypedFormGroup) {
             Object.values (control.controls).forEach( control => control.markAsTouched());
-    
+
           } else{
             control.markAsTouched();
           }
-          
-    
+
+
         });
       }
-  
-    
+
+
       this.activatedRoute.params.subscribe( params => {
         const Id = params[ 'id' ];
-    
-  
+
+
       let form = [
         {
-    
+
           createUser: this.usuario,
           updateUser: this.usuario,
           isActive: this.isActive,
@@ -181,28 +189,29 @@ export class WorkingEmployeeComponent implements OnInit {
           workPlaceRisks_id:  this.forma.value.workPlaceRisks,
           workingHour_id:  this.forma.value.workingHour,
           transportAssistance: this.forma.value.transportAssistance,
-          variableSalary: this.forma.value.variableSalary
-         
-  
+          variableSalary: this.forma.value.variableSalary,
+          vacationHistory: this.forma.value.vacationHistory
+
+
         }
       ]
-   
-    
+
+
       this.registro =  JSON.parse(JSON.stringify(form[0]));
       console.log('registro', this.registro)
-  
+
       this._employeeWorkingService.actualizarEmployeeWorking( this.employeeW )
               .subscribe( () => this.cargarEmployeesWorking(this.employeeW.id));
               this.workingEmployeeDialog = false;
-      
-      
-    
+
+
+
       // this.forma.reset();
-    }) 
+    })
     }
 
 
-  onScroll(event: HTMLElement, i:any) {
+  /* onScroll(event: HTMLElement, i:any) {
     this.pageScrollServ.scroll({
       scrollTarget: event,
       scrollOffset: 300,
@@ -210,7 +219,7 @@ export class WorkingEmployeeComponent implements OnInit {
     });
 
     this.active = i;
-  } 
+  } */
 
   hideDialog() {
     this.workingEmployeeDialog = false;
@@ -224,19 +233,22 @@ editWorkingEmployee(workingEmployee: EmployeeWorking) {
 }
 
   cargarEmployeesWorking( id: string ) {
+
+
     this._employeeWorkingService.cargarEmployeeWorking( id )
         .subscribe( employeeWorking => {
 
-          this.employeeW = employeeWorking[0];
-        
+
+          this.employeeW = employeeWorking;
+
           if (this.employeeW) {
-           
+
             this.getEmployeeType( this.employeeW.employeeType_id );
             this.getContractRegime( this.employeeW.contractRegime_id);
             this.getWorkingHour( this.employeeW.workingHour_id);
             this.getWorkPlaceRisks( this.employeeW.workPlaceRisks_id);
-            
-          } 
+
+          }
         });
 
   }
@@ -255,12 +267,12 @@ editWorkingEmployee(workingEmployee: EmployeeWorking) {
           this.employeeTypes = employeeType;
   });
   }
-  
+
   getContractRegime( id: string)  {
     this._contractRegimeService.obtenerTipoRegime( id )
         .subscribe( contractRegime => {
           this.contractRegime = contractRegime;
-         
+
   });
   }
 
@@ -268,7 +280,7 @@ editWorkingEmployee(workingEmployee: EmployeeWorking) {
     this._contractRegimeService.cargarTipoRegimen( )
         .subscribe( contractRegime => {
           this.contractRegimes = contractRegime;
-         
+
   });
   }
 
@@ -285,7 +297,7 @@ editWorkingEmployee(workingEmployee: EmployeeWorking) {
           this.workingHours = workingHour;
   });
   }
-  
+
   getWorkPlaceRisks( id: string)  {
     this._workPlaceRisksService.obtenerCentroTrabajo( id )
         .subscribe( workPlaceRisks => {
@@ -299,8 +311,42 @@ editWorkingEmployee(workingEmployee: EmployeeWorking) {
           this.workPlaceRisks = workPlaceRisks;
   });
   }
-  
 
-  
-  
+
+  cargarEmpresasUsuario(iduser: any) {
+    this._companyService.cargarCompanysUser(iduser).subscribe(
+      (resp: any) => {
+        if (resp && resp.companies) {
+
+          this.companyUser = resp.companies;
+
+          this.usuario = resp.user;
+
+          if(this.companyUser.length > 1 ){
+            this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
+
+
+          }else{
+            this.empresa =  this.companyUser[0];
+
+
+
+          }
+
+        } else {
+          this.companyUser = { companies: [] }; // Evita errores si la API devuelve un valor inesperado
+        }
+
+        this.usuario = resp?.user || {}; // Evita que `usuario` sea undefined
+      },
+      (error) => {
+        console.error('Error al cargar las empresas:', error);
+        this.companyUser  = { companies: [] }; // En caso de error, aseguramos que no falle
+      }
+    );
+  }
+
+
+
+
 }

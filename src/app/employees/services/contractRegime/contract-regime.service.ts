@@ -14,22 +14,22 @@ export class ContractRegimeService {
 
   public headers = new HttpHeaders();
   constructor( public http: HttpClient,
-    public _usuarioService: AuthService) { 
+    public _usuarioService: AuthService) {
 
-      this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
+      // this.headers = this.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token'));
     }
 
   cargarTipoRegimen(){
-    let url = this.URL_SERVICIOS + '/contractRegimes';
-    return this.http.get( url, {headers: this.headers}  )
+    let url = this.URL_SERVICIOS + '/contractRegime';
+    return this.http.get( url, {withCredentials:true}  )
     .pipe(
          map( (resp: any) => {
           return resp;
         }));
   }
   obtenerTipoRegime( id: string ){
-    let url = this.URL_SERVICIOS + '/contractRegimes/' + id;
-    return this.http.get( url, {headers: this.headers}  )
+    let url = this.URL_SERVICIOS + '/contractRegime/' + id;
+    return this.http.get( url, {withCredentials:true}  )
     .pipe(
         map( (resp: any ) => resp ));
   }

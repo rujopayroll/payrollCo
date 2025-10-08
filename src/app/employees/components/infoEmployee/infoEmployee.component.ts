@@ -2,7 +2,7 @@ import { Component, OnInit, VERSION,ViewChild, ElementRef   } from '@angular/cor
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ModalUploadService } from 'src/app/companies/components/modal-upload/modal-upload.service';
-import { EmployeeService, IdentificationTypeService, GenderService, CountryService, StateService, 
+import { EmployeeService, IdentificationTypeService, GenderService, CountryService, StateService,
          CityService } from '../../services/employeeService.index';
 import { AuthService } from '../../../auth/services/authservice.index';
 import { Employee } from '../../models/employee.model';
@@ -12,7 +12,8 @@ import { Country } from '../../../companies/models/country.model';
 import { State } from '../../../companies/models/state.model';
 import { City } from '../../../companies/models/city.model';
 import {MenuItem} from 'primeng/api';
-import { PageScrollService } from 'ngx-page-scroll-core';
+import { CompanyService } from '../../../companies/services/company/company.service';
+
 import { DOCUMENT } from '@angular/common';
 import { Inject } from '@angular/core';
 import { ConfirmationService } from 'primeng/api';
@@ -42,7 +43,7 @@ export class InfoEmployeeComponent implements OnInit {
   public company: any = {};
   empresa: any = {};
   usuario: any = {};
-  public employee: any = {};
+  public employee: any = [];
   employees: any= {};
   identificationType: any = {};
   gender: any = {};
@@ -64,7 +65,9 @@ export class InfoEmployeeComponent implements OnInit {
   secondName: any;
   secondSurName: any;
   municipios: any = {};
-  
+  user!: string;
+  companyUser: any = {};
+
   infoEmployee: Employee = new Employee('', '', this.date, '', '', '', '', '', '', true, '', '', '', '', '', '', '', '', '', this.date, this.date, '', '');
 
   constructor(private fb: UntypedFormBuilder,
@@ -77,14 +80,16 @@ export class InfoEmployeeComponent implements OnInit {
               public _countryService: CountryService,
               public _stateService: StateService,
               public _cityService: CityService,
+              public _companyService: CompanyService,
               public _modalUploadServices: ModalUploadService,
-              public pageScrollServ: PageScrollService,
+              //public pageScrollServ: PageScrollService,
               @Inject(DOCUMENT) private document: any
-              ) { 
-
-                this.company = this._usuarioService.empresas;
-                this.empresaseleccionada = localStorage.getItem('empresaseleccionada');
-                if ( this.empresaseleccionada ){
+              ) {
+                this.user = localStorage.getItem('id')!;
+                this.cargarEmpresasUsuario(this.user)
+                //this.company = this._usuarioService.empresas;
+                //this.empresaseleccionada = localStorage.getItem('empresaseleccionada');
+                /* if ( this.empresaseleccionada ){
                   this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
                   } else {
                     if(this.company.length > 1 ) {
@@ -92,16 +97,16 @@ export class InfoEmployeeComponent implements OnInit {
                   } else {
                    this.empresa =  JSON.parse(JSON.stringify(this.company[0]));
                   }
-                   }
+                   } */
 
                  this.usuario = JSON.parse(localStorage.getItem('usuario')!);
 
                 this.activatedRoute.params.subscribe( params =>{
                   this.cargarEmployees( params[ 'id' ]);
-              }); 
+              });
 
-              this.crearFormulario();
-  
+
+
               }
 
               get tipodocNoValido(){return this.forma.get('tipodoc')!.invalid && this.forma.get('tipodoc')!.touched}
@@ -121,21 +126,25 @@ export class InfoEmployeeComponent implements OnInit {
               get correoNoValido(){return this.forma.get('email')!.invalid && this.forma.get('email')!.touched}
 
   ngOnInit(): void {
+    this.user = localStorage.getItem('id')!;
+                this.cargarEmpresasUsuario(this.user)
 
     this.getAllIdentificationType();
     this.getAllCountry();
     this.getAllState();
     this. getAllGender();
 
-    this.activatedRoute.params.subscribe( params =>{
+
+
+    /* this.activatedRoute.params.subscribe( params =>{
       this._modalUploadServices.notificacion
       .subscribe( () =>  this.cargarEmployees( params[ 'id' ]));
-    });
+    }); */
 
-    this.pageScrollServ.scroll({
+    /* this.pageScrollServ.scroll({
       document: this.document,
       scrollTarget: '.theEnd',
-    });
+    }); */
   }
 
 
@@ -157,40 +166,40 @@ export class InfoEmployeeComponent implements OnInit {
      direccion   :['',Validators.required],
      telefono    :[''],
      celular     :[''],
-     email       :['', [Validators.required,Validators.pattern("[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$")]]     
-      
+     email       :['', [Validators.required,Validators.pattern("[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$")]]
+
      });
-    
+
     }
 
 
     guardar(infoEmployee: Employee){
 console.log('entro guardar')
       if (this.forma.invalid){
-    
-        
-    
+
+
+
         return Object.values (this.forma.controls).forEach( control =>{
-    
+
           if (control instanceof UntypedFormGroup) {
             Object.values (control.controls).forEach( control => control.markAsTouched());
-    
+
           } else{
             control.markAsTouched();
           }
-          
-    
+
+
         });
       }
-  
+
       if (this.forma.value.snombre.length === 0) { this.secondName = this.forma.value.snombre1} else {this.secondName =  this.forma.value.snombre }
       if (this.forma.value.sapellido.length === 0) { this.secondSurName = this.forma.value.snombre1} else {this.secondSurName=  this.forma.value.sapellido }
-      
-    
-  
+
+
+
       let form = [
         {
-    
+
   firstName:  this.forma.value.pnombre,
   secondName:  this.secondName,
   surname:  this.forma.value.papellido,
@@ -209,27 +218,27 @@ console.log('entro guardar')
   state_id: this.forma.value.deptor,
   country_id:this.forma.value.paisr,
   identificationType_id:this.forma.value.tipodoc
-         
-  
+
+
         }
       ]
-    
+
       this.registro =  JSON.parse(JSON.stringify(form[0]));
-      
-  
+
+
       this._employeeService.actualizarEmployee( this.employee )
               .subscribe( () => this.cargarEmployees(this.employee.id));
               this.infoEmployeeDialog = false;
-      
-      
-    
+
+
+
       // this.forma.reset();
-    
+
     }
 
 
 
-  onScroll(event: HTMLElement, i:any) {
+/*   onScroll(event: HTMLElement, i:any) {
     this.pageScrollServ.scroll({
       scrollTarget: event,
       scrollOffset: 300,
@@ -237,7 +246,7 @@ console.log('entro guardar')
     });
 
     this.active = i;
-  } 
+  } */
 
   hideDialog() {
     this.infoEmployeeDialog = false;
@@ -246,40 +255,35 @@ console.log('entro guardar')
 
 editInfoEmployee(infoEmployee: Employee) {
   this.employees = {...infoEmployee};
-  console.log('naci', this.employees);
   this.infoEmployeeDialog = true;
   this.new= false;
 }
 
 
-  cargarEmployees( id: string ) {
+   cargarEmployees( id: string ) {
     this._employeeService.cargarEmployees( id )
         .subscribe( employee => {
-          this.employee = employee;
-        
-          if(this.employee) {
-            this.getIdentificationType( this.employee.identificationType_id );
-            this.getGender(this.employee.gender_id);
-            this.getState(this.employee.state_id);
-            this.getCity(this.employee.city_id);
-            this.cargarMunicipiosDeptos(this.employee.state_id);
-            this.getCountry(this.employee.country_id); 
-          }
+
+          this.employee = employee ;
+
         });
 
   }
 
+
+
   getIdentificationType( id: string)  {
     this._identificationTypeService.obtenerTipoDocumentos( id )
         .subscribe( identificationType => {
-          this.identificationType = identificationType;
+          this.identificationType = identificationType.data;
   });
   }
 
   getAllIdentificationType()  {
     this._identificationTypeService.cargarTiposDocumentos()
         .subscribe( identificationType => {
-          this.identificationTypes = identificationType;    
+          console.log('identi', identificationType)
+          this.identificationTypes = identificationType;
   });
   }
 
@@ -287,31 +291,32 @@ editInfoEmployee(infoEmployee: Employee) {
   getGender( id: string)  {
     this._genderService.obtenerGenero( id )
         .subscribe( gender => {
-          this.gender = gender;
+          this.gender = gender.data;
+          console.log('genero', this.gender)
   });
   }
 
   getAllGender()  {
     this._genderService.cargarGeneros()
         .subscribe( genders => {
-          this.genders = genders;    
+          this.genders = genders.data;
   });
   }
 
   getCountry( id: string)  {
     this._countryService.obtenerPaises( id )
         .subscribe( country => {
-          this.country = country;
-          
+          this.country = country.data;
+
   });
 }
 
 getAllCountry()  {
   this._countryService.cargarPaises()
       .subscribe( countries => {
-        this.countries = countries;
+        this.countries = countries.data;
         console.log(this.countries)
-        
+
 });
 }
 
@@ -322,14 +327,14 @@ getAllCountry()  {
 getState( id: string)  {
     this._stateService.obtenerDepartamento( id )
         .subscribe( state => {
-          this.state = state;
+          this.state = state.data;
   });
   }
 
   getAllState()  {
     this._stateService.cargarDepartamentos( )
         .subscribe( states => {
-          this.states = states;
+          this.states = states.data;
   });
   }
 
@@ -337,14 +342,14 @@ getState( id: string)  {
   getCity( id: string)  {
     this._cityService.obtenerMunicipio( id )
         .subscribe( city => {
-          this.city = city;
+          this.city = city.data;
   });
   }
 
   getAllCity()  {
     this._cityService.cargarMunicipios( )
         .subscribe( cities => {
-          this.cities = cities;
+          this.cities = cities.data;
   });
   }
 
@@ -354,9 +359,9 @@ getState( id: string)  {
 
 
   actualizarImagen( employee: Employee ){
-  
+
     this._modalUploadServices.mostrarModal('employee', employee.id! );
-    
+
   }
 
   cargarMunicipiosDeptos(id: string) {
@@ -367,6 +372,41 @@ getState( id: string)  {
   onSelect(id: string): void {
     this.cargarMunicipiosDeptos(id);
   }
+
+  cargarEmpresasUsuario(iduser: any) {
+    this._companyService.cargarCompanysUser(iduser).subscribe(
+      (resp: any) => {
+        if (resp && resp.companies) {
+
+          this.companyUser = resp.companies;
+
+          this.usuario = resp.user;
+
+          if(this.companyUser.length > 1 ){
+            this.empresa =  JSON.parse(localStorage.getItem('empresaseleccionada')!);
+
+
+          }else{
+            this.empresa =  this.companyUser[0];
+
+
+
+          }
+
+        } else {
+          this.companyUser = { companies: [] }; // Evita errores si la API devuelve un valor inesperado
+        }
+
+        this.usuario = resp?.user || {}; // Evita que `usuario` sea undefined
+      },
+      (error) => {
+        console.error('Error al cargar las empresas:', error);
+        this.companyUser  = { companies: [] }; // En caso de error, aseguramos que no falle
+      }
+    );
+  }
+
+
 
 
 }

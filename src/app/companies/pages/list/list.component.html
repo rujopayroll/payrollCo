@@ -1,9 +1,9 @@
-<p-menubar class="p-mr-8 m-4">
+<!-- <p-menubar class="p-mr-8 m-4">
     <ng-template pTemplate="start">
        <div class="flex align-content-center flex-wrap p-mr-8">
 
 
-           <img src="assets/images/LOGOTIPO_ANIMO.png" height="80" class="p-mr-6">
+           <img src="assets/images/LOGOTIPO_ANIMO_MENUBAR.png" height="40" style="float:right" class="p-mr-8">
 
        </div>
 
@@ -14,23 +14,18 @@
 
    <ng-template pTemplate="end">
        <div class="flex align-content-center flex-wrap">
-      <span class="flex align-items-center justify-content-center font-bold text-600 font-medium text-lg m-2">{{ usuario.name | titlecase}}</span>
-       <span *ngIf="usuario.img"><img [src]="usuario.img" height="40" class="cursor-pointer" (click)="op.toggle($event)" style="border-radius: 50%" alt="user"></span>
-       <span *ngIf="!usuario.img"> <img src="assets/images/no-image.png" height="40" class="cursor-pointer" (click)="op.toggle($event)" style="border-radius: 50%"></span>
+      <span class="flex align-items-center justify-content-center font-bold text-600 font-medium text-lg m-2">{{ usuario?.name | titlecase}}</span>
+      <span *ngIf="usuario?.img"><img [src]="usuario?.img" height="40" class="cursor-pointer" (click)="op.toggle($event)" style="border-radius: 50%" alt="user"></span>
+       <span *ngIf="!usuario?.img"> <img src="assets/images/no-image.png" height="40" class="cursor-pointer" (click)="op.toggle($event)" style="border-radius: 50%"></span>
 
        <p-overlayPanel #op [showCloseIcon]="false" appendTo="body" [style]="{width: '250px'}">
            <ng-template pTemplate>
                <div class="mb-2">
 
-                   <span class="text-center flex justify-content-center font-bold text-600 font-medium text-xl" style="text-align: center;">{{ usuario.name | titlecase}}</span>
 
                </div>
                <hr class="mb-2 mx-0 border-top-1 border-none surface-border mt-auto" />
-               <!-- <div class="mb-2 p-fluid">
 
-                   <button pButton pRipple type="button" routerLink="/auth/profile" label="Mi Perfil" icon="pi pi-user" class="p-button-secondary p-button-text" style="text-align: left;"></button>
-
-               </div> -->
 
                <div class="mb-2 p-fluid">
 
@@ -55,29 +50,114 @@
 
    </div>
    </ng-template>
+</p-menubar> -->
+
+
+
+<div class="listC-bg">
+
+
+
+
+<p-menubar class="animo-menubar">
+
+  <!-- Izquierda: marca -->
+  <ng-template pTemplate="start">
+   <div class="brand">
+     <img src="assets/images/LOGOTIPO_ANIMO_MENUBAR.png" alt="animo" height="40" />
+
+
+    <!--  <div class="user ml-6" (click)="showMenuPanel($event)">
+       <i class="pi pi-bars" style="font-size: 2rem" ></i>
+       <span class="name">Menu</span>
+
+     </div> -->
+
+
+
+
+    <!--  <div class="user ml-4">
+       <span *ngIf="company1.img"><img class="avatar" [src]="company1.img" height="40" alt="company"></span>
+           <span *ngIf="!company1.img"> <img class="avatar" src="assets/images/SIN-IMAGEN.jpg" height="40" ></span>
+           <span class="name">{{empresa.name}}</span>
+     </div> -->
+
+    <!--  <p-overlayPanel #menuPanel [dismissable]="true">
+       <p-menu [model]="menu" [style]="{width:'100%'}"></p-menu>
+     </p-overlayPanel> -->
+
+   </div>
+
+
+
+ </ng-template>
+
+   <!-- Derecha: acciones -->
+   <ng-template pTemplate="end">
+     <div class="right-actions">
+
+
+       <!-- CTA Comunidad -->
+       <button pButton type="button" label="Comunidad" icon="pi pi-users"
+               class="p-button comunidad" ></button>
+
+       <!-- Usuario-->
+       <div class="user" (click)="showUserPanel($event)">
+         <!-- <p-avatar
+
+         image= *ngIf="usuario?.img"><img [src]="usuario?.img"
+         shape="circle" styleClass="avatar"></p-avatar> -->
+         <span *ngIf="usuario?.img"><img [src]="usuario?.img" height="40" class="avatar" alt="user" ></span>
+         <span *ngIf="!usuario?.img"> <img src="assets/images/no-image.png" height="40" class="avatar" ></span>
+         <span class="name">{{ usuario?.name | titlecase}}</span>
+
+       </div>
+
+       <p-overlayPanel #userPanel [dismissable]="true">
+         <p-menu [model]="items" [style]="{width:'100%'}"></p-menu>
+       </p-overlayPanel>
+     </div>
+   </ng-template>
+
 </p-menubar>
 
 
-<p-fieldset legend="Mis Empresas">
+
+
+
+
+
+
+<p-fieldset legend="Mis Empresas" class="p-mr-8 m-4">
+
+  <div class="grid nested-grid">
+    <div class="col-12">
+      <div class="grid">
+
+    <!-- <div class="flex flex-wrap align-items-center justify-content-center card-container">
+
+      <div class="flex card-container mr-2 pr-8" style="padding: 0rem; "> -->
+
+
+
+         <app-company-card (companySelect)="vercompany( $event )" [company]="company" [index]="company.id" *ngFor="let company of companyUser;" class="mr-4"></app-company-card>
+
+
+
+
+    <!--  </div>
+     </div> -->
+
+    </div>
+  </div>
+</div>
   <!-- <div class="card mt-4" header="Mis Empresas" style="background-color:white;"> -->
-    <div class="flex flex-wrap align-items-center justify-content-center card-container">
 
-         <div class="flex card-container mr-2 pr-8 card-columns" style="padding: 0rem; ">
-
-
-
-            <app-company-card (companySelect)="vercompany( $event )" [company]="company" [index]="company.id" *ngFor="let company of companyUser;" class="mr-4"></app-company-card>
-
-
-
-
-        </div>
-        </div>
     <!-- </div> -->
 </p-fieldset>
 
 
-
+</div>
 
 
 

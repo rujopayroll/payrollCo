@@ -15,7 +15,7 @@ import { EmployeeContractService, EmployeeNewService } from '../../services/empl
 import {StepsModule} from 'primeng/steps';
 import {MenuItem} from 'primeng/api';
 import { MessageService } from 'primeng/api';
-import { PageScrollService } from 'ngx-page-scroll-core';
+//import { PageScrollService } from 'ngx-page-scroll-core';
 
 
 import { Subscription } from 'rxjs';
@@ -53,7 +53,7 @@ export class NewComponent implements OnInit {
                public _usuarioService: AuthService,
                public messageService: MessageService,
                public _employeeNewService: EmployeeNewService,
-               public pageScrollServ: PageScrollService,
+               //public pageScrollServ: PageScrollService,
                @Inject(DOCUMENT) private document: any
                 ) {
 
@@ -81,11 +81,11 @@ export class NewComponent implements OnInit {
 
   ngOnInit(){
 
-    this.pageScrollServ.scroll({
+   /*  this.pageScrollServ.scroll({
       document: this.document,
       scrollTarget: '.theEnd',
     });
-
+ */
 
     this.items = [{
         label: 'Inf. Personal',
@@ -143,14 +143,14 @@ this.subscription = this._employeeNewService.socialSecurityComplete$.subscribe((
 }
 
 
-onScroll(event: HTMLElement) {
+/* onScroll(event: HTMLElement) {
   this.pageScrollServ.scroll({
     scrollTarget: event,
     scrollOffset: 1000,
     document: this.document
   });
 
-}
+} */
 
 
 

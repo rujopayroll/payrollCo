@@ -40,7 +40,7 @@ export class PeriodService {
     getPeriodByCompany( id: string){
 
       let url = this.URL_SERVICIOS + '/period?company_id=' + id;
-      return this.http.get( url, {headers: this.headers} )
+      return this.http.get( url, {withCredentials:true} )
       .pipe(
           map( (resp: any) => {
             return resp;
@@ -54,9 +54,10 @@ export class PeriodService {
      getPeriodByCompanyByProcess( id: string){
 
         let url = this.URL_SERVICIOS + '/period?company_id=' + id + '&description=Proceso';
-        return  this.http.get ( url, {headers: this.headers} )
+        return  this.http.get ( url, {withCredentials:true} )
         .pipe(
             map( (resp: any={}) => {
+
               return resp;
 
             }));
@@ -66,7 +67,7 @@ export class PeriodService {
       getPeriodByCompanyByPaid( id: string){
 
         let url = this.URL_SERVICIOS + '/period?company_id=' + id + '&description=Pagado';
-        return this.http.get( url, {headers: this.headers} )
+        return this.http.get( url, {withCredentials:true} )
         .pipe(
             map( (resp: any) => {
               return resp;
@@ -78,7 +79,7 @@ export class PeriodService {
       getPeriodByCompanyByAccounted( id: string){
 
         let url = this.URL_SERVICIOS + '/period?company_id=' + id + '&description=Contabilizado';
-        return this.http.get( url, {headers: this.headers} )
+        return this.http.get( url, {withCredentials:true} )
         .pipe(
             map( (resp: any) => {
               return resp;
@@ -90,11 +91,12 @@ export class PeriodService {
       createPeriod( id: string, year: number){
 
         let url = this.URL_SERVICIOS + '/period?company_id=' + id + '&year=' + year;
-        console.log('token periodo', this.headers)
-        return this.http.post( url, {headers: this.headers} )
+        console.log('urlperiodo', url)
+
+        return this.http.post( url,  {withCredentials:true})
         .pipe(
             map( (resp: any) => {
-              console.log('servicio periodo', resp, url)
+
               return resp;
 
             }));
